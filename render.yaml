@@ -1,0 +1,11 @@
+# Render Blueprint: https://docs.render.com/docs/infrastructure-as-code
+# Na push naar GitHub: Dashboard → New → Blueprint → koppel deze repo.
+services:
+  - type: web
+    name: horoscoop
+    runtime: docker
+    region: frankfurt
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /

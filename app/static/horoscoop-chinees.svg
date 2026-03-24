@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" role="img" aria-label="Chinese horoscoop">
+  <defs>
+    <linearGradient id="cbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff5f4"/>
+      <stop offset="100%" stop-color="#f6eedc"/>
+    </linearGradient>
+    <linearGradient id="cred" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c45a4a"/>
+      <stop offset="100%" stop-color="#8b3a32"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="220" fill="url(#cbg)"/>
+  <g transform="translate(450 110)">
+    <circle r="78" fill="none" stroke="url(#cred)" stroke-width="2.2" opacity="0.88"/>
+    <g stroke="#c9a24d" stroke-width="1.5" fill="none" opacity="0.75">
+      <path d="M0,-78 L0,78"/>
+      <path d="M-78,0 L78,0"/>
+      <path d="M-55,-55 L55,55"/>
+      <path d="M55,-55 L-55,55"/>
+    </g>
+    <g fill="#884dc9" opacity="0.9">
+      <rect x="-8" y="-52" width="16" height="10" rx="2"/>
+      <rect x="36" y="-8" width="16" height="10" rx="2" transform="rotate(45)"/>
+      <rect x="-8" y="42" width="16" height="10" rx="2"/>
+      <rect x="-48" y="-8" width="16" height="10" rx="2" transform="rotate(-45)"/>
+    </g>
+    <circle r="5" fill="#c9a24d"/>
+  </g>
+  <text x="32" y="188" font-family="Georgia, serif" font-size="15" fill="#3a3a3a" opacity="0.85">Chinees · BaZi / Ganzhi</text>
+</svg>

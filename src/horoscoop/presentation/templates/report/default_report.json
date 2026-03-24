@@ -1,0 +1,45 @@
+{
+  "template_id": "default_report",
+  "label_nl": "Standaard rapport",
+  "sections": [
+    {
+      "id": "input_summary",
+      "type": "table",
+      "label_nl": "Input"
+    },
+    {
+      "id": "time_scales",
+      "type": "table",
+      "label_nl": "Tijdschalen"
+    },
+    {
+      "id": "diagnostics",
+      "type": "raw",
+      "label_nl": "Diagnostics"
+    },
+    {
+      "id": "western_tropical",
+      "type": "method_section",
+      "label_nl": "Westers (tropisch)",
+      "method_id": "western_tropical"
+    },
+    {
+      "id": "western_sidereal",
+      "type": "method_section",
+      "label_nl": "Westers (sidereaal)",
+      "method_id": "western_sidereal"
+    },
+    {
+      "id": "vedic_panchanga",
+      "type": "method_section",
+      "label_nl": "Vedisch (Panchanga)",
+      "method_id": "vedic_panchanga"
+    },
+    {
+      "id": "chinese_ganzhi_bazi",
+      "type": "method_section",
+      "label_nl": "Chinees (Ganzhi/BaZi)",
+      "method_id": "chinese_ganzhi_bazi"
+    }
+  ]
+}

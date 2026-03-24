@@ -1,0 +1,28 @@
+{
+  "method_id": "vedic_panchanga",
+  "label_nl": "Vedisch (Panchanga)",
+  "required_blocks": ["vedic"],
+  "sections": [
+    {
+      "id": "panchanga_cards",
+      "type": "cards",
+      "source_keys": ["panchanga_cards"],
+      "label_nl": "Panchanga",
+      "formatting": {}
+    },
+    {
+      "id": "end_times",
+      "type": "timeline",
+      "source_keys": ["end_times"],
+      "label_nl": "Eindtijden",
+      "formatting": {}
+    },
+    {
+      "id": "diagnostics",
+      "type": "raw",
+      "source_keys": [],
+      "label_nl": "Kwaliteit & aannames",
+      "formatting": {}
+    }
+  ]
+}

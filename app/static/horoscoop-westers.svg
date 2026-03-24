@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" role="img" aria-label="Westerse horoscoop">
+  <defs>
+    <linearGradient id="wbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7f2fc"/>
+      <stop offset="100%" stop-color="#efe8f7"/>
+    </linearGradient>
+    <linearGradient id="wr" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#884dc9"/>
+      <stop offset="100%" stop-color="#5a2f9a"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="220" fill="url(#wbg)"/>
+  <g transform="translate(450 110)">
+    <circle r="88" fill="none" stroke="url(#wr)" stroke-width="2.5" opacity="0.9"/>
+    <circle r="72" fill="none" stroke="#c9a24d" stroke-width="1.2" opacity="0.55"/>
+    <g stroke="#884dc9" stroke-width="1.2" opacity="0.35">
+      <line x1="0" y1="-88" x2="0" y2="88"/>
+      <line x1="-76" y1="-44" x2="76" y2="44"/>
+      <line x1="-76" y1="44" x2="76" y2="-44"/>
+      <line x1="-44" y1="-76" x2="44" y2="76"/>
+      <line x1="44" y1="-76" x2="-44" y2="76"/>
+    </g>
+    <circle r="6" fill="#c9a24d"/>
+    <circle cx="0" cy="-62" r="4" fill="#884dc9"/>
+    <circle cx="54" cy="-31" r="3.5" fill="#5f8f64"/>
+    <circle cx="-50" cy="36" r="3.5" fill="#c47a5a"/>
+  </g>
+  <text x="32" y="188" font-family="Georgia, serif" font-size="15" fill="#3a3a3a" opacity="0.85">Westers · tropische kaart</text>
+</svg>

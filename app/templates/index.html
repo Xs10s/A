@@ -27,7 +27,7 @@
         --border: rgba(58, 58, 58, 0.12);
 
         --font-heading: "Lora", Georgia, serif;
-        --font-ui: "DM Sans", "Inter", system-ui, sans-serif;
+        --font-ui: "Inter", system-ui, sans-serif;
         --font-body: "Inter", system-ui, sans-serif;
 
         --h1: clamp(1.5rem, 4vw, 2rem);
@@ -238,6 +238,312 @@
         margin-top: var(--xl);
         padding-top: var(--lg);
         border-top: 1px solid var(--border);
+      }
+
+      .method-layout {
+        display: grid;
+        gap: var(--lg);
+      }
+
+      .method-hero {
+        border: 1px solid #d9c8ef;
+        border-radius: 0;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 10px 40px rgba(136, 77, 201, 0.1);
+      }
+
+      .method-hero--split {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+      }
+
+      .method-hero__left {
+        padding: 30px;
+        background: linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+      }
+
+      .method-hero__right {
+        position: relative;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(circle at top, rgba(201, 162, 77, 0.22), transparent 35%),
+          linear-gradient(135deg, #884dc9 0%, #6f38b0 45%, #2b2340 100%);
+      }
+
+      .method-hero__right::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.22;
+        background-image: radial-gradient(#ffffff 1px, transparent 1px);
+        background-size: 18px 18px;
+      }
+
+      .method-hero__kicker {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1px solid #e7dcf6;
+        background: #f6f0ff;
+        padding: 6px 12px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #6d5494;
+        margin-bottom: 12px;
+        font-family: var(--font-ui);
+        font-weight: 700;
+      }
+
+      .method-hero__title {
+        margin: 0 0 12px 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: clamp(1.8rem, 4.4vw, 3.6rem);
+        line-height: 1.1;
+        color: #2b2340;
+      }
+
+      .method-hero__title .purple { color: #884dc9; }
+      .method-hero__title .gold { color: #c9a24d; }
+
+      .method-hero__intro {
+        margin: 0 0 18px 0;
+        max-width: 52ch;
+        color: #5e5375;
+        font-size: 15px;
+        font-family: "Inter", system-ui, sans-serif;
+      }
+
+      .method-hero__orb {
+        position: relative;
+        width: min(320px, 88%);
+        aspect-ratio: 1 / 1;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(2px);
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+        display: grid;
+        place-items: center;
+        z-index: 1;
+      }
+
+      .method-hero__orb::before,
+      .method-hero__orb::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+      }
+
+      .method-hero__orb::before {
+        width: 78%;
+        height: 78%;
+        border: 1px solid rgba(246, 226, 167, 0.7);
+      }
+
+      .method-hero__orb::after {
+        width: 56%;
+        height: 56%;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+      }
+
+      .method-hero__orb-inner {
+        text-align: center;
+        color: #fff;
+      }
+
+      .method-hero__orb-label {
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.76);
+      }
+
+      .method-hero__orb-main {
+        margin-top: 12px;
+        font-family: var(--font-heading);
+        font-size: clamp(2rem, 5vw, 3.3rem);
+      }
+
+      .method-hero__orb-sub {
+        margin-top: 10px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.84);
+      }
+
+      .method-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--sm);
+      }
+
+      .metric-card {
+        border: 1px solid var(--border);
+        background: #fff;
+        padding: 12px;
+        border-radius: 0;
+      }
+
+      .metric-card__label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+      }
+
+      .metric-card__value {
+        font-size: 14px;
+        color: var(--text-primary);
+        margin-top: 4px;
+        font-weight: 600;
+      }
+
+      .layout-section {
+        border: 1px solid var(--border);
+        background: #fff;
+        padding: 18px;
+      }
+
+      .layout-section__title {
+        margin: 0 0 6px 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: 28px;
+        color: #2b2340;
+      }
+
+      .layout-section__lead {
+        margin: 0 0 14px 0;
+        font-family: "Inter", system-ui, sans-serif;
+        color: #625777;
+        font-size: 14px;
+      }
+
+      .explain-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .explain-card {
+        border: 1px solid var(--border);
+        background: #fcfaff;
+        padding: 12px;
+        font-family: "Inter", system-ui, sans-serif;
+      }
+
+      .explain-card__title {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #7b6997;
+        margin-bottom: 6px;
+        font-weight: 700;
+      }
+
+      .explain-card__text {
+        margin: 0;
+        font-size: 13px;
+        color: #564b69;
+      }
+
+      .method-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid var(--border);
+        font-size: 13px;
+      }
+
+      .method-table th,
+      .method-table td {
+        padding: 10px 8px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .method-table th {
+        font-family: var(--font-ui);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        background: #f7f1ff;
+      }
+
+      .result-dash {
+        display: grid;
+        gap: 16px;
+      }
+
+      .result-dash__split {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: 0.95fr 1.05fr;
+      }
+
+      .result-dash__quick {
+        border: 1px solid #e8ddf6;
+        background: #fff;
+        padding: 16px;
+      }
+
+      .result-dash__quick-grid {
+        display: grid;
+        gap: 8px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .result-chip {
+        border: 1px solid #eadff8;
+        background: #faf7ff;
+        color: #6d5494;
+        padding: 8px 10px;
+        font-size: 13px;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .result-chip.active {
+        border-color: #c9a9ef;
+        background: #f4ecff;
+        color: #533e72;
+      }
+
+      .result-detail {
+        border: 1px solid #e8ddf6;
+        background: #fff;
+        padding: 16px;
+      }
+
+      .result-detail h3 {
+        margin: 0 0 6px 0;
+        font-size: 26px;
+      }
+
+      .result-detail p {
+        margin: 0 0 10px 0;
+        color: #615675;
+        font-size: 14px;
+      }
+
+      @media (max-width: 820px) {
+        .result-dash__split {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 820px) {
+        .method-grid-3 {
+          grid-template-columns: 1fr;
+        }
+        .method-hero--split {
+          grid-template-columns: 1fr;
+        }
+        .explain-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
       .panel-chart {
@@ -567,14 +873,14 @@
         <div class="tabs" id="tabs">
           <div class="tab active" data-tab="story-energy">Verhaal &amp; energie</div>
           <div class="tab" data-tab="western">Westers</div>
-          <div class="tab" data-tab="sidereal-vedic">Sidereaals &amp; Vedisch</div>
-          <div class="tab" data-tab="chinese-bazi">Chinees &amp; BaZi</div>
+          <div class="tab" data-tab="vedic">Vedisch</div>
+          <div class="tab" data-tab="bazi">BaZi</div>
         </div>
 
         <div id="panel-story-energy" class="tab-panel tab-panel--merged active"></div>
         <div id="panel-western" class="tab-panel"></div>
-        <div id="panel-sidereal-vedic" class="tab-panel tab-panel--merged"></div>
-        <div id="panel-chinese-bazi" class="tab-panel tab-panel--merged"></div>
+        <div id="panel-vedic" class="tab-panel tab-panel--merged"></div>
+        <div id="panel-bazi" class="tab-panel tab-panel--merged"></div>
 
         <div class="actions">
           <button type="button" id="download-pdf" class="btn btn-secondary">
@@ -612,6 +918,78 @@
 
       function uiIsNL() {
         return (currentLocale() || "").toLowerCase().startsWith("nl");
+      }
+
+      const PLANET_LABELS = {
+        Sun: { nl: "Zon", en: "Sun" },
+        Moon: { nl: "Maan", en: "Moon" },
+        Mercury: { nl: "Mercurius", en: "Mercury" },
+        Venus: { nl: "Venus", en: "Venus" },
+        Mars: { nl: "Mars", en: "Mars" },
+        Jupiter: { nl: "Jupiter", en: "Jupiter" },
+        Saturn: { nl: "Saturnus", en: "Saturn" },
+        Asc: { nl: "Ascendant", en: "Ascendant" },
+      };
+
+      const SIGN_LABELS = {
+        Aries: { nl: "Ram", en: "Aries" },
+        Taurus: { nl: "Stier", en: "Taurus" },
+        Gemini: { nl: "Tweelingen", en: "Gemini" },
+        Cancer: { nl: "Kreeft", en: "Cancer" },
+        Leo: { nl: "Leeuw", en: "Leo" },
+        Virgo: { nl: "Maagd", en: "Virgo" },
+        Libra: { nl: "Weegschaal", en: "Libra" },
+        Scorpio: { nl: "Schorpioen", en: "Scorpio" },
+        Sagittarius: { nl: "Boogschutter", en: "Sagittarius" },
+        Capricorn: { nl: "Steenbok", en: "Capricorn" },
+        Aquarius: { nl: "Waterman", en: "Aquarius" },
+        Pisces: { nl: "Vissen", en: "Pisces" },
+      };
+
+      const ASPECT_TYPE_LABELS = {
+        conjunction: { nl: "conjunctie", en: "conjunction" },
+        sextile: { nl: "sextiel", en: "sextile" },
+        square: { nl: "vierkant", en: "square" },
+        trine: { nl: "driehoek", en: "trine" },
+        opposition: { nl: "oppositie", en: "opposition" },
+      };
+
+      const VAARA_LABELS = {
+        Sunday: { nl: "Zondag", en: "Sunday" },
+        Monday: { nl: "Maandag", en: "Monday" },
+        Tuesday: { nl: "Dinsdag", en: "Tuesday" },
+        Wednesday: { nl: "Woensdag", en: "Wednesday" },
+        Thursday: { nl: "Donderdag", en: "Thursday" },
+        Friday: { nl: "Vrijdag", en: "Friday" },
+        Saturday: { nl: "Zaterdag", en: "Saturday" },
+      };
+
+      function localizePlanet(value) {
+        const v = String(value || "");
+        const m = PLANET_LABELS[v];
+        if (!m) return v || "-";
+        return uiIsNL() ? m.nl : m.en;
+      }
+
+      function localizeSign(value) {
+        const v = String(value || "");
+        const m = SIGN_LABELS[v];
+        if (!m) return v || "-";
+        return uiIsNL() ? `${m.nl} (${m.en})` : m.en;
+      }
+
+      function localizeAspectType(value) {
+        const v = String(value || "");
+        const m = ASPECT_TYPE_LABELS[v];
+        if (!m) return v || "-";
+        return uiIsNL() ? `${m.nl} (${m.en})` : m.en;
+      }
+
+      function localizeVaara(value) {
+        const v = String(value || "");
+        const m = VAARA_LABELS[v];
+        if (!m) return v || "-";
+        return uiIsNL() ? `${m.nl} (${m.en})` : m.en;
       }
 
       const THEME_BY_DOMAIN_KEY = {
@@ -790,48 +1168,539 @@
 
         const panelStoryEnergy = document.getElementById("panel-story-energy");
         panelStoryEnergy.innerHTML = "";
-        panelStoryEnergy.appendChild(renderStory(data));
-        panelStoryEnergy.appendChild(renderEnergyProfile(lastEnergy, lastCombinedEnergy));
+        panelStoryEnergy.appendChild(renderResultDashboard("energy", data));
 
         const panelWestern = document.getElementById("panel-western");
         panelWestern.innerHTML = "";
+        panelWestern.appendChild(renderResultDashboard("western", data));
+
+        const panelVedic = document.getElementById("panel-vedic");
+        panelVedic.innerHTML = "";
+        panelVedic.appendChild(renderResultDashboard("vedic", data));
+
+        const panelBazi = document.getElementById("panel-bazi");
+        panelBazi.innerHTML = "";
+        panelBazi.appendChild(renderResultDashboard("bazi", data));
+      }
+
+      function createSharedMethodHero(config) {
+        const hero = document.createElement("article");
+        hero.className = "method-hero method-hero--split";
+        const left = document.createElement("div");
+        left.className = "method-hero__left";
+        left.innerHTML =
+          `<div class="method-hero__kicker">${config.kicker}</div>` +
+          `<h3 class="method-hero__title">${config.titleHtml}</h3>` +
+          `<p class="method-hero__intro">${config.intro}</p>`;
+        const grid = document.createElement("div");
+        grid.className = "method-grid-3";
+        (config.metrics || []).forEach((m) => {
+          grid.appendChild(createMetricCard(m.label, m.value));
+        });
+        left.appendChild(grid);
+
+        const right = document.createElement("div");
+        right.className = "method-hero__right";
+        right.innerHTML =
+          '<div class="method-hero__orb">' +
+          '  <div class="method-hero__orb-inner">' +
+          `    <div class="method-hero__orb-label">${config.orbLabel}</div>` +
+          `    <div class="method-hero__orb-main">${config.orbMain}</div>` +
+          `    <div class="method-hero__orb-sub">${config.orbSub}</div>` +
+          "  </div>" +
+          "</div>";
+
+        hero.appendChild(left);
+        hero.appendChild(right);
+        return hero;
+      }
+
+      function createMetricCard(label, value) {
+        const card = document.createElement("div");
+        card.className = "metric-card";
+        const l = document.createElement("div");
+        l.className = "metric-card__label";
+        l.textContent = label;
+        const v = document.createElement("div");
+        v.className = "metric-card__value";
+        v.textContent = value;
+        card.appendChild(l);
+        card.appendChild(v);
+        return card;
+      }
+
+      function createMethodTable(headers, rows) {
+        const table = document.createElement("table");
+        table.className = "method-table";
+        const thead = document.createElement("thead");
+        const hr = document.createElement("tr");
+        headers.forEach((h) => {
+          const th = document.createElement("th");
+          th.textContent = h;
+          hr.appendChild(th);
+        });
+        thead.appendChild(hr);
+        const tbody = document.createElement("tbody");
+        rows.forEach((r) => {
+          const tr = document.createElement("tr");
+          r.forEach((c) => {
+            const td = document.createElement("td");
+            td.textContent = c;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        return table;
+      }
+
+      function createLayoutSection(title, lead) {
+        const section = document.createElement("article");
+        section.className = "layout-section";
+        const h = document.createElement("h3");
+        h.className = "layout-section__title";
+        h.textContent = title;
+        section.appendChild(h);
+        if (lead) {
+          const p = document.createElement("p");
+          p.className = "layout-section__lead";
+          p.textContent = lead;
+          section.appendChild(p);
+        }
+        return section;
+      }
+
+      function createExplainCard(title, text) {
+        const card = document.createElement("div");
+        card.className = "explain-card";
+        card.innerHTML =
+          `<div class="explain-card__title">${title}</div>` +
+          `<p class="explain-card__text">${text}</p>`;
+        return card;
+      }
+
+      function renderWesternTemplateLayout(data) {
         const isNL = uiIsNL();
-        const locale = currentLocale();
-        await appendSectionFigure(
-          panelWestern,
-          data,
-          "western_tropical",
-          "panel-chart panel-chart--wheel",
-          isNL ? "Westerse horoscoop, tropisch wiel" : "Western tropical wheel",
-          locale
+        const wrap = document.createElement("section");
+        wrap.className = "method-layout";
+        const western = data.western || {};
+        const placements = western.placements || {};
+        const sun = placements.Sun || {};
+        const moon = placements.Moon || {};
+        const asc = ((western.houses || {}).angles || {}).asc_deg;
+        wrap.appendChild(
+          createSharedMethodHero({
+            kicker: isNL ? "Westerse astrologie • tropisch" : "Western astrology • tropical",
+            titleHtml: isNL
+              ? 'Jouw chart als spiegel van <span class="purple">identiteit</span>, <span class="gold">gevoel</span> en richting'
+              : 'Your chart as a mirror of <span class="purple">identity</span>, <span class="gold">emotion</span>, and direction',
+            intro: isNL
+              ? "Het tropische model toont je psychologische patroon via planeten, tekens, huizen en aspecten."
+              : "The tropical model shows your psychological pattern through planets, signs, houses, and aspects.",
+            metrics: [
+              { label: isNL ? "Zon" : "Sun", value: sun.sign ? `${localizeSign(sun.sign)}${sun.house ? ` • H${sun.house}` : ""}` : "-" },
+              { label: isNL ? "Maan" : "Moon", value: moon.sign ? `${localizeSign(moon.sign)}${moon.house ? ` • H${moon.house}` : ""}` : "-" },
+              { label: "Ascendant", value: asc != null ? `${Math.round(asc)}°` : "-" },
+            ],
+            orbLabel: isNL ? "Kernsignatuur" : "Core signature",
+            orbMain: localizeSign(sun.sign),
+            orbSub: moon.sign ? `${localizeSign(moon.sign)} • Asc ${asc != null ? Math.round(asc) + "°" : "-"}` : "—",
+          })
         );
-        panelWestern.appendChild(renderWesternStory(data));
 
-        const panelSiderealVedic = document.getElementById("panel-sidereal-vedic");
-        panelSiderealVedic.innerHTML = "";
-        await appendSectionFigure(
-          panelSiderealVedic,
-          data,
-          "vedic_panchanga",
-          "panel-chart panel-chart--banner",
-          isNL ? "Vedische Panchanga" : "Vedic Panchanga",
-          locale
-        );
-        panelSiderealVedic.appendChild(renderVedicStory(data));
-        panelSiderealVedic.appendChild(renderSiderealStory(data));
+        const rows = (placements && Object.keys(placements).length)
+          ? Object.entries(placements).slice(0, 10).map(([key, val]) => {
+              const v = val || {};
+              return [localizePlanet(key), localizeSign(v.sign), v.house != null ? String(v.house) : "-", v.degree_in_sign != null ? `${Number(v.degree_in_sign).toFixed(2)}°` : "-"];
+            })
+          : [];
+        if (rows.length) {
+          wrap.appendChild(
+            createMethodTable(
+              [isNL ? "Planeet" : "Planet", isNL ? "Teken" : "Sign", isNL ? "Huis" : "House", isNL ? "Graad in teken" : "Degree in sign"],
+              rows
+            )
+          );
+        }
 
-        const panelChineseBazi = document.getElementById("panel-chinese-bazi");
-        panelChineseBazi.innerHTML = "";
-        await appendSectionFigure(
-          panelChineseBazi,
-          data,
-          "chinese_bazi",
-          "panel-chart panel-chart--banner",
-          isNL ? "BaZi vier pilaren" : "BaZi four pillars",
-          locale
+        const sectionPlanet = createLayoutSection(
+          isNL ? "Planeetstanden" : "Planet placements",
+          isNL
+            ? "Volledige posities uit de berekening. Zo zie je direct welke planeet in welk teken en huis staat."
+            : "Full computed positions. This directly shows which planet is in which sign and house."
         );
-        panelChineseBazi.appendChild(renderChineseStory(data));
-        panelChineseBazi.appendChild(renderBaziStory(data));
+        if (rows.length) {
+          sectionPlanet.appendChild(
+            createMethodTable(
+              [isNL ? "Planeet" : "Planet", isNL ? "Teken" : "Sign", isNL ? "Huis" : "House", isNL ? "Graad in teken" : "Degree in sign"],
+              rows
+            )
+          );
+        } else {
+          sectionPlanet.appendChild(p(isNL ? "Nog geen planeetstanden beschikbaar voor deze invoer." : "No planet placements available for this input yet."));
+        }
+        wrap.appendChild(sectionPlanet);
+
+        const aspects = Array.isArray(western.aspects) ? western.aspects : [];
+        const sectionAspects = createLayoutSection(
+          isNL ? "Aspecten" : "Aspects",
+          isNL
+            ? "Aspecten laten zien hoe verschillende delen van je chart samenwerken of spanning opbouwen."
+            : "Aspects show how different parts of your chart cooperate or create tension."
+        );
+        if (aspects.length) {
+          const aspectRows = aspects.slice(0, 8).map((a) => [
+            `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`,
+            a.orb_deg != null ? `${Number(a.orb_deg).toFixed(2)}°` : "-",
+            a.applying ? (isNL ? "Applicerend" : "Applying") : (isNL ? "Separerend" : "Separating"),
+          ]);
+          sectionAspects.appendChild(
+            createMethodTable(
+              [isNL ? "Aspect" : "Aspect", "Orb", isNL ? "Fase" : "Phase"],
+              aspectRows
+            )
+          );
+        } else {
+          sectionAspects.appendChild(p(isNL ? "Geen aspectdata gevonden." : "No aspect data found."));
+        }
+        wrap.appendChild(sectionAspects);
+
+        const explain = document.createElement("div");
+        explain.className = "explain-grid";
+        explain.appendChild(
+          createExplainCard(
+            isNL ? "Hoe lees je dit?" : "How to read this",
+            isNL
+              ? "Planeten = functie, teken = stijl, huis = levensgebied. Aspecten tonen de dynamiek ertussen."
+              : "Planet = function, sign = style, house = life area. Aspects show the dynamics between them."
+          )
+        );
+        explain.appendChild(
+          createExplainCard(
+            isNL ? "Wat valt op?" : "What stands out?",
+            sun.sign
+              ? (isNL ? `De Zon in ${localizeSign(sun.sign)} zet de hoofdtoon van identiteit en expressie.` : `The Sun in ${localizeSign(sun.sign)} sets the main tone of identity and expression.`)
+              : (isNL ? "Er is nog geen duidelijke Zon-plaatsing beschikbaar." : "No clear Sun placement is available yet.")
+          )
+        );
+        explain.appendChild(
+          createExplainCard(
+            isNL ? "Praktisch gebruik" : "Practical use",
+            isNL
+              ? "Gebruik dit als reflectiekaart: waar stroomt het vanzelf en waar vraagt het om bewuste bijsturing?"
+              : "Use this as a reflection map: where does flow come naturally and where is conscious adjustment needed?"
+          )
+        );
+        wrap.appendChild(explain);
+        wrap.appendChild(renderWesternStory(data));
+        return wrap;
+      }
+
+      function renderVedicTemplateLayout(data) {
+        const isNL = uiIsNL();
+        const wrap = document.createElement("section");
+        wrap.className = "method-layout";
+        const p = ((data.vedic || {}).panchanga) || {};
+        wrap.appendChild(
+          createSharedMethodHero({
+            kicker: "Jyotish • Panchanga",
+            titleHtml: isNL
+              ? 'Jouw chart als beweging van <span class="purple">tijd</span>, <span class="gold">ritme</span> en context'
+              : 'Your chart as movement of <span class="purple">time</span>, <span class="gold">rhythm</span>, and context',
+            intro: isNL
+              ? "Panchanga geeft de kwaliteit van het moment via Vaara, Tithi, Nakshatra, Yoga en Karana."
+              : "Panchanga describes the moment quality through Vaara, Tithi, Nakshatra, Yoga, and Karana.",
+            metrics: [
+              { label: "Vaara", value: localizeVaara(p.vaara) },
+              { label: "Tithi", value: (p.tithi && p.tithi.index != null) ? String(p.tithi.index) : "-" },
+              { label: "Nakshatra", value: (p.nakshatra && p.nakshatra.index != null) ? String(p.nakshatra.index) : "-" },
+            ],
+            orbLabel: "Panchanga",
+            orbMain: (p.tithi && p.tithi.index != null) ? String(p.tithi.index) : "-",
+            orbSub: `${localizeVaara(p.vaara)} • N ${(p.nakshatra && p.nakshatra.index != null) ? p.nakshatra.index : "-"}`,
+          })
+        );
+
+        const timelineRows = [
+          [isNL ? "Tithi eindigt" : "Tithi ends", (p.tithi && p.tithi.ends_at_local) ? String(p.tithi.ends_at_local) : "-"],
+          [isNL ? "Nakshatra eindigt" : "Nakshatra ends", (p.nakshatra && p.nakshatra.ends_at_local) ? String(p.nakshatra.ends_at_local) : "-"],
+          [isNL ? "Yoga eindigt" : "Yoga ends", (p.yoga && p.yoga.ends_at_local) ? String(p.yoga.ends_at_local) : "-"],
+        ];
+        const sectionTimeline = createLayoutSection(
+          isNL ? "Eindtijden en activatie" : "End times and activation",
+          isNL
+            ? "Deze tijden tonen wanneer een Panchanga-factor wisselt en de tijdskwaliteit verandert."
+            : "These times show when a Panchanga factor changes and the time quality shifts."
+        );
+        sectionTimeline.appendChild(createMethodTable([isNL ? "Onderdeel" : "Component", isNL ? "Lokale tijd" : "Local time"], timelineRows));
+        wrap.appendChild(sectionTimeline);
+
+        const sectionPanchanga = createLayoutSection(
+          "Panchanga",
+          isNL
+            ? "Per factor een korte duiding op basis van de berekende waarden."
+            : "Short explanation per factor based on computed values."
+        );
+        const pGrid = document.createElement("div");
+        pGrid.className = "explain-grid";
+        pGrid.appendChild(
+          createExplainCard(
+            "Vaara",
+            isNL
+              ? `Weekdagkwaliteit: ${localizeVaara(p.vaara)}. Dit kleurt de algemene toon van de dag.`
+              : `Weekday quality: ${localizeVaara(p.vaara)}. This colors the overall tone of the day.`
+          )
+        );
+        pGrid.appendChild(
+          createExplainCard(
+            "Tithi",
+            isNL
+              ? `Maanfase-index: ${(p.tithi && p.tithi.index != null) ? p.tithi.index : "-"}. Geeft emotionele timing en ritme.`
+              : `Lunar phase index: ${(p.tithi && p.tithi.index != null) ? p.tithi.index : "-"}. Indicates emotional timing and rhythm.`
+          )
+        );
+        pGrid.appendChild(
+          createExplainCard(
+            "Nakshatra",
+            isNL
+              ? `Sterrenveld-index: ${(p.nakshatra && p.nakshatra.index != null) ? p.nakshatra.index : "-"}. Geeft de subtiele mentale/emotionele sfeer.`
+              : `Star-field index: ${(p.nakshatra && p.nakshatra.index != null) ? p.nakshatra.index : "-"}. Gives the subtle mental/emotional atmosphere.`
+          )
+        );
+        sectionPanchanga.appendChild(pGrid);
+        wrap.appendChild(sectionPanchanga);
+        wrap.appendChild(renderVedicStory(data));
+        return wrap;
+      }
+
+      function renderBaziTemplateLayout(data) {
+        const isNL = uiIsNL();
+        const wrap = document.createElement("section");
+        wrap.className = "method-layout";
+        const pillars = ((data.chinese || {}).bazi_pillars) || {};
+        const day = pillars.day || {};
+        const year = pillars.year || {};
+        const month = pillars.month || {};
+        wrap.appendChild(
+          createSharedMethodHero({
+            kicker: "BaZi • Four Pillars of Destiny",
+            titleHtml: isNL
+              ? 'Jouw chart als balans van <span class="purple">elementen</span>, <span class="gold">timing</span> en structuur'
+              : 'Your chart as balance of <span class="purple">elements</span>, <span class="gold">timing</span>, and structure',
+            intro: isNL
+              ? "BaZi toont hoe tijd zich uitdrukt via vijf elementen, yin-yang en de vier pilaren."
+              : "BaZi shows how time expresses through five elements, yin-yang, and the four pillars.",
+            metrics: [
+              { label: isNL ? "Dagmeester" : "Day master", value: `${day.stem || "-"}${day.branch || ""}`.trim() || "-" },
+              { label: isNL ? "Jaarpilaar" : "Year pillar", value: `${year.stem || "-"}${year.branch || ""}`.trim() || "-" },
+              { label: isNL ? "Maandpilaar" : "Month pillar", value: `${month.stem || "-"}${month.branch || ""}`.trim() || "-" },
+            ],
+            orbLabel: isNL ? "Day Master" : "Day Master",
+            orbMain: String(day.stem || "-"),
+            orbSub: `${day.branch || "-"} • ${year.stem || "-"}${year.branch || ""}`,
+          })
+        );
+
+        const rows = ["year", "month", "day", "hour"].map((k) => {
+          const pv = pillars[k] || {};
+          const label = isNL
+            ? ({ year: "Jaar", month: "Maand", day: "Dag", hour: "Uur" }[k] || k)
+            : ({ year: "Year", month: "Month", day: "Day", hour: "Hour" }[k] || k);
+          return [label, String(pv.stem || "-"), String(pv.branch || "-")];
+        });
+        const sectionPillars = createLayoutSection(
+          isNL ? "Vier pijlers" : "Four pillars",
+          isNL
+            ? "De pijlers vormen samen je basisstructuur: jaar, maand, dag en uur."
+            : "The pillars form your base structure: year, month, day, and hour."
+        );
+        sectionPillars.appendChild(createMethodTable([isNL ? "Pilaar" : "Pillar", isNL ? "Hemelstam" : "Stem", isNL ? "Aardetak" : "Branch"], rows));
+        wrap.appendChild(sectionPillars);
+
+        const sectionBaziExplain = createLayoutSection(
+          isNL ? "Uitleg op basis van berekening" : "Explanation based on calculation",
+          isNL
+            ? "Kerninterpretatie met de waarden die nu beschikbaar zijn."
+            : "Core interpretation with the values currently available."
+        );
+        const bGrid = document.createElement("div");
+        bGrid.className = "explain-grid";
+        bGrid.appendChild(
+          createExplainCard(
+            isNL ? "Dagmeester" : "Day master",
+            isNL
+              ? `De dagpilaar (${day.stem || "-"}${day.branch || "-"}) is het centrale referentiepunt voor balans in de chart.`
+              : `The day pillar (${day.stem || "-"}${day.branch || "-"}) is the central reference point for chart balance.`
+          )
+        );
+        bGrid.appendChild(
+          createExplainCard(
+            isNL ? "Jaar/maand context" : "Year/month context",
+            isNL
+              ? `Jaar (${year.stem || "-"}${year.branch || "-"}) toont achtergrondinvloed; maand (${month.stem || "-"}${month.branch || "-"}) toont omgeving en rol.`
+              : `Year (${year.stem || "-"}${year.branch || "-"}) shows background influence; month (${month.stem || "-"}${month.branch || "-"}) shows environment and role.`
+          )
+        );
+        bGrid.appendChild(
+          createExplainCard(
+            isNL ? "Toepassing" : "Application",
+            isNL
+              ? "Gebruik deze matrix om te zien welke kwaliteiten je wilt versterken voor meer energetische balans."
+              : "Use this matrix to see which qualities to strengthen for better energetic balance."
+          )
+        );
+        sectionBaziExplain.appendChild(bGrid);
+        wrap.appendChild(sectionBaziExplain);
+        wrap.appendChild(renderChineseStory(data));
+        wrap.appendChild(renderBaziStory(data));
+        return wrap;
+      }
+
+      function signFromLongitude(lonDeg) {
+        const signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+        if (lonDeg == null || Number.isNaN(Number(lonDeg))) return null;
+        const idx = Math.floor((((Number(lonDeg) % 360) + 360) % 360) / 30);
+        return signs[idx] || null;
+      }
+
+      function renderResultDashboard(tabId, data) {
+        const isNL = uiIsNL();
+        const root = document.createElement("section");
+        root.className = "result-dash";
+        const active = { item: null };
+        const detailMap = {};
+        const quickLinks = [];
+        let methodLayout = null;
+
+        if (tabId === "energy") {
+          methodLayout = document.createElement("div");
+          methodLayout.appendChild(renderStory(data));
+          methodLayout.appendChild(renderEnergyProfile(lastEnergy, lastCombinedEnergy));
+          const defaults = isNL
+            ? ["Voeding", "Beweging", "Energie", "Bewustzijn", "Overeenkomsten", "Verschillen"]
+            : ["Nourishment", "Movement", "Energy", "Awareness", "Similarities", "Differences"];
+          defaults.forEach((label) => {
+            quickLinks.push(label);
+            detailMap[label] = {
+              title: label,
+              subtitle: isNL ? "Synthese tussen westers, vedisch en BaZi." : "Synthesis between western, vedic, and BaZi.",
+              text: isNL
+                ? "Gebruik dit als navigatiepunt tussen de verschillende lagen. Je ziet per tab hoe hetzelfde thema anders wordt beschreven."
+                : "Use this as a navigation node across layers. Each tab describes the same theme in a different way.",
+            };
+          });
+        } else if (tabId === "western") {
+          methodLayout = renderWesternTemplateLayout(data);
+          const western = data.western || {};
+          const placements = western.placements || {};
+          const ascDeg = (((western.houses || {}).angles || {}).asc_deg);
+          const ascSign = signFromLongitude(ascDeg);
+          [
+            ["Zon", placements.Sun, isNL ? "Kernidentiteit en richting." : "Core identity and direction."],
+            ["Maan", placements.Moon, isNL ? "Emotionele bedding en gevoelsritme." : "Emotional base and feeling rhythm."],
+            ["Mercurius", placements.Mercury, isNL ? "Denkstijl, ordening en vertaling." : "Thinking style, ordering, and translation."],
+            ["Venus", placements.Venus, isNL ? "Relatiekwaliteit, waarde en esthetiek." : "Relational quality, value, and aesthetics."],
+            ["Mars", placements.Mars, isNL ? "Actie, drive en spanning." : "Action, drive, and tension."],
+          ].forEach(([label, pData, text]) => {
+            quickLinks.push(label);
+            const sign = pData && pData.sign ? localizeSign(pData.sign) : "-";
+            const house = pData && pData.house != null ? `H${pData.house}` : "-";
+            detailMap[label] = { title: label, subtitle: `${sign} • ${house}`, text };
+          });
+          quickLinks.push("Ascendant");
+          detailMap["Ascendant"] = {
+            title: "Ascendant",
+            subtitle: ascSign ? localizeSign(ascSign) : (isNL ? "Onbekend" : "Unknown"),
+            text: isNL ? "Levensingang en eerste contactstijl." : "Life approach and first-contact style.",
+          };
+        } else if (tabId === "vedic") {
+          methodLayout = renderVedicTemplateLayout(data);
+          const p = ((data.vedic || {}).panchanga) || {};
+          const defs = [
+            ["Vaara", localizeVaara(p.vaara), isNL ? "Weekdagkwaliteit in Jyotish." : "Weekday quality in Jyotish."],
+            ["Tithi", p.tithi && p.tithi.index != null ? String(p.tithi.index) : "-", isNL ? "Maanfase en emotioneel ritme." : "Lunar phase and emotional rhythm."],
+            ["Nakshatra", p.nakshatra && p.nakshatra.index != null ? String(p.nakshatra.index) : "-", isNL ? "Subtiele laag van ervaring." : "Subtle experiential layer."],
+            ["Yoga", p.yoga && p.yoga.index != null ? String(p.yoga.index) : "-", isNL ? "Combinatiekwaliteit van zon en maan." : "Combined quality of sun and moon."],
+            ["Karana", p.karana && p.karana.index != null ? String(p.karana.index) : "-", isNL ? "Praktische handelingskwaliteit." : "Practical action quality."],
+          ];
+          defs.forEach(([k, value, text]) => {
+            quickLinks.push(k);
+            detailMap[k] = { title: k, subtitle: String(value || "-"), text };
+          });
+        } else {
+          methodLayout = renderBaziTemplateLayout(data);
+          const b = (((data.chinese || {}).bazi_pillars) || {});
+          const defs = [
+            ["Jaarpilaar", b.year, isNL ? "Afkomst en buitenlaag." : "Ancestry and outer layer."],
+            ["Maandpilaar", b.month, isNL ? "Omgeving, ritme en context." : "Environment, rhythm, and context."],
+            ["Dagpilaar", b.day, isNL ? "Kern en Day Master-as." : "Core and Day Master axis."],
+            ["Uurpilaar", b.hour, isNL ? "Expressie en richting." : "Expression and direction."],
+          ];
+          defs.forEach(([label, pillar, text]) => {
+            quickLinks.push(label);
+            const value = pillar && pillar.stem && pillar.branch ? `${pillar.stem}${pillar.branch}` : "-";
+            detailMap[label] = { title: label, subtitle: value, text };
+          });
+        }
+
+        active.item = quickLinks[0] || null;
+
+        function buildQuickPanel() {
+          const wrap = document.createElement("article");
+          wrap.className = "result-dash__quick";
+          const title = document.createElement("h3");
+          title.textContent = isNL ? "Snelle verbanden" : "Quick links";
+          wrap.appendChild(title);
+          const grid = document.createElement("div");
+          grid.className = "result-dash__quick-grid";
+          quickLinks.forEach((item) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "result-chip" + (active.item === item ? " active" : "");
+            btn.textContent = item;
+            btn.addEventListener("click", () => {
+              active.item = item;
+              renderInteractive();
+            });
+            grid.appendChild(btn);
+          });
+          wrap.appendChild(grid);
+          return wrap;
+        }
+
+        function buildDetailPanel() {
+          const d = detailMap[active.item] || {
+            title: active.item || (isNL ? "Detail" : "Detail"),
+            subtitle: "-",
+            text: isNL ? "Nog geen detail beschikbaar." : "No detail available yet.",
+          };
+          const wrap = document.createElement("article");
+          wrap.className = "result-detail";
+          const h = document.createElement("h3");
+          h.textContent = d.title;
+          const s = document.createElement("p");
+          s.textContent = d.subtitle || "-";
+          const t = document.createElement("p");
+          t.textContent = d.text || "-";
+          wrap.appendChild(h);
+          wrap.appendChild(s);
+          wrap.appendChild(t);
+          return wrap;
+        }
+
+        function renderInteractive() {
+          root.innerHTML = "";
+          root.appendChild(methodLayout);
+          const split = document.createElement("div");
+          split.className = "result-dash__split";
+          split.appendChild(buildQuickPanel());
+          split.appendChild(buildDetailPanel());
+          root.appendChild(split);
+        }
+
+        renderInteractive();
+        return root;
       }
 
       function p(text) {
@@ -916,8 +1785,8 @@
           {
             title: isNL ? "Waar je wat vindt" : "What you find in each tab",
             text: isNL
-              ? 'De tab Westers beschrijft psychologische toon en levensgebieden; Sidereaals & Vedisch de kwaliteit van de dag (de "weerkaart" van tijd); Chinees & BaZi je energetische patroon en timing. Verhaal & energie geeft het overzicht en het energieprofiel.'
-              : 'The Western tab describes psychological tone and life areas; Sidereal & Vedic the quality of the day (the "weather" of time); Chinese & BaZi your energetic pattern and timing. Story & energy gives the overview and the energy profile.',
+              ? 'De tab Westers beschrijft psychologische toon en levensgebieden; Vedisch de kwaliteit van de dag (de "weerkaart" van tijd); BaZi je energetische patroon en timing. Verhaal & energie geeft het overzicht en het energieprofiel.'
+              : 'The Western tab describes psychological tone and life areas; Vedic the quality of the day (the "weather" of time); BaZi your energetic pattern and timing. Story & energy gives the overview and the energy profile.',
             themeId: "energie",
           },
         ]);
@@ -1109,15 +1978,15 @@
         }
         const sunLine = sun.sign
           ? isNL
-            ? `Jouw Zon staat in ${sun.sign}${sun.house ? `, in huis ${sun.house}` : ""}. De Zon beschrijft je kernenergie, identiteit en de thema’s waar je naar toe groeit.`
-            : `Your Sun stands in ${sun.sign}${sun.house ? `, in house ${sun.house}` : ""}. The Sun describes your core vitality, identity, and the life themes you grow into.`
+            ? `Jouw Zon staat in ${localizeSign(sun.sign)}${sun.house ? `, in huis ${sun.house}` : ""}. De Zon beschrijft je kernenergie, identiteit en de thema’s waar je naar toe groeit.`
+            : `Your Sun stands in ${localizeSign(sun.sign)}${sun.house ? `, in house ${sun.house}` : ""}. The Sun describes your core vitality, identity, and the life themes you grow into.`
           : isNL
             ? "Plaatsing van de Zon was niet beschikbaar."
             : "Your Sun placement wasn’t available.";
         const moonLine = moon.sign
           ? isNL
-            ? `Jouw Maan staat in ${moon.sign}${moon.house ? `, in huis ${moon.house}` : ""}. De Maan beschrijft je emotionele behoeften, gewoontes en hoe je instinctief reageert.`
-            : `Your Moon rests in ${moon.sign}${moon.house ? `, in house ${moon.house}` : ""}. The Moon describes your emotional needs, habits, and how you instinctively react.`
+            ? `Jouw Maan staat in ${localizeSign(moon.sign)}${moon.house ? `, in huis ${moon.house}` : ""}. De Maan beschrijft je emotionele behoeften, gewoontes en hoe je instinctief reageert.`
+            : `Your Moon rests in ${localizeSign(moon.sign)}${moon.house ? `, in house ${moon.house}` : ""}. The Moon describes your emotional needs, habits, and how you instinctively react.`
           : isNL
             ? "Plaatsing van de Maan was niet beschikbaar."
             : "Your Moon placement wasn’t available.";
@@ -1141,8 +2010,8 @@
             overviewCards.push({
               title: isNL ? "Sterk signaal (aspect)" : "Strong signal (aspect)",
               text: isNL
-                ? `Een opvallende rode draad: ${a.a} vormt een ${a.type} met ${a.b}. Dit beschrijft hoe deze twee functies in je leven samenwerken of elkaar uitdagen.`
-                : `A notable thread: ${a.a} forms a ${a.type} with ${a.b}, describing how these two functions in your life cooperate or challenge each other.`,
+                ? `Een opvallende rode draad: ${localizePlanet(a.a)} vormt een ${localizeAspectType(a.type)} met ${localizePlanet(a.b)}. Dit beschrijft hoe deze twee functies in je leven samenwerken of elkaar uitdagen.`
+                : `A notable thread: ${localizePlanet(a.a)} forms a ${localizeAspectType(a.type)} with ${localizePlanet(a.b)}, describing how these two functions in your life cooperate or challenge each other.`,
               themeId: "voeding",
             });
           }
@@ -1168,7 +2037,7 @@
             if (x && x.text) {
               appendArticleCard(
                 articles,
-                x.planet || (isNL ? "Planeet" : "Planet"),
+                localizePlanet(x.planet) || (isNL ? "Planeet" : "Planet"),
                 x.text,
                 "bewustzijn"
               );
@@ -1185,7 +2054,7 @@
             if (x && x.text) {
               const label =
                 x.a && x.b && x.type
-                  ? `${x.a} ${x.type} ${x.b}`
+                  ? `${localizePlanet(x.a)} ${localizeAspectType(x.type)} ${localizePlanet(x.b)}`
                   : isNL
                     ? "Aspect"
                     : "Aspect";
@@ -1257,7 +2126,7 @@
             if (x && x.text) {
               appendArticleCard(
                 articles,
-                x.planet || (isNL ? "Planeet" : "Planet"),
+                localizePlanet(x.planet) || (isNL ? "Planeet" : "Planet"),
                 x.text,
                 "bewustzijn"
               );
@@ -1275,7 +2144,7 @@
             if (x && x.text) {
               const label =
                 x.a && x.b && x.type
-                  ? `${x.a} ${x.type} ${x.b}`
+                  ? `${localizePlanet(x.a)} ${localizeAspectType(x.type)} ${localizePlanet(x.b)}`
                   : isNL
                     ? "Aspect"
                     : "Aspect";
@@ -1320,7 +2189,7 @@
         const nak = (panchanga.nakshatra || {}).index;
         const yoga = (panchanga.yoga || {}).index;
         const parts = [];
-        if (vaara) parts.push(`Vaara: ${vaara}`);
+        if (vaara) parts.push(`Vaara: ${localizeVaara(vaara)}`);
         if (tithi != null) parts.push(`Tithi: ${tithi}`);
         if (nak != null) parts.push(`Nakshatra: ${nak}`);
         if (yoga != null) parts.push(`Yoga: ${yoga}`);

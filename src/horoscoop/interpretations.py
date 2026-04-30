@@ -44,6 +44,27 @@ SIGN_CODES: list[str] = [
 ]
 
 
+ASPECT_TO_FORMULA: dict[str, str] = {
+    "conjunction": "CON",
+    "sextile": "SEX",
+    "square": "SQU",
+    "trine": "TRI",
+    "opposition": "OPP",
+}
+
+FORMULA_TO_ASPECT: dict[str, str] = {v: k for k, v in ASPECT_TO_FORMULA.items()}
+
+SUPPORTED_PLANETS: set[str] = {
+    "Sun",
+    "Moon",
+    "Mercury",
+    "Venus",
+    "Mars",
+    "Jupiter",
+    "Saturn",
+}
+
+
 def _sign_from_lon_deg(lon_deg: float) -> str:
     idx = int(lon_deg / 30.0) % 12
     return SIGN_CODES[idx]
@@ -96,6 +117,303 @@ def _extended_aspect_paragraph(
         f"Aspect: {a} {aspect_type} {b}{orb_part}. {base} "
         "When you actively work with it, tension becomes usable and support becomes easier to receive."
     )
+
+
+def _formula_error_result(formula: str, summary: str, details: str) -> dict[str, Any]:
+    return {
+        "formula": formula,
+        "title": "Formule niet beschikbaar",
+        "summary": summary,
+        "explanation": details,
+        "keywords": ["fout", "formule"],
+        "confidence": "geen",
+        "sourceData": {"error": summary},
+    }
+
+
+def _point_source_data(planet: str, placement: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "planet": planet,
+        "sign": placement.get("sign"),
+        "house": placement.get("house"),
+        "degreeInSign": placement.get("degree_in_sign"),
+        "retrograde": placement.get("retrograde"),
+    }
+
+
+def _parse_formula(formula: str) -> list[str]:
+    if not isinstance(formula, str) or not formula.strip():
+        raise ValueError("Lege formule.")
+    parts = [p.strip().upper() for p in formula.split("|")]
+    if not parts or any(not p for p in parts):
+        raise ValueError("Ongeldige formule.")
+    return parts
+
+
+def _normalize_planet_token(token: str) -> Optional[str]:
+    upper = token.upper()
+    for planet in SUPPORTED_PLANETS:
+        if planet.upper() == upper:
+            return planet
+    return None
+
+
+def _find_aspect_entry(
+    aspects: list[dict[str, Any]], left_planet: str, aspect_code: str, right_planet: str
+) -> Optional[dict[str, Any]]:
+    aspect_name = FORMULA_TO_ASPECT.get(aspect_code)
+    if not aspect_name:
+        return None
+
+    matches: list[dict[str, Any]] = []
+    for item in aspects:
+        if not isinstance(item, dict):
+            continue
+        a = item.get("a")
+        b = item.get("b")
+        t = item.get("type")
+        if t != aspect_name:
+            continue
+        if (a == left_planet and b == right_planet) or (a == right_planet and b == left_planet):
+            matches.append(item)
+    if not matches:
+        return None
+    return min(matches, key=lambda x: float(x.get("orb_deg", x.get("orb_degrees", 999.0))))
+
+
+def interpret_western_formula(formula: str, western_block: dict[str, Any], *, locale: str = "nl-NL") -> dict[str, Any]:
+    _ = locale  # Formula output is intentionally Dutch per product requirement.
+    placements = western_block.get("placements") if isinstance(western_block, dict) else {}
+    aspects = western_block.get("aspects") if isinstance(western_block, dict) else []
+    placements = placements if isinstance(placements, dict) else {}
+    aspects = aspects if isinstance(aspects, list) else []
+
+    if not placements:
+        return _formula_error_result(
+            formula,
+            "Nog geen horoscoopdata beschikbaar.",
+            "Er zijn nog geen Westerse plaatsingen beschikbaar om deze formule te interpreteren.",
+        )
+
+    try:
+        parts = _parse_formula(formula)
+    except ValueError as exc:
+        return _formula_error_result(formula, str(exc), "Controleer het formaat, bijvoorbeeld: SUN | SIGN.")
+
+    left_planet = _normalize_planet_token(parts[0])
+    if left_planet is None:
+        return _formula_error_result(
+            formula,
+            f"Ongeldig hemellichaam: {parts[0]}",
+            "Gebruik een bekend hemellichaam zoals SUN, MOON, MERCURY, VENUS, MARS, JUPITER of SATURN.",
+        )
+    left_placement = placements.get(left_planet)
+    if not isinstance(left_placement, dict):
+        return _formula_error_result(
+            formula,
+            "Nog geen horoscoopdata beschikbaar.",
+            f"Voor {left_planet} is nog geen plaatsing beschikbaar in de chartdata.",
+        )
+
+    if len(parts) == 2:
+        relation = parts[1]
+        if relation == "SIGN":
+            sign = left_placement.get("sign")
+            house = left_placement.get("house")
+            return {
+                "formula": formula,
+                "title": f"{left_planet} in teken",
+                "summary": f"{left_planet} staat in {sign}.",
+                "explanation": (
+                    f"{left_planet} staat in {sign}. Dit laat zien via welke tekenkwaliteit deze planeet "
+                    "zich in jouw chart uitdrukt."
+                ),
+                "keywords": [left_planet, str(sign), "teken"],
+                "confidence": "hoog",
+                "sourceData": _point_source_data(left_planet, left_placement) | {"house": house},
+            }
+        if relation == "HOUSE":
+            house = left_placement.get("house")
+            return {
+                "formula": formula,
+                "title": f"{left_planet} in huis",
+                "summary": f"{left_planet} werkt primair via huis {house}.",
+                "explanation": (
+                    f"{left_planet} staat in huis {house}. Dat maakt dit levensgebied de hoofdplek waar "
+                    "de energie van deze planeet zichtbaar wordt."
+                ),
+                "keywords": [left_planet, f"huis {house}", "plaatsing"],
+                "confidence": "hoog",
+                "sourceData": _point_source_data(left_planet, left_placement),
+            }
+        if relation == "FULL":
+            sign = left_placement.get("sign")
+            house = left_placement.get("house")
+            degree = left_placement.get("degree_in_sign")
+            degree_txt = f"{float(degree):.2f}°" if isinstance(degree, (int, float)) else "onbekende graad"
+            return {
+                "formula": formula,
+                "title": f"{left_planet} volledige plaatsing",
+                "summary": f"{left_planet} staat in {sign}, huis {house}.",
+                "explanation": (
+                    f"{left_planet} staat op {degree_txt} in {sign}, in huis {house}. "
+                    "Deze combinatie verbindt planeetfunctie, tekenstijl en levensgebied in één inzicht."
+                ),
+                "keywords": [left_planet, str(sign), f"huis {house}", "full"],
+                "confidence": "hoog",
+                "sourceData": _point_source_data(left_planet, left_placement),
+            }
+        if relation.isdigit():
+            house_number = int(relation)
+            if house_number < 1 or house_number > 12:
+                return _formula_error_result(
+                    formula,
+                    f"Ongeldig huisnummer: {house_number}",
+                    "Gebruik een huisnummer tussen 1 en 12.",
+                )
+            actual_house = left_placement.get("house")
+            return {
+                "formula": formula,
+                "title": f"{left_planet} t.o.v. huis {house_number}",
+                "summary": f"{left_planet} gelezen op huisrelatie {house_number}.",
+                "explanation": (
+                    f"Deze formule bekijkt {left_planet} relationeel op huis {house_number}. "
+                    f"De feitelijke plaatsing in de chart is huis {actual_house}."
+                ),
+                "keywords": [left_planet, f"huis {house_number}", "relationeel"],
+                "confidence": "relationeel",
+                "sourceData": _point_source_data(left_planet, left_placement)
+                | {"targetHouse": house_number, "actualHouse": actual_house},
+            }
+        return _formula_error_result(
+            formula,
+            "Deze formule wordt nog niet ondersteund.",
+            "Ondersteunde tweedelige formules: PLANET | SIGN, HOUSE, FULL of huisnummer 1-12.",
+        )
+
+    if len(parts) == 3:
+        relation = parts[1]
+        right = parts[2]
+
+        if relation in FORMULA_TO_ASPECT:
+            right_planet = _normalize_planet_token(right)
+            if right_planet is None:
+                return _formula_error_result(
+                    formula,
+                    f"Ongeldig hemellichaam: {right}",
+                    "Gebruik een bekend tweede hemellichaam voor aspectformules.",
+                )
+            entry = _find_aspect_entry(aspects, left_planet, relation, right_planet)
+            if entry is None:
+                return _formula_error_result(
+                    formula,
+                    "Deze relatie is niet actief binnen de ingestelde orb.",
+                    "Er is geen actief aspect gevonden voor deze combinatie binnen de huidige orb-instellingen.",
+                )
+            orb = entry.get("orb_deg", entry.get("orb_degrees"))
+            return {
+                "formula": formula,
+                "title": f"{left_planet} {relation} {right_planet}",
+                "summary": f"{left_planet} staat in {relation} met {right_planet}.",
+                "explanation": (
+                    f"{left_planet} en {right_planet} vormen een actief aspect ({relation}) met orb {float(orb):.2f}°. "
+                    "Deze relatie is direct herleidbaar naar de berekende aspecten in de chart."
+                ),
+                "keywords": [left_planet, right_planet, relation, "aspect"],
+                "confidence": "hoog",
+                "sourceData": {
+                    "left": _point_source_data(left_planet, left_placement),
+                    "right": _point_source_data(right_planet, placements.get(right_planet, {})),
+                    "aspect": {
+                        "type": entry.get("type"),
+                        "orb": orb,
+                        "applying": entry.get("applying"),
+                        "exactAngle": entry.get("exact_angle_deg"),
+                    },
+                },
+            }
+
+        if relation == "SIGN" and right == "HOUSE":
+            sign = left_placement.get("sign")
+            house = left_placement.get("house")
+            return {
+                "formula": formula,
+                "title": f"{left_planet} teken-huis combinatie",
+                "summary": f"{left_planet} combineert teken {sign} met huis {house}.",
+                "explanation": (
+                    f"{left_planet} staat in {sign} en huis {house}. Volgens data × relatie × data "
+                    "ontstaat inzicht door de combinatie van planeetfunctie, tekenstijl en levensgebied."
+                ),
+                "keywords": [left_planet, str(sign), f"huis {house}", "combinatie"],
+                "confidence": "hoog",
+                "sourceData": _point_source_data(left_planet, left_placement),
+            }
+
+        return _formula_error_result(
+            formula,
+            "Deze formule wordt nog niet ondersteund.",
+            "Ondersteunde driedelige formules: PLANET | ASPECT | PLANET en PLANET | SIGN | HOUSE.",
+        )
+
+    return _formula_error_result(
+        formula,
+        "Deze formule wordt nog niet ondersteund.",
+        "Gebruik een formule met twee of drie delen gescheiden door '|'.",
+    )
+
+
+def build_western_formula_interpretations(
+    western_block: dict[str, Any], *, locale: str = "nl-NL"
+) -> dict[str, Any]:
+    placements = western_block.get("placements") if isinstance(western_block, dict) else {}
+    aspects = western_block.get("aspects") if isinstance(western_block, dict) else []
+    placements = placements if isinstance(placements, dict) else {}
+    aspects = aspects if isinstance(aspects, list) else []
+
+    if not placements:
+        return {
+            "sections": {
+                "placements": [
+                    _formula_error_result(
+                        "AUTO | PLACEMENTS",
+                        "Nog geen horoscoopdata beschikbaar.",
+                        "Er zijn nog geen Westerse plaatsingen beschikbaar voor interpretatie.",
+                    )
+                ],
+                "aspects": [],
+                "deepInsights": [],
+            }
+        }
+
+    placement_formulas = [f"{planet.upper()} | FULL" for planet in placements.keys()]
+    aspect_formulas: list[str] = []
+    for item in aspects[:12]:
+        if not isinstance(item, dict):
+            continue
+        code = ASPECT_TO_FORMULA.get(str(item.get("type")))
+        a = item.get("a")
+        b = item.get("b")
+        if code and a and b:
+            aspect_formulas.append(f"{str(a).upper()} | {code} | {str(b).upper()}")
+
+    deep_formulas: list[str] = []
+    if "Sun" in placements:
+        deep_formulas.append("SUN | SIGN")
+    if "Moon" in placements:
+        deep_formulas.append("MOON | HOUSE")
+    if placement_formulas:
+        first_planet = next(iter(placements.keys()))
+        deep_formulas.append(f"{first_planet.upper()} | SIGN | HOUSE")
+    if aspect_formulas:
+        deep_formulas.append(aspect_formulas[0])
+
+    return {
+        "sections": {
+            "placements": [interpret_western_formula(f, western_block, locale=locale) for f in placement_formulas],
+            "aspects": [interpret_western_formula(f, western_block, locale=locale) for f in aspect_formulas],
+            "deepInsights": [interpret_western_formula(f, western_block, locale=locale) for f in deep_formulas],
+        }
+    }
 
 
 def build_interpretations(engine_json: dict[str, Any], *, locale: str = "nl-NL") -> dict[str, Any]:
@@ -198,6 +516,9 @@ def build_interpretations(engine_json: dict[str, Any], *, locale: str = "nl-NL")
         "Westers overzicht (tropisch): planeten + tekens + huizen + kernaspecten laten zien waar jouw energie naartoe stroomt."
         if lang == "nl"
         else "Western overview (tropical): planets + signs + houses + core aspects show where your energy flows."
+    )
+    western_tropical["formula_interpretations"] = build_western_formula_interpretations(
+        western_blocks, locale=locale
     )
 
     # Sidereal: for now, provide sign meanings based on sidereal conversion of planet longitudes.

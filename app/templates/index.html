@@ -807,6 +807,15 @@
         display: grid;
         gap: 24px;
       }
+      .astro-method-visual {
+        border: 1px solid #eadff8;
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(136, 77, 201, 0.08);
+        padding: 14px;
+      }
+      .astro-shell .result-dash {
+        margin-top: 0;
+      }
       .astro-hero {
         border: 1px solid #d9c8ef;
         background: #fff;
@@ -2216,13 +2225,7 @@
           planets.push({ key: symbols[name] || name.slice(0, 2), angle: idx * 30 + Number(p.degree_in_sign) });
         });
         if (angles.asc_deg != null) planets.push({ key: "Asc", angle: Number(angles.asc_deg) });
-        if (!planets.length) {
-          planets.push(
-            { key: "☉", angle: 261.7 }, { key: "☾", angle: 316.2 }, { key: "☿", angle: 268.5 }, { key: "♀", angle: 234.7 },
-            { key: "♂", angle: 11.4 }, { key: "♃", angle: 58.4 }, { key: "♄", angle: 273.4 }, { key: "♅", angle: 270.6 },
-            { key: "♆", angle: 279.2 }, { key: "♇", angle: 224.0 }, { key: "Asc", angle: 6.4 }
-          );
-        }
+        const hasPlanetData = planets.length > 0;
         const signDeg = (sign, degreeInSign) => {
           const idx = signOrderEn.indexOf(String(sign || ""));
           if (idx < 0) return null;
@@ -2273,6 +2276,12 @@
           svg += `<circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${fill}" opacity="0.95"/>`;
           svg += `<text x="${p.x}" y="${p.y + 1}" text-anchor="middle" dominant-baseline="middle" font-size="${fs}" fill="#ffffff">${planet.key}</text>`;
         });
+        if (!hasPlanetData) {
+          const msg = uiIsNL()
+            ? "Nog geen horoscoopdata beschikbaar."
+            : "No horoscope data available yet.";
+          svg += `<text x="200" y="222" text-anchor="middle" font-size="11" fill="#8b78aa">${msg}</text>`;
+        }
         svg += '<text x="200" y="196" text-anchor="middle" font-size="10" fill="#8b78aa">Tropische radix</text>';
         svg += "</svg>";
         return svg;
@@ -2606,233 +2615,101 @@
       }
 
       function renderWesternTabV2(data) {
+        const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
-        const sec = createEl("section", "");
-        sec.appendChild(createEl("div", "astro-eyebrow", "Methode 1"));
-        sec.appendChild(createEl("h3", "astro-section-title", "Westerse horoscoop"));
-        sec.appendChild(createEl("p", "astro-section-sub", "De westerse methode werkt tropisch en leest vooral via psychologische betekenis: planeten, tekens, huizen, aspecten en de verhouding tussen persoonlijke wil, gevoel, relaties en richting."));
-        const axes = createEl("div", "astro-grid-2");
-        const ascDeg = ((((data.western || {}).houses || {}).angles || {}).asc_deg);
-        const mcDeg = ((((data.western || {}).houses || {}).angles || {}).mc_deg);
-        axes.appendChild(createAstroCard("Hoofdassen en kernbeeld", "Gebaseerd op inputdata", ""));
-        const statWrap = createEl("div", "astro-grid-2");
-        [["Ascendant", ascDeg != null ? `${Math.round(ascDeg)}°` : "-"], ["Medium Coeli", mcDeg != null ? `${Math.round(mcDeg)}°` : "-"], ["Elementenbeeld", "Vuur + Aarde sterk"], ["Hoofdspanning", "Vrijheid versus structuur"]].forEach((s) => {
-          const m = createEl("div", "astro-mini");
-          m.appendChild(createEl("div", "astro-mini__k", s[0]));
-          m.appendChild(createEl("div", "astro-mini__v", s[1]));
-          statWrap.appendChild(m);
-        });
-        axes.firstChild.appendChild(statWrap);
-        axes.firstChild.appendChild(createEl("p", "", "De combinatie van Ram, Boogschutter en Steenbok geeft veel initiatie, visie en bouwkracht. De uitdaging is om snelheid, waarheid en verantwoordelijkheid in één vorm te laten samenwerken."));
-        const wheel = createAstroCard("Radix wiel", "Radix als tropisch wiel.", "");
+        const intro = createEl("section", "astro-method-visual");
+        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 1" : "Method 1"));
+        intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Westerse horoscoop" : "Western horoscope"));
+        intro.appendChild(
+          createEl(
+            "p",
+            "astro-section-sub",
+            isNL
+              ? "Tropische radix op basis van jouw geboortegegevens: planeten, tekens, huizen en aspecten."
+              : "Tropical natal chart based on your birth data: planets, signs, houses, and aspects."
+          )
+        );
+        const hero = createAstroCard(
+          isNL ? "Radix wiel" : "Natal wheel",
+          isNL ? "Tropische berekening op basis van jouw invoer" : "Tropical calculation based on your input",
+          ""
+        );
         const wheelSvg = createEl("div", "astro-wheel-wrap");
         wheelSvg.innerHTML = getWesternWheelSvg(data);
-        wheel.appendChild(wheelSvg);
-        const legend = createEl("div", "astro-mini");
-        legend.style.marginTop = "10px";
-        legend.innerHTML =
-          '<div class="astro-mini__k">Legenda</div>' +
-          '<p><strong>Planeten:</strong> ☉ Zon, ☾ Maan, ☿ Mercurius, ♀ Venus, ♂ Mars, ♃ Jupiter, ♄ Saturnus, ♅ Uranus, ♆ Neptunus, ♇ Pluto, ☊ Noordelijke Maansknoop, Asc Ascendant.</p>' +
-          '<p><strong>Tekens:</strong> ♈ Ram, ♉ Stier, ♊ Tweelingen, ♋ Kreeft, ♌ Leeuw, ♍ Maagd, ♎ Weegschaal, ♏ Schorpioen, ♐ Boogschutter, ♑ Steenbok, ♒ Waterman, ♓ Vissen.</p>' +
-          '<p><strong>Lijnen:</strong> paars = conjunctie, groen = driehoek, rood = vierkant, goud = oppositie, blauw = sextiel.</p>' +
-          '<p><strong>Huizen:</strong> nummers 1 t/m 12 staan op de binnenring.</p>';
-        wheel.appendChild(legend);
-        axes.appendChild(wheel);
-        sec.appendChild(axes);
-        const planets = createEl("div", "astro-grid-3");
-        const westernPlanets = [
-          { body: "Zon", symbol: "☉", position: "21°43′ Boogschutter", house: "9e huis", meaning: "Identiteit zoekt betekenis, horizon, waarheid en visie. Het 9e huis versterkt studie, wereldbeeld, levensfilosofie en het verlangen om patronen groter te begrijpen." },
-          { body: "Maan", symbol: "☾", position: "16°15′ Waterman", house: "12e huis", meaning: "Gevoel wordt mentaal, ruimtelijk en soms afstandelijk verwerkt. In het 12e huis is er gevoeligheid voor sfeer, collectieve lagen, afzondering en het onzichtbare." },
-          { body: "Mercurius", symbol: "☿", position: "28°27′ Boogschutter", house: "9e huis", meaning: "Denken wil verbinden, duiden en overtuigingen onderzoeken. Dit geeft behoefte aan samenhang, maar ook de neiging om details pas later te ordenen." },
-          { body: "Venus", symbol: "♀", position: "24°44′ Schorpioen", house: "8e huis", meaning: "Relatie, waarde en aantrekkingskracht worden intens, loyaal en diepgravend. Thema's als vertrouwen, intimiteit, transformatie en gedeelde energie zijn belangrijk." },
-          { body: "Mars", symbol: "♂", position: "11°27′ Ram", house: "1e huis", meaning: "Mars staat sterk in eigen teken. De levensenergie is direct, fysiek, initiërend en soms ongeduldig. Het lichaam wil vooruit voordat het hoofd alles heeft afgerond." },
-          { body: "Jupiter", symbol: "♃", position: "28°25′ Stier", house: "2e huis", meaning: "Groei komt via stabiliteit, tastbare waarde, stem, bezit, lichaam en zintuiglijke zekerheid. Er zit wijsheid in eenvoud en herhaling." },
-          { body: "Saturnus", symbol: "♄", position: "03°25′ Steenbok", house: "10e huis", meaning: "Saturnus staat sterk in eigen teken en maakt verantwoordelijkheid, structuur, positie en levenswerk belangrijk. Ambitie vraagt tijd, discipline en rijping." },
-          { body: "Uranus", symbol: "♅", position: "00°38′ Steenbok", house: "9e huis", meaning: "Vernieuwing komt via wereldbeeld, studie, systemen en maatschappelijke structuren. Oude overtuigingen worden niet zomaar aangenomen." },
-          { body: "Neptunus", symbol: "♆", position: "09°14′ Steenbok", house: "10e huis", meaning: "Idealen, roeping en maatschappelijke richting lopen door elkaar. Er is behoefte om werk of positie betekenisvoller te maken dan alleen status." },
-          { body: "Pluto", symbol: "♇", position: "14°00′ Schorpioen", house: "7e huis", meaning: "Relaties spiegelen macht, diepte, kwetsbaarheid en transformatie. Ontmoeting met de ander kan oude lagen blootleggen." },
-          { body: "Noordelijke Maansknoop", symbol: "☊", position: "08°46′ Vissen", house: "12e huis", meaning: "Ontwikkeling loopt via overgave, gevoeligheid, compassie, stilte, verbeelding en het leren vertrouwen op niet-lineaire kennis." },
-        ];
-        westernPlanets.forEach((p) => {
-          planets.appendChild(createAstroCard(`${p.symbol} ${p.body}`, `${p.position} • ${p.house}`, p.meaning));
-        });
-        sec.appendChild(planets);
-        const aspectsBlock = createEl("div", "astro-grid-2");
-        aspectsBlock.style.marginTop = "12px";
-        const westernAspects = [
-          { aspect: "Zon conjunct Mercurius", meaning: "Identiteit en denken werken sterk samen. Er is behoefte om jezelf te begrijpen via woorden, visie en betekenis." },
-          { aspect: "Mars in Ram vierkant Steenbok-cluster", meaning: "Directe actie botst soms met structuur, verantwoordelijkheid of timing. Dit kan frustratie geven, maar ook enorme bouwkracht wanneer richting en discipline samenwerken." },
-          { aspect: "Venus in Schorpioen tegenover Jupiter in Stier", meaning: "Diepte en veiligheid zoeken elkaar. Relaties kunnen intens zijn, terwijl het lichaam en waarden juist rust en eenvoud nodig hebben." },
-          { aspect: "Maan in Waterman met 12e-huis nadruk", meaning: "Emotionele verwerking gebeurt vaak innerlijk, observerend of op afstand. Alleen-tijd is niet leeg, maar een manier om prikkels te ordenen." },
-        ];
-        westernAspects.forEach((a) => aspectsBlock.appendChild(createAstroCard(a.aspect, "Aspect", a.meaning)));
-        sec.appendChild(aspectsBlock);
-        root.appendChild(sec);
+        hero.appendChild(wheelSvg);
+        intro.appendChild(hero);
+        root.appendChild(intro);
+        root.appendChild(renderResultDashboard("western", data));
         return root;
       }
 
       function renderVedicTabV2(data) {
+        const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
-        const sec = createEl("section", "");
-        sec.appendChild(createEl("div", "astro-eyebrow", "Methode 2"));
-        sec.appendChild(createEl("h3", "astro-section-title", "Vedische horoscoop / Jyotish"));
-        sec.appendChild(createEl("p", "astro-section-sub", "De Vedische methode werkt hier sidereal met Lahiri-ayanamsha. De nadruk ligt op Lagna, graha's, huizen, nakshatra, panchanga en timing."));
-        const top = createEl("div", "astro-grid-2");
-        const kundali = createAstroCard("Kundali (D1)", "Noord-Indiase weergave", "");
+        const intro = createEl("section", "astro-method-visual");
+        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 2" : "Method 2"));
+        intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Vedische horoscoop / Jyotish" : "Vedic horoscope / Jyotish"));
+        intro.appendChild(
+          createEl(
+            "p",
+            "astro-section-sub",
+            isNL
+              ? "Sidereale duiding met nadruk op Panchanga, timing en context."
+              : "Sidereal reading focused on Panchanga, timing, and context."
+          )
+        );
+        const kundali = createAstroCard(
+          "Kundali (D1)",
+          isNL ? "Noord-Indiase weergave" : "North Indian layout",
+          isNL
+            ? "Visualisatie van de vedische huisstructuur. De inhoud en duiding eronder gebruiken actuele chartdata."
+            : "Visualization of the Vedic house structure. Content and interpretation below use current chart data."
+        );
         kundali.classList.add("kundali-card");
         kundali.appendChild(createKundaliGrid());
-        sec.appendChild(kundali);
-        const houses = createAstroCard("D1 Rasi • Whole sign overzicht", "met hele tekens per huis", "");
-        const houseGrid = createEl("div", "astro-grid-3");
-        const vedicRows = [
-          ["1", "Meena (Vissen)", "Lagna, Mangala — Lichaam, uitstraling, levensingang en directe energie zijn gevoelig, intuïtief en beweeglijk."],
-          ["2", "Mesha (Ram)", "— Stem, waarde en voeding krijgen een vurige ondertoon, maar zonder graha ligt de nadruk op heerser Mars."],
-          ["3", "Vrishabha (Stier)", "Guru — Communicatie, oefening en vaardigheid groeien door herhaling, rust en tastbare kennis."],
-          ["4", "Mithuna (Tweelingen)", "— Innerlijke basis vraagt mentale beweeglijkheid en ruimte voor meerdere invalshoeken."],
-          ["5", "Karka (Kreeft)", "— Creativiteit en intelligentie worden gevoelig en beschermend gekleurd."],
-          ["6", "Simha (Leeuw)", "Ketu — Dienstbaarheid, werk en gezondheid vragen nederigheid en loslaten van overmatige identificatie."],
-          ["7", "Kanya (Maagd)", "— Relaties vragen onderscheidingsvermogen, praktische zorg en heldere afspraken."],
-          ["8", "Tula (Weegschaal)", "— Transformatie loopt via balans, relatie, schoonheid en wederkerigheid."],
-          ["9", "Vrischika (Schorpioen)", "Surya, Shukra — Dharma, zingeving en studie krijgen intensiteit, diepte en transformatiekracht."],
-          ["10", "Dhanu (Boogschutter)", "Budha, Shani — Loopbaan en zichtbaarheid vragen kennis, verantwoordelijkheid, taal en morele richting."],
-          ["11", "Makara (Steenbok)", "Chandra — Groepen, toekomstbeelden en netwerken krijgen een serieuze, structurele gevoelslaag."],
-          ["12", "Kumbha (Waterman)", "Rahu — Afzondering, collectieve velden, technologie en het ongewone trekken sterk aan."],
-        ];
-        vedicRows.forEach((r) => {
-          const m = createEl("div", "astro-mini");
-          m.appendChild(createEl("div", "astro-mini__k", `Huis ${r[0]}`));
-          m.appendChild(createEl("div", "astro-mini__v", r[1]));
-          m.appendChild(createEl("p", "", r[2]));
-          houseGrid.appendChild(m);
-        });
-        houses.appendChild(houseGrid);
-        top.appendChild(houses);
-        const panCard = createAstroCard("Panchanga", "Vijfledige tijdkwaliteit", "");
-        const p = ((data.vedic || {}).panchanga) || {};
-        [
-          ["Vara", p.vaara ? localizeVaara(p.vaara) : "Dinsdag / Mangala", "De dagkwaliteit is actief, daadkrachtig en vuurgericht."],
-          ["Tithi", p.tithi && p.tithi.index != null ? String(p.tithi.index) : "Shukla Panchami", "Vijfde maanfase van de wassende maan."],
-          ["Nakshatra", p.nakshatra && p.nakshatra.index != null ? String(p.nakshatra.index) : "Shravana, pada 4", "Luisteren, opnemen, leren, taal en overdracht."],
-          ["Yoga", p.yoga && p.yoga.index != null ? String(p.yoga.index) : "Vyaghata", "Een intensere yoga die bewust omgaan met spanning vraagt."],
-          ["Karana", p.karana && p.karana.index != null ? String(p.karana.index) : "Rond Panchami", "Voor exacte validatie is dezelfde engineconfig vereist."],
-        ].forEach((r) => {
-          const m = createEl("div", "astro-mini");
-          m.style.marginBottom = "8px";
-          m.appendChild(createEl("div", "astro-mini__k", r[0]));
-          m.appendChild(createEl("div", "astro-mini__v", r[1]));
-          m.appendChild(createEl("p", "", r[2]));
-          panCard.appendChild(m);
-        });
-        top.appendChild(panCard);
-        sec.appendChild(top);
-        const positions = createEl("div", "astro-grid-3");
-        positions.style.marginTop = "12px";
-        const vedicPositions = [
-          ["Lagna", "Meena / Pisces 12°39′ • 1e huis • Ascendant"],
-          ["Surya", "Vrischika / Scorpio 28°01′ • 9e huis • Zon"],
-          ["Chandra", "Makara / Capricorn 22°33′ • 11e huis • Maan"],
-          ["Budha", "Dhanu / Sagittarius 04°45′ • 10e huis • Mercurius"],
-          ["Shukra", "Vrischika / Scorpio 01°01′ • 9e huis • Venus"],
-          ["Mangala", "Meena / Pisces 17°44′ • 1e huis • Mars"],
-          ["Guru", "Vrishabha / Taurus 04°43′ • 3e huis • Jupiter"],
-          ["Shani", "Dhanu / Sagittarius 09°43′ • 10e huis • Saturnus"],
-          ["Rahu", "Kumbha / Aquarius 15°04′ • 12e huis • Noordelijke maansknoop"],
-          ["Ketu", "Simha / Leo 15°04′ • 6e huis • Zuidelijke maansknoop"],
-        ];
-        vedicPositions.forEach((it) => positions.appendChild(createAstroCard(it[0], it[1], "Vedische positie en betekenislaag.")));
-        sec.appendChild(positions);
-        root.appendChild(sec);
+        intro.appendChild(kundali);
+        root.appendChild(intro);
+        root.appendChild(renderResultDashboard("vedic", data));
         return root;
       }
 
       function renderBaziTabV2(data) {
+        const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
-        const sec = createEl("section", "");
-        sec.appendChild(createEl("div", "astro-eyebrow", "Methode 3"));
-        sec.appendChild(createEl("h3", "astro-section-title", "BaZi / Four Pillars"));
-        sec.appendChild(createEl("p", "astro-section-sub", "BaZi leest de geboortetijd als een matrix van jaar, maand, dag en uur. De methode kijkt naar hemelse stammen, aardse takken, verborgen stammen, Day Master, elementbalans en timing."));
-        const matrixWrap = createAstroCard("BaZi kaart", "BaZi • Eight signs • Four Pillars", "");
-        const matrix = createEl("div", "astro-matrix");
-        const rawPillars = (((data.chinese || {}).bazi_pillars) || {});
-        const pillars = [
-          { pillar: "Jaar", theme: "Afkomst, buitenwereld, collectieve laag", stem: "戊", stemName: "Yang Aarde", branch: "辰", branchName: "Draak", hidden: "戊 乙 癸", meaning: "Het jaar geeft Aarde-Draak: dragende kracht, opslag, potentie en de neiging om veel in jezelf te bewaren." },
-          { pillar: "Maand", theme: "Seizoen, omgeving, ritme", stem: "甲", stemName: "Yang Hout", branch: "子", branchName: "Rat", hidden: "癸", meaning: "Geboren in Zi-maand: diepe winter, Water is sterk. Hout verschijnt als richting en groei, maar heeft voeding en warmte nodig." },
-          { pillar: "Dag", theme: "Kern, Day Master, directe ervaring", stem: "壬", stemName: "Yang Water", branch: "寅", branchName: "Tijger", hidden: "甲 丙 戊", meaning: "De Day Master is Yang Water: stromend, onderzoekend, verbindend, groot denkend en niet graag opgesloten in één vorm." },
-          { pillar: "Uur", theme: "Potentieel, expressie, latere richting", stem: "丁", stemName: "Yin Vuur", branch: "未", branchName: "Geit", hidden: "己 丁 乙", meaning: "Het uur brengt Yin Vuur en Geit: verfijning, warmte, creativiteit en de opdracht om gevoel en vorm zacht te verbinden." },
-        ];
-        const keyed = [rawPillars.year, rawPillars.month, rawPillars.day, rawPillars.hour];
-        pillars.forEach((p, i) => {
-          const rp = keyed[i] || {};
-          if (rp.stem) p.stem = String(rp.stem);
-          if (rp.branch) p.branch = String(rp.branch);
-          p.stem = normalizeBaziChar(p.stem, "stem");
-          p.branch = normalizeBaziChar(p.branch, "branch");
+        const intro = createEl("section", "astro-method-visual");
+        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 3" : "Method 3"));
+        intro.appendChild(createEl("h3", "astro-section-title", "BaZi / Four Pillars"));
+        intro.appendChild(
+          createEl(
+            "p",
+            "astro-section-sub",
+            isNL
+              ? "Vier pijlers op basis van de actuele berekening: jaar, maand, dag en uur."
+              : "Four pillars based on the live calculation: year, month, day, and hour."
+          )
+        );
+        const card = createAstroCard(
+          isNL ? "BaZi tabel" : "BaZi table",
+          isNL ? "Vier pijlers uit huidige berekening" : "Four pillars from current calculation",
+          ""
+        );
+        const pillars = (((data.chinese || {}).bazi_pillars) || {});
+        const rows = ["year", "month", "day", "hour"].map((k) => {
+          const p = pillars[k] || {};
+          const label = isNL
+            ? ({ year: "Jaar", month: "Maand", day: "Dag", hour: "Uur" }[k] || k)
+            : ({ year: "Year", month: "Month", day: "Day", hour: "Hour" }[k] || k);
+          return [label, String(p.stem || "-"), String(p.branch || "-")];
         });
-        const row1 = createEl("div", "astro-matrix-row astro-matrix-head");
-        pillars.forEach((p) => {
-          const c = createEl("div", "astro-matrix-cell");
-          c.appendChild(createEl("div", "astro-mini__k", p.pillar));
-          c.appendChild(createEl("div", "astro-mini__v", p.theme));
-          row1.appendChild(c);
-        });
-        const row2 = createEl("div", "astro-matrix-row");
-        pillars.forEach((p) => {
-          const c = createEl("div", "astro-matrix-cell");
-          c.appendChild(createEl("div", "astro-mini__k", "Hemelse stam"));
-          c.appendChild(createEl("div", "bazi-symbol", p.stem));
-          c.appendChild(createEl("div", "bazi-sub", p.stemName));
-          row2.appendChild(c);
-        });
-        const row3 = createEl("div", "astro-matrix-row");
-        pillars.forEach((p) => {
-          const c = createEl("div", "astro-matrix-cell");
-          c.appendChild(createEl("div", "astro-mini__k", "Aardse tak"));
-          c.appendChild(createEl("div", "bazi-symbol bazi-symbol--earth", p.branch));
-          c.appendChild(createEl("div", "bazi-sub", p.branchName));
-          row3.appendChild(c);
-        });
-        const row4 = createEl("div", "astro-matrix-row");
-        pillars.forEach((p) => {
-          const c = createEl("div", "astro-matrix-cell");
-          c.appendChild(createEl("div", "astro-mini__k", "Verborgen stammen"));
-          c.appendChild(createEl("div", "bazi-hidden", p.hidden));
-          c.appendChild(createEl("p", "", p.meaning));
-          row4.appendChild(c);
-        });
-        matrix.appendChild(row1);
-        matrix.appendChild(row2);
-        matrix.appendChild(row3);
-        matrix.appendChild(row4);
-        matrixWrap.appendChild(matrix);
-        sec.appendChild(matrixWrap);
-        const g4 = createEl("div", "astro-grid-4");
-        g4.style.marginTop = "12px";
-        g4.appendChild(createAstroCard("Day Master", "壬 Yang Water", "Yang Water is als zee, rivier of grote stroming: onderzoekend, beweeglijk, verbindend en gevoelig voor ruimte."));
-        g4.appendChild(createAstroCard("Seizoensinvloed", "Zi-maand / winterwater", "De maandtak Zi versterkt Water. Aarde en Vuur helpen begrenzen en verwarmen."));
-        g4.appendChild(createAstroCard("Useful element", "Vuur en Aarde", "Vuur brengt warmte, zichtbaarheid en levendigheid; Aarde geeft bedding en draagkracht."));
-        g4.appendChild(createAstroCard("Levensbeweging", "Van stroming naar vorm", "De centrale beweging is: veel waarnemen, veel verbinden, veel voelen, en dit vervolgens vormen."));
-        sec.appendChild(g4);
-        const elem = createEl("div", "astro-grid-4");
-        elem.style.marginTop = "12px";
-        [["Water", "34%", "Sterk door wintermaand en Yang Water Day Master."], ["Aarde", "25%", "Aanwezig via jaar, Draak en Geit."], ["Hout", "19%", "Aanwezig via maandstam en Tijger/Geit."], ["Vuur", "14%", "Aanwezig via uurstam en verborgen stammen."], ["Metaal", "8%", "Relatief minder zichtbaar."]].forEach((e) => {
-          const box = createEl("div", "astro-mini");
-          box.appendChild(createEl("div", "astro-mini__k", e[0]));
-          box.appendChild(createEl("div", "astro-mini__v", e[1]));
-          const bar = createEl("div", "");
-          bar.style.height = "8px";
-          bar.style.background = "#f1e8fb";
-          bar.style.marginTop = "8px";
-          const fill = createEl("div", "");
-          fill.style.height = "8px";
-          fill.style.width = e[1];
-          fill.style.background = "#884DC9";
-          bar.appendChild(fill);
-          box.appendChild(bar);
-          box.appendChild(createEl("p", "", e[2]));
-          elem.appendChild(box);
-        });
-        sec.appendChild(elem);
-        root.appendChild(sec);
+        card.appendChild(
+          createMethodTable(
+            [isNL ? "Pilaar" : "Pillar", isNL ? "Hemelstam" : "Stem", isNL ? "Aardetak" : "Branch"],
+            rows
+          )
+        );
+        intro.appendChild(card);
+        root.appendChild(intro);
+        root.appendChild(renderResultDashboard("bazi", data));
         return root;
       }
 

@@ -123,7 +123,12 @@ def _build_western_block(
             "aspects": [],
             "placements": {},
         }
-    cusps_list = list(cusps)[1:13] if cusps and len(cusps) >= 13 else None
+    if cusps and len(cusps) >= 13:
+        cusps_list = list(cusps)[1:13]
+    elif cusps and len(cusps) >= 12:
+        cusps_list = list(cusps)[:12]
+    else:
+        cusps_list = None
     placements: dict[str, Any] = {}
     for bid, lon in body_lons.items():
         sign_num = int(lon / 30) % 12

@@ -235,16 +235,25 @@ def house_from_cusps(lon_deg: float, cusps_deg: Sequence[float]) -> int:
     Assumes cusps in degrees [0,360); longitude normalized. Handles zodiac wraparound.
     """
     lon = lon_deg % 360.0
-    if len(cusps_deg) < 13:
+    if not cusps_deg:
         return 1
-    c1 = cusps_deg[1]
+    # Support both cusp formats:
+    # - len 13 with index 0 unused and houses at [1..12]
+    # - len 12 with houses at [0..11]
+    if len(cusps_deg) >= 13:
+        c = [float(cusps_deg[i]) for i in range(1, 13)]
+    elif len(cusps_deg) >= 12:
+        c = [float(cusps_deg[i]) for i in range(12)]
+    else:
+        return 1
+    c1 = c[0]
     if lon < c1:
         lon += 360.0
-    for i in range(1, 13):
-        c1 = cusps_deg[i]
-        c2 = cusps_deg[i + 1] if i < 12 else cusps_deg[1] + 360.0
+    for i in range(12):
+        c1 = c[i]
+        c2 = c[i + 1] if i < 11 else c[0] + 360.0
         if c2 < c1:
             c2 += 360.0
         if c1 <= lon < c2:
-            return i
+            return i + 1
     return 12

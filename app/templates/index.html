@@ -265,7 +265,7 @@
 
       .method-hero--split {
         display: grid;
-        grid-template-columns: 1.3fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .method-hero__left {
@@ -731,6 +731,15 @@
         text-transform: uppercase;
         letter-spacing: 0.04em;
       }
+      .astro-section-narrative {
+        margin: 0 0 14px;
+      }
+      .astro-section-narrative .astro-section-sub {
+        margin: 0 0 10px;
+      }
+      .astro-section-narrative .astro-section-sub:last-child {
+        margin-bottom: 0;
+      }
 
       .insight-block__details {
         margin-top: var(--md);
@@ -786,6 +795,135 @@
         margin-top: var(--sm);
       }
 
+      /* Western tab: general legend cards (planets / houses), reference layout */
+      .legend-section {
+        margin-top: 28px;
+        max-width: 100%;
+      }
+      .legend-section__header {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .legend-section__eyebrow {
+        font-family: var(--font-ui);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #884dc9;
+        margin-bottom: 6px;
+      }
+      .legend-section__title {
+        margin: 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+        color: #1a1a1a;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        user-select: none;
+      }
+      .legend-section__title::after {
+        content: "▾";
+        font-size: 0.9em;
+        line-height: 1;
+        transition: transform 160ms ease;
+      }
+      .legend-section__title[aria-expanded="false"]::after {
+        transform: rotate(-90deg);
+      }
+      .legend-section__lead {
+        margin: 0;
+        font-family: var(--font-ui);
+        font-size: 14px;
+        color: #625777;
+        line-height: 1.55;
+      }
+      .legend-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .legend-grid[hidden] {
+        display: none;
+      }
+      .legend-card {
+        border: 1px solid #e0e0e0;
+        background: #ffffff;
+        padding: 18px 16px;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .legend-card__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .legend-card__badge--end {
+        margin-left: auto;
+      }
+      .legend-card__code {
+        font-family: var(--font-ui);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #884dc9;
+      }
+      .legend-card__badge {
+        flex-shrink: 0;
+        font-family: var(--font-ui);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #a68a56;
+        border: 1px solid #c9a24d;
+        padding: 4px 8px;
+        line-height: 1.2;
+      }
+      .legend-card__title {
+        margin: 0 0 10px 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #000000;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        line-height: 1.15;
+      }
+      .legend-card__body {
+        margin: 0;
+        flex: 1;
+        font-family: var(--font-ui);
+        font-size: 14px;
+        line-height: 1.55;
+        color: #757575;
+      }
+      .legend-card__divider {
+        margin-top: 14px;
+        margin-bottom: 10px;
+        height: 1px;
+        background: #e0e0e0;
+      }
+      .legend-card__footer {
+        font-family: var(--font-ui);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #884dc9;
+      }
+
       .site-footer {
         margin-top: var(--xxl);
         padding: var(--xl) 5%;
@@ -834,13 +972,18 @@
         background: #fff;
         box-shadow: 0 10px 40px rgba(136, 77, 201, 0.1);
         display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
       }
-      .astro-hero__left { padding: 34px; }
+      .astro-hero__left {
+        padding: 34px;
+        height: 100%;
+      }
       .astro-hero__right {
         display: grid;
         place-items: center;
         padding: 30px;
+        height: 100%;
         color: #fff;
         background: radial-gradient(circle at top, rgba(201, 162, 77, 0.22), transparent 35%), linear-gradient(135deg, #884DC9 0%, #6f38b0 45%, #2b2340 100%);
       }
@@ -1330,6 +1473,8 @@
         Jupiter: { nl: "Jupiter", en: "Jupiter" },
         Saturn: { nl: "Saturnus", en: "Saturn" },
         Asc: { nl: "Ascendant", en: "Ascendant" },
+        Ascendant: { nl: "Ascendant", en: "Ascendant" },
+        SouthNode: { nl: "Zuidelijke maanknoop", en: "South node" },
       };
 
       const SIGN_LABELS = {
@@ -1377,6 +1522,7 @@
         Neptune: "♆",
         Pluto: "♇",
         NorthNode: "☊",
+        SouthNode: "☋",
         Ascendant: "ASC",
       };
 
@@ -1897,33 +2043,13 @@
         }
         wrap.appendChild(sectionAspects);
 
-        const explain = document.createElement("div");
-        explain.className = "explain-grid";
-        explain.appendChild(
-          createExplainCard(
-            isNL ? "Hoe lees je dit?" : "How to read this",
-            isNL
-              ? "Planeten = functie, teken = stijl, huis = levensgebied. Aspecten tonen de dynamiek ertussen."
-              : "Planet = function, sign = style, house = life area. Aspects show the dynamics between them."
-          )
-        );
-        explain.appendChild(
-          createExplainCard(
-            isNL ? "Wat valt op?" : "What stands out?",
-            sun.sign
-              ? (isNL ? `De Zon in ${localizeSign(sun.sign)} zet de hoofdtoon van identiteit en expressie.` : `The Sun in ${localizeSign(sun.sign)} sets the main tone of identity and expression.`)
-              : (isNL ? "Er is nog geen duidelijke Zon-plaatsing beschikbaar." : "No clear Sun placement is available yet.")
-          )
-        );
-        explain.appendChild(
-          createExplainCard(
-            isNL ? "Praktisch gebruik" : "Practical use",
-            isNL
-              ? "Gebruik dit als reflectiekaart: waar stroomt het vanzelf en waar vraagt het om bewuste bijsturing?"
-              : "Use this as a reflection map: where does flow come naturally and where is conscious adjustment needed?"
-          )
-        );
-        wrap.appendChild(explain);
+        appendLegendSection(wrap, {
+          title: isNL ? "Soorten aspecten" : "Aspect types",
+          lead: isNL
+            ? "Algemene uitleg van hoekverhoudingen tussen planeten. Het orb-getal toont hoe dicht je stand bij het ‘ideale’ hoekpunt zit. Applicerend = nog naar exact toe; separerend = net na exact."
+            : "General meanings of angular relationships between planets. The orb value shows how close the positions are to the ideal angle. Applying = moving toward exact; separating = just past exact.",
+          items: westernAspectLegendItems(isNL),
+        });
         wrap.appendChild(renderWesternStory(data));
         return wrap;
       }
@@ -2857,21 +2983,94 @@
         return root;
       }
 
+      /** Shared tropische verhaaltekst voor tab-intro en (zonder dubbel blok) onderaan. */
+      function buildWesternTropicalNarrativeParagraphs(data, isNL) {
+        const western = data.western || {};
+        if (!western || Object.keys(western).length === 0) {
+          return {
+            ok: false,
+            paragraphs: [
+              isNL
+                ? "Westers resultaat is niet beschikbaar voor deze invoer (meestal zijn tijd, locatie en tijdzone nodig)."
+                : "Western results aren’t available for this input (time, location, and timezone are usually required).",
+            ],
+          };
+        }
+        const placements = western.placements || {};
+        const houses = western.houses || {};
+        const angles = houses.angles || {};
+        const asc = angles.asc_deg;
+        const sun = placements.Sun || {};
+        const moon = placements.Moon || {};
+        const aspects = Array.isArray(western.aspects) ? western.aspects : [];
+        const firstAsp = aspects.length && aspects[0] && aspects[0].a && aspects[0].b && aspects[0].type ? aspects[0] : null;
+
+        const p1Parts = [];
+        if (isNL) {
+          p1Parts.push(
+            "Hier lees je je tropische radix als één doorlopend verhaal. De Zon geeft je kern en richting, de Maan je emotionele onderstroom en de Ascendant je eerste indruk en aanloop naar nieuw."
+          );
+        } else {
+          p1Parts.push(
+            "Here you read your tropical chart as one continuous story. The Sun shows core and direction, the Moon your emotional undercurrent, and the Ascendant your first impression and approach to what is new."
+          );
+        }
+        if (sun.sign) {
+          p1Parts.push(
+            isNL
+              ? `Jouw Zon staat in ${localizeSign(sun.sign)}${sun.house != null ? `, in huis ${sun.house}` : ""}. Dat kleurt je identiteit, je vitaliteit en de thema’s waarin je van nature groeit.`
+              : `Your Sun is in ${localizeSign(sun.sign)}${sun.house != null ? `, in house ${sun.house}` : ""}. That colors your identity, vitality, and the themes you naturally grow through.`
+          );
+        } else {
+          p1Parts.push(isNL ? "De Zon-plaatsing was voor deze berekening niet beschikbaar." : "The Sun placement was not available for this calculation.");
+        }
+        if (moon.sign) {
+          p1Parts.push(
+            isNL
+              ? `Je Maan staat in ${localizeSign(moon.sign)}${moon.house != null ? `, in huis ${moon.house}` : ""}: zo voed je jezelf innerlijk, welke gewoontes je zoekt en hoe je instinctief reageert.`
+              : `Your Moon is in ${localizeSign(moon.sign)}${moon.house != null ? `, in house ${moon.house}` : ""}: how you nurture yourself inwardly, the habits you reach for, and how you react instinctively.`
+          );
+        } else {
+          p1Parts.push(isNL ? "De Maan-plaatsing was voor deze berekening niet beschikbaar." : "The Moon placement was not available for this calculation.");
+        }
+        const paragraph1 = p1Parts.join(" ");
+
+        const p2Parts = [];
+        if (asc != null) {
+          p2Parts.push(
+            isNL
+              ? `De Ascendant ligt rond ${Math.round(asc)}° tropische lengte: zo kom je naar buiten, hoe anderen je vaak eerst “lezen”, en hoe je nieuwe situaties binnenstapt.`
+              : `The Ascendant falls around ${Math.round(asc)}° tropical longitude: how you show up outwardly, how others often “read” you first, and how you step into new situations.`
+          );
+        }
+        if (firstAsp) {
+          p2Parts.push(
+            isNL
+              ? `Daarnaast valt op dat ${localizePlanet(firstAsp.a)} een ${localizeAspectType(firstAsp.type)} maakt met ${localizePlanet(firstAsp.b)}: een duidelijke spannings- of samenwerkingslijn tussen twee levensfuncties.`
+              : `It also stands out that ${localizePlanet(firstAsp.a)} forms a ${localizeAspectType(firstAsp.type)} with ${localizePlanet(firstAsp.b)}: a clear line of tension or cooperation between two life functions.`
+          );
+        }
+        const paragraph2 = p2Parts.length ? p2Parts.join(" ") : null;
+
+        const paragraph3 = isNL
+          ? "Samen vormt dit in de westerse methode een psychologische kaart: planeten als drijfveren, tekens als stijl, huizen als levensgebieden en aspecten als de dynamiek ertussen. Leg de zinnen naast je tabel en radix hierboven om het beeld scherp te krijgen."
+          : "Together, in the Western approach, this forms a psychological map: planets as drives, signs as style, houses as life areas, and aspects as the dynamics between them. Read these sentences alongside your table and natal wheel above to bring the picture into focus.";
+
+        return { ok: true, paragraphs: [paragraph1, paragraph2, paragraph3].filter(Boolean) };
+      }
+
       function renderWesternTabV2(data) {
         const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
         const intro = createEl("section", "astro-method-visual");
         intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 1" : "Method 1"));
         intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Westerse horoscoop" : "Western horoscope"));
-        intro.appendChild(
-          createEl(
-            "p",
-            "astro-section-sub",
-            isNL
-              ? "Tropische radix op basis van jouw geboortegegevens: planeten, tekens, huizen en aspecten."
-              : "Tropical natal chart based on your birth data: planets, signs, houses, and aspects."
-          )
-        );
+        const narr = buildWesternTropicalNarrativeParagraphs(data, isNL);
+        const narrWrap = createEl("div", "astro-section-narrative");
+        narr.paragraphs.forEach((para) => {
+          if (para && String(para).trim()) narrWrap.appendChild(createEl("p", "astro-section-sub", String(para).trim()));
+        });
+        intro.appendChild(narrWrap);
         const hero = createAstroCard(
           isNL ? "Radix wiel" : "Natal wheel",
           isNL ? "Tropische berekening op basis van jouw invoer" : "Tropical calculation based on your input",
@@ -3007,6 +3206,441 @@
           appendArticleCard(articles, c.title, c.text, c.themeId)
         );
         if (articles.childElementCount) frag.appendChild(block);
+      }
+
+      function createLegendCard(item) {
+        const card = document.createElement("article");
+        card.className = "legend-card";
+        const hasCode = item.codeLabel != null && String(item.codeLabel).trim() !== "";
+        const hasBadge = item.badge != null && String(item.badge).trim() !== "";
+        if (hasCode || hasBadge) {
+          const top = document.createElement("div");
+          top.className = "legend-card__top";
+          if (hasCode) {
+            const code = document.createElement("span");
+            code.className = "legend-card__code";
+            code.textContent = item.codeLabel;
+            top.appendChild(code);
+          }
+          if (hasBadge) {
+            const badge = document.createElement("span");
+            badge.className = "legend-card__badge" + (hasCode ? "" : " legend-card__badge--end");
+            badge.textContent = item.badge;
+            top.appendChild(badge);
+          }
+          card.appendChild(top);
+        }
+        const tit = document.createElement("h4");
+        tit.className = "legend-card__title";
+        tit.textContent = item.title;
+        const bod = document.createElement("p");
+        bod.className = "legend-card__body";
+        bod.textContent = item.body;
+        card.appendChild(tit);
+        card.appendChild(bod);
+        const hasFooter = item.footer != null && String(item.footer).trim() !== "";
+        if (hasFooter) {
+          const div = document.createElement("div");
+          div.className = "legend-card__divider";
+          const foot = document.createElement("div");
+          foot.className = "legend-card__footer";
+          foot.textContent = item.footer;
+          card.appendChild(div);
+          card.appendChild(foot);
+        }
+        return card;
+      }
+
+      function appendLegendSection(frag, opts) {
+        const wrap = document.createElement("div");
+        wrap.className = "legend-section";
+        const head = document.createElement("div");
+        head.className = "legend-section__header";
+        const headLeft = document.createElement("div");
+        if (opts.eyebrow) {
+          const eb = document.createElement("div");
+          eb.className = "legend-section__eyebrow";
+          eb.textContent = opts.eyebrow;
+          headLeft.appendChild(eb);
+        }
+        const h = document.createElement("h3");
+        h.className = "legend-section__title";
+        h.textContent = opts.title;
+        headLeft.appendChild(h);
+        if (opts.lead) {
+          const leadEl = document.createElement("p");
+          leadEl.className = "legend-section__lead";
+          leadEl.textContent = opts.lead;
+          headLeft.appendChild(leadEl);
+        }
+        head.appendChild(headLeft);
+        const grid = document.createElement("div");
+        grid.className = "legend-grid";
+        const sectionId = `legend-${Math.random().toString(36).slice(2, 10)}`;
+        grid.id = sectionId;
+        (opts.items || []).forEach((it) => grid.appendChild(createLegendCard(it)));
+        h.setAttribute("role", "button");
+        h.setAttribute("tabindex", "0");
+        h.setAttribute("aria-controls", sectionId);
+        h.setAttribute("aria-expanded", "false");
+        grid.hidden = true;
+        const toggle = () => {
+          const nextHidden = !grid.hidden;
+          grid.hidden = nextHidden;
+          h.setAttribute("aria-expanded", String(!nextHidden));
+        };
+        h.addEventListener("click", toggle);
+        h.addEventListener("keydown", (ev) => {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            toggle();
+          }
+        });
+        wrap.appendChild(head);
+        wrap.appendChild(grid);
+        frag.appendChild(wrap);
+      }
+
+      function westernPlanetLegendItems(isNL) {
+        const L = (nl, en) => (isNL ? nl : en);
+        const dot = (id, short) => {
+          const g = planetGlyph(id) || "";
+          return g ? `${g} · ${short}` : short;
+        };
+        const foot = L("Planeet", "Planet");
+        return [
+          {
+            codeLabel: dot("Sun", L("Zon", "Sun")),
+            badge: L("Kern", "Core"),
+            title: L("Zon", "Sun"),
+            body: L(
+              "De Zon staat voor kernidentiteit, levensrichting en vitaliteit. In een radix laat ze zien waar je van nature naar toe groeit en hoe je jezelf naar buiten uitdrukt.",
+              "The Sun represents core identity, life direction, and vitality. In a natal chart it shows where you naturally grow and how you express yourself outwardly."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Moon", L("Maan", "Moon")),
+            badge: L("Ritme", "Rhythm"),
+            title: L("Maan", "Moon"),
+            body: L(
+              "De Maan beschrijft emotionele behoeften, veiligheid en gewoontes. Ze toont hoe je je innerlijk voedt en instinctief op situaties reageert.",
+              "The Moon describes emotional needs, safety, and habits. It shows how you nurture yourself inwardly and react instinctively."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Mercury", L("Mercurius", "Mercury")),
+            badge: L("Contact", "Contact"),
+            title: L("Mercurius", "Mercury"),
+            body: L(
+              "Mercurius gaat over denken, leren, communicatie en uitwisseling van ideeën. Hij schetst hoe je observeert, verbindt en jezelf verwoordt.",
+              "Mercury concerns thinking, learning, communication, and exchanging ideas. It sketches how you observe, connect, and put things into words."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Venus", "Venus"),
+            badge: L("Waarden", "Values"),
+            title: "Venus",
+            body: L(
+              "Venus beschrijft waarden, aantrekkingskracht, genot en harmonie. Ze wijst op wat je mooi vindt en hoe je relateert rond liefde en esthetiek.",
+              "Venus describes values, attraction, pleasure, and harmony. It highlights what you find beautiful and how you relate around love and aesthetics."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Mars", "Mars"),
+            badge: L("Actie", "Action"),
+            title: "Mars",
+            body: L(
+              "Mars staat voor drive, grenzen, moed en assertiviteit. Hij laat zien waar je actie onderneemt en hoe je energie richting doelen zet.",
+              "Mars stands for drive, boundaries, courage, and assertion. It shows where you take action and how you aim your energy toward goals."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Jupiter", "Jupiter"),
+            badge: L("Groei", "Growth"),
+            title: "Jupiter",
+            body: L(
+              "Jupiter staat voor groei, betekenis, optimisme en uitbreiding. Hij geeft aan waar ontwikkeling, vertrouwen en breder perspectief spelen.",
+              "Jupiter stands for growth, meaning, optimism, and expansion. It marks where development, faith, and a wider perspective matter."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Saturn", L("Saturnus", "Saturn")),
+            badge: L("Structuur", "Structure"),
+            title: L("Saturnus", "Saturn"),
+            body: L(
+              "Saturnus wijst op structuur, verantwoordelijkheid, timing en volwassen worden. Hij toont waar discipline, grenzen en realiteit je vorm geven.",
+              "Saturn points to structure, responsibility, timing, and maturing. It shows where discipline, limits, and reality shape you."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Uranus", "Uranus"),
+            badge: L("Vernieuwing", "Renewal"),
+            title: "Uranus",
+            body: L(
+              "Uranus staat voor vernieuwing, onafhankelijkheid en plotse wendingen. Hij markeert thema’s van vrijheid, originaliteit en verrassing.",
+              "Uranus stands for renewal, independence, and sudden shifts. It marks themes of freedom, originality, and surprise."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Neptune", L("Neptunus", "Neptune")),
+            badge: L("Verbeelding", "Imagination"),
+            title: L("Neptunus", "Neptune"),
+            body: L(
+              "Neptunus gaat over verbeelding, inspiratie, compassie en wat moeilijk te vatten is. Hij kan dromen, idealen en onthechting aanduiden.",
+              "Neptune concerns imagination, inspiration, compassion, and what is hard to pin down. It can indicate dreams, ideals, and dissolution."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Pluto", "Pluto"),
+            badge: L("Diepte", "Depth"),
+            title: "Pluto",
+            body: L(
+              "Pluto beschrijft transformatie, intensiteit en diepgang. Hij wijst op processen van loslaten, macht en fundamenteel vernieuwen.",
+              "Pluto describes transformation, intensity, and depth. It points to letting go, power, and fundamental renewal."
+            ),
+            footer: foot,
+          },
+          {
+            codeLabel: dot("Ascendant", L("Ascendant", "Ascendant")),
+            badge: L("Horizon", "Horizon"),
+            title: L("Ascendant", "Ascendant"),
+            body: L(
+              "De Ascendant is het oostpunt van je radix: het teken dat aan de oostelijke horizon opkwam op het geboortemoment. Hij beschrijft je eerste indruk, je lichaamstaal en hoe je nieuw binnenstapt — en bepaalt het begin van huis 1.",
+              "The Ascendant is the chart’s eastern point: the sign rising on the eastern horizon at birth. It describes first impression, physical presence, and how you meet what is new—and it starts the first house."
+            ),
+            footer: L("Punt", "Point"),
+          },
+          {
+            codeLabel: dot("NorthNode", L("Noordelijke maanknoop", "North node")),
+            badge: L("Richting", "Direction"),
+            title: L("Noordelijke maanknoop", "North node"),
+            body: L(
+              "De maanknoopen zijn geen planeten maar gevoelige punten: de Noordelijke knoop duidt vaak op groei, nieuwe ervaring en het uitbreiden van je repertoire.",
+              "The lunar nodes are not planets but sensitive points: the North node often suggests growth, new experience, and widening your range."
+            ),
+            footer: L("Punt", "Point"),
+          },
+          {
+            codeLabel: dot("SouthNode", L("Zuidelijke maanknoop", "South node")),
+            badge: L("Verankering", "Anchor"),
+            title: L("Zuidelijke maanknoop", "South node"),
+            body: L(
+              "De Zuidelijke knoop staat tegenover de Noordelijke: vaak ervaring, gewoonte of comfortzone die je al kent. Niet om te ‘verwerpen’, maar om bewust mee om te gaan terwijl je ook ruimte maakt voor de groei van de Noordelijke knoop.",
+              "The South node opposes the North: often familiar experience, habit, or comfort. Not something to reject outright, but to work with consciously while you also make room for North-node growth."
+            ),
+            footer: L("Punt", "Point"),
+          },
+        ];
+      }
+
+      function westernHouseLegendItems(isNL) {
+        const L = (nl, en) => (isNL ? nl : en);
+        return [
+          {
+            badge: L("Zelf", "Self"),
+            title: L("Huis 1", "House 1"),
+            body: L(
+              "Het eerste huis sluit aan op de Ascendant: zelfbeeld, lichaam, eerste indruk en hoe je nieuwe situaties tegemoet treedt.",
+              "The first house links to the Ascendant: self-image, body, first impressions, and how you meet new situations."
+            ),
+          },
+          {
+            badge: L("Middelen", "Means"),
+            title: L("Huis 2", "House 2"),
+            body: L(
+              "Tweede huis: inkomen, middelen, talenten en wat je ‘bezit’ — materieel en innerlijk — plus waarden rond veiligheid.",
+              "Second house: income, resources, talents, and what you ‘own’—materially and inwardly—plus values around security."
+            ),
+          },
+          {
+            badge: L("Omgeving", "Locale"),
+            title: L("Huis 3", "House 3"),
+            body: L(
+              "Derde huis: directe omgeving, siblings, korte reizen, leren en dagelijkse communicatie.",
+              "Third house: immediate environment, siblings, short trips, learning, and everyday communication."
+            ),
+          },
+          {
+            badge: L("Thuis", "Home"),
+            title: L("Huis 4", "House 4"),
+            body: L(
+              "Vierde huis: thuisbasis, familie van herkomst, wortels en je emotionele fundament.",
+              "Fourth house: home base, family of origin, roots, and your emotional foundation."
+            ),
+          },
+          {
+            badge: L("Expressie", "Expression"),
+            title: L("Huis 5", "House 5"),
+            body: L(
+              "Vijfde huis: creativiteit, spel, romance, kinderen en wat je voor je plezier uitdrukt.",
+              "Fifth house: creativity, play, romance, children, and what you express for joy."
+            ),
+          },
+          {
+            badge: L("Routine", "Routine"),
+            title: L("Huis 6", "House 6"),
+            body: L(
+              "Zesde huis: dagelijkse routine, werkprocessen, gezondheid, dienstbaarheid en het ordenen van het alledaagse.",
+              "Sixth house: daily routine, work processes, health, service, and organizing everyday life."
+            ),
+          },
+          {
+            badge: L("Relaties", "Relating"),
+            title: L("Huis 7", "House 7"),
+            body: L(
+              "Zevende huis: partnerschap, contracten, de Andere als spiegel en samenwerking op ooghoogte.",
+              "Seventh house: partnership, contracts, the Other as mirror, and cooperation as equals."
+            ),
+          },
+          {
+            badge: L("Delen", "Shared"),
+            title: L("Huis 8", "House 8"),
+            body: L(
+              "Achtste huis: gedeelde middelen, intimiteit, erfelijkheid, crisis en transformatie via anderen.",
+              "Eighth house: shared resources, intimacy, inheritance, crisis, and transformation through others."
+            ),
+          },
+          {
+            badge: L("Horizon", "Horizon"),
+            title: L("Huis 9", "House 9"),
+            body: L(
+              "Negende huis: breder perspectief, reizen, hoger onderwijs, levensbeschouwing en zoeken naar betekenis.",
+              "Ninth house: wider perspective, travel, higher education, worldview, and the search for meaning."
+            ),
+          },
+          {
+            badge: L("Roeping", "Vocation"),
+            title: L("Huis 10", "House 10"),
+            body: L(
+              "Tiende huis: carrière, reputatie, publieke rol en hoe je in de buitenwereld gezien wilt worden.",
+              "Tenth house: career, reputation, public role, and how you wish to be seen in the world."
+            ),
+          },
+          {
+            badge: L("Gemeenschap", "Community"),
+            title: L("Huis 11", "House 11"),
+            body: L(
+              "Elfde huis: vrienden, netwerken, groepsidealen en langetermijndoelen; hoop en toekomstplannen.",
+              "Eleventh house: friends, networks, group ideals, long-range goals; hope and future plans."
+            ),
+          },
+          {
+            badge: L("Integratie", "Integration"),
+            title: L("Huis 12", "House 12"),
+            body: L(
+              "Twaalfde huis: rust, afzondering, het onbewuste, healing en wat op de achtergrond meespeelt.",
+              "Twelfth house: retreat, solitude, the unconscious, healing, and what works in the background."
+            ),
+          },
+        ];
+      }
+
+      function westernAspectLegendItems(isNL) {
+        const L = (nl, en) => (isNL ? nl : en);
+        const code = (type, angleLabel) => {
+          const g = aspectGlyph(type);
+          return g ? `${g} · ${angleLabel}` : angleLabel;
+        };
+        return [
+          {
+            codeLabel: code("conjunction", "0°"),
+            badge: L("Samenvallen", "Merge"),
+            title: L("Conjunctie", "Conjunction"),
+            body: L(
+              "Ongeveer dezelfde lengtegraad: twee planeten versterken of mengen hun thema’s. Kan intens harmonieus zijn of één thema dominant maken, afhankelijk van de planeten.",
+              "Near the same longitude: two planets blend or intensify their themes. It can feel fused—supportive or overwhelming—depending on the planets involved."
+            ),
+          },
+          {
+            codeLabel: code("sextile", "60°"),
+            badge: L("Mogelijkheid", "Opportunity"),
+            title: L("Sextiel", "Sextile"),
+            body: L(
+              "Een beweeglijke, open hoek: kansen om te leren, te verbinden en handelingsruimte te creëren. Vaak subtieler dan een driehoek, maar uitnodigend voor groei.",
+              "A flexible, open angle: chances to learn, connect, and create room to move. Often subtler than a trine, but inviting growth."
+            ),
+          },
+          {
+            codeLabel: code("square", "90°"),
+            badge: L("Spanning", "Tension"),
+            title: L("Vierkant", "Square"),
+            body: L(
+              "Rechte hoek: wrijving en innerlijke of uiterlijke spanning die tot actie dwingt. Juist door wrijving kun je iets fundamenteels leren of veranderen.",
+              "A right angle: friction and tension—inner or outer—that pushes for action. Friction often teaches or changes something important."
+            ),
+          },
+          {
+            codeLabel: code("trine", "120°"),
+            badge: L("Stroom", "Flow"),
+            title: L("Driehoek", "Trine"),
+            body: L(
+              "Harmonische hoek: natuurlijke steun en gemak tussen twee planeten. Energie kan vrij stromen; het risico is dat je het vanzelfsprekend vindt en minder bewust inzet.",
+              "A harmonious angle: natural support and ease between two planets. Energy can flow readily; the pitfall is taking it for granted."
+            ),
+          },
+          {
+            codeLabel: code("opposition", "180°"),
+            badge: L("Polariteit", "Polarity"),
+            title: L("Oppositie", "Opposition"),
+            body: L(
+              "Tegenover elkaar: balans zoeken tussen twee polen, of via anderen en relaties spiegelen. Kan trekken-duwen zijn, maar ook bewustwording door contrast.",
+              "Across the chart: balancing two poles, often mirrored through others or relationships. It can feel like pull-push, yet contrast clarifies."
+            ),
+          },
+          {
+            codeLabel: "45°",
+            badge: L("Minor", "Minor"),
+            title: L("Half vierkant", "Semi-square"),
+            body: L(
+              "Kleine spanning (45°): lichte irritatie of onrust die aanzet tot bijsturing. Minder zwaar dan een vol vierkant, maar wel merkbaar op de lange duur.",
+              "Minor tension (45°): a nudge of irritation or restlessness that prompts adjustment. Lighter than a full square, yet noticeable over time."
+            ),
+          },
+          {
+            codeLabel: "135°",
+            badge: L("Minor", "Minor"),
+            title: L("Sesquiquadraat", "Sesquiquadrate"),
+            body: L(
+              "Ook een ‘klein’ aspect met wrijving: herhalende frictie of het oplossen van oude patronen. Vraagt vaak om geduld en fine-tuning.",
+              "Another minor friction aspect: recurring irritation or working through old patterns. Often asks for patience and fine-tuning."
+            ),
+          },
+          {
+            codeLabel: "150°",
+            badge: L("Aanpassing", "Adjustment"),
+            title: L("Quincunx", "Quincunx"),
+            body: L(
+              "Geen gedeelde modaliteit of element: twee planeten ‘snappen’ elkaar niet vanzelf. Vraagt om aanpassing, compromis of creatieve brug — anders blijft het wringen.",
+              "No shared modality or element: two planets don’t naturally ‘get’ each other. Calls for adjustment, compromise, or a creative bridge—or it keeps grating."
+            ),
+          },
+        ];
+      }
+
+      function appendWesternPlanetsAndHousesLegend(frag, isNL) {
+        appendLegendSection(frag, {
+          title: isNL ? "Planeten — algemene betekenis" : "Planets — general meanings",
+          lead: isNL
+            ? "Algemene uitleg om de tabel en het wiel hierboven te lezen. Dit is geen persoonlijke duiding."
+            : "General meanings to read the table and wheel above. This is not a personal reading.",
+          items: westernPlanetLegendItems(isNL),
+        });
+        appendLegendSection(frag, {
+          title: isNL ? "Huizen — levensgebieden" : "Houses — life areas",
+          lead: isNL
+            ? "De twaalf huizen zijn vaste themagebieden. Waar een planeet landt, benadrukt ze dat levensdomein."
+            : "The twelve houses are fixed topic areas. A planet in a house emphasizes that life domain.",
+          items: westernHouseLegendItems(isNL),
+        });
       }
 
       function renderStory(data) {
@@ -3219,129 +3853,9 @@
       function renderWesternStory(data) {
         const frag = document.createDocumentFragment();
         const isNL = uiIsNL();
-        const interp = lastInterpretations && lastInterpretations.western_tropical ? lastInterpretations.western_tropical : null;
-        const western = data.western || {};
-        const placements = western.placements || {};
-        const houses = western.houses || {};
-        const angles = houses.angles || {};
-        const asc = angles.asc_deg;
-        const sun = placements.Sun || {};
-        const moon = placements.Moon || {};
-        if (!western || Object.keys(western).length === 0) {
-          frag.appendChild(
-            p(
-              isNL
-                ? "Westers resultaat is niet beschikbaar voor deze invoer (meestal zijn tijd, locatie en tijdzone nodig)."
-                : "Western results aren’t available for this input (time, location, and timezone are usually required)."
-            )
-          );
-          return frag;
-        }
-        const sunLine = sun.sign
-          ? isNL
-            ? `Jouw Zon staat in ${localizeSign(sun.sign)}${sun.house ? `, in huis ${sun.house}` : ""}. De Zon beschrijft je kernenergie, identiteit en de thema’s waar je naar toe groeit.`
-            : `Your Sun stands in ${localizeSign(sun.sign)}${sun.house ? `, in house ${sun.house}` : ""}. The Sun describes your core vitality, identity, and the life themes you grow into.`
-          : isNL
-            ? "Plaatsing van de Zon was niet beschikbaar."
-            : "Your Sun placement wasn’t available.";
-        const moonLine = moon.sign
-          ? isNL
-            ? `Jouw Maan staat in ${localizeSign(moon.sign)}${moon.house ? `, in huis ${moon.house}` : ""}. De Maan beschrijft je emotionele behoeften, gewoontes en hoe je instinctief reageert.`
-            : `Your Moon rests in ${localizeSign(moon.sign)}${moon.house ? `, in house ${moon.house}` : ""}. The Moon describes your emotional needs, habits, and how you instinctively react.`
-          : isNL
-            ? "Plaatsing van de Maan was niet beschikbaar."
-            : "Your Moon placement wasn’t available.";
-        const overviewCards = [
-          { title: isNL ? "Zon" : "Sun", text: sunLine, themeId: "energie" },
-          { title: isNL ? "Maan" : "Moon", text: moonLine, themeId: "bewustzijn" },
-        ];
-        if (asc != null) {
-          overviewCards.push({
-            title: isNL ? "Ascendant" : "Ascendant",
-            text: isNL
-              ? `De Ascendant stijgt op ${Math.round(asc)}° (tropische lengte). De Ascendant beschrijft hoe je aan anderen verschijnt en hoe je nieuwe situaties benadert.`
-              : `The Ascendant rises at ${Math.round(asc)}° (tropical longitude). The Ascendant describes how you appear to others and how you approach new situations.`,
-            themeId: "beweging",
-          });
-        }
-        const aspects = Array.isArray(western.aspects) ? western.aspects : [];
-        if (aspects.length) {
-          const a = aspects[0];
-          if (a && a.a && a.b && a.type) {
-            overviewCards.push({
-              title: isNL ? "Sterk signaal (aspect)" : "Strong signal (aspect)",
-              text: isNL
-                ? `Een opvallende rode draad: ${localizePlanet(a.a)} vormt een ${localizeAspectType(a.type)} met ${localizePlanet(a.b)}. Dit beschrijft hoe deze twee functies in je leven samenwerken of elkaar uitdagen.`
-                : `A notable thread: ${localizePlanet(a.a)} forms a ${localizeAspectType(a.type)} with ${localizePlanet(a.b)}, describing how these two functions in your life cooperate or challenge each other.`,
-              themeId: "voeding",
-            });
-          }
-        }
-        appendInsightBlock(frag, isNL ? "Westers overzicht" : "Western overview", "voeding", overviewCards);
-
-        appendInsightBlock(frag, isNL ? "Hoe dit samenhangt" : "How it fits together", "energie", [
-          {
-            title: isNL ? "Psychologische kaart" : "Psychological map",
-            text: isNL
-              ? "In combinatie geeft de westerse methode een psychologische kaart: planeten beschrijven drijfveren, tekens je stijl, huizen levensterreinen en aspecten laten zien hoe delen van jezelf met elkaar samenspelen."
-              : "In combination, the Western method gives a psychological map: planets describe drives, signs show style, houses point to life areas, and aspects show how different parts of you interact.",
-            themeId: "energie",
-          },
-        ]);
-
-        if (interp && interp.planets && interp.planets.length) {
-          const { block, articles } = createInsightBlock(
-            isNL ? "Planeten (uitgebreid)" : "Planets (extended)",
-            "bewustzijn"
-          );
-          interp.planets.forEach((x) => {
-            if (x && x.text) {
-              appendArticleCard(
-                articles,
-                localizePlanet(x.planet) || (isNL ? "Planeet" : "Planet"),
-                x.text,
-                "bewustzijn"
-              );
-            }
-          });
-          if (articles.childElementCount) frag.appendChild(block);
-        }
-        if (interp && interp.aspects && interp.aspects.length) {
-          const { block, articles } = createInsightBlock(
-            isNL ? "Aspecten" : "Aspects",
-            "beweging"
-          );
-          interp.aspects.forEach((x) => {
-            if (x && x.text) {
-              const label =
-                x.a && x.b && x.type
-                  ? `${localizePlanet(x.a)} ${localizeAspectType(x.type)} ${localizePlanet(x.b)}`
-                  : isNL
-                    ? "Aspect"
-                    : "Aspect";
-              appendArticleCard(articles, label, x.text, "beweging");
-            }
-          });
-          if (articles.childElementCount) frag.appendChild(block);
-        }
-
-        if (interp && interp.houses && Array.isArray(interp.houses) && interp.houses.length) {
-          const { block, articles } = createInsightBlock(
-            isNL ? "Huizen" : "Houses",
-            "energie"
-          );
-          interp.houses.forEach((x) => {
-            if (x && x.text) {
-              appendArticleCard(
-                articles,
-                isNL ? `Huis ${x.house}` : `House ${x.house}`,
-                x.text,
-                "energie"
-              );
-            }
-          });
-          if (articles.childElementCount) frag.appendChild(block);
-        }
+        const { ok } = buildWesternTropicalNarrativeParagraphs(data, isNL);
+        if (!ok) return frag;
+        appendWesternPlanetsAndHousesLegend(frag, isNL);
         return frag;
       }
 
@@ -3350,7 +3864,6 @@
         const keys = Object.keys(bodies || {});
         const frag = document.createDocumentFragment();
         const isNL = uiIsNL();
-        const interp = lastInterpretations && lastInterpretations.western_sidereal ? lastInterpretations.western_sidereal : null;
         if (!keys.length) {
           frag.appendChild(
             p(
@@ -3378,60 +3891,8 @@
           },
         ]);
 
-        if (interp && interp.planets && interp.planets.length) {
-          const { block, articles } = createInsightBlock(
-            isNL ? "Planeten (sidereaal, uitgebreid)" : "Planets (sidereal, extended)",
-            "bewustzijn"
-          );
-          interp.planets.forEach((x) => {
-            if (x && x.text) {
-              appendArticleCard(
-                articles,
-                localizePlanet(x.planet) || (isNL ? "Planeet" : "Planet"),
-                x.text,
-                "bewustzijn"
-              );
-            }
-          });
-          if (articles.childElementCount) frag.appendChild(block);
-        }
+        appendWesternPlanetsAndHousesLegend(frag, isNL);
 
-        if (interp && interp.aspects && interp.aspects.length) {
-          const { block, articles } = createInsightBlock(
-            isNL ? "Aspecten" : "Aspects",
-            "beweging"
-          );
-          interp.aspects.forEach((x) => {
-            if (x && x.text) {
-              const label =
-                x.a && x.b && x.type
-                  ? `${localizePlanet(x.a)} ${localizeAspectType(x.type)} ${localizePlanet(x.b)}`
-                  : isNL
-                    ? "Aspect"
-                    : "Aspect";
-              appendArticleCard(articles, label, x.text, "beweging");
-            }
-          });
-          if (articles.childElementCount) frag.appendChild(block);
-        }
-
-        if (interp && interp.houses && Array.isArray(interp.houses) && interp.houses.length) {
-          const { block, articles } = createInsightBlock(
-            isNL ? "Huizen" : "Houses",
-            "energie"
-          );
-          interp.houses.forEach((x) => {
-            if (x && x.text) {
-              appendArticleCard(
-                articles,
-                isNL ? `Huis ${x.house}` : `House ${x.house}`,
-                x.text,
-                "energie"
-              );
-            }
-          });
-          if (articles.childElementCount) frag.appendChild(block);
-        }
         return frag;
       }
 

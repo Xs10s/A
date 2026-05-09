@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from datetime import date
+import base64
 import json
 import logging
+from io import BytesIO
 from pathlib import Path
 from urllib.parse import urlencode
 from urllib.request import Request as UrlRequest, urlopen
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, List
 
 from fastapi import FastAPI, Request, Body
 from fastapi.responses import JSONResponse, Response, HTMLResponse
@@ -24,6 +26,7 @@ from horoscoop.presentation import (
     render_section_svg,
 )
 from horoscoop.interpretations import build_interpretations
+from horoscoop.profile_book import build_profile_book
 from . import chart as chart_mod
 
 _APP_DIR = Path(__file__).resolve().parent
@@ -56,6 +59,16 @@ class HoroscoopRequest(BaseModel):
     western_orb_profile: Optional[str] = Field(default=None)
     western_db_path: Optional[str] = Field(default=None)
     western_extended_aspects: Optional[bool] = Field(default=None)
+
+
+class ScreenshotReportPage(BaseModel):
+    title: str = Field(default="")
+    image_data_url: str
+
+
+class ScreenshotReportRequest(BaseModel):
+    pages: List[ScreenshotReportPage]
+    filename: Optional[str] = Field(default="horoscoop-rapport-tabs.pdf")
 
 
 def _geocode_city(city: str) -> Optional[dict[str, Any]]:
@@ -278,6 +291,48 @@ async def api_interpretations(payload: HoroscoopRequest, locale: Optional[str] =
     return JSONResponse(out)
 
 
+@app.post("/api/report-bundle")
+async def api_report_bundle(payload: HoroscoopRequest, locale: Optional[str] = "nl-NL"):
+    """
+    Precompute all report data in one deterministic pass.
+
+    This endpoint is optimized for static post-calculation rendering in the UI:
+    - engine output
+    - energy profiles
+    - cross-system view
+    - interpretations
+    """
+    result = _call_engine(payload)
+    effective_locale = locale or "nl-NL"
+    energy_profile = build_energy_profile(
+        result,
+        system="western_tropical",
+        locale=effective_locale,
+    )
+    combined_energy = build_combined_energy_profile(
+        result,
+        locale=effective_locale,
+    )
+    cross_system = build_cross_system(result, locale=effective_locale)
+    interpretations = build_interpretations(result, locale=effective_locale)
+    profile_book = build_profile_book(
+        result,
+        combined_energy=combined_energy,
+        cross_system=cross_system,
+        interpretations=interpretations,
+        locale=effective_locale,
+    )
+    bundle = {
+        "horoscoop": result,
+        "energy_profile": energy_profile,
+        "energy_profile_combined": combined_energy,
+        "cross_system": cross_system,
+        "interpretations": interpretations,
+        "profile_book": profile_book,
+    }
+    return JSONResponse(bundle)
+
+
 @app.get("/api/horoscoop/schema")
 async def api_schema():
     from pathlib import Path
@@ -416,5 +471,58 @@ async def api_render_report_pdf(
     if engine_json is None:
         return JSONResponse({"error": "engine_json or birth_date required"}, status_code=400)
     pdf_bytes = render_pdf(engine_json, template_id=template_id)
+    return Response(content=pdf_bytes, media_type="application/pdf")
+
+
+@app.post("/api/report/screenshots.pdf")
+async def api_report_screenshots_pdf(payload: ScreenshotReportRequest):
+    """
+    Build a PDF report from screenshot pages generated in the UI.
+    Each page should include a title and a PNG/JPEG data URL.
+    """
+    if not payload.pages:
+        return JSONResponse({"error": "pages_required"}, status_code=400)
+
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.utils import ImageReader
+    from reportlab.pdfgen import canvas
+
+    page_w, page_h = A4
+    margin = 28.0
+    title_y = page_h - margin - 2.0
+    image_top = page_h - margin - 26.0
+    image_max_w = page_w - 2 * margin
+    image_max_h = page_h - (margin * 2) - 34.0
+
+    buf = BytesIO()
+    c = canvas.Canvas(buf, pagesize=A4)
+
+    for idx, page in enumerate(payload.pages):
+        title = (page.title or "").strip() or f"Tab {idx + 1}"
+        data_url = page.image_data_url or ""
+        if "," not in data_url:
+            return JSONResponse({"error": "invalid_data_url", "index": idx}, status_code=400)
+        _, b64 = data_url.split(",", 1)
+        try:
+            img_bytes = base64.b64decode(b64)
+            image = ImageReader(BytesIO(img_bytes))
+            iw, ih = image.getSize()
+        except Exception:
+            return JSONResponse({"error": "invalid_image_data", "index": idx}, status_code=400)
+
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(margin, title_y, title)
+
+        if iw > 0 and ih > 0:
+            scale = min(image_max_w / float(iw), image_max_h / float(ih))
+            draw_w = float(iw) * scale
+            draw_h = float(ih) * scale
+            x = margin + (image_max_w - draw_w) / 2.0
+            y = image_top - draw_h
+            c.drawImage(image, x, y, width=draw_w, height=draw_h, preserveAspectRatio=True, mask="auto")
+        c.showPage()
+
+    c.save()
+    pdf_bytes = buf.getvalue()
     return Response(content=pdf_bytes, media_type="application/pdf")
 

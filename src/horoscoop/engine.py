@@ -18,6 +18,7 @@ from . import models
 from . import sidereal
 from . import time_scales as ts
 from . import vedic
+from .data.calculations.pipeline import run_calculation_pipeline
 
 
 # Defaults
@@ -554,7 +555,7 @@ def compute(
     # Maya block: only requires the date; works even when time is unknown.
     maya_block = maya.build_maya(jd_ut1, correlation=maya_correlation, locale=locale)
 
-    return {
+    calculated_payload = {
         "meta": {
             "version": SCHEMA_VERSION,
             "generated_at_utc": _iso_utc_now(),
@@ -590,3 +591,18 @@ def compute(
         "maya": maya_block,
         "diagnostics": {"codes": diagnostics_codes, "delta_t_source": delta_t_source, "ut1_utc_source": ut1_utc_source},
     }
+
+    pipeline_user_input = {
+        "birthDate": birth_date,
+        "birthTime": raw_birth_time_local,
+        "birthPlace": {"lat": lat, "lon": lon} if lat is not None and lon is not None else None,
+        "timezone": timezone_iana or utc_offset_minutes or utc_offset_hours,
+        "coordinates": {"lat": lat, "lon": lon} if lat is not None and lon is not None else None,
+    }
+    pipeline = run_calculation_pipeline(
+        user_input=pipeline_user_input,
+        enabled_methods=["western", "vedic", "bazi", "human-design", "maya", "energy-profile"],
+        calculated_data=calculated_payload,
+    )
+    calculated_payload["calculation_runtime"] = pipeline
+    return calculated_payload

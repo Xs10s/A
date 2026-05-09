@@ -2668,6 +2668,7 @@
         wrap.appendChild(sectionBaziExplain);
         wrap.appendChild(renderChineseStory(data));
         wrap.appendChild(renderBaziStory(data));
+        appendBaziGlossaryLegend(wrap);
         return wrap;
       }
 
@@ -4093,6 +4094,7 @@
         }
 
         root.appendChild(intro);
+        appendHumanDesignGlossaryLegend(root);
         return root;
       }
 
@@ -4186,6 +4188,7 @@
         }
 
         root.appendChild(intro);
+        appendMayaGlossaryLegend(root);
         return root;
       }
 
@@ -4518,6 +4521,425 @@
         ];
       }
 
+      function baziGlossarySections() {
+        return [
+          {
+            id: "bazi-four-pillars",
+            title: "Vier Pilaren",
+            subtitle: "De vier pilaren vormen de basisstructuur van een BaZi-geboorteprofiel.",
+            intro: "BaZi betekent letterlijk acht tekens: vier Hemelse Stammen en vier Aardse Takken. Samen tonen zij de basisstructuur van timing, context, identiteit en ontwikkelrichting.",
+            items: [
+              { id: "bazi-year-pillar", title: "Jaarpilaar", code: "Year Pillar", badge: "Afkomst", description: "Toont achtergrond, familieveld, vroege context en bredere maatschappelijke laag." },
+              { id: "bazi-month-pillar", title: "Maandpilaar", code: "Month Pillar", badge: "Omgeving", description: "Toont seizoenskwaliteit, opvoeding, werkcontext en sociale omgeving." },
+              { id: "bazi-day-pillar", title: "Dagpilaar", code: "Day Pillar", badge: "Kern", description: "Centrum van de chart; de dagstam is de Day Master en de dagtak geeft relationele basis." },
+              { id: "bazi-hour-pillar", title: "Uurpilaar", code: "Hour Pillar", badge: "Toekomst", description: "Toont latere levensfase, verlangens, creaties, projecten en innerlijke richting." },
+              { id: "bazi-chart", title: "BaZi Chart", code: "八字", badge: "Acht tekens", description: "De combinatie van vier stammen en vier takken vormt de energetische blauwdruk." },
+              { id: "bazi-jieqi", title: "Solar Calendar", code: "Jie Qi", badge: "Zonnekalender", description: "BaZi leest vooral seizoensovergangen en tijdskwaliteit via de zonnekalender." },
+            ],
+          },
+          {
+            id: "bazi-heavenly-stems",
+            title: "Heavenly Stems / Hemelse Stammen",
+            subtitle: "De tien Hemelse Stammen tonen de zichtbare, actieve laag van de vijf elementen.",
+            intro: "Hemelse Stammen zijn de bovenste tekens van de pilaren en tonen element + polariteit in zichtbare vorm.",
+            items: [
+              { id: "jia", title: "Jia", code: "甲", badge: "Yang Hout", description: "Stevige boomenergie: richtinggevend, principieel en opwaarts." },
+              { id: "yi", title: "Yi", code: "乙", badge: "Yin Hout", description: "Flexibele plantenergie: verfijnd, aanpassend en creatief." },
+              { id: "bing", title: "Bing", code: "丙", badge: "Yang Vuur", description: "Zonkwaliteit: zichtbaar, warm, expressief en inspirerend." },
+              { id: "ding", title: "Ding", code: "丁", badge: "Yin Vuur", description: "Vlamkwaliteit: subtiel, gevoelig en geconcentreerd." },
+              { id: "wu-stem", title: "Wu", code: "戊", badge: "Yang Aarde", description: "Bergkwaliteit: stabiel, beschermend en dragend." },
+              { id: "ji", title: "Ji", code: "己", badge: "Yin Aarde", description: "Vruchtbare grond: voedend, praktisch en vormgevend." },
+              { id: "geng", title: "Geng", code: "庚", badge: "Yang Metaal", description: "Ruw metaal: direct, scherp en daadkrachtig." },
+              { id: "xin", title: "Xin", code: "辛", badge: "Yin Metaal", description: "Verfijnd metaal: precies, elegant en kwaliteitsgericht." },
+              { id: "ren", title: "Ren", code: "壬", badge: "Yang Water", description: "Oceaanenergie: vrij, intelligent en bewegelijk." },
+              { id: "gui", title: "Gui", code: "癸", badge: "Yin Water", description: "Regenenergie: subtiel, intuïtief en doordringend." },
+            ],
+          },
+          {
+            id: "bazi-earthly-branches",
+            title: "Earthly Branches / Aardse Takken",
+            subtitle: "De twaalf Aardse Takken tonen de diepere, seizoensgebonden en verborgen laag.",
+            intro: "Aardse Takken zijn meer dan dierenriemlabels: zij bevatten seizoenskwaliteit, verborgen stammen en interacties.",
+            items: [
+              { id: "zi-branch", title: "Zi 子", code: "Rat", badge: "Winter", description: "Waterenergie, aanpassing en verborgen activiteit." },
+              { id: "chou-branch", title: "Chou 丑", code: "Os", badge: "Opslag", description: "Koude aarde met verborgen lagen, geduld en voorbereiding." },
+              { id: "yin-branch", title: "Yin 寅", code: "Tijger", badge: "Begin", description: "Vroege lentekracht, actie en opkomende groei." },
+              { id: "mao-branch", title: "Mao 卯", code: "Konijn", badge: "Groei", description: "Zuivere yin-houtkwaliteit, verfijning en ontwikkeling." },
+              { id: "chen-branch", title: "Chen 辰", code: "Draak", badge: "Overgang", description: "Vochtige aarde, potentie, overgang en innerlijke kracht." },
+              { id: "si-branch", title: "Si 巳", code: "Slang", badge: "Warmte", description: "Vuur met verborgen lagen; intensiteit en transformatie." },
+              { id: "wu-branch", title: "Wu 午", code: "Paard", badge: "Zomer", description: "Sterk vuur, zichtbaarheid, snelheid en expressie." },
+              { id: "wei-branch", title: "Wei 未", code: "Geit", badge: "Rijping", description: "Droge aarde, verwerking en creatieve rijping." },
+              { id: "shen-branch", title: "Shen 申", code: "Aap", badge: "Strategie", description: "Metaalkwaliteit, techniek, beweging en slimheid." },
+              { id: "you-branch", title: "You 酉", code: "Haan", badge: "Precisie", description: "Yin-metaal, verfijning, oordeel en kwaliteit." },
+              { id: "xu-branch", title: "Xu 戌", code: "Hond", badge: "Bewaking", description: "Droge aarde, loyaliteit, bescherming en grenzen." },
+              { id: "hai-branch", title: "Hai 亥", code: "Varken", badge: "Diepte", description: "Waterkwaliteit, gevoeligheid, rust en voorbereiding op groei." },
+            ],
+          },
+          {
+            id: "bazi-five-elements",
+            title: "Vijf Elementen",
+            subtitle: "De vijf elementen vormen de basistaal van BaZi.",
+            intro: "Elementen zijn processen van energie: ontstaan, voeden, begrenzen, transformeren en stromen.",
+            items: [
+              { id: "wood", title: "Hout 木", code: "Wood", badge: "Groei", description: "Ontwikkeling, richting, planning en levenskracht." },
+              { id: "fire", title: "Vuur 火", code: "Fire", badge: "Expressie", description: "Warmte, zichtbaarheid, inspiratie en verbinding." },
+              { id: "earth", title: "Aarde 土", code: "Earth", badge: "Centrum", description: "Stabiliteit, voeding, verantwoordelijkheid en vorm." },
+              { id: "metal", title: "Metaal 金", code: "Metal", badge: "Structuur", description: "Helderheid, grenzen, precisie en verfijning." },
+              { id: "water", title: "Water 水", code: "Water", badge: "Stroming", description: "Wijsheid, beweging, diepte en flexibiliteit." },
+              { id: "sheng", title: "Genererende cyclus", code: "Sheng Cycle", badge: "Voeding", description: "Elementen voeden elkaar in een doorlopende opbouwcyclus." },
+              { id: "ke", title: "Controlerende cyclus", code: "Ke Cycle", badge: "Begrenzing", description: "Elementen begrenzen elkaar om balans te bewaren." },
+            ],
+          },
+          {
+            id: "bazi-yinyang",
+            title: "Yin & Yang",
+            subtitle: "Yin en Yang tonen de polariteit waarmee elk element zich uitdrukt.",
+            intro: "Yang is doorgaans actiever en zichtbaarder; Yin werkt subtieler, ontvankelijker en verfijnder.",
+            items: [
+              { id: "yang-general", title: "Yang", code: "陽", badge: "Actief", description: "Naar buiten, direct, groot en initiërend." },
+              { id: "yin-general", title: "Yin", code: "陰", badge: "Ontvankelijk", description: "Naar binnen, subtiel, vormend en gevoelig." },
+              { id: "yin-yang-elements", title: "Element in polariteit", code: "Jia t/m Gui", badge: "Nuance", description: "Yang Hout werkt anders dan Yin Hout; dit geldt voor alle vijf elementen." },
+            ],
+          },
+          {
+            id: "bazi-day-master",
+            title: "Day Master",
+            subtitle: "De Day Master is het centrale referentiepunt van de chart.",
+            intro: "De Day Master is de Hemelse Stam van de dagpilaar. Alle relaties en balansvragen worden in verhouding tot dit punt gelezen.",
+            items: [
+              { id: "dm-core", title: "Day Master", code: "DM", badge: "Kern", description: "Basiselement waarmee andere elementen relationeel worden geïnterpreteerd." },
+              { id: "dm-strong", title: "Sterke Day Master", code: "Strong DM", badge: "Draagkracht", description: "Veel steun uit seizoen, worteling of vergelijkbare elementen." },
+              { id: "dm-weak", title: "Zwakke Day Master", code: "Weak DM", badge: "Ondersteuning", description: "Minder steun; voedende of ondersteunende elementen worden belangrijk." },
+              { id: "dm-favorable", title: "Favorable Elements", code: "Yong Shen / Useful God", badge: "Helpend", description: "Elementen die de chart functioneel meer balans geven." },
+              { id: "dm-unfavorable", title: "Unfavorable Elements", code: "Ji Shen", badge: "Verstoring", description: "Elementen die disbalans kunnen versterken in de context van de chart." },
+            ],
+          },
+          {
+            id: "bazi-ten-gods",
+            title: "Ten Gods / Tien Goden",
+            subtitle: "De Ten Gods tonen hoe andere elementen zich verhouden tot de Day Master.",
+            intro: "Dit zijn relationele archetypen binnen de chart, geen letterlijke godheden.",
+            items: [
+              { id: "friend", title: "Friend (Bi Jian)", code: "Bi Jian", badge: "Zelfde energie", description: "Autonomie, gelijkwaardigheid, competitie en zelfkracht." },
+              { id: "rob-wealth", title: "Rob Wealth (Jie Cai)", code: "Jie Cai", badge: "Concurrentie", description: "Delen, risico, ondernemerschap en middelen in beweging." },
+              { id: "eating-god", title: "Eating God (Shi Shen)", code: "Shi Shen", badge: "Expressie", description: "Natuurlijke output, creativiteit en productie." },
+              { id: "hurting-officer", title: "Hurting Officer (Shang Guan)", code: "Shang Guan", badge: "Uitdaging", description: "Kritische expressie, vrijheid en intellectuele scherpte." },
+              { id: "direct-wealth", title: "Direct Wealth (Zheng Cai)", code: "Zheng Cai", badge: "Middelen", description: "Praktische geldstroom, verantwoordelijkheid en concrete resultaten." },
+              { id: "indirect-wealth", title: "Indirect Wealth (Pian Cai)", code: "Pian Cai", badge: "Kansen", description: "Kansen, netwerken, handel en beweeglijke financiële energie." },
+              { id: "direct-officer", title: "Direct Officer (Zheng Guan)", code: "Zheng Guan", badge: "Structuur", description: "Discipline, regels, status en gezonde autoriteit." },
+              { id: "seven-killings", title: "Seven Killings (Qi Sha)", code: "Qi Sha", badge: "Druk", description: "Spanning, moed, crisiskracht en leiderschap onder druk." },
+              { id: "direct-resource", title: "Direct Resource (Zheng Yin)", code: "Zheng Yin", badge: "Steun", description: "Kennis, herstel, bescherming en formeel leren." },
+              { id: "indirect-resource", title: "Indirect Resource (Pian Yin)", code: "Pian Yin", badge: "Inzicht", description: "Intuïtie, onconventionele kennis en onderzoek." },
+            ],
+          },
+          {
+            id: "bazi-hidden-stems",
+            title: "Hidden Stems / Verborgen Stammen",
+            subtitle: "Verborgen stammen tonen de dieptelaag binnen de Aardse Takken.",
+            intro: "Elke tak kan meerdere verborgen stammen bevatten die onderliggende motivatie en timing laten zien.",
+            items: [
+              { id: "cang-gan", title: "Hidden Stems (Cang Gan)", code: "Cang Gan", badge: "Onderlaag", description: "Verborgen stammen tonen niet-direct zichtbare invloed." },
+              { id: "main-qi", title: "Main Qi", code: "Dominant", badge: "Hoofdtoon", description: "Belangrijkste verborgen kwaliteit van een tak." },
+              { id: "middle-qi", title: "Middle Qi", code: "Secundair", badge: "Middenlaag", description: "Secundaire laag die via interacties zichtbaar kan worden." },
+              { id: "residual-qi", title: "Residual Qi", code: "Subtiel", badge: "Restlaag", description: "Subtielere onderstroom met aanvullende context." },
+              { id: "rooting", title: "Rooting", code: "Worteling", badge: "Steun", description: "Worteling in takken of hidden stems geeft stabiliteit en diepte." },
+            ],
+          },
+          {
+            id: "bazi-interactions",
+            title: "Interacties & combinaties",
+            subtitle: "Stammen en takken kunnen verbinden, botsen of transformeren.",
+            intro: "BaZi leest vooral dynamiek: hoe energieën elkaar versterken, verstoren of omvormen.",
+            items: [
+              { id: "stem-comb", title: "Heavenly Stem Combination", code: "Stem Combination", badge: "Versmelting", description: "Stamparen kunnen sterke verbinding of transformatie vormen." },
+              { id: "branch-comb", title: "Earthly Branch Combination", code: "Branch Combination", badge: "Verbinding", description: "Takcombinaties sturen elementaire richting en steun." },
+              { id: "six-comb", title: "Six Combinations", code: "六合", badge: "Harmonie", description: "Zes klassieke takparen met harmoniserende potentie." },
+              { id: "clash", title: "Clash", code: "冲", badge: "Beweging", description: "Tegenoverstaande takken geven spanning, verandering of doorbraak." },
+              { id: "punishment", title: "Punishment", code: "刑", badge: "Frictie", description: "Complexe interne spanning of herhalende druk." },
+              { id: "harm", title: "Harm", code: "害", badge: "Verstoring", description: "Subtiele verstoring of misafstemming tussen takken." },
+              { id: "destruction", title: "Destruction", code: "破", badge: "Ontregeling", description: "Ondergraving van structuur of verzwakking van verbinding." },
+              { id: "transformation", title: "Transformation", code: "化", badge: "Verandering", description: "Onder voorwaarden kan combinatie naar ander element transformeren." },
+            ],
+          },
+          {
+            id: "bazi-luck-pillars",
+            title: "Luck Pillars & tijdcycli",
+            subtitle: "Luck Pillars tonen hoe de chart door levensfases wordt geactiveerd.",
+            intro: "Naast de geboortechart werkt BaZi met cycli zoals tienjarige pilaren, jaar- en maandlagen.",
+            items: [
+              { id: "da-yun", title: "Luck Pillar", code: "Da Yun", badge: "10 jaar", description: "Elke levensfase voegt een nieuwe stam-tak combinatie toe." },
+              { id: "liu-nian", title: "Annual Pillar", code: "Liu Nian", badge: "Jaarenergie", description: "Jaarkwaliteit die samenwerkt met geboorte- en luck-pilars." },
+              { id: "liu-yue", title: "Monthly Pillar", code: "Liu Yue", badge: "Maandenergie", description: "Kortere timinglaag voor trends en activaties." },
+              { id: "cycle-start", title: "Luck Cycle Start", code: "Startleeftijd", badge: "Beginpunt", description: "Startmoment van luck cycles wordt individueel berekend." },
+              { id: "useful-timing", title: "Useful Element Timing", code: "Timing", badge: "Balans", description: "Ondersteunende cycli kunnen balans en doorstroom versterken." },
+            ],
+          },
+          {
+            id: "bazi-structures",
+            title: "Chart structuren & balans",
+            subtitle: "Structuur en balans tonen hoe de hele chart functioneert.",
+            intro: "Balans betekent niet gelijke verdeling, maar een werkbaar samenspel tussen seizoenskwaliteit, Day Master, elementen en relaties.",
+            items: [
+              { id: "balanced-chart", title: "Balanced Chart", code: "Balans", badge: "Evenwicht", description: "Voldoende steun en uitdaging met functionele verdeling." },
+              { id: "strong-chart", title: "Strong Chart", code: "Sterk", badge: "Draagkracht", description: "Krachtige kern; vaak behoefte aan output of regulerende elementen." },
+              { id: "weak-chart", title: "Weak Chart", code: "Zwak", badge: "Steun nodig", description: "Minder steun; voedende/vergelijkbare elementen belangrijker." },
+              { id: "follow-structure", title: "Follow Structure", code: "Cong", badge: "Meebewegen", description: "Wanneer kern weinig steun heeft kan volgen van dominante stroom functioneel zijn." },
+              { id: "useful-god", title: "Useful God", code: "用神 Yong Shen", badge: "Sleutelelement", description: "Element of principe dat de chart het best helpt functioneren." },
+              { id: "ji-shen", title: "Ji Shen", code: "忌神", badge: "Disbalans", description: "Energie die disbalans kan versterken in de chartcontext." },
+            ],
+          },
+        ];
+      }
+
+      function humanDesignGlossarySections() {
+        return [
+          {
+            id: "hd-bodygraph",
+            title: "BodyGraph",
+            subtitle: "De BodyGraph is de visuele kaart van het Human Design-profiel.",
+            intro: "Type, strategie, autoriteit, centra, poorten en kanalen worden hierin samengebracht.",
+            items: [
+              { id: "hd-bodygraph-core", title: "BodyGraph", code: "BodyGraph", badge: "Kaart", description: "Volledige Human Design-kaart met activaties en verbindingen." },
+              { id: "hd-personality", title: "Bewuste activaties", code: "Personality", badge: "Bewust", description: "Eigenschappen die vaak direct herkenbaar zijn." },
+              { id: "hd-design", title: "Onbewuste activaties", code: "Design", badge: "Lichaam", description: "Lichamelijke of minder bewuste patronen." },
+              { id: "hd-defined", title: "Defined", code: "Defined", badge: "Consistent", description: "Vaste, consistente energie in de chart." },
+              { id: "hd-open", title: "Open/Undefined", code: "Open", badge: "Ontvankelijk", description: "Gevoelige zones voor conditionering en variatie." },
+            ],
+          },
+          {
+            id: "hd-types",
+            title: "Types",
+            subtitle: "Het type toont hoe iemands energieveld globaal functioneert.",
+            intro: "Type is een ingang, maar werkt altijd samen met strategie en autoriteit.",
+            items: [
+              { id: "hd-manifestor", title: "Manifestor", code: "Manifestor", badge: "Initiator", description: "Start beweging en informeert vooraf voor meer flow." },
+              { id: "hd-generator", title: "Generator", code: "Generator", badge: "Bouwer", description: "Reageert met sacrale energie op wat klopt." },
+              { id: "hd-mg", title: "Manifesting Generator", code: "Manifesting Generator", badge: "Snelle bouwer", description: "Combinatie van respons en snelle uitvoering." },
+              { id: "hd-projector", title: "Projector", code: "Projector", badge: "Gids", description: "Leest systemen en mensen, met belang van erkenning." },
+              { id: "hd-reflector", title: "Reflector", code: "Reflector", badge: "Spiegel", description: "Sterk afgestemd op omgeving en cyclische timing." },
+            ],
+          },
+          {
+            id: "hd-strategy",
+            title: "Strategie",
+            subtitle: "Strategie beschrijft hoe iemand volgens Human Design het beste meebeweegt.",
+            intro: "Strategie helpt om minder vanuit conditionering en meer vanuit natuurlijke stroom te handelen.",
+            items: [
+              { id: "hd-strategy-manifestor", title: "Informeren", code: "Manifestor", badge: "Vooraf delen", description: "Vermindert weerstand en maakt impact helderder." },
+              { id: "hd-strategy-generator", title: "Reageren", code: "Generator", badge: "Respons", description: "Volg wat energetisch klopt in plaats van forceren." },
+              { id: "hd-strategy-mg", title: "Reageren en daarna informeren", code: "Manifesting Generator", badge: "Respons + beweging", description: "Eerst afstemmen via respons, daarna communiceren." },
+              { id: "hd-strategy-projector", title: "Wachten op uitnodiging", code: "Projector", badge: "Erkenning", description: "Grote stappen werken beter met uitnodiging." },
+              { id: "hd-strategy-reflector", title: "Wachten op maancyclus", code: "Reflector", badge: "Tijd", description: "Belangrijke keuzes rijpen over meerdere fases." },
+            ],
+          },
+          {
+            id: "hd-authority",
+            title: "Autoriteit",
+            subtitle: "Autoriteit toont hoe iemand beslissingen neemt vanuit innerlijke afstemming.",
+            intro: "Binnen Human Design is autoriteit de primaire beslisroute.",
+            items: [
+              { id: "hd-auth-emotional", title: "Emotionele autoriteit", code: "Emotional Authority", badge: "Golf", description: "Helderheid ontstaat via tijd over de emotionele golf." },
+              { id: "hd-auth-sacral", title: "Sacrale autoriteit", code: "Sacral Authority", badge: "Respons", description: "Direct ja/nee-signaal via het lichaam." },
+              { id: "hd-auth-splenic", title: "Splenische autoriteit", code: "Splenic Authority", badge: "Instinct", description: "Snelle intuïtieve impuls rond timing en veiligheid." },
+              { id: "hd-auth-ego", title: "Ego/Hart autoriteit", code: "Ego Authority", badge: "Wil", description: "Keuze via eerlijke wil en draagkracht." },
+              { id: "hd-auth-self", title: "Zelf-geprojecteerde autoriteit", code: "Self-Projected", badge: "Stem", description: "Richting wordt helder door uitspreken." },
+              { id: "hd-auth-mental", title: "Mentale/omgevingsautoriteit", code: "Mental Projector", badge: "Omgeving", description: "Helderheid via juiste omgeving en klankbord." },
+              { id: "hd-auth-lunar", title: "Lunaire autoriteit", code: "Lunar Authority", badge: "Maancyclus", description: "Reflector-besluitvorming via cyclische rijping." },
+            ],
+          },
+          {
+            id: "hd-centers",
+            title: "Centra",
+            subtitle: "De negen centra tonen waar energie consistent of open werkt.",
+            intro: "Gedefinieerd betekent meestal stabieler; open betekent ontvankelijker.",
+            items: [
+              { id: "hd-head", title: "Head", code: "Head", badge: "Inspiratie", description: "Mentale druk en vragen." },
+              { id: "hd-ajna", title: "Ajna", code: "Ajna", badge: "Denken", description: "Concepten, analyse en overtuigingen." },
+              { id: "hd-throat", title: "Throat", code: "Throat", badge: "Expressie", description: "Communicatie en manifestatie." },
+              { id: "hd-g", title: "G Center", code: "G", badge: "Richting", description: "Identiteit, liefde en richting." },
+              { id: "hd-heart", title: "Heart/Ego", code: "Ego", badge: "Wil", description: "Wilskracht, waarde en belofte." },
+              { id: "hd-solar", title: "Solar Plexus", code: "Solar Plexus", badge: "Emotie", description: "Emotionele golf en gevoeligheid." },
+              { id: "hd-sacral", title: "Sacral", code: "Sacral", badge: "Levensenergie", description: "Duurzame bouw- en responsenergie." },
+              { id: "hd-spleen", title: "Spleen", code: "Spleen", badge: "Instinct", description: "Instinct, veiligheid en gezondheidssignaal." },
+              { id: "hd-root", title: "Root", code: "Root", badge: "Druk", description: "Stressdruk en aandrijving." },
+            ],
+          },
+          {
+            id: "hd-profiles",
+            title: "Profielen",
+            subtitle: "Profielen beschrijven rol, leerstijl en levenshouding.",
+            intro: "Profielen combineren twee lijnen en geven context aan gedrag en ontwikkeling.",
+            items: [
+              { id: "hd-line-1", title: "Lijn 1 - Onderzoeker", code: "1", badge: "Fundament", description: "Bouwt zekerheid via kennis, onderzoek en voorbereiding." },
+              { id: "hd-line-2", title: "Lijn 2 - Natuurtalent", code: "2", badge: "Natuurlijkheid", description: "Toont natuurlijke gave met behoefte aan rust en terugtrekking." },
+              { id: "hd-line-3", title: "Lijn 3 - Experimenteerder", code: "3", badge: "Ervaring", description: "Leert via proberen, fouten, aanpassing en praktijk." },
+              { id: "hd-line-4", title: "Lijn 4 - Verbinder", code: "4", badge: "Netwerk", description: "Groeit via vertrouwen, relaties en sociaal draagvlak." },
+              { id: "hd-line-5", title: "Lijn 5 - Probleemoplosser", code: "5", badge: "Projectie", description: "Brengt praktische oplossingen en draagt externe verwachtingen." },
+              { id: "hd-line-6", title: "Lijn 6 - Rolmodel", code: "6", badge: "Rijping", description: "Rijpt in levensfasen richting voorbeeld en overzicht." },
+              { id: "hd-profile-13", title: "1/3 profiel", code: "1/3", badge: "Onderzoek + ervaring", description: "Combineert grondig onderzoek met leren in de praktijk." },
+              { id: "hd-profile-14", title: "1/4 profiel", code: "1/4", badge: "Fundament + netwerk", description: "Bouwt kennis op en deelt via vertrouwde kring." },
+              { id: "hd-profile-24", title: "2/4 profiel", code: "2/4", badge: "Talent + netwerk", description: "Natuurlijke gave krijgt richting via relaties." },
+              { id: "hd-profile-25", title: "2/5 profiel", code: "2/5", badge: "Talent + projectie", description: "Talent en zichtbaarheid vragen heldere grenzen." },
+              { id: "hd-profile-35", title: "3/5 profiel", code: "3/5", badge: "Ervaring + oplossing", description: "Test veel en vertaalt dat naar praktische oplossingen." },
+              { id: "hd-profile-36", title: "3/6 profiel", code: "3/6", badge: "Ervaring + rijping", description: "Rijpt via veel ervaring naar meer overzicht." },
+              { id: "hd-profile-46", title: "4/6 profiel", code: "4/6", badge: "Netwerk + rijping", description: "Groeit relationeel richting voorbeeldfunctie." },
+              { id: "hd-profile-41", title: "4/1 profiel", code: "4/1", badge: "Netwerk + fundament", description: "Stabiele basis met invloed via netwerk." },
+              { id: "hd-profile-51", title: "5/1 profiel", code: "5/1", badge: "Projectie + onderzoek", description: "Oplossingsgericht met nood aan degelijke onderbouwing." },
+              { id: "hd-profile-52", title: "5/2 profiel", code: "5/2", badge: "Projectie + talent", description: "Zichtbaarheid combineert met behoefte aan terugtrekking." },
+              { id: "hd-profile-62", title: "6/2 profiel", code: "6/2", badge: "Rolmodel + talent", description: "Talent ontwikkelt in fases richting rolmodel." },
+              { id: "hd-profile-63", title: "6/3 profiel", code: "6/3", badge: "Rolmodel + ervaring", description: "Wijsheid ontstaat via ervaring en latere integratie." },
+            ],
+          },
+          {
+            id: "hd-gates",
+            title: "Gates / Poorten",
+            subtitle: "Poorten tonen specifieke thema’s en frequenties.",
+            intro: "Poorten zijn gekoppeld aan de 64 I Ching-hexagrammen.",
+            items: [
+              { id: "hd-gate", title: "Poort", code: "Gate", badge: "Thema", description: "Specifieke kwaliteit binnen een centrum." },
+              { id: "hd-gate-active", title: "Actieve poort", code: "Active Gate", badge: "Geactiveerd", description: "Poort geactiveerd door planeetpositie." },
+              { id: "hd-gate-hanging", title: "Hangende poort", code: "Hanging Gate", badge: "Open verbinding", description: "Eén zijde actief, andere zijde ontbreekt." },
+              { id: "hd-gate-line", title: "Poortlijn", code: "Line 1-6", badge: "Nuance", description: "Lijnen verfijnen de manier van uitdrukken." },
+            ],
+          },
+          {
+            id: "hd-channels",
+            title: "Kanalen",
+            subtitle: "Kanalen verbinden twee centra en vormen consistente circuits.",
+            intro: "Twee geactiveerde tegenoverliggende poorten vormen een kanaal.",
+            items: [
+              { id: "hd-channel", title: "Kanaal", code: "Channel", badge: "Verbinding", description: "Volledige verbinding tussen twee centra." },
+              { id: "hd-channel-defined", title: "Gedefinieerd kanaal", code: "Defined Channel", badge: "Consistent", description: "Constante energetische doorstroom." },
+              { id: "hd-channel-em", title: "Elektromagnetisch kanaal", code: "Electromagnetic", badge: "Aantrekking", description: "Kanaal ontstaat in dynamiek tussen mensen." },
+              { id: "hd-circuits", title: "Circuits", code: "Integration/Individual/Collective/Tribal", badge: "Stroom", description: "Functionele families met verschillende thema’s." },
+            ],
+          },
+          {
+            id: "hd-definition",
+            title: "Definitie",
+            subtitle: "Definitie toont hoe intern verbonden gedefinieerde centra zijn.",
+            intro: "Definitie beïnvloedt hoe iemand eigen energie en samenwerking ervaart.",
+            items: [
+              { id: "hd-single", title: "Single Definition", code: "Single", badge: "Eén geheel", description: "Interne samenhang in één cluster." },
+              { id: "hd-split", title: "Split Definition", code: "Split", badge: "Twee delen", description: "Twee interne delen die via brugervaring verbinden." },
+              { id: "hd-triple", title: "Triple Split Definition", code: "Triple Split", badge: "Drie delen", description: "Drie clusters; variatie kan helpen verbinden." },
+              { id: "hd-quad", title: "Quadruple Split Definition", code: "Quadruple Split", badge: "Vier delen", description: "Vier interne delen met complexe verbinding." },
+              { id: "hd-nodef", title: "No Definition", code: "Reflector", badge: "Geen definitie", description: "Geen gedefinieerde centra." },
+            ],
+          },
+          {
+            id: "hd-incarnation-cross",
+            title: "Incarnation Cross",
+            subtitle: "Het Incarnation Cross toont een groter levensthema.",
+            intro: "Gebaseerd op bewuste en onbewuste Zon- en Aardepoorten.",
+            items: [
+              { id: "hd-cross", title: "Incarnation Cross", code: "4 poorten", badge: "Levensthema", description: "Kernrichting op basis van zon/aarde-activaties." },
+              { id: "hd-right-angle", title: "Right Angle Cross", code: "Right Angle", badge: "Persoonlijk", description: "Wordt vaak als persoonlijker pad gelezen." },
+              { id: "hd-left-angle", title: "Left Angle Cross", code: "Left Angle", badge: "Relationeel", description: "Wordt vaak relationeler of karmischer gelezen." },
+              { id: "hd-juxtaposition", title: "Juxtaposition Cross", code: "Juxtaposition", badge: "Vaste richting", description: "Meer vaste thematische richting." },
+            ],
+          },
+          {
+            id: "hd-conditioning",
+            title: "Conditioning",
+            subtitle: "Conditioning toont waar externe invloeden sterk worden opgepikt.",
+            intro: "Openheid kan wijsheid geven, maar ook verwarring als het als eigen energie wordt gelezen.",
+            items: [
+              { id: "hd-conditioning", title: "Conditionering", code: "Conditioning", badge: "Invloed", description: "Externe energie overnemen als schijnbaar eigen." },
+              { id: "hd-notself", title: "Not-Self Theme", code: "Not-Self", badge: "Signaal", description: "Type-specifiek signaal van afstemmingstekort." },
+              { id: "hd-signature", title: "Signature", code: "Signature", badge: "Afstemming", description: "Ervaren kwaliteit bij leven volgens design." },
+              { id: "hd-deconditioning", title: "Deconditionering", code: "Deconditioning", badge: "Ontleren", description: "Proces van onderscheiden: van mij of van buiten?" },
+            ],
+          },
+          {
+            id: "hd-variables-phs",
+            title: "Variables & PHS",
+            subtitle: "Geavanceerde lagen rond verwerking, omgeving en waarneming.",
+            intro: "In deze app als reflectieve verdieping, niet als absolute waarheid.",
+            items: [
+              { id: "hd-variables", title: "Variables", code: "4 pijlen", badge: "Verfijning", description: "Oriëntatie op processing, perspectief en omgeving." },
+              { id: "hd-phs", title: "PHS", code: "Primary Health System", badge: "Lichaam", description: "Lichamelijke afstemming op input en omgeving." },
+              { id: "hd-determination", title: "Determination", code: "Nutrition", badge: "Verwerking", description: "Manier waarop het systeem voeding/prikkels verwerkt." },
+              { id: "hd-environment", title: "Environment", code: "Environment", badge: "Plek", description: "Omgevingskwaliteit die afstemming ondersteunt." },
+              { id: "hd-perspective", title: "Perspective", code: "Perspective", badge: "Waarneming", description: "Natuurlijke manier van kijken en filteren." },
+              { id: "hd-motivation", title: "Motivation", code: "Motivation", badge: "Drijfveer", description: "Onderliggende motivatie in duiding en keuzes." },
+            ],
+          },
+        ];
+      }
+
+      function mayaGlossarySections() {
+        return [
+          {
+            id: "maya-tzolkin",
+            title: "Tzolkin kalender",
+            subtitle: "De Tzolkin is een 260-daagse cyclus van 20 zonnezegels en 13 tonen.",
+            intro: "Deze methode wordt in de app als symbolische en reflectieve tijdslaag gebruikt.",
+            items: [
+              { id: "maya-tzolkin-core", title: "Tzolkin", code: "260", badge: "Cyclus", description: "20 zegels x 13 tonen geeft 260 unieke dagkwaliteiten." },
+              { id: "maya-kin", title: "Kin", code: "1-260", badge: "Dagpositie", description: "Één unieke positie in de Tzolkin-cyclus." },
+              { id: "maya-signature", title: "Galactische signatuur", code: "Seal + Tone", badge: "Kerncode", description: "Combinatie van zonnezegel en toon." },
+            ],
+          },
+          { id: "maya-kin-signature", title: "Kin & galactische signatuur", subtitle: "Kin is de dagpositie, signatuur is toon + zegel.", intro: "Kin en signatuur vormen de persoonlijke ingang in deze methode.", items: [{ id: "maya-kin-number", title: "Kin-nummer", code: "1-260", badge: "Plaats", description: "Positie in de 260-daagse cyclus." }, { id: "maya-signature-combo", title: "Zegel + toon", code: "Seal + Tone", badge: "Combinatie", description: "Samen vormen zij de dagcode." }] },
+          {
+            id: "maya-seals",
+            title: "Zonnezegels",
+            subtitle: "De 20 zonnezegels tonen archetypische dagkwaliteiten.",
+            intro: "Zegels worden reflectief gelezen als thema’s, niet als vaststaand lot.",
+            items: [
+              { id: "maya-seal-1", title: "Rode Draak", code: "Imix", badge: "Voeding", description: "Staat voor oorsprong, geboorte en basisvertrouwen." },
+              { id: "maya-seal-2", title: "Witte Wind", code: "Ik", badge: "Adem", description: "Communicatie, inspiratie en bezieling." },
+              { id: "maya-seal-3", title: "Blauwe Nacht", code: "Akbal", badge: "Droom", description: "Innerlijke ruimte, verbeelding en overvloed." },
+              { id: "maya-seal-4", title: "Gele Zaad", code: "Kan", badge: "Groei", description: "Potentie, richting en ontwikkeling." },
+              { id: "maya-seal-5", title: "Rode Slang", code: "Chicchan", badge: "Levenskracht", description: "Instinct, vitaliteit en lichaamswijsheid." },
+              { id: "maya-seal-6", title: "Witte Wereldoverbrugger", code: "Cimi", badge: "Loslaten", description: "Staat voor overgang, afronding en overgave." },
+              { id: "maya-seal-7", title: "Blauwe Hand", code: "Manik", badge: "Heling", description: "Handelen, herstel en voltooiing." },
+              { id: "maya-seal-8", title: "Gele Ster", code: "Lamat", badge: "Schoonheid", description: "Harmonie, esthetiek en verfijning." },
+              { id: "maya-seal-9", title: "Rode Maan", code: "Muluc", badge: "Stroming", description: "Gevoel, zuivering en beweging." },
+              { id: "maya-seal-10", title: "Witte Hond", code: "Oc", badge: "Liefde", description: "Hart, loyaliteit en relationele waarheid." },
+              { id: "maya-seal-11", title: "Blauwe Aap", code: "Chuen", badge: "Spel", description: "Creativiteit, humor en speelse magie." },
+              { id: "maya-seal-12", title: "Gele Mens", code: "Eb", badge: "Keuze", description: "Vrije wil, invloed en verantwoordelijkheid." },
+              { id: "maya-seal-13", title: "Rode Hemelwandelaar", code: "Ben", badge: "Verkenning", description: "Ruimte, avontuur en grensverruiming." },
+              { id: "maya-seal-14", title: "Witte Tovenaar", code: "Ix", badge: "Aanwezigheid", description: "Ontvankelijkheid, integriteit en tijdloosheid." },
+              { id: "maya-seal-15", title: "Blauwe Adelaar", code: "Men", badge: "Visie", description: "Perspectief, overzicht en collectieve blik." },
+              { id: "maya-seal-16", title: "Gele Krijger", code: "Cib", badge: "Vraag", description: "Moed, intelligentie en onderzoek." },
+              { id: "maya-seal-17", title: "Rode Aarde", code: "Caban", badge: "Navigatie", description: "Timing, afstemming en synchronisatie." },
+              { id: "maya-seal-18", title: "Witte Spiegel", code: "Etznab", badge: "Waarheid", description: "Reflectie, helderheid en ordening." },
+              { id: "maya-seal-19", title: "Blauwe Storm", code: "Cauac", badge: "Transformatie", description: "Staat voor doorbraak, zuivering en vernieuwing." },
+              { id: "maya-seal-20", title: "Gele Zon", code: "Ahau", badge: "Bewustzijn", description: "Licht, voltooiing en helderheid." },
+            ],
+          },
+          {
+            id: "maya-tones",
+            title: "Galactische tonen",
+            subtitle: "13 tonen beschrijven hoe een thema beweegt.",
+            intro: "Van aantrekken tot afronding: de toon geeft bewegingskwaliteit aan het zegel.",
+            items: [
+              { id: "maya-tone-1", title: "Toon 1 - Magnetisch", code: "1", badge: "Aantrekken", description: "Initieert en bundelt energie rond intentie." },
+              { id: "maya-tone-2", title: "Toon 2 - Lunair", code: "2", badge: "Polariteit", description: "Toont contrast, uitdaging en richtingkeuze." },
+              { id: "maya-tone-3", title: "Toon 3 - Elektrisch", code: "3", badge: "Activeren", description: "Brengt energie in beweging en verbinding." },
+              { id: "maya-tone-4", title: "Toon 4 - Zelfbestaand", code: "4", badge: "Vorm", description: "Geeft structuur en definitie." },
+              { id: "maya-tone-5", title: "Toon 5 - Boventoon", code: "5", badge: "Kracht", description: "Versterkt centrum, leiding en focus." },
+              { id: "maya-tone-6", title: "Toon 6 - Ritmisch", code: "6", badge: "Balans", description: "Zoekt organisatie en praktische harmonie." },
+              { id: "maya-tone-7", title: "Toon 7 - Resonant", code: "7", badge: "Afstemming", description: "Werkt via inspiratie en resonantie." },
+              { id: "maya-tone-8", title: "Toon 8 - Galactisch", code: "8", badge: "Integriteit", description: "Leven in lijn met waarde en vorm." },
+              { id: "maya-tone-9", title: "Toon 9 - Solair", code: "9", badge: "Intentie", description: "Richt de puls en realisatiekracht." },
+              { id: "maya-tone-10", title: "Toon 10 - Planetair", code: "10", badge: "Manifestatie", description: "Maakt zichtbaar en concreet." },
+              { id: "maya-tone-11", title: "Toon 11 - Spectraal", code: "11", badge: "Bevrijding", description: "Laat los en opent ruimte." },
+              { id: "maya-tone-12", title: "Toon 12 - Kristal", code: "12", badge: "Samenwerking", description: "Delen, afstemmen en collectieve focus." },
+              { id: "maya-tone-13", title: "Toon 13 - Kosmisch", code: "13", badge: "Transcendentie", description: "Afronding en overgang naar nieuwe cyclus." },
+            ],
+          },
+          { id: "maya-wavespells", title: "Wavespells", subtitle: "Een wavespell is een cyclus van 13 dagen.", intro: "Toont ontwikkelboog van intentie naar afronding.", items: [{ id: "maya-wavespell", title: "Wavespell", code: "13 dagen", badge: "Ontwikkelboog", description: "Cyclische boog met drager op toon 1." }] },
+          { id: "maya-castles", title: "Kastelen", subtitle: "Kastelen zijn fases van 52 dagen binnen de Tzolkin.", intro: "Vijf kastelen geven grotere context aan de kin-positie.", items: [{ id: "maya-castle-list", title: "Vijf kastelen", code: "Rood/Wit/Blauw/Geel/Groen", badge: "Fase", description: "Structureren de 260 dagen in grotere ritmes." }] },
+          { id: "maya-oracle", title: "Oracle structuur", subtitle: "Oracle toont aanvullende krachten rond het centrale zegel.", intro: "Center, Guide, Analog, Antipode en Occult geven bredere context.", items: [{ id: "maya-oracle-roles", title: "Oracle rollen", code: "5 krachten", badge: "Samenhang", description: "Centrale en aanvullende archetypische posities." }] },
+          { id: "maya-time-sync", title: "Tijdkwaliteit & synchronisatie", subtitle: "Tijd wordt gelezen als ritme en betekenis.", intro: "Deze methode bekijkt terugkerende cycli als reflectiemomenten.", items: [{ id: "maya-time-quality", title: "Tijdkwaliteit", code: "Quality of Time", badge: "Betekenis", description: "Dagkwaliteit als symbolisch ritme." }] },
+          { id: "maya-dreamspell-vs-trad", title: "Dreamspell vs traditionele Maya-systemen", subtitle: "Moderne en traditionele systemen zijn niet hetzelfde.", intro: "Culturele nuance blijft belangrijk in de presentatie van deze laag.", items: [{ id: "maya-nuance", title: "Culturele zorgvuldigheid", code: "Nuance", badge: "Context", description: "Dreamspell wordt niet gelijkgesteld aan alle Maya-tradities." }] },
+          { id: "maya-integration", title: "Integratie in het energieprofiel", subtitle: "De Maya/Tzolkin-laag voegt tijd- en archetypekleur toe.", intro: "In de app wordt dit als reflectieve brug gebruikt tussen methodes.", items: [{ id: "maya-profile-integration", title: "Integratielaag", code: "Reflectie", badge: "Brug", description: "Verbindt ritme, betekenis en persoonlijke observatie." }] },
+        ];
+      }
+
       function jyotishGlossarySections() {
         return [
           {
@@ -4736,6 +5158,66 @@
                 : (item.code || item.title || ""),
               codeTitle: item.alt || item.meaning || item.title || "",
               badge: item.badge || item.category || "",
+              title: item.title || "",
+              body: item.description || "",
+              footer: "",
+            })),
+          });
+        });
+      }
+
+      function appendBaziGlossaryLegend(frag) {
+        baziGlossarySections().forEach((section) => {
+          appendLegendSection(frag, {
+            id: section.id,
+            title: section.title,
+            eyebrow: section.subtitle,
+            lead: section.intro,
+            items: (section.items || []).map((item) => ({
+              id: item.id,
+              codeLabel: item.code || item.symbol || item.title || "",
+              codeTitle: item.alt || item.title || "",
+              badge: item.badge || "",
+              title: item.title || "",
+              body: item.description || "",
+              footer: "",
+            })),
+          });
+        });
+      }
+
+      function appendHumanDesignGlossaryLegend(frag) {
+        humanDesignGlossarySections().forEach((section) => {
+          appendLegendSection(frag, {
+            id: section.id,
+            title: section.title,
+            eyebrow: section.subtitle,
+            lead: section.intro,
+            items: (section.items || []).map((item) => ({
+              id: item.id,
+              codeLabel: item.code || item.symbol || item.title || "",
+              codeTitle: item.alt || item.title || "",
+              badge: item.badge || "",
+              title: item.title || "",
+              body: item.description || "",
+              footer: "",
+            })),
+          });
+        });
+      }
+
+      function appendMayaGlossaryLegend(frag) {
+        mayaGlossarySections().forEach((section) => {
+          appendLegendSection(frag, {
+            id: section.id,
+            title: section.title,
+            eyebrow: section.subtitle,
+            lead: section.intro,
+            items: (section.items || []).map((item) => ({
+              id: item.id,
+              codeLabel: item.code || item.symbol || item.title || "",
+              codeTitle: item.alt || item.title || "",
+              badge: item.badge || "",
               title: item.title || "",
               body: item.description || "",
               footer: "",

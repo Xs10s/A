@@ -3347,6 +3347,36 @@
         return shortenText(meaning || fallbackText, 210);
       }
 
+      function getInputCompletenessSummary(data) {
+        const birth = (data && data.input && data.input.birth) || {};
+        const place = birth.place || {};
+        const tz = birth.timezone || {};
+        const provided = birth.provided || {};
+        const assumptions = birth.assumptions || {};
+        const diagnosticsCodes = (data && data.diagnostics && data.diagnostics.codes) || [];
+
+        const hasDate = !!birth.date;
+        const hasTime = Object.prototype.hasOwnProperty.call(provided, "time_local")
+          ? !!provided.time_local
+          : !!birth.time_local;
+        const hasLocation = Object.prototype.hasOwnProperty.call(provided, "location")
+          ? !!provided.location
+          : (place.lat != null && place.lon != null);
+        const hasTimezone = Object.prototype.hasOwnProperty.call(provided, "timezone")
+          ? !!provided.timezone
+          : (!!tz.iana || tz.utc_offset_hours != null || tz.utc_offset_minutes != null);
+        const timeDefaulted = !!assumptions.time_was_defaulted || diagnosticsCodes.includes("USED_DEFAULT_TIME");
+
+        return {
+          hasDate,
+          hasTime,
+          hasLocation,
+          hasTimezone,
+          timeDefaulted,
+          incomplete: !hasDate || !hasTime || !hasLocation || !hasTimezone || timeDefaulted,
+        };
+      }
+
       function renderDashboardHeroV2(data) {
         const isNL = uiIsNL();
         const birth = (data.input && data.input.birth) || {};
@@ -3356,7 +3386,8 @@
         const timeValue = birth.time_local ? String(birth.time_local).slice(0, 5) : "-";
         const zoneValue = tz.iana || (tz.utc_offset_hours != null ? `UTC${tz.utc_offset_hours >= 0 ? "+" : ""}${tz.utc_offset_hours}` : "-");
         const utcValue = tz.utc_offset_hours != null ? `UTC${tz.utc_offset_hours >= 0 ? "+" : ""}${tz.utc_offset_hours}` : "-";
-        const incompleteInput = !birth.date || !birth.time_local || place.lat == null || place.lon == null || (!tz.iana && tz.utc_offset_hours == null);
+        const completeness = getInputCompletenessSummary(data);
+        const incompleteInput = completeness.incomplete;
 
         const western = data.western || {};
         const vedic = data.vedic || {};
@@ -3431,13 +3462,18 @@
         });
         left.appendChild(stats);
         if (incompleteInput) {
+          const missingInput = [];
+          if (!completeness.hasTime || completeness.timeDefaulted) missingInput.push(isNL ? "exacte geboortetijd" : "exact birth time");
+          if (!completeness.hasLocation) missingInput.push(isNL ? "geboortelocatie" : "birth location");
+          if (!completeness.hasTimezone) missingInput.push(isNL ? "tijdzone" : "timezone");
+          const missingLabel = missingInput.length ? missingInput.join(", ") : (isNL ? "één of meer invoervelden" : "one or more input fields");
           left.appendChild(
             createEl(
               "div",
               "astro-note astro-note--warning",
               isNL
-                ? "Waarschuwing: invoerdata is onvolledig. Voor huizen en Ascendant zijn een exacte geboortetijd, locatie en tijdzone nodig. Resultaten kunnen daardoor afwijken of gedeeltelijk ontbreken."
-                : "Warning: input data is incomplete. Exact birth time, location and timezone are required for houses and Ascendant. Results may differ or be partly unavailable."
+                ? `Waarschuwing: invoerdata is onvolledig of deels geschat (${missingLabel}). Voor huizen en Ascendant zijn exacte tijd, locatie en tijdzone nodig. Resultaten kunnen daardoor afwijken of gedeeltelijk ontbreken.`
+                : `Warning: input data is incomplete or partly estimated (${missingLabel}). Exact time, location, and timezone are required for houses and Ascendant. Results may differ or be partly unavailable.`
             )
           );
         }

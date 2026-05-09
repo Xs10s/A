@@ -24,8 +24,10 @@ def test_viewmodel_date_only_input():
     vm = build_view_model(out)
     assert "input_summary" in vm
     assert vm["input_summary"]["completeness"]["has_date"] is True
+    assert vm["input_summary"]["completeness"]["has_time"] is False
     assert vm["input_summary"]["completeness"]["has_location"] is False
     assert vm["input_summary"]["completeness"]["has_timezone"] is False
+    assert vm["input_summary"]["completeness"]["time_is_defaulted"] is True
     assert "diagnostics" in vm
     codes = vm["diagnostics"].get("codes", [])
     assert "NO_BIRTHTIME" in codes or "USED_DEFAULT_TIME" in codes or "NO_TIMEZONE" in codes

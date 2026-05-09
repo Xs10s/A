@@ -42,6 +42,11 @@ def _input_summary(engine_json: dict[str, Any]) -> dict[str, Any]:
     if lat is not None and lon is not None:
         place_label = f"{lat:.4f}, {lon:.4f}"
     time_display = "niet opgegeven" if not time_val else time_val[:5] if len(time_val or "") >= 5 else time_val
+    provided = birth.get("provided") or {}
+    assumptions = birth.get("assumptions") or {}
+    has_time_input = bool(provided.get("time_local")) if "time_local" in provided else bool(time_val)
+    has_location_input = bool(provided.get("location")) if "location" in provided else (lat is not None and lon is not None)
+    has_timezone_input = bool(provided.get("timezone")) if "timezone" in provided else has_tz
     return {
         "birth_date": date_val or "niet opgegeven",
         "birth_time_local": time_display,
@@ -49,9 +54,10 @@ def _input_summary(engine_json: dict[str, Any]) -> dict[str, Any]:
         "timezone_label": zone_label,
         "completeness": {
             "has_date": bool(date_val),
-            "has_time": bool(time_val),
-            "has_location": lat is not None and lon is not None,
-            "has_timezone": has_tz,
+            "has_time": has_time_input,
+            "has_location": has_location_input,
+            "has_timezone": has_timezone_input,
+            "time_is_defaulted": bool(assumptions.get("time_was_defaulted")),
         },
     }
 

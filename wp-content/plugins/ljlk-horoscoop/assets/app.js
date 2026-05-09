@@ -58,6 +58,14 @@
     return div.innerHTML;
   }
 
+  function formatI18n(template, vars) {
+    var out = String(template || '');
+    Object.keys(vars || {}).forEach(function (k) {
+      out = out.split('{' + k + '}').join(String(vars[k]));
+    });
+    return out;
+  }
+
   function renderBlock(block, title) {
     if (block == null || (typeof block === 'object' && Object.keys(block).length === 0)) {
       return '<p class="ljlk-block-empty">—</p>';
@@ -100,12 +108,12 @@
     var tabs = [];
     var panels = [];
     var methods = [
-      { id: 'story', label: i18n.story || 'Story' },
-      { id: 'western', label: i18n.western || 'Western' },
-      { id: 'sidereal', label: i18n.sidereal || 'Sidereal' },
-      { id: 'vedic', label: i18n.vedic || 'Vedic' },
-      { id: 'chinese', label: i18n.chinese || 'Chinese' },
-      { id: 'diagnostics', label: i18n.diagnostics || 'Diagnostics' },
+      { id: 'story', label: i18n.story || 'Verhaal' },
+      { id: 'western', label: i18n.western || 'Westers' },
+      { id: 'sidereal', label: i18n.sidereal || 'Siderisch' },
+      { id: 'vedic', label: i18n.vedic || 'Vedisch' },
+      { id: 'chinese', label: i18n.chinese || 'Chinees' },
+      { id: 'diagnostics', label: i18n.diagnostics || 'Diagnostiek' },
     ];
     methods.forEach(function (m, i) {
       var block = horoscoop[m.id];
@@ -119,8 +127,39 @@
     });
     out.push('<div class="ljlk-tabs" role="tablist">' + tabs.join('') + '</div>');
     out.push('<div class="ljlk-tab-panels">' + panels.join('') + '</div>');
-    out.push('<details class="ljlk-raw-json"><summary>' + (i18n.rawJson || 'Raw JSON') + '</summary><pre>' + escapeHtml(JSON.stringify(horoscoop, null, 2)) + '</pre></details>');
+    out.push('<details class="ljlk-raw-json"><summary>' + (i18n.rawJson || 'Ruwe JSON') + '</summary><pre>' + escapeHtml(JSON.stringify(horoscoop, null, 2)) + '</pre></details>');
     return out.join('');
+  }
+
+  function getInputCompletenessSummary(h) {
+    var birth = (h && h.input && h.input.birth) || {};
+    var place = birth.place || {};
+    var tz = birth.timezone || {};
+    var provided = birth.provided || {};
+    var assumptions = birth.assumptions || {};
+    var diagnostics = (h && h.diagnostics) || {};
+    var codes = Array.isArray(diagnostics.codes) ? diagnostics.codes : [];
+
+    var hasDate = !!birth.date;
+    var hasTime = Object.prototype.hasOwnProperty.call(provided, 'time_local')
+      ? !!provided.time_local
+      : !!birth.time_local;
+    var hasLocation = Object.prototype.hasOwnProperty.call(provided, 'location')
+      ? !!provided.location
+      : (place.lat != null && place.lon != null);
+    var hasTimezone = Object.prototype.hasOwnProperty.call(provided, 'timezone')
+      ? !!provided.timezone
+      : (!!tz.iana || tz.utc_offset_hours != null || tz.utc_offset_minutes != null);
+    var timeDefaulted = !!assumptions.time_was_defaulted || codes.indexOf('USED_DEFAULT_TIME') !== -1;
+
+    return {
+      hasDate: hasDate,
+      hasTime: hasTime,
+      hasLocation: hasLocation,
+      hasTimezone: hasTimezone,
+      timeDefaulted: timeDefaulted,
+      incomplete: !hasDate || !hasTime || !hasLocation || !hasTimezone || timeDefaulted,
+    };
   }
 
   function renderStory(h) {
@@ -133,41 +172,67 @@
     if (birth.time_local) when.push(String(birth.time_local).slice(0, 5));
     var where = (place.lat != null && place.lon != null) ? (Number(place.lat).toFixed(3) + ', ' + Number(place.lon).toFixed(3)) : '';
     var zone = tz.iana || (tz.utc_offset_hours != null ? ('UTC' + (tz.utc_offset_hours >= 0 ? '+' : '') + tz.utc_offset_hours) : '');
-    parts.push('<p>' + escapeHtml((when.length ? ('On ' + when.join(' ')) : 'At the moment you provided') + (where ? (' at ' + where) : '') + (zone ? (' (' + zone + ')') : '') + ', your chart was computed.') + '</p>');
+    var storyWhen = when.length
+      ? formatI18n((i18n.storyWhenProvided || 'Op {when}'), { when: when.join(' ') })
+      : (i18n.storyWhenFallback || 'Op het moment dat je doorgaf');
+    var storyLocation = where ? formatI18n((i18n.storyLocationPart || ' op {where}'), { where: where }) : '';
+    var storyZone = zone ? formatI18n((i18n.storyZonePart || ' ({zone})'), { zone: zone }) : '';
+    var computedTemplate = i18n.storyComputed || '{when}{location}{zone} is je chart berekend.';
+    parts.push('<p>' + escapeHtml(formatI18n(computedTemplate, { when: storyWhen, location: storyLocation, zone: storyZone })) + '</p>');
+    var completeness = getInputCompletenessSummary(h);
+    if (completeness.incomplete) {
+      var missing = [];
+      if (!completeness.hasTime || completeness.timeDefaulted) missing.push(i18n.missingExactBirthTime || 'exacte geboortetijd');
+      if (!completeness.hasLocation) missing.push(i18n.missingBirthLocation || 'geboortelocatie');
+      if (!completeness.hasTimezone) missing.push(i18n.missingTimezone || 'tijdzone');
+      var missingLabel = missing.length ? missing.join(', ') : (i18n.missingGeneric || 'één of meer invoervelden');
+      var warningTemplate = i18n.inputCompletenessWarning || 'Invoer is onvolledig of deels geschat ({missing}). Voor huizen en Ascendant zijn exacte tijd, locatie en tijdzone nodig; delen van de output kunnen daardoor ontbreken of minder precies zijn.';
+      parts.push(
+        '<p class="ljlk-error" role="status">' +
+        escapeHtml(formatI18n(warningTemplate, { missing: missingLabel })) +
+        '</p>'
+      );
+    }
 
     var western = h.western || {};
     var pl = western.placements || {};
     if (pl.Sun && pl.Sun.sign) {
-      parts.push('<p>' + escapeHtml('In the western story, your Sun stands in ' + pl.Sun.sign + (pl.Sun.house ? (', house ' + pl.Sun.house) : '') + '.') + '</p>');
+      var sunHouse = pl.Sun.house ? formatI18n((i18n.storyHousePart || ', huis {house}'), { house: pl.Sun.house }) : '';
+      var sunTemplate = i18n.storyWesternSun || 'In het westerse verhaal staat je Zon in {sign}{house}.';
+      parts.push('<p>' + escapeHtml(formatI18n(sunTemplate, { sign: pl.Sun.sign, house: sunHouse })) + '</p>');
     }
     if (pl.Moon && pl.Moon.sign) {
-      parts.push('<p>' + escapeHtml('Your Moon rests in ' + pl.Moon.sign + (pl.Moon.house ? (', house ' + pl.Moon.house) : '') + '.') + '</p>');
+      var moonHouse = pl.Moon.house ? formatI18n((i18n.storyHousePart || ', huis {house}'), { house: pl.Moon.house }) : '';
+      var moonTemplate = i18n.storyWesternMoon || 'Je Maan staat in {sign}{house}.';
+      parts.push('<p>' + escapeHtml(formatI18n(moonTemplate, { sign: pl.Moon.sign, house: moonHouse })) + '</p>');
     }
 
     var vedic = h.vedic || {};
     var pan = vedic.panchanga || {};
     if (pan && (pan.vaara || (pan.tithi && pan.tithi.index != null))) {
       var panBits = [];
-      if (pan.vaara) panBits.push('Vaara: ' + pan.vaara);
-      if (pan.tithi && pan.tithi.index != null) panBits.push('Tithi: ' + pan.tithi.index);
-      if (pan.nakshatra && pan.nakshatra.index != null) panBits.push('Nakshatra: ' + pan.nakshatra.index);
-      if (pan.yoga && pan.yoga.index != null) panBits.push('Yoga: ' + pan.yoga.index);
-      parts.push('<p>' + escapeHtml('In the vedic calendar, time reads as: ' + panBits.join(', ') + '.') + '</p>');
+      if (pan.vaara) panBits.push(formatI18n((i18n.storyVedicVaara || 'Vaara: {value}'), { value: pan.vaara }));
+      if (pan.tithi && pan.tithi.index != null) panBits.push(formatI18n((i18n.storyVedicTithi || 'Tithi: {value}'), { value: pan.tithi.index }));
+      if (pan.nakshatra && pan.nakshatra.index != null) panBits.push(formatI18n((i18n.storyVedicNakshatra || 'Nakshatra: {value}'), { value: pan.nakshatra.index }));
+      if (pan.yoga && pan.yoga.index != null) panBits.push(formatI18n((i18n.storyVedicYoga || 'Yoga: {value}'), { value: pan.yoga.index }));
+      var vedicTemplate = i18n.storyVedic || 'In de vedische kalender leest de tijd als: {bits}.';
+      parts.push('<p>' + escapeHtml(formatI18n(vedicTemplate, { bits: panBits.join(', ') })) + '</p>');
     }
 
     var chinese = h.chinese || {};
     var b = chinese.bazi_pillars || {};
     function fmtP(p) { return (p && p.stem && p.branch) ? (p.stem + p.branch) : ''; }
     var bBits = [];
-    if (fmtP(b.year)) bBits.push('year ' + fmtP(b.year));
-    if (fmtP(b.month)) bBits.push('month ' + fmtP(b.month));
-    if (fmtP(b.day)) bBits.push('day ' + fmtP(b.day));
-    if (fmtP(b.hour)) bBits.push('hour ' + fmtP(b.hour));
+    if (fmtP(b.year)) bBits.push(formatI18n((i18n.storyBaziYear || 'jaar {value}'), { value: fmtP(b.year) }));
+    if (fmtP(b.month)) bBits.push(formatI18n((i18n.storyBaziMonth || 'maand {value}'), { value: fmtP(b.month) }));
+    if (fmtP(b.day)) bBits.push(formatI18n((i18n.storyBaziDay || 'dag {value}'), { value: fmtP(b.day) }));
+    if (fmtP(b.hour)) bBits.push(formatI18n((i18n.storyBaziHour || 'uur {value}'), { value: fmtP(b.hour) }));
     if (bBits.length) {
-      parts.push('<p>' + escapeHtml('In BaZi, the four pillars spell out: ' + bBits.join(', ') + '.') + '</p>');
+      var baziTemplate = i18n.storyBazi || 'In BaZi laten de vier pilaren zien: {bits}.';
+      parts.push('<p>' + escapeHtml(formatI18n(baziTemplate, { bits: bBits.join(', ') })) + '</p>');
     }
 
-    parts.push('<p>' + escapeHtml(i18n.storyHint || 'Use the other tabs for the structured details; raw JSON is tucked away below.') + '</p>');
+    parts.push('<p>' + escapeHtml(i18n.storyHint || 'Gebruik de andere tabbladen voor de gestructureerde details; de ruwe JSON staat hieronder.') + '</p>');
     return parts.join('');
   }
 
@@ -176,16 +241,16 @@
   function doCompute() {
     var payload = getPayload();
     if (!payload.birth_date) {
-      showError(get('#ljlk-result'), 'Vul geboortedatum in.');
+      showError(get('#ljlk-result'), i18n.birthDateRequired || 'Vul geboortedatum in.');
       return;
     }
     var resultEl = get('#ljlk-result');
-    resultEl.innerHTML = '<p class="ljlk-loading">Bezig met berekenen…</p>';
+    resultEl.innerHTML = '<p class="ljlk-loading">' + escapeHtml(i18n.computing || 'Bezig met berekenen…') + '</p>';
     resultEl.hidden = false;
 
     fetch(restUrl + 'compute', fetchOptions('POST', payload))
       .then(function (r) {
-        if (r.status === 429) return r.json().then(function (d) { throw new Error(d.message || 'Rate limit'); });
+        if (r.status === 429) return r.json().then(function (d) { throw new Error(d.message || i18n.rateLimit || 'Snelheidslimiet bereikt'); });
         if (r.status >= 400) return r.json().then(function (d) { throw new Error(d.message || r.statusText); });
         return r.json();
       })
@@ -207,14 +272,14 @@
         });
       })
       .catch(function (err) {
-        showError(resultEl, err.message || (i18n.apiUnreachable || 'API niet bereikbaar'));
+        showError(resultEl, err.message || (i18n.apiUnreachable || 'De horoscoop-service is niet bereikbaar. Probeer het later opnieuw.'));
       });
   }
 
   function doSave() {
     var payload = getPayload();
     if (!payload.birth_date) {
-      showError(get('#ljlk-result'), 'Vul geboortedatum in.');
+      showError(get('#ljlk-result'), i18n.birthDateRequired || 'Vul geboortedatum in.');
       return;
     }
     if (lastComputedHoroscoop) {
@@ -236,7 +301,8 @@
         }
       })
       .catch(function (err) {
-        if (err.message && err.message.indexOf('Log in') !== -1) {
+        var loginIndicator = i18n.loginRequiredIndicator || 'Log in';
+        if (err.message && err.message.indexOf(loginIndicator) !== -1) {
           openAuthModal(payload);
         } else {
           showError(get('#ljlk-result'), err.message);
@@ -282,11 +348,11 @@
     var email = (get('#ljlk-reg-email') && get('#ljlk-reg-email').value) || '';
     var password = (get('#ljlk-reg-password') && get('#ljlk-reg-password').value) || '';
     var msgEl = get('#ljlk-auth-message');
-    if (!email) { if (msgEl) msgEl.textContent = 'Vul e-mail in.'; return; }
+    if (!email) { if (msgEl) msgEl.textContent = i18n.emailRequired || 'Vul e-mail in.'; return; }
     if (password.length < 10) { if (msgEl) msgEl.textContent = (i18n.minPassword || 'Min. 10 tekens'); return; }
     if (msgEl) msgEl.textContent = '';
     fetch(restUrl + 'register', fetchOptions('POST', { email: email, password: password }))
-      .then(function (r) { return r.json().then(function (d) { if (r.status >= 400) throw new Error(d.message || 'Registratie mislukt'); return d; }); })
+      .then(function (r) { return r.json().then(function (d) { if (r.status >= 400) throw new Error(d.message || i18n.registerFailed || 'Registratie mislukt'); return d; }); })
       .then(function () {
         loggedIn = true;
         onLoginSuccess();
@@ -300,10 +366,10 @@
     var email = (get('#ljlk-login-email') && get('#ljlk-login-email').value) || '';
     var password = (get('#ljlk-login-password') && get('#ljlk-login-password').value) || '';
     var msgEl = get('#ljlk-auth-message');
-    if (!email || !password) { if (msgEl) msgEl.textContent = 'Vul e-mail en wachtwoord in.'; return; }
+    if (!email || !password) { if (msgEl) msgEl.textContent = i18n.emailPasswordRequired || 'Vul e-mail en wachtwoord in.'; return; }
     if (msgEl) msgEl.textContent = '';
     fetch(restUrl + 'login', fetchOptions('POST', { email: email, password: password }))
-      .then(function (r) { return r.json().then(function (d) { if (r.status >= 400) throw new Error(d.message || 'Inloggen mislukt'); return d; }); })
+      .then(function (r) { return r.json().then(function (d) { if (r.status >= 400) throw new Error(d.message || i18n.loginFailed || 'Inloggen mislukt'); return d; }); })
       .then(function () {
         loggedIn = true;
         onLoginSuccess();
@@ -321,14 +387,14 @@
       .then(function (data) {
         var profiles = data.profiles || [];
         if (profiles.length === 0) {
-          list.innerHTML = '<p>Geen opgeslagen horoscopen.</p>';
+          list.innerHTML = '<p>' + escapeHtml(i18n.noSavedHoroscopes || 'Geen opgeslagen horoscopen.') + '</p>';
           return;
         }
         var html = [];
         profiles.forEach(function (p) {
           html.push('<div class="ljlk-dashboard-profile">');
-          html.push('<h3>' + escapeHtml(p.label || 'Mijn horoscoop') + '</h3>');
-          html.push('<p>Geboortedatum: ' + escapeHtml(p.birth_date) + (p.birth_time ? ' ' + escapeHtml(p.birth_time) : '') + '</p>');
+          html.push('<h3>' + escapeHtml(p.label || i18n.myHoroscope || 'Mijn horoscoop') + '</h3>');
+          html.push('<p>' + escapeHtml(i18n.birthDateLabel || 'Geboortedatum:') + ' ' + escapeHtml(p.birth_date) + (p.birth_time ? ' ' + escapeHtml(p.birth_time) : '') + '</p>');
           (p.runs || []).forEach(function (run) {
             html.push('<div class="ljlk-dashboard-run">');
             html.push('<span>' + escapeHtml(run.computed_at) + '</span> ');
@@ -342,7 +408,7 @@
         list.innerHTML = html.join('');
       })
       .catch(function () {
-        list.innerHTML = '<p>Kon gegevens niet laden.</p>';
+        list.innerHTML = '<p>' + escapeHtml(i18n.dashboardLoadFailed || 'Kon gegevens niet laden.') + '</p>';
       });
   }
 

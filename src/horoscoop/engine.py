@@ -433,6 +433,7 @@ def compute(
     from datetime import timedelta
 
     diagnostics_codes: list[str] = []
+    raw_birth_time_local = birth_time_local
     requires = [models.Requires.DATE]
     time_warnings: list[str] = []
     used_default_time = False
@@ -565,6 +566,19 @@ def compute(
                 "time_local": birth_time_local,
                 "place": {"lat": lat, "lon": lon, "elevation_m": elevation_m},
                 "timezone": {"iana": timezone_iana, "utc_offset_hours": utc_offset_hours, "utc_offset_minutes": utc_offset_minutes},
+                "provided": {
+                    "date": bool(birth_date),
+                    "time_local": bool(raw_birth_time_local),
+                    "location": lat is not None and lon is not None,
+                    "timezone": (
+                        timezone_iana is not None
+                        or utc_offset_hours is not None
+                        or utc_offset_minutes is not None
+                    ),
+                },
+                "assumptions": {
+                    "time_was_defaulted": used_default_time,
+                },
             },
         },
         "time": time_block,

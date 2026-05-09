@@ -12,6 +12,8 @@ from . import aspects
 from . import chinese
 from . import eop
 from . import houses
+from . import human_design
+from . import maya
 from . import models
 from . import sidereal
 from . import time_scales as ts
@@ -71,6 +73,17 @@ BODY_IDS: list[tuple[int, str]] = [
     (astro.SE_MARS, "Mars"),
     (astro.SE_JUPITER, "Jupiter"),
     (astro.SE_SATURN, "Saturn"),
+]
+
+# Extended body set used by Human Design (and available to richer Western
+# charts on demand). Kept as a separate list so the classical Western
+# aspect grid stays compact while HD has access to outer planets and
+# nodes without re-doing astronomy for any consumer.
+BODY_IDS_EXTENDED: list[tuple[int, str]] = BODY_IDS + [
+    (astro.SE_URANUS, "Uranus"),
+    (astro.SE_NEPTUNE, "Neptune"),
+    (astro.SE_PLUTO, "Pluto"),
+    (astro.SE_TRUE_NODE, "NorthNode"),
 ]
 
 
@@ -408,6 +421,9 @@ def compute(
     western_orb_profile: str = "default",
     western_db_path: Optional[str] = None,
     western_extended_aspects: bool = False,
+    include_extended_bodies: bool = True,
+    maya_correlation: int = 584283,
+    locale: str = "nl-NL",
 ) -> dict[str, Any]:
     """
     Single entry: compute full horoscoop. Returns dict suitable for JSON (horoscoop.json contract).
@@ -480,7 +496,8 @@ def compute(
         requires, confidence, time_warnings,
     )
 
-    astronomy_block = _build_astronomy_block(jd_tt, lat, lon, elevation_m or 0.0, BODY_IDS)
+    body_list = BODY_IDS_EXTENDED if include_extended_bodies else BODY_IDS
+    astronomy_block = _build_astronomy_block(jd_tt, lat, lon, elevation_m or 0.0, body_list)
     body_lons = {k: v["lon_deg"] for k, v in astronomy_block.items() if isinstance(v, dict) and v.get("lon_deg") is not None}
     body_speeds = {k: v.get("speed_lon_deg_per_day") for k, v in astronomy_block.items() if isinstance(v, dict) and v.get("lon_deg") is not None}
     body_speeds = {k: v for k, v in body_speeds.items() if v is not None}
@@ -524,6 +541,18 @@ def compute(
         gregorian_year=gregorian_year,
     )
 
+    # Human Design block: requires time-resolved JD(TT). When time is
+    # unknown, we still produce a structurally complete unavailable block.
+    if time_known and not used_default_time:
+        human_design_block = human_design.build_human_design(jd_tt, locale=locale)
+    else:
+        human_design_block = human_design.build_human_design(None, locale=locale)
+        if used_default_time and "USED_DEFAULT_TIME" not in (human_design_block.get("status") or {}).get("warnings", []):
+            human_design_block.setdefault("status", {}).setdefault("warnings", []).append("USED_DEFAULT_TIME")
+
+    # Maya block: only requires the date; works even when time is unknown.
+    maya_block = maya.build_maya(jd_ut1, correlation=maya_correlation, locale=locale)
+
     return {
         "meta": {
             "version": SCHEMA_VERSION,
@@ -543,5 +572,7 @@ def compute(
         "western": western_block,
         "vedic": vedic_block,
         "chinese": chinese_block,
+        "human_design": human_design_block,
+        "maya": maya_block,
         "diagnostics": {"codes": diagnostics_codes, "delta_t_source": delta_t_source, "ut1_utc_source": ut1_utc_source},
     }

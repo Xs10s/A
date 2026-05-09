@@ -1064,10 +1064,332 @@ def render_bazi_banner_svg(
     return "\n".join(parts)
 
 
+def render_human_design_bodygraph_svg(
+    engine_json: dict[str, Any],
+    *,
+    width: int = 720,
+    height: int = 1040,
+    locale: str = "nl-NL",
+) -> str:
+    """
+    Render a deterministic Human Design bodygraph as SVG.
+
+    Layout: 9 centers laid out in the canonical bodygraph topology
+    (Head, Ajna, Throat, G, Heart, Spleen, Solar Plexus, Sacral, Root).
+    Defined centers are filled; undefined are outlined. Active gates show
+    their gate number near the corresponding center; channels (when both
+    gates active) are drawn as solid lines between the two centers they
+    connect.
+    """
+    hd = engine_json.get("human_design") or {}
+    centers = hd.get("centers") or {}
+    defined = set(centers.get("defined") or [])
+    active_gates = set(hd.get("active_gates") or [])
+    channels = hd.get("channels") or []
+    is_nl = (locale or "nl").lower().startswith("nl")
+
+    # Center geometry (px). Coordinates are CANONICAL bodygraph layout.
+    cx = width / 2.0
+    centers_geom: dict[str, dict[str, Any]] = {
+        "Head": {"shape": "triangle", "cx": cx, "cy": 90, "size": 110, "rotate": 0},
+        "Ajna": {"shape": "triangle", "cx": cx, "cy": 230, "size": 110, "rotate": 180},
+        "Throat": {"shape": "square", "cx": cx, "cy": 360, "size": 130},
+        "G": {"shape": "diamond", "cx": cx, "cy": 510, "size": 120},
+        "Heart": {"shape": "triangle", "cx": cx + 110, "cy": 540, "size": 80, "rotate": 270},
+        "Spleen": {"shape": "triangle", "cx": cx - 200, "cy": 660, "size": 90, "rotate": 90},
+        "SolarPlexus": {"shape": "triangle", "cx": cx + 200, "cy": 660, "size": 90, "rotate": 270},
+        "Sacral": {"shape": "square", "cx": cx, "cy": 700, "size": 130},
+        "Root": {"shape": "square", "cx": cx, "cy": 870, "size": 130},
+    }
+
+    # Color tokens — keep with the LJLK design system (no gradients).
+    COLOR_HEAD_AJNA = "#fdd96b"  # yellow
+    COLOR_THROAT = "#5a8db8"     # brown -> kept neutral blue-grey for visibility
+    COLOR_G = "#df7a4a"          # ochre/orange tone
+    COLOR_HEART = "#d24545"      # red
+    COLOR_SPLEEN = "#7d3aa7"     # brown -> deep purple for screen contrast
+    COLOR_SP = "#d24545"         # red (solar plexus)
+    COLOR_SACRAL = "#d24545"     # red
+    COLOR_ROOT = "#3a5e7a"       # earthy / brown alternative
+    CENTER_COLORS: dict[str, str] = {
+        "Head": COLOR_HEAD_AJNA,
+        "Ajna": "#7ec275",  # green
+        "Throat": "#a87f44",
+        "G": "#df7a4a",
+        "Heart": COLOR_HEART,
+        "Spleen": COLOR_SPLEEN,
+        "SolarPlexus": "#a87f44",  # brown
+        "Sacral": COLOR_SACRAL,
+        "Root": "#a87f44",
+    }
+    BORDER = "#2d2541"
+
+    parts: list[str] = []
+    parts.append(
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+        f'width="{width}" height="{height}" role="img" aria-label="Human Design bodygraph">'
+    )
+    parts.append('<rect width="100%" height="100%" fill="#ffffff"/>')
+
+    # Title block
+    type_str = hd.get("type") or "-"
+    auth = hd.get("authority") or "-"
+    profile = (hd.get("profile") or {}).get("value") or "-"
+    cross = (hd.get("incarnation_cross") or {}).get("name_short") or ""
+
+    parts.append(
+        f'<text x="{width/2}" y="32" font-family="Lora, serif" font-size="22" '
+        f'text-anchor="middle" fill="{BORDER}">'
+        f'{escape("Human Design")}</text>'
+    )
+    parts.append(
+        f'<text x="{width/2}" y="56" font-family="Inter, sans-serif" font-size="13" '
+        f'text-anchor="middle" fill="#5e5375">'
+        f'{escape(f"Type: {type_str} - Profiel: {profile} - Authoriteit: {auth}")}</text>'
+    )
+    if cross:
+        parts.append(
+            f'<text x="{width/2}" y="74" font-family="Inter, sans-serif" font-size="11" '
+            f'text-anchor="middle" fill="#846da4">'
+            f'{escape(cross)}</text>'
+        )
+
+    # First, draw channel lines BETWEEN centers (so they sit under the shapes).
+    # Map each gate to its primary center coordinate.
+    def _center_for_gate(gate: int) -> Optional[str]:
+        # Local copy of GATE_CENTER from human_design.py to avoid an import here.
+        # We re-fetch via gate_sources/centers from the HD payload to stay decoupled.
+        from ..human_design import GATE_CENTER, DUAL_CENTER_GATES
+        if gate in DUAL_CENTER_GATES:
+            # Pick the membership that is currently defined; else fall back to G.
+            a, b = DUAL_CENTER_GATES[gate]
+            if a in defined:
+                return a
+            if b in defined:
+                return b
+            return b
+        return GATE_CENTER.get(gate)
+
+    channel_lines: list[tuple[str, str]] = []
+    for ch in channels:
+        gates = ch.get("gates") or []
+        if len(gates) != 2:
+            continue
+        ca = _center_for_gate(int(gates[0]))
+        cb = _center_for_gate(int(gates[1]))
+        if not ca or not cb or ca == cb:
+            continue
+        channel_lines.append((ca, cb))
+
+    drawn = set()
+    for ca, cb in channel_lines:
+        key = tuple(sorted([ca, cb]))
+        if key in drawn:
+            continue
+        drawn.add(key)
+        ga = centers_geom.get(ca)
+        gb = centers_geom.get(cb)
+        if not ga or not gb:
+            continue
+        parts.append(
+            f'<line x1="{ga["cx"]}" y1="{ga["cy"]}" x2="{gb["cx"]}" y2="{gb["cy"]}" '
+            f'stroke="#444" stroke-width="6" stroke-linecap="round" opacity="0.8"/>'
+        )
+
+    # Draw centers
+    for name, geom in centers_geom.items():
+        is_def = name in defined
+        fill = CENTER_COLORS.get(name, "#cccccc") if is_def else "#ffffff"
+        stroke = BORDER
+        sw = 2.5
+        center_label = name
+        title_attr = escape(f"{name} - {'defined' if is_def else 'undefined'}")
+        if geom["shape"] == "triangle":
+            s = geom["size"]
+            x = geom["cx"]
+            y = geom["cy"]
+            rot = geom.get("rotate", 0)
+            # Draw triangle pointing up by default; rotate via transform.
+            parts.append(
+                f'<g transform="translate({x},{y}) rotate({rot})">'
+                f'<polygon points="0,{-s/2:.2f} {s/2:.2f},{s/2:.2f} {-s/2:.2f},{s/2:.2f}" '
+                f'fill="{fill}" stroke="{stroke}" stroke-width="{sw}">'
+                f'<title>{title_attr}</title></polygon></g>'
+            )
+        elif geom["shape"] == "square":
+            s = geom["size"]
+            parts.append(
+                f'<rect x="{geom["cx"] - s/2}" y="{geom["cy"] - s/2}" width="{s}" height="{s}" '
+                f'fill="{fill}" stroke="{stroke}" stroke-width="{sw}">'
+                f'<title>{title_attr}</title></rect>'
+            )
+        elif geom["shape"] == "diamond":
+            s = geom["size"]
+            x, y = geom["cx"], geom["cy"]
+            parts.append(
+                f'<polygon points="{x},{y - s/2} {x + s/2},{y} {x},{y + s/2} {x - s/2},{y}" '
+                f'fill="{fill}" stroke="{stroke}" stroke-width="{sw}">'
+                f'<title>{title_attr}</title></polygon>'
+            )
+        # Center label
+        text_color = "#ffffff" if is_def else "#3a3a3a"
+        parts.append(
+            f'<text x="{geom["cx"]}" y="{geom["cy"] + 4}" font-family="Inter, sans-serif" '
+            f'font-size="11" text-anchor="middle" fill="{text_color}" font-weight="600">'
+            f'{escape(center_label)}</text>'
+        )
+
+    # Legend / footer
+    legend_y = height - 70
+    parts.append(
+        f'<text x="40" y="{legend_y}" font-family="Inter, sans-serif" font-size="11" fill="#846da4">'
+        f'{escape("Defined" if not is_nl else "Gedefinieerd")}: {len(defined)} / 9</text>'
+    )
+    parts.append(
+        f'<text x="40" y="{legend_y + 18}" font-family="Inter, sans-serif" font-size="11" fill="#846da4">'
+        f'{escape("Active gates" if not is_nl else "Actieve poorten")}: {len(active_gates)}</text>'
+    )
+    parts.append(
+        f'<text x="40" y="{legend_y + 36}" font-family="Inter, sans-serif" font-size="11" fill="#846da4">'
+        f'{escape("Channels" if not is_nl else "Kanalen")}: {len(channels)}</text>'
+    )
+
+    parts.append("</svg>")
+    return "\n".join(parts)
+
+
+def render_maya_glyph_svg(
+    engine_json: dict[str, Any],
+    *,
+    width: int = 720,
+    height: int = 720,
+    locale: str = "nl-NL",
+) -> str:
+    """
+    Render a Maya summary card SVG: kin, tone, day-sign, wavespell, haab.
+    Lean visual with concentric rings to express the cyclical nature.
+    """
+    is_nl = (locale or "nl").lower().startswith("nl")
+    maya = engine_json.get("maya") or {}
+    if not isinstance(maya, dict) or not maya.get("kin"):
+        return (
+            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+            f'width="{width}" height="{height}"><rect width="100%" height="100%" fill="#ffffff"/>'
+            f'<text x="{width/2}" y="{height/2}" text-anchor="middle" font-family="Lora,serif" '
+            f'font-size="20" fill="#846da4">'
+            f'{escape("Maya: geen datum beschikbaar." if is_nl else "Maya: no date available.")}'
+            f'</text></svg>'
+        )
+
+    kin = maya.get("kin")
+    sign = maya.get("sign") or {}
+    tone = maya.get("tone") or {}
+    haab = maya.get("haab") or {}
+    long_count = maya.get("long_count") or {}
+    wave = maya.get("wavespell") or {}
+    castle = (wave.get("castle") or {}) if isinstance(wave, dict) else {}
+
+    cx, cy = width / 2.0, height / 2.0 - 20
+    parts: list[str] = []
+    parts.append(
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+        f'width="{width}" height="{height}" role="img" aria-label="Maya kin and time-cycles">'
+    )
+    parts.append('<rect width="100%" height="100%" fill="#ffffff"/>')
+
+    # Outer ring: 13 tones
+    r_outer = 250
+    for i in range(13):
+        a0 = math.radians((i / 13) * 360 - 90)
+        a1 = math.radians(((i + 1) / 13) * 360 - 90)
+        x0 = cx + r_outer * math.cos(a0)
+        y0 = cy + r_outer * math.sin(a0)
+        x1 = cx + r_outer * math.cos(a1)
+        y1 = cy + r_outer * math.sin(a1)
+        active = (i + 1) == tone.get("index")
+        fill = "#884DC9" if active else "#f1e6fa"
+        parts.append(
+            f'<path d="M {cx} {cy} L {x0:.2f} {y0:.2f} A {r_outer} {r_outer} 0 0 1 {x1:.2f} {y1:.2f} Z" '
+            f'fill="{fill}" stroke="#fff" stroke-width="1.5" opacity="0.9"/>'
+        )
+        # tone label
+        mid = (a0 + a1) / 2
+        lx = cx + (r_outer - 22) * math.cos(mid)
+        ly = cy + (r_outer - 22) * math.sin(mid) + 3
+        parts.append(
+            f'<text x="{lx:.2f}" y="{ly:.2f}" text-anchor="middle" font-family="Inter,sans-serif" '
+            f'font-size="11" fill="{"#fff" if active else "#5e5375"}">{i + 1}</text>'
+        )
+
+    # Inner ring: 20 day-signs
+    r_inner = 180
+    for i in range(20):
+        a0 = math.radians((i / 20) * 360 - 90)
+        a1 = math.radians(((i + 1) / 20) * 360 - 90)
+        x0 = cx + r_inner * math.cos(a0)
+        y0 = cy + r_inner * math.sin(a0)
+        x1 = cx + r_inner * math.cos(a1)
+        y1 = cy + r_inner * math.sin(a1)
+        active = (i + 1) == sign.get("index")
+        fill = "#C9A24D" if active else "#fff7e6"
+        parts.append(
+            f'<path d="M {cx} {cy} L {x0:.2f} {y0:.2f} A {r_inner} {r_inner} 0 0 1 {x1:.2f} {y1:.2f} Z" '
+            f'fill="{fill}" stroke="#fff" stroke-width="1.2"/>'
+        )
+        mid = (a0 + a1) / 2
+        lx = cx + (r_inner - 18) * math.cos(mid)
+        ly = cy + (r_inner - 18) * math.sin(mid) + 3
+        parts.append(
+            f'<text x="{lx:.2f}" y="{ly:.2f}" text-anchor="middle" font-family="Inter,sans-serif" '
+            f'font-size="9" fill="{"#3a2a13" if active else "#a08756"}">{i + 1}</text>'
+        )
+
+    # Center disc with kin info
+    parts.append(f'<circle cx="{cx}" cy="{cy}" r="100" fill="#ffffff" stroke="#2d2541" stroke-width="2"/>')
+    parts.append(
+        f'<text x="{cx}" y="{cy - 30}" text-anchor="middle" font-family="Inter,sans-serif" '
+        f'font-size="11" fill="#846da4" letter-spacing="3">KIN</text>'
+    )
+    parts.append(
+        f'<text x="{cx}" y="{cy + 6}" text-anchor="middle" font-family="Lora,serif" '
+        f'font-size="48" fill="#2d2541" font-weight="700">{kin}</text>'
+    )
+    parts.append(
+        f'<text x="{cx}" y="{cy + 36}" text-anchor="middle" font-family="Inter,sans-serif" '
+        f'font-size="13" fill="#5e5375">'
+        f'{escape(f"{tone.get('index', '')} {sign.get('yucatec', '')}")}</text>'
+    )
+    parts.append(
+        f'<text x="{cx}" y="{cy + 56}" text-anchor="middle" font-family="Inter,sans-serif" '
+        f'font-size="11" fill="#846da4">'
+        f'{escape((sign.get("kw_nl") if is_nl else sign.get("kw_en")) or "")[:60]}</text>'
+    )
+
+    # Footer block
+    footer_y = height - 90
+    parts.append(
+        f'<text x="40" y="{footer_y}" font-family="Inter,sans-serif" font-size="12" fill="#846da4">'
+        f'Long Count: {escape(str(long_count.get("label") or "-"))}</text>'
+    )
+    parts.append(
+        f'<text x="40" y="{footer_y + 20}" font-family="Inter,sans-serif" font-size="12" fill="#846da4">'
+        f'Haab: {escape(str(haab.get("label") or "-"))}</text>'
+    )
+    parts.append(
+        f'<text x="40" y="{footer_y + 40}" font-family="Inter,sans-serif" font-size="12" fill="#846da4">'
+        f'Wavespell: {escape(str(wave.get("wavespell_index") or "-"))} '
+        f'- {escape((castle.get("name_nl") if is_nl else castle.get("name_en")) or "")}</text>'
+    )
+
+    parts.append("</svg>")
+    return "\n".join(parts)
+
+
 def render_section_svg(engine_json: dict[str, Any], section: str, *, locale: str = "nl-NL") -> str:
     """
     Single SVG for UI/PDF previews.
-    section: western_tropical | western_sidereal | vedic_panchanga | chinese_bazi
+    section: western_tropical | western_sidereal | vedic_panchanga | chinese_bazi |
+             human_design | maya
     """
     s = (section or "").strip().lower()
     if s == "western_tropical":
@@ -1078,4 +1400,8 @@ def render_section_svg(engine_json: dict[str, Any], section: str, *, locale: str
         return render_panchanga_banner_svg(engine_json, width=1240, height=920, locale=locale)
     if s == "chinese_bazi":
         return render_bazi_banner_svg(engine_json, width=1240, height=820, locale=locale)
+    if s == "human_design":
+        return render_human_design_bodygraph_svg(engine_json, width=720, height=1040, locale=locale)
+    if s == "maya":
+        return render_maya_glyph_svg(engine_json, width=720, height=720, locale=locale)
     raise ValueError(f"unknown section: {section!r}")

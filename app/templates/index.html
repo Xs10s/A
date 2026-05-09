@@ -1509,12 +1509,18 @@
           <div class="tab" data-tab="western">Westers</div>
           <div class="tab" data-tab="vedic">Vedisch</div>
           <div class="tab" data-tab="bazi">BaZi</div>
+          <div class="tab" data-tab="humandesign">Human Design</div>
+          <div class="tab" data-tab="maya">Maya</div>
+          <div class="tab" data-tab="cross">Cross-Systeem</div>
         </div>
 
         <div id="panel-energie" class="tab-panel tab-panel--merged active"></div>
         <div id="panel-western" class="tab-panel"></div>
         <div id="panel-vedic" class="tab-panel tab-panel--merged"></div>
         <div id="panel-bazi" class="tab-panel tab-panel--merged"></div>
+        <div id="panel-humandesign" class="tab-panel tab-panel--merged"></div>
+        <div id="panel-maya" class="tab-panel tab-panel--merged"></div>
+        <div id="panel-cross" class="tab-panel tab-panel--merged"></div>
 
         <div class="actions">
           <button type="button" id="download-pdf" class="btn btn-secondary">
@@ -1544,6 +1550,7 @@
       let lastEnergy = null;
       let lastCombinedEnergy = null;
       let lastInterpretations = null;
+      let lastCrossSystem = null;
 
       function currentLocale() {
         const el = document.getElementById("ui-locale");
@@ -1794,6 +1801,12 @@
           } catch (e) {
             lastInterpretations = null;
           }
+          try {
+            const csRes = await callApi("/api/cross-system?locale=" + encodeURIComponent(locale));
+            lastCrossSystem = await csRes.json();
+          } catch (e) {
+            lastCrossSystem = null;
+          }
           results.style.display = "block";
           await renderResult(json);
         } catch (err) {
@@ -1868,6 +1881,19 @@
         const panelBazi = document.getElementById("panel-bazi");
         panelBazi.innerHTML = "";
         panelBazi.appendChild(renderBaziTabV2(data));
+
+        const panelHD = document.getElementById("panel-humandesign");
+        panelHD.innerHTML = "";
+        panelHD.appendChild(await renderHumanDesignTab(data));
+
+        const panelMaya = document.getElementById("panel-maya");
+        panelMaya.innerHTML = "";
+        panelMaya.appendChild(await renderMayaTab(data));
+
+        const panelCross = document.getElementById("panel-cross");
+        panelCross.innerHTML = "";
+        panelCross.appendChild(renderCrossSystemTab(data, lastCrossSystem));
+
         const heroSlot = document.getElementById("dashboard-hero");
         heroSlot.innerHTML = "";
         heroSlot.appendChild(renderDashboardHeroV2(data));
@@ -3111,6 +3137,8 @@
           western_tropical: profiles.find((p) => p && p.system && p.system.id === "western_tropical"),
           vedic_panchanga: profiles.find((p) => p && p.system && p.system.id === "vedic_panchanga"),
           chinese_bazi: profiles.find((p) => p && p.system && p.system.id === "chinese_bazi"),
+          human_design: profiles.find((p) => p && p.system && p.system.id === "human_design"),
+          maya: profiles.find((p) => p && p.system && p.system.id === "maya"),
         };
         const cards = [
           { title: t.cards.voeding.title, key: "voeding", lead: t.cards.voeding.lead },
@@ -3118,6 +3146,9 @@
           { title: t.cards.energie.title, key: "energie", lead: t.cards.energie.lead },
           { title: t.cards.bewustzijn.title, key: "bewustzijn", lead: t.cards.bewustzijn.lead },
         ];
+
+        const t_hd = isNL ? "Human Design" : "Human Design";
+        const t_maya = isNL ? "Maya" : "Maya";
 
         function getSystemDomain(profile, domainKey) {
           if (!profile || !domainKey) return null;
@@ -3182,7 +3213,9 @@
           }
           appendMethodLine(t.west, systemDomainLine(bySystem.western_tropical, domainKey, isNL ? "Nog geen westers detail." : "No western detail yet."));
           appendMethodLine(t.vedic, systemDomainLine(bySystem.vedic_panchanga, domainKey, isNL ? "Nog geen vedisch detail." : "No Vedic detail yet."));
-          appendMethodLine(t.bazi, systemDomainLine(bySystem.chinese_bazi, domainKey, isNL ? "Nog geen BaZi-detail." : "No BaZi detail yet."));
+          appendMethodLine(t.bazi, systemDomainLine(bySystem.chinese_bazi, domainKey, isNL ? "Nog geen BaZi-detail." : "No BaZi-detail yet."));
+          appendMethodLine(t_hd, systemDomainLine(bySystem.human_design, domainKey, isNL ? "Geen Human Design data (tijd nodig)." : "No Human Design data (time required)."));
+          appendMethodLine(t_maya, systemDomainLine(bySystem.maya, domainKey, isNL ? "Geen Maya-detail." : "No Maya-detail."));
           g2.appendChild(card);
         });
         section.appendChild(g2);
@@ -3575,6 +3608,326 @@
         intro.appendChild(card);
         root.appendChild(intro);
         root.appendChild(renderResultDashboard("bazi", data));
+        return root;
+      }
+
+      // ---------------- Human Design ----------------
+
+      async function renderHumanDesignTab(data) {
+        const isNL = uiIsNL();
+        const root = createEl("section", "astro-shell");
+        const intro = createEl("section", "astro-method-visual");
+        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 4" : "Method 4"));
+        intro.appendChild(createEl("h3", "astro-section-title", "Human Design"));
+
+        const hd = (data && data.human_design) || {};
+        const status = (hd.status) || {};
+        const computed = !!status.computed;
+
+        const summaryText = computed
+          ? (isNL
+            ? `Type ${hd.type || "-"} - Profiel ${(hd.profile && hd.profile.value) || "-"} - Authoriteit ${hd.authority || "-"}.`
+            : `Type ${hd.type || "-"} - Profile ${(hd.profile && hd.profile.value) || "-"} - Authority ${hd.authority || "-"}.`)
+          : (isNL
+            ? "Human Design vereist een exacte geboortetijd. Vul tijd in voor een volledige berekening."
+            : "Human Design requires an exact birth time. Provide time for full computation.");
+        intro.appendChild(createEl("p", "astro-section-sub", summaryText));
+
+        // Bodygraph card
+        const bodygraphCard = createAstroCard(
+          isNL ? "Bodygraph" : "Bodygraph",
+          isNL ? "Centra, kanalen en poorten uit jouw geboortemoment" : "Centers, channels and gates from your birth moment",
+          ""
+        );
+        const bgWrap = createEl("div", "astro-wheel-wrap");
+        bgWrap.style.maxWidth = "560px";
+        bgWrap.style.margin = "0 auto";
+        try {
+          const svg = await fetchSectionSvg(data, "human_design", currentLocale());
+          bgWrap.innerHTML = svg;
+        } catch (e) {
+          bgWrap.innerHTML = `<p class="astro-card__sub">${isNL ? "Bodygraph kon niet worden geladen." : "Bodygraph could not be loaded."}</p>`;
+        }
+        bodygraphCard.appendChild(bgWrap);
+        intro.appendChild(bodygraphCard);
+
+        // Type/Strategy/Authority/Profile cards
+        if (computed) {
+          const g3 = createEl("div", "astro-grid-3");
+          g3.appendChild(createAstroCard(
+            isNL ? "Type" : "Type",
+            isNL ? "Energetisch type" : "Energetic type",
+            String(hd.type || "-")
+          ));
+          g3.appendChild(createAstroCard(
+            isNL ? "Strategie" : "Strategy",
+            String((hd.strategy && hd.strategy.value) || "-"),
+            String((hd.strategy && hd.strategy.text) || "-")
+          ));
+          g3.appendChild(createAstroCard(
+            isNL ? "Authoriteit" : "Authority",
+            isNL ? "Innerlijke richtwijzer" : "Inner compass",
+            String(hd.authority || "-")
+          ));
+          intro.appendChild(g3);
+
+          const g2 = createEl("div", "astro-grid-2");
+          const profile = hd.profile || {};
+          g2.appendChild(createAstroCard(
+            isNL ? "Profiel" : "Profile",
+            `${profile.value || "-"}`,
+            isNL
+              ? `${profile.label_nl || "-"}. Personality lijn ${profile.personality_line || "-"}, Design lijn ${profile.design_line || "-"}.`
+              : `${profile.label_en || "-"}. Personality line ${profile.personality_line || "-"}, Design line ${profile.design_line || "-"}.`
+          ));
+          const cross = hd.incarnation_cross || {};
+          g2.appendChild(createAstroCard(
+            isNL ? "Incarnation Cross" : "Incarnation Cross",
+            cross.label || "-",
+            cross.name_short || (isNL ? "Geen kruis bepaald." : "No cross determined.")
+          ));
+          intro.appendChild(g2);
+
+          // Centers
+          const centers = hd.centers || {};
+          const defined = centers.defined || [];
+          const undefined_ = centers.undefined || [];
+          const centerCard = createAstroCard(
+            isNL ? "Centra" : "Centers",
+            isNL ? "Gedefinieerd vs open" : "Defined vs open",
+            ""
+          );
+          const centerRows = (centers.all || []).map((c) => [
+            c,
+            defined.includes(c)
+              ? (isNL ? "Gedefinieerd" : "Defined")
+              : (isNL ? "Open" : "Open"),
+          ]);
+          centerCard.appendChild(createMethodTable(
+            [isNL ? "Centrum" : "Center", isNL ? "Status" : "Status"],
+            centerRows
+          ));
+          intro.appendChild(centerCard);
+
+          // Channels
+          if (Array.isArray(hd.channels) && hd.channels.length > 0) {
+            const chCard = createAstroCard(
+              isNL ? "Actieve kanalen" : "Active channels",
+              isNL ? "Volledige kanaalverbindingen" : "Complete channel connections",
+              ""
+            );
+            const chRows = hd.channels.map((ch) => [
+              `${ch.gates && ch.gates[0] ? ch.gates[0] : "-"}-${ch.gates && ch.gates[1] ? ch.gates[1] : "-"}`,
+              String(ch.name || "-"),
+              String(ch.circuit || "-"),
+              String(ch.theme || "-"),
+            ]);
+            chCard.appendChild(createMethodTable(
+              [isNL ? "Poorten" : "Gates", isNL ? "Naam" : "Name", "Circuit", isNL ? "Thema" : "Theme"],
+              chRows
+            ));
+            intro.appendChild(chCard);
+          }
+
+          // Personality + Design tables
+          const personalityCard = createAstroCard(
+            isNL ? "Personality (zwart)" : "Personality (black)",
+            isNL ? "Bewuste laag, geboortemoment" : "Conscious layer, birth moment",
+            ""
+          );
+          const persRows = Object.entries(hd.personality || {}).map(([body, d]) => [
+            body, String(d.gate || "-"), String(d.line || "-"), `${(d.lon_deg || 0).toFixed(2)}\u00b0`,
+          ]);
+          personalityCard.appendChild(createMethodTable(
+            [isNL ? "Lichaam" : "Body", "Gate", isNL ? "Lijn" : "Line", isNL ? "Graad" : "Degree"],
+            persRows
+          ));
+          intro.appendChild(personalityCard);
+
+          const designCard = createAstroCard(
+            isNL ? "Design (rood)" : "Design (red)",
+            isNL ? "Onbewuste laag, ~88\u00b0 zonneboog v\u00f3\u00f3r geboorte" : "Unconscious layer, ~88\u00b0 solar arc before birth",
+            ""
+          );
+          const desRows = Object.entries(hd.design || {}).map(([body, d]) => [
+            body, String(d.gate || "-"), String(d.line || "-"), `${(d.lon_deg || 0).toFixed(2)}\u00b0`,
+          ]);
+          designCard.appendChild(createMethodTable(
+            [isNL ? "Lichaam" : "Body", "Gate", isNL ? "Lijn" : "Line", isNL ? "Graad" : "Degree"],
+            desRows
+          ));
+          intro.appendChild(designCard);
+        }
+
+        root.appendChild(intro);
+        return root;
+      }
+
+      // ---------------- Maya ----------------
+
+      async function renderMayaTab(data) {
+        const isNL = uiIsNL();
+        const root = createEl("section", "astro-shell");
+        const intro = createEl("section", "astro-method-visual");
+        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 5" : "Method 5"));
+        intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Maya tijdcyclus" : "Maya time-cycle"));
+
+        const maya = (data && data.maya) || {};
+        const sign = maya.sign || {};
+        const tone = maya.tone || {};
+
+        const summary = isNL
+          ? `Kin ${maya.kin || "-"} - ${tone.name_nl || "-"} ${sign.nl || "-"} (${sign.yucatec || "-"}). Tone-effect: ${tone.kw_nl || "-"}. Dagteken: ${sign.kw_nl || "-"}.`
+          : `Kin ${maya.kin || "-"} - ${tone.name_en || "-"} ${sign.en || "-"} (${sign.yucatec || "-"}). Tone effect: ${tone.kw_en || "-"}. Day-sign: ${sign.kw_en || "-"}.`;
+        intro.appendChild(createEl("p", "astro-section-sub", summary));
+
+        // Glyph SVG
+        const glyphCard = createAstroCard(
+          isNL ? "Tzolkin / Galactic Signature" : "Tzolkin / Galactic Signature",
+          isNL ? "13 tonen (buiten) - 20 dagtekens (binnen)" : "13 tones (outer) - 20 day-signs (inner)",
+          ""
+        );
+        const glyphWrap = createEl("div", "astro-wheel-wrap");
+        glyphWrap.style.maxWidth = "560px";
+        glyphWrap.style.margin = "0 auto";
+        try {
+          const svg = await fetchSectionSvg(data, "maya", currentLocale());
+          glyphWrap.innerHTML = svg;
+        } catch (e) {
+          glyphWrap.innerHTML = `<p class="astro-card__sub">${isNL ? "Glyph kon niet worden geladen." : "Glyph could not be loaded."}</p>`;
+        }
+        glyphCard.appendChild(glyphWrap);
+        intro.appendChild(glyphCard);
+
+        // Cards
+        const g3 = createEl("div", "astro-grid-3");
+        g3.appendChild(createAstroCard(
+          "Kin", `1..260: ${maya.kin || "-"}`, summary
+        ));
+        g3.appendChild(createAstroCard(
+          "Long Count",
+          isNL ? "5-laagse Maya tijdtelling" : "5-place Maya count",
+          (maya.long_count && maya.long_count.label) || "-"
+        ));
+        g3.appendChild(createAstroCard(
+          "Haab",
+          isNL ? "365-daagse vague solar year" : "365-day vague solar year",
+          (maya.haab && maya.haab.label) || "-"
+        ));
+        intro.appendChild(g3);
+
+        const g2 = createEl("div", "astro-grid-2");
+        const wave = maya.wavespell || {};
+        const castle = wave.castle || {};
+        g2.appendChild(createAstroCard(
+          "Wavespell",
+          isNL ? `Index ${wave.wavespell_index || "-"} - positie ${wave.wavespell_position || "-"}` :
+                 `Index ${wave.wavespell_index || "-"} - position ${wave.wavespell_position || "-"}`,
+          (isNL ? castle.name_nl : castle.name_en) || "-"
+        ));
+        g2.appendChild(createAstroCard(
+          isNL ? "Dagteken eigenschappen" : "Day-sign properties",
+          `${sign.yucatec || "-"} - ${(isNL ? sign.nl : sign.en) || "-"}`,
+          isNL
+            ? `Element: ${sign.element || "-"}, richting: ${sign.direction || "-"}, polariteit: ${sign.polarity || "-"}.`
+            : `Element: ${sign.element || "-"}, direction: ${sign.direction || "-"}, polarity: ${sign.polarity || "-"}.`
+        ));
+        intro.appendChild(g2);
+
+        // Personal year cycles
+        if (Array.isArray(maya.personal_year_cycles) && maya.personal_year_cycles.length) {
+          const cycCard = createAstroCard(
+            isNL ? "Persoonlijke kin-cycli" : "Personal kin cycles",
+            isNL ? "Volgende 4 herhalingen van je galactische signatuur (260-daagse stappen)" :
+                   "Next 4 repeats of your galactic signature (260-day steps)",
+            ""
+          );
+          const rows = maya.personal_year_cycles.map((c) => [
+            String(c.cycle), String(c.kin), String(c.tone), String(c.sign),
+          ]);
+          cycCard.appendChild(createMethodTable(
+            [isNL ? "Cyclus" : "Cycle", "Kin", isNL ? "Toon" : "Tone", isNL ? "Teken" : "Sign"],
+            rows
+          ));
+          intro.appendChild(cycCard);
+        }
+
+        root.appendChild(intro);
+        return root;
+      }
+
+      // ---------------- Cross-system ----------------
+
+      function renderCrossSystemTab(data, cs) {
+        const isNL = uiIsNL();
+        const root = createEl("section", "astro-shell");
+        const intro = createEl("section", "astro-method-visual");
+        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Synthese" : "Synthesis"));
+        intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Cross-systeem resonantie" : "Cross-system resonance"));
+
+        if (!cs) {
+          intro.appendChild(createEl("p", "astro-section-sub", isNL ? "Cross-systeem laag is nog niet geladen." : "Cross-system layer is not loaded yet."));
+          root.appendChild(intro);
+          return root;
+        }
+
+        intro.appendChild(createEl("p", "astro-section-sub", String(cs.summary || "")));
+
+        const conv = cs.convergence || {};
+        const g3 = createEl("div", "astro-grid-3");
+        g3.appendChild(createAstroCard(
+          isNL ? "Element" : "Element",
+          isNL ? "Convergerend element" : "Converging element",
+          `${conv.element || "-"} (${conv.agreement_score_element || 0}/4 ${isNL ? "methodes akkoord" : "methods agree"})`
+        ));
+        g3.appendChild(createAstroCard(
+          isNL ? "Polariteit" : "Polarity",
+          isNL ? "Yang/Yin balans over methodes" : "Yang/Yin balance across methods",
+          String(conv.polarity || "-")
+        ));
+        g3.appendChild(createAstroCard(
+          isNL ? "Coherentie" : "Coherence",
+          isNL ? "Hoe sterk methodes elkaar bevestigen" : "How strongly methods reinforce each other",
+          (conv.agreement_score_element || 0) >= 3
+            ? (isNL ? "Hoge convergentie" : "High convergence")
+            : (conv.agreement_score_element || 0) === 2
+              ? (isNL ? "Gedeeltelijke convergentie" : "Partial convergence")
+              : (isNL ? "Diverse perspectieven" : "Diverse perspectives")
+        ));
+        intro.appendChild(g3);
+
+        const sectionsList = Array.isArray(cs.sections) ? cs.sections : [];
+        sectionsList.forEach((sec) => {
+          if (!sec || !sec.title) return;
+          const card = createAstroCard(
+            String(sec.title),
+            "",
+            String(sec.text || "")
+          );
+          // Add per-system tags
+          const data_ = sec.data || {};
+          if (sec.key === "element_resonance" && data_.systems) {
+            const tagWrap = createEl("div");
+            tagWrap.style.marginTop = "8px";
+            tagWrap.style.fontSize = "11px";
+            tagWrap.style.color = "#846da4";
+            Object.entries(data_.systems).forEach(([k, v]) => {
+              const t = createEl("span");
+              t.style.display = "inline-block";
+              t.style.padding = "3px 8px";
+              t.style.marginRight = "6px";
+              t.style.marginTop = "4px";
+              t.style.border = "1px solid #eadff8";
+              t.style.background = "#faf7ff";
+              t.textContent = `${k}: ${v || "-"}`;
+              tagWrap.appendChild(t);
+            });
+            card.appendChild(tagWrap);
+          }
+          intro.appendChild(card);
+        });
+
+        root.appendChild(intro);
         return root;
       }
 

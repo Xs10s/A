@@ -429,10 +429,117 @@ def build_view_model(
         },
     })
 
+    # Human Design
+    hd_block = engine_json.get("human_design") or {}
+    hd_available = bool(hd_block) and hd_block.get("type") is not None
+    methods.append({
+        "id": "human_design",
+        "label_nl": "Human Design",
+        "available": hd_available,
+        "status": {
+            "confidence": (hd_block.get("status") or {}).get("confidence", "high"),
+            "requires": (hd_block.get("status") or {}).get("requires", ["date", "time"]),
+        },
+        "sections": _human_design_sections(engine_json),
+    })
+
+    # Maya
+    maya_block = engine_json.get("maya") or {}
+    maya_available = bool(maya_block) and maya_block.get("kin") is not None
+    methods.append({
+        "id": "maya",
+        "label_nl": "Maya (Tzolkin / Haab)",
+        "available": maya_available,
+        "status": {
+            "confidence": (maya_block.get("status") or {}).get("confidence", "high"),
+            "requires": (maya_block.get("status") or {}).get("requires", ["date"]),
+        },
+        "sections": _maya_sections(engine_json),
+    })
+
     return {
         "locale": locale,
         "generated_at_utc": generated,
         "input_summary": _input_summary(engine_json),
         "diagnostics": diag,
         "methods": methods,
+    }
+
+
+def _human_design_sections(engine_json: dict[str, Any]) -> dict[str, Any]:
+    hd = engine_json.get("human_design") or {}
+    if not isinstance(hd, dict) or not hd.get("type"):
+        return {"summary_cards": [], "channels_table": [], "personality_table": [], "design_table": []}
+    summary_cards = [
+        {"label": "Type", "value": hd.get("type") or "-"},
+        {"label": "Strategie", "value": (hd.get("strategy") or {}).get("text", "-")},
+        {"label": "Authoriteit", "value": hd.get("authority") or "-"},
+        {"label": "Profiel", "value": (hd.get("profile") or {}).get("value") or "-"},
+        {"label": "Incarnation Cross", "value": (hd.get("incarnation_cross") or {}).get("name_short", "-")},
+    ]
+    channels_table = []
+    for ch in hd.get("channels") or []:
+        gates = ch.get("gates") or [None, None]
+        channels_table.append({
+            "channel": ch.get("name") or "-",
+            "gates": f"{gates[0]} - {gates[1]}",
+            "circuit": ch.get("circuit") or "-",
+            "theme": ch.get("theme") or "-",
+        })
+    personality_table = []
+    for body, data in (hd.get("personality") or {}).items():
+        personality_table.append({
+            "body": body,
+            "gate": data.get("gate"),
+            "line": data.get("line"),
+            "lon": data.get("lon_deg"),
+        })
+    design_table = []
+    for body, data in (hd.get("design") or {}).items():
+        design_table.append({
+            "body": body,
+            "gate": data.get("gate"),
+            "line": data.get("line"),
+            "lon": data.get("lon_deg"),
+        })
+    centers_block = hd.get("centers") or {}
+    return {
+        "summary_cards": summary_cards,
+        "channels_table": channels_table,
+        "personality_table": personality_table,
+        "design_table": design_table,
+        "centers": {
+            "defined": centers_block.get("defined") or [],
+            "undefined": centers_block.get("undefined") or [],
+            "all": centers_block.get("all") or [],
+        },
+        "active_gates": hd.get("active_gates") or [],
+        "gate_sources": hd.get("gate_sources") or {},
+    }
+
+
+def _maya_sections(engine_json: dict[str, Any]) -> dict[str, Any]:
+    maya = engine_json.get("maya") or {}
+    if not isinstance(maya, dict) or not maya.get("kin"):
+        return {"summary_cards": [], "wavespell": None, "personal_year_cycles": []}
+    sign = maya.get("sign") or {}
+    tone = maya.get("tone") or {}
+    summary_cards = [
+        {"label": "Kin", "value": str(maya.get("kin") or "-")},
+        {"label": "Tzolkin", "value": maya.get("tzolkin", {}).get("label", "-")},
+        {"label": "Haab", "value": maya.get("haab", {}).get("label", "-")},
+        {"label": "Long Count", "value": maya.get("long_count", {}).get("label", "-")},
+        {"label": "Day sign", "value": sign.get("yucatec") or "-"},
+        {"label": "Galactic tone", "value": tone.get("name_en") or "-"},
+    ]
+    return {
+        "summary_cards": summary_cards,
+        "sign": sign,
+        "tone": tone,
+        "wavespell": maya.get("wavespell") or {},
+        "harmonic": maya.get("harmonic") or {},
+        "personal_year_cycles": maya.get("personal_year_cycles") or [],
+        "long_count": maya.get("long_count") or {},
+        "tzolkin": maya.get("tzolkin") or {},
+        "haab": maya.get("haab") or {},
     }

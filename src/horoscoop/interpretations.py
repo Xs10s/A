@@ -698,10 +698,71 @@ def build_interpretations(engine_json: dict[str, Any], *, locale: str = "nl-NL")
         else "Chinese frame (Ganzhi/BaZi): your energetic pattern is read as cycles (year/month/day/hour)."
     )
 
+    # Human Design narrative
+    hd_block = engine_json.get("human_design") or {}
+    human_design_out: dict[str, Any] = {"summary": "", "type": None, "authority": None,
+                                         "profile": None, "centers": None,
+                                         "channels": [], "incarnation_cross": None}
+    if isinstance(hd_block, dict) and hd_block.get("type"):
+        type_str = hd_block.get("type")
+        auth = hd_block.get("authority")
+        prof = (hd_block.get("profile") or {}).get("value")
+        cross = (hd_block.get("incarnation_cross") or {}).get("name_short")
+        if lang == "nl":
+            human_design_out["summary"] = (
+                f"Je bent een {type_str} met {auth}-authoriteit en profiel {prof}. "
+                f"Het thema-kruis is: {cross}. Strategie en authoriteit blijven leidend "
+                "voor besluiten; het bodygraph laat zien welke energieën consistent en welke "
+                "open zijn."
+            )
+        else:
+            human_design_out["summary"] = (
+                f"You are a {type_str} with {auth} authority and profile {prof}. "
+                f"The theme cross is: {cross}. Strategy and authority guide decisions; "
+                "the bodygraph shows which energies are consistent and which are open."
+            )
+        human_design_out["type"] = type_str
+        human_design_out["authority"] = auth
+        human_design_out["profile"] = hd_block.get("profile")
+        human_design_out["centers"] = hd_block.get("centers")
+        human_design_out["channels"] = hd_block.get("channels")
+        human_design_out["incarnation_cross"] = hd_block.get("incarnation_cross")
+        human_design_out["strategy"] = hd_block.get("strategy")
+
+    # Maya narrative
+    maya_block = engine_json.get("maya") or {}
+    maya_out: dict[str, Any] = {"summary": "", "kin": None, "tone": None, "sign": None,
+                                "wavespell": None, "haab": None, "long_count": None}
+    if isinstance(maya_block, dict) and maya_block.get("kin"):
+        sign_meta = maya_block.get("sign") or {}
+        tone_meta = maya_block.get("tone") or {}
+        kw = sign_meta.get("kw_nl") if lang == "nl" else sign_meta.get("kw_en")
+        tone_kw = tone_meta.get("kw_nl") if lang == "nl" else tone_meta.get("kw_en")
+        if lang == "nl":
+            maya_out["summary"] = (
+                f"Je Maya-kin is {maya_block.get('kin')} ({tone_meta.get('name_nl')} "
+                f"{sign_meta.get('nl')}). Kernkwaliteit: {kw}. Tooneffect: {tone_kw}. "
+                "De wavespell en het kasteel laten zien in welk groter ritme je leeft."
+            )
+        else:
+            maya_out["summary"] = (
+                f"Your Maya kin is {maya_block.get('kin')} ({tone_meta.get('name_en')} "
+                f"{sign_meta.get('en')}). Core quality: {kw}. Tone effect: {tone_kw}. "
+                "The wavespell and castle show the broader rhythm you live in."
+            )
+        maya_out["kin"] = maya_block.get("kin")
+        maya_out["tone"] = maya_block.get("tone")
+        maya_out["sign"] = maya_block.get("sign")
+        maya_out["wavespell"] = maya_block.get("wavespell")
+        maya_out["haab"] = maya_block.get("haab")
+        maya_out["long_count"] = maya_block.get("long_count")
+
     return {
         "western_tropical": western_tropical,
         "western_sidereal": western_sidereal,
         "vedic_panchanga": panchanga_out,
         "chinese_ganzhi_bazi": chinese_out,
+        "human_design": human_design_out,
+        "maya": maya_out,
     }
 

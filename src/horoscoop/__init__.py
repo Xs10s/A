@@ -9,6 +9,9 @@ from . import sidereal
 from . import aspects
 from . import vedic
 from . import chinese
+from . import human_design
+from . import maya
+from . import cross_system
 from . import engine
 from . import models
 
@@ -20,6 +23,9 @@ __all__ = [
     "aspects",
     "vedic",
     "chinese",
+    "human_design",
+    "maya",
+    "cross_system",
     "engine",
     "models",
 ]

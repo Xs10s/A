@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 
 from horoscoop import engine
 from horoscoop.energy_profile import build_energy_profile, build_combined_energy_profile
+from horoscoop.cross_system import build_cross_system
 from horoscoop.presentation import (
     build_view_model,
     render_wheel_from_engine,
@@ -210,6 +211,16 @@ async def api_viewmodel(payload: HoroscoopRequest, locale: Optional[str] = "nl-N
     return JSONResponse(vm)
 
 
+_ALLOWED_ENERGY_SYSTEMS = (
+    "western_tropical",
+    "western_sidereal",
+    "vedic_panchanga",
+    "chinese_bazi",
+    "human_design",
+    "maya",
+)
+
+
 @app.post("/api/energy-profile")
 async def api_energy_profile(
     payload: HoroscoopRequest,
@@ -218,14 +229,29 @@ async def api_energy_profile(
 ):
     """
     Generate an energy profile (scores + evidence + narrative) derived from engine output.
-    system: western_tropical | western_sidereal | vedic_panchanga | chinese_bazi
+    system: western_tropical | western_sidereal | vedic_panchanga | chinese_bazi |
+            human_design | maya
     """
     result = _call_engine(payload)
     sys_id = (system or "western_tropical").strip().lower()
-    if sys_id not in ("western_tropical", "western_sidereal", "vedic_panchanga", "chinese_bazi"):
-        return JSONResponse({"error": "invalid_system", "allowed": ["western_tropical", "western_sidereal", "vedic_panchanga", "chinese_bazi"]}, status_code=400)
+    if sys_id not in _ALLOWED_ENERGY_SYSTEMS:
+        return JSONResponse(
+            {"error": "invalid_system", "allowed": list(_ALLOWED_ENERGY_SYSTEMS)},
+            status_code=400,
+        )
     prof = build_energy_profile(result, system=sys_id, locale=locale or "nl-NL")  # type: ignore[arg-type]
     return JSONResponse(prof)
+
+
+@app.post("/api/cross-system")
+async def api_cross_system(payload: HoroscoopRequest, locale: Optional[str] = "nl-NL"):
+    """
+    Cross-system intelligence: element/polarity/decision/timing resonances
+    across Western, Vedic, BaZi, Human Design, Maya.
+    """
+    result = _call_engine(payload)
+    cs = build_cross_system(result, locale=locale or "nl-NL")
+    return JSONResponse(cs)
 
 
 @app.post("/api/energy-profile/combined")
@@ -342,7 +368,10 @@ async def api_render_wheel_svg(
 
 
 _SECTION_SVG_ALLOWED = frozenset(
-    ("western_tropical", "western_sidereal", "vedic_panchanga", "chinese_bazi")
+    (
+        "western_tropical", "western_sidereal", "vedic_panchanga", "chinese_bazi",
+        "human_design", "maya",
+    )
 )
 
 

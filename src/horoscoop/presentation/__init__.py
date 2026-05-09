@@ -16,6 +16,8 @@ from .render_svg import (
     render_wheel_from_engine,
     render_panchanga_banner_svg,
     render_bazi_banner_svg,
+    render_human_design_bodygraph_svg,
+    render_maya_glyph_svg,
     render_section_svg,
 )
 from .render_pdf import render_pdf
@@ -35,6 +37,8 @@ __all__ = [
     "render_wheel_from_engine",
     "render_panchanga_banner_svg",
     "render_bazi_banner_svg",
+    "render_human_design_bodygraph_svg",
+    "render_maya_glyph_svg",
     "render_section_svg",
     "render_pdf",
 ]

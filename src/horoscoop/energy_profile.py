@@ -30,7 +30,14 @@ from .knowledgebase import (
 )
 
 
-SystemId = Literal["western_tropical", "western_sidereal", "vedic_panchanga", "chinese_bazi"]
+SystemId = Literal[
+    "western_tropical",
+    "western_sidereal",
+    "vedic_panchanga",
+    "chinese_bazi",
+    "human_design",
+    "maya",
+]
 
 
 class Signal(TypedDict, total=False):
@@ -498,6 +505,112 @@ def _normalize_domains(raw: dict[str, float], *, locale: Optional[str]) -> list[
     return out
 
 
+def _human_design_signals(engine_json: dict[str, Any]) -> list[Signal]:
+    hd = engine_json.get("human_design") or {}
+    out: list[Signal] = []
+    if not isinstance(hd, dict) or not hd.get("type"):
+        return out
+    out.append({
+        "key": "hd_type",
+        "label": f"Type: {hd.get('type')}",
+        "category": "human_design",
+        "tags": ["type"],
+        "weight": 0.8,
+        "meta": {"type": hd.get("type"), "authority": hd.get("authority")},
+    })
+    profile = hd.get("profile") or {}
+    if profile.get("value"):
+        out.append({
+            "key": "hd_profile",
+            "label": f"Profiel: {profile.get('value')}",
+            "category": "human_design",
+            "tags": ["profile"],
+            "weight": 0.6,
+            "meta": {
+                "value": profile.get("value"),
+                "personality_line": profile.get("personality_line"),
+                "design_line": profile.get("design_line"),
+            },
+        })
+    auth = hd.get("authority")
+    if auth:
+        out.append({
+            "key": "hd_authority",
+            "label": f"Authority: {auth}",
+            "category": "human_design",
+            "tags": ["authority"],
+            "weight": 0.7,
+            "meta": {"authority": auth},
+        })
+    centers = hd.get("centers") or {}
+    defined = centers.get("defined") or []
+    if defined:
+        out.append({
+            "key": "hd_defined_centers",
+            "label": f"Defined centers: {', '.join(defined)}",
+            "category": "human_design",
+            "tags": ["centers"],
+            "weight": 0.45,
+            "meta": {"defined": defined, "undefined": centers.get("undefined") or []},
+        })
+    channels = hd.get("channels") or []
+    for ch in channels[:6]:
+        out.append({
+            "key": "hd_channel",
+            "label": f"Kanaal {ch.get('name')}",
+            "category": "human_design",
+            "tags": ["channel", str(ch.get("circuit") or "")],
+            "weight": 0.4,
+            "meta": ch,
+        })
+    return out
+
+
+def _maya_signals(engine_json: dict[str, Any]) -> list[Signal]:
+    maya_block = engine_json.get("maya") or {}
+    out: list[Signal] = []
+    if not isinstance(maya_block, dict) or not maya_block.get("kin"):
+        return out
+    sign = maya_block.get("sign") or {}
+    tone = maya_block.get("tone") or {}
+    out.append({
+        "key": "maya_kin",
+        "label": f"Kin {maya_block.get('kin')} - {sign.get('yucatec', '')}",
+        "category": "maya",
+        "tags": ["kin", "tzolkin"],
+        "weight": 0.8,
+        "meta": {
+            "kin": maya_block.get("kin"),
+            "tone_index": tone.get("index"),
+            "sign_index": sign.get("index"),
+            "element": sign.get("element"),
+            "polarity": sign.get("polarity"),
+            "direction": sign.get("direction"),
+        },
+    })
+    wave = maya_block.get("wavespell") or {}
+    if wave.get("wavespell_index"):
+        out.append({
+            "key": "maya_wavespell",
+            "label": f"Wavespell {wave.get('wavespell_index')}",
+            "category": "maya",
+            "tags": ["wavespell"],
+            "weight": 0.45,
+            "meta": wave,
+        })
+    haab = maya_block.get("haab") or {}
+    if haab.get("month_name"):
+        out.append({
+            "key": "maya_haab",
+            "label": f"Haab: {haab.get('label')}",
+            "category": "maya",
+            "tags": ["haab"],
+            "weight": 0.35,
+            "meta": haab,
+        })
+    return out
+
+
 def build_energy_profile(
     engine_json: dict[str, Any],
     *,
@@ -514,6 +627,10 @@ def build_energy_profile(
         signals.extend(_vedic_signals(engine_json))
     if system == "chinese_bazi":
         signals.extend(_chinese_signals(engine_json))
+    if system == "human_design":
+        signals.extend(_human_design_signals(engine_json))
+    if system == "maya":
+        signals.extend(_maya_signals(engine_json))
 
     acc = _init_domain_acc()
 
@@ -546,6 +663,91 @@ def build_energy_profile(
         _apply_signal(acc, {"weight": 0.8}, contrib)
         acc["body_energy"] += 3.0
         acc["relationships"] += 2.0
+
+    # Human Design contribution: type/authority/centers shape body energy,
+    # decision-making (mind/spirit/emotion) and relationships.
+    if system == "human_design":
+        hd = engine_json.get("human_design") or {}
+        hd_type = hd.get("type")
+        if hd_type in ("Generator", "Manifesting Generator"):
+            acc["body_energy"] += 14.0
+            acc["purpose"] += 10.0
+        elif hd_type == "Manifestor":
+            acc["body_energy"] += 8.0
+            acc["purpose"] += 12.0
+            acc["relationships"] -= 1.0
+        elif hd_type == "Projector":
+            acc["mind"] += 10.0
+            acc["relationships"] += 6.0
+            acc["body_energy"] -= 4.0
+        elif hd_type == "Reflector":
+            acc["spirit"] += 10.0
+            acc["relationships"] += 6.0
+            acc["body_energy"] -= 6.0
+
+        auth = hd.get("authority")
+        if auth == "Emotional":
+            acc["emotion"] += 10.0
+            acc["mind"] -= 2.0
+        elif auth == "Sacral":
+            acc["body_energy"] += 8.0
+        elif auth == "Splenic":
+            acc["spirit"] += 6.0
+            acc["mind"] += 2.0
+        elif auth == "Ego":
+            acc["purpose"] += 6.0
+            acc["stability"] += 4.0
+        elif auth == "Self-projected":
+            acc["growth"] += 6.0
+            acc["spirit"] += 4.0
+        elif auth == "Mental":
+            acc["mind"] += 6.0
+        elif auth == "Lunar":
+            acc["spirit"] += 8.0
+
+        centers = hd.get("centers") or {}
+        defined = set(centers.get("defined") or [])
+        # Each defined center adds stability (consistency) to its theme.
+        for center, dom_keys in (
+            ("Sacral", ["body_energy"]),
+            ("Heart", ["purpose", "stability"]),
+            ("SolarPlexus", ["emotion"]),
+            ("Spleen", ["spirit", "body_energy"]),
+            ("Throat", ["relationships"]),
+            ("G", ["growth"]),
+            ("Ajna", ["mind"]),
+            ("Head", ["mind"]),
+            ("Root", ["body_energy"]),
+        ):
+            if center in defined:
+                for k in dom_keys:
+                    acc[k] += 4.0
+
+    # Maya contribution: signs map to elements (already in signs metadata).
+    if system == "maya":
+        maya_block = engine_json.get("maya") or {}
+        sign = maya_block.get("sign") or {}
+        elem = sign.get("element")
+        polarity = sign.get("polarity")
+        contrib = _score_from_sign_element(elem)
+        for k in contrib:
+            acc[k] = acc.get(k, 0.0) + 1.4 * contrib[k]
+        if polarity == "yang":
+            acc["body_energy"] += 4.0
+            acc["purpose"] += 3.0
+        elif polarity == "yin":
+            acc["emotion"] += 4.0
+            acc["spirit"] += 3.0
+        # Tone shapes the rhythm of energy: low tones (1-4) initiate, mid (5-9) build,
+        # high (10-13) integrate / release.
+        tone_idx = (maya_block.get("tone") or {}).get("index")
+        if isinstance(tone_idx, int):
+            if tone_idx <= 4:
+                acc["growth"] += 4.0
+            elif tone_idx <= 9:
+                acc["stability"] += 4.0
+            else:
+                acc["spirit"] += 4.0
 
     # Aspect tone: harmonics add harmony/growth; hard aspects add drive/stability with tension.
     aspects = (western.get("aspects") or []) if isinstance(western, dict) else []
@@ -608,11 +810,24 @@ def build_energy_profile(
     }
 
 
-def build_combined_energy_profile(engine_json: dict[str, Any], *, locale: str = "nl-NL") -> CombinedEnergyProfile:
+def build_combined_energy_profile(
+    engine_json: dict[str, Any],
+    *,
+    locale: str = "nl-NL",
+    include_human_design: bool = True,
+    include_maya: bool = True,
+) -> CombinedEnergyProfile:
     """
     Build a combined profile for the main systems so they can be compared side-by-side.
+
+    By default Human Design and Maya are included; consumers that only need
+    the original three systems can pass include_*=False.
     """
     systems: list[SystemId] = ["western_tropical", "vedic_panchanga", "chinese_bazi"]
+    if include_human_design:
+        systems.append("human_design")
+    if include_maya:
+        systems.append("maya")
     profiles: list[EnergyProfile] = [build_energy_profile(engine_json, system=s, locale=locale) for s in systems]
     # Use western_tropical signature as canonical combined signature.
     sig = profiles[0]["chartSignature"] if profiles else ""
@@ -666,6 +881,8 @@ def _narrative_from_domains(
         "western_sidereal": "Westers (sidereaal)" if lang == "nl" else "Western (sidereal)",
         "vedic_panchanga": "Vedisch (Panchanga)" if lang == "nl" else "Vedic (Panchanga)",
         "chinese_bazi": "Chinees (BaZi)" if lang == "nl" else "Chinese (BaZi)",
+        "human_design": "Human Design" if lang == "nl" else "Human Design",
+        "maya": "Maya (Tzolkin/Haab)" if lang == "nl" else "Maya (Tzolkin/Haab)",
     }.get(system, system)
     highs = ", ".join(f"{d.get('label')} {d.get('score')}" for d in top2)
     lows = ", ".join(f"{d.get('label')} {d.get('score')}" for d in low1)

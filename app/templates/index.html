@@ -310,6 +310,683 @@
         display: grid;
         gap: var(--lg);
       }
+      .method-layout--western-tight {
+        gap: 8px;
+      }
+      .method-layout--western-tight > * {
+        max-width: 100%;
+      }
+      .method-layout--western-tight .method-hero {
+        box-shadow: none;
+        border-color: #eadff6;
+      }
+      .method-layout--western-tight .method-hero--split {
+        min-height: 520px;
+      }
+      .method-layout--western-tight .method-hero__left {
+        padding: 38px 40px 28px;
+      }
+      .method-layout--western-tight .method-hero__right {
+        padding: 20px 18px;
+      }
+      .method-layout--western-tight .method-hero__kicker {
+        letter-spacing: 0.16em;
+        font-size: 10px;
+      }
+      .method-layout--western-tight .method-hero__title {
+        font-size: clamp(2.2rem, 5.2vw, 4.8rem);
+        line-height: 0.98;
+      }
+      .method-layout--western-tight .method-hero__intro {
+        max-width: 60ch;
+        font-size: 13.5px;
+        line-height: 1.75;
+      }
+      .method-layout--western-tight .method-grid-3 {
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .method-layout--western-tight .layout-section .astro-eyebrow {
+        margin-bottom: 6px;
+      }
+      .method-layout--western-tight .layout-section .astro-card__sub {
+        margin-top: 10px;
+        margin-bottom: 2px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #6f6487;
+        font-size: 11px;
+      }
+      .method-layout--western-tight .western-two-col {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 12px;
+      }
+      .method-layout--western-tight .western-questions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .method-layout--western-tight .western-values-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .method-layout--western-tight .western-value-item {
+        border: 1px solid #eadff6;
+        border-left: 4px solid var(--accent, #884dc9);
+        background: #fff;
+        padding: 10px;
+        cursor: pointer;
+      }
+      .method-layout--western-tight .western-value-item.is-active {
+        box-shadow: 0 0 0 1px var(--accent, #884dc9) inset;
+      }
+      .method-layout--western-tight .western-value-meta {
+        font-size: 11px;
+        color: #6f6487;
+      }
+      .method-layout--western-tight .western-filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .method-layout--western-tight .western-filter-chip {
+        border: 1px solid #eadff6;
+        background: #fff;
+        color: #625777;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 5px 8px;
+        cursor: pointer;
+      }
+      .method-layout--western-tight .western-filter-chip.is-active {
+        border-color: #884dc9;
+        color: #884dc9;
+      }
+      .method-layout--western-tight .western-layer-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .method-layout--western-tight .western-layer-btn {
+        border: 1px solid #eadff6;
+        background: #fff;
+        color: #625777;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 5px 8px;
+        cursor: pointer;
+      }
+      .method-layout--western-tight .western-layer-btn.is-active {
+        background: #2b2340;
+        border-color: #2b2340;
+        color: #fff;
+      }
+      .method-layout--western-tight .western-radix-venster {
+        display: flex;
+        flex-direction: column;
+        /* Past in één viewport: sectietitel + padding zitten buiten dit blok */
+        height: calc(100dvh - 9.25rem);
+        max-height: calc(100vh - 9.25rem);
+        min-height: 420px;
+        /* Zelfde tussenruimte als tussen wiel- en infokolom */
+        gap: 10px;
+      }
+      .method-layout--western-tight .western-wheel-layout {
+        display: grid;
+        grid-template-columns: 67fr 33fr;
+        gap: 10px;
+        flex: 8 1 0;
+        min-height: 0;
+      }
+      .method-layout--western-tight .western-ruler-strip {
+        flex: 2 1 0;
+        min-height: 0;
+        border: 1px solid #eadff6;
+        border-top: 0;
+        background: #fff;
+        padding: 8px 12px;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        justify-content: center;
+      }
+      .method-layout--western-tight .western-ruler-title {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: clamp(1.2rem, 2.1vw, 1.65rem);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 400;
+        color: #171126;
+        margin: 0;
+        line-height: 1.05;
+      }
+      .method-layout--western-tight .western-ruler-strip .western-two-col {
+        flex: 1;
+        min-height: 0;
+        gap: 8px;
+      }
+      .method-layout--western-tight .western-ruler-strip .astro-card {
+        min-height: 0;
+        padding: 10px 12px;
+      }
+      .method-layout--western-tight .western-ruler-strip .explain-grid {
+        min-height: 0;
+      }
+      .method-layout--western-tight .western-ruler-strip .astro-card h4 {
+        font-size: clamp(1rem, 1.65vw, 1.3rem);
+        margin-bottom: 4px;
+      }
+      .method-layout--western-tight .western-ruler-strip .astro-card p {
+        font-size: 12.5px;
+        line-height: 1.45;
+        margin: 0;
+      }
+      .method-layout--western-tight .layout-section:has(.western-radix-venster) {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+      .method-layout--western-tight .western-section-title-row {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 4px;
+      }
+      .method-layout--western-tight .western-section-title-row .layout-section__title {
+        margin-bottom: 0;
+      }
+      .method-layout--western-tight .western-hover-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+      }
+      .method-layout--western-tight .western-hover-btn {
+        border: 0;
+        background: transparent;
+        cursor: help;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        color: #8f80aa;
+        line-height: 1;
+        padding: 2px 4px;
+      }
+      .method-layout--western-tight .western-hover-pop {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: calc(100% + 6px);
+        z-index: 60;
+        min-width: 220px;
+        max-width: min(360px, 92vw);
+        padding: 12px 14px;
+        background: #fff;
+        border: 1px solid #eadff6;
+        box-shadow: 0 10px 28px rgba(23, 17, 38, 0.12);
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 13px;
+        line-height: 1.65;
+        color: #4f4961;
+        font-weight: 400;
+      }
+      .method-layout--western-tight .western-hover-wrap:hover .western-hover-pop,
+      .method-layout--western-tight .western-hover-wrap:focus-within .western-hover-pop {
+        display: block;
+      }
+      .method-layout--western-tight .western-layer-iconbar {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        z-index: 4;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+        max-width: calc(100% - 100px);
+      }
+      .method-layout--western-tight .western-layer-iconbtn {
+        border: 0;
+        background: transparent;
+        padding: 2px;
+        cursor: pointer;
+        line-height: 0;
+        color: #9a94a8;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+      }
+      .method-layout--western-tight .western-layer-iconbtn img {
+        width: 17px;
+        height: 17px;
+        display: block;
+        opacity: 0.36;
+        filter: brightness(0) contrast(0.88);
+        transform: scale(0.9);
+        transform-origin: center center;
+      }
+      .method-layout--western-tight .western-layer-iconbtn.is-active {
+        color: #171126;
+        box-shadow: inset 0 0 0 1px rgba(23, 17, 38, 0.55);
+        border-radius: 2px;
+      }
+      .method-layout--western-tight .western-layer-iconbtn.is-active img {
+        opacity: 0.88;
+        filter: brightness(0) contrast(0.92);
+      }
+      .method-layout--western-tight .western-wheel-frame {
+        position: relative;
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .method-layout--western-tight .western-chart-ruler-stamp {
+        padding: 8px 10px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1.5px solid #171126;
+        box-shadow: 0 6px 18px rgba(23, 17, 38, 0.08);
+      }
+      .method-layout--western-tight .western-chart-ruler-stamp--in-strip {
+        position: relative;
+        flex: 0 0 auto;
+        max-width: 220px;
+        min-width: 0;
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        pointer-events: auto;
+      }
+      .method-layout--western-tight .western-chart-ruler-stamp__kicker-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        margin-bottom: 4px;
+      }
+      .method-layout--western-tight .western-chart-ruler-stamp__kicker {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 9px;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #6f6487;
+        margin: 0;
+      }
+      .method-layout--western-tight .western-chart-ruler-stamp--in-strip .western-hover-btn {
+        font-weight: 400;
+        padding: 0 2px;
+      }
+      .method-layout--western-tight .western-chart-ruler-stamp__main {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+      .method-layout--western-tight .western-chart-ruler-stamp__glyph {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        object-fit: contain;
+        filter: brightness(0);
+      }
+      .method-layout--western-tight .western-chart-ruler-stamp__line {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.35;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #171126;
+      }
+      .method-layout--western-tight .western-ruler-strip__card {
+        border: 1px solid #eadff6;
+        background: #fff;
+        padding: 10px 12px;
+        min-height: 0;
+      }
+      .method-layout--western-tight .western-ruler-strip__eyebrow {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #8f80aa;
+        margin-bottom: 6px;
+      }
+      .method-layout--western-tight .western-ruler-strip__card p {
+        margin: 0;
+        font-size: 12.5px;
+        line-height: 1.45;
+        color: #4f4961;
+      }
+      .method-layout--western-tight .western-ruler-strip__main {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        gap: 12px;
+        min-height: 0;
+        flex: 1 1 auto;
+      }
+      .method-layout--western-tight .western-ruler-strip__copy {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: #4f4961;
+        margin: 0;
+        align-self: center;
+      }
+      .method-layout--western-tight .western-info-detail {
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #eadff6;
+      }
+      .method-layout--western-tight .western-info-detail__label {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #6f6487;
+        margin: 0 0 8px 0;
+      }
+      .method-layout--western-tight .western-info-detail ul {
+        margin: 0;
+        padding-left: 1.1em;
+        font-size: 13px;
+        line-height: 1.55;
+        color: #4f4961;
+      }
+      .method-layout--western-tight .western-info-detail li + li {
+        margin-top: 4px;
+      }
+      .method-layout--western-tight .western-wheel-col,
+      .method-layout--western-tight .western-info-pane {
+        border: 1px solid #eadff6;
+        background: #fff;
+        height: 100%;
+      }
+      .method-layout--western-tight .western-wheel-col {
+        display: flex;
+        flex-direction: column;
+        padding: 8px;
+        padding-top: 40px;
+        position: relative;
+        min-height: 0;
+      }
+      .method-layout--western-tight .western-wheel-frame .astro-wheel-wrap {
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .method-layout--western-tight .western-wheel-frame .astro-wheel-wrap svg {
+        width: auto;
+        height: auto;
+        max-width: min(100%, 440px);
+        max-height: min(100%, 52vh, 92%);
+        min-height: 180px;
+      }
+      .method-layout--western-tight .western-info-pane {
+        padding: 14px;
+        overflow: auto;
+      }
+      .method-layout--western-tight .western-info-title {
+        font-family: "Lora", Georgia, serif;
+        font-size: 30px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin: 0 0 8px 0;
+      }
+      .method-layout--western-tight .western-info-meta {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #6f6487;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .method-layout--western-tight .western-info-text {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #4f4961;
+        margin: 0 0 8px 0;
+      }
+      .method-layout--western-tight .western-info-toggle {
+        display: none;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 3;
+        border: 1px solid #eadff6;
+        background: #fff;
+        color: #625777;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 5px 8px;
+      }
+      .method-layout--western-tight .explain-card h4 {
+        margin: 0 0 10px 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: 30px;
+        color: #171126;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-weight: 400;
+      }
+      @media (max-width: 900px) {
+        .method-layout--western-tight .western-two-col,
+        .method-layout--western-tight .western-questions-grid,
+        .method-layout--western-tight .western-values-list {
+          grid-template-columns: 1fr;
+        }
+        .method-layout--western-tight .western-radix-venster {
+          height: auto;
+          min-height: min(100dvh - 7.5rem, 720px);
+          max-height: none;
+        }
+        .method-layout--western-tight .western-wheel-layout {
+          grid-template-columns: 1fr;
+          flex: 7 1 0;
+          min-height: 380px;
+          position: relative;
+        }
+        .method-layout--western-tight .western-ruler-strip {
+          flex: 3 1 0;
+        }
+        .method-layout--western-tight .western-info-toggle {
+          display: inline-block;
+        }
+        .method-layout--western-tight .western-info-pane {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          transform: translateX(102%);
+          transition: transform 180ms ease;
+        }
+        .method-layout--western-tight .western-wheel-layout.is-info-open .western-info-pane {
+          transform: translateX(0);
+        }
+      }
+      .method-layout--western-tight .layout-section {
+        border: 0;
+        border-top: 1px solid #eadff6;
+        background: transparent;
+        padding: 24px 0;
+      }
+      .method-layout--western-tight .layout-section__title {
+        font-size: clamp(2.05rem, 3.5vw, 2.75rem);
+        margin-bottom: 2px;
+        color: #171126;
+        font-weight: 400;
+      }
+      .method-layout--western-tight .layout-section__lead {
+        margin-bottom: 14px;
+      }
+      .method-layout--western-tight .layout-section > p,
+      .method-layout--western-tight .layout-section li {
+        font-size: 14px;
+        line-height: 1.75;
+        color: #4f4961;
+      }
+      .method-layout--western-tight .explain-card {
+        padding: 16px;
+        min-height: 158px;
+        background: #fff;
+        border-color: #eadff6;
+        display: grid;
+        grid-template-rows: auto auto auto 1fr;
+        align-items: start;
+        height: 100%;
+      }
+      .method-layout--western-tight .explain-card__title {
+        margin-bottom: 8px;
+      }
+      .method-layout--western-tight .explain-card__text {
+        line-height: 1.7;
+      }
+      .method-layout--western-tight .method-table th,
+      .method-layout--western-tight .method-table td {
+        padding: 10px 9px;
+      }
+      .method-layout--western-tight .metric-card {
+        border-color: #eadff6;
+        background: #fff;
+        padding: 10px;
+      }
+      .method-layout--western-tight .method-table {
+        border-color: #eadff6;
+        background: #fff;
+      }
+      .method-layout--western-tight .method-table th {
+        background: #f4eefb;
+      }
+      .method-layout--western-tight .bar-track {
+        height: 6px;
+        background: #f4eefb;
+        border-color: #eadff6;
+        border: 1px solid #eadff6;
+      }
+      .method-layout--western-tight .bar-fill {
+        height: 100%;
+        background: #884dc9;
+      }
+      .method-layout--western-tight .bar-row {
+        margin: 0 0 8px 0;
+      }
+      .method-layout--western-tight .astro-card h4,
+      .method-layout--western-tight .legend-card__title {
+        font-weight: 400;
+      }
+      .method-layout--western-tight .astro-card__head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .method-layout--western-tight .astro-card__meta-left {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--accent, #171126);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .method-layout--western-tight .astro-card__badge {
+        border: 1px solid #c9a24d;
+        color: #9b7428;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 3px 6px;
+        line-height: 1.2;
+      }
+      .method-layout--western-tight .explain-grid {
+        align-items: stretch;
+      }
+      .method-layout--western-tight .astro-wheel-wrap .wheel-planet-marker,
+      .method-layout--western-tight .astro-wheel-wrap .wheel-aspect-line {
+        transition: opacity 160ms ease, stroke-width 160ms ease;
+      }
+      .method-layout--western-tight .astro-wheel-wrap.is-filtering .wheel-planet-marker,
+      .method-layout--western-tight .astro-wheel-wrap.is-filtering .wheel-aspect-line {
+        opacity: 0.2;
+      }
+      .method-layout--western-tight .astro-wheel-wrap .wheel-planet-marker.is-active,
+      .method-layout--western-tight .astro-wheel-wrap .wheel-aspect-line.is-active {
+        opacity: 1;
+      }
+      .method-layout--western-tight .astro-wheel-wrap .wheel-aspect-line.is-active {
+        stroke-width: 3;
+      }
+      .method-layout--western-tight details.layout-section {
+        border-top: 1px solid #eadff6;
+        padding-top: 18px;
+      }
+      .method-layout--western-tight details.layout-section > summary {
+        cursor: pointer;
+        list-style: none;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #884dc9;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      .method-layout--western-tight .legend-section {
+        margin-top: 0;
+        border-top: 1px solid #eadff6;
+        padding: 24px 0 4px;
+      }
+      .method-layout--western-tight .legend-section__header {
+        margin-bottom: 16px;
+      }
+      .method-layout--western-tight .legend-section__title {
+        font-size: clamp(1.8rem, 3.2vw, 2.3rem);
+        color: #171126;
+      }
+      .method-layout--western-tight .legend-section__lead {
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .method-layout--western-tight .legend-grid {
+        gap: 14px;
+      }
+      .method-layout--western-tight .legend-card {
+        border: 1px solid #eadff6;
+        padding: 16px;
+      }
+      .method-layout--western-tight .legend-card__title {
+        font-size: 22px;
+        color: #171126;
+      }
+      .method-layout--western-tight .legend-card__body {
+        line-height: 1.7;
+        color: #4f4961;
+      }
+      .method-layout--western-tight .legend-card__divider {
+        background: #eadff6;
+      }
 
       .method-hero {
         border: 1px solid #d9c8ef;
@@ -453,13 +1130,17 @@
         background: #fff;
         padding: 12px;
         border-radius: 0;
+        border-left: 4px solid var(--accent, #884dc9);
       }
 
       .metric-card__label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: var(--text-secondary);
+        color: var(--accent, var(--text-secondary));
       }
 
       .metric-card__value {
@@ -1888,6 +2569,11 @@
         return uiIsNL() ? `${m.nl} (${m.en})` : m.en;
       }
 
+      function localizeSignShort(value) {
+        const raw = String(localizeSign(value) || "");
+        return raw.replace(/\s*\([^()]*\)\s*$/g, "").trim() || raw;
+      }
+
       function localizeAspectType(value) {
         const v = String(value || "");
         const m = ASPECT_TYPE_LABELS[v];
@@ -2253,12 +2939,27 @@
         return hero;
       }
 
-      function createMetricCard(label, value) {
+      function createMetricCard(label, value, options) {
+        const opts = options || {};
         const card = document.createElement("div");
         card.className = "metric-card";
+        if (opts.accentColor) card.style.setProperty("--accent", opts.accentColor);
         const l = document.createElement("div");
         l.className = "metric-card__label";
-        l.textContent = label;
+        if (opts.iconId && iconPathById(opts.iconId)) {
+          const iconWrap = document.createElement("span");
+          iconWrap.className = "astro-inline-symbol__icon";
+          const img = document.createElement("img");
+          img.src = iconPathById(opts.iconId);
+          img.alt = label;
+          img.loading = "lazy";
+          img.decoding = "async";
+          iconWrap.appendChild(img);
+          l.appendChild(iconWrap);
+        }
+        const labelText = document.createElement("span");
+        labelText.textContent = label;
+        l.appendChild(labelText);
         const v = document.createElement("div");
         v.className = "metric-card__value";
         v.textContent = value;
@@ -2330,6 +3031,25 @@
         return section;
       }
 
+      function attachWesternSectionHoverLead(section, hoverText, hintLabel) {
+        if (!section || !hoverText) return;
+        const h3 = section.querySelector(".layout-section__title");
+        const lead = section.querySelector(".layout-section__lead");
+        if (lead) lead.remove();
+        if (!h3) return;
+        const row = createEl("div", "western-section-title-row");
+        section.insertBefore(row, h3);
+        row.appendChild(h3);
+        const wrap = createEl("span", "western-hover-wrap");
+        const btn = createEl("button", "western-hover-btn", "i");
+        btn.type = "button";
+        btn.setAttribute("aria-label", hintLabel || (uiIsNL() ? "Uitleg" : "Explanation"));
+        const pop = createEl("div", "western-hover-pop", hoverText);
+        wrap.appendChild(btn);
+        wrap.appendChild(pop);
+        row.appendChild(wrap);
+      }
+
       function createExplainCard(title, text) {
         const card = document.createElement("div");
         card.className = "explain-card";
@@ -2387,126 +3107,697 @@
       function renderWesternTemplateLayout(data) {
         const isNL = uiIsNL();
         const wrap = document.createElement("section");
-        wrap.className = "method-layout";
+        wrap.className = "method-layout method-layout--western-tight";
         const western = data.western || {};
         const placements = western.placements || {};
+        const houses = western.houses || {};
+        const angles = houses.angles || {};
+        const cusps = Array.isArray(houses.cusps_deg) ? houses.cusps_deg : [];
+        const aspects = Array.isArray(western.aspects) ? western.aspects : [];
+        const balance = western.balance || {};
         const sun = placements.Sun || {};
         const moon = placements.Moon || {};
-        const asc = ((western.houses || {}).angles || {}).asc_deg;
-        function signFromLongitude(lonDeg) {
-          const signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+        const ascDeg = angles.asc_deg;
+        const signOrder = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+        const rulerBySign = { Aries: "Mars", Taurus: "Venus", Gemini: "Mercury", Cancer: "Moon", Leo: "Sun", Virgo: "Mercury", Libra: "Venus", Scorpio: "Pluto", Sagittarius: "Jupiter", Capricorn: "Saturn", Aquarius: "Uranus", Pisces: "Neptune" };
+        const planetThemes = {
+          Sun: isNL ? "identiteit en levensrichting" : "identity and life direction",
+          Moon: isNL ? "gevoel en innerlijke behoefte" : "emotion and inner need",
+          Ascendant: isNL ? "ingang en eerste beweging" : "entry and first movement",
+          Mercury: isNL ? "denken en verwoorden" : "thinking and expression",
+          Venus: isNL ? "verbinding en waarde" : "connection and value",
+          Mars: isNL ? "actie en initiatief" : "action and initiative",
+          Jupiter: isNL ? "groei en betekenis" : "growth and meaning",
+          Saturn: isNL ? "structuur en verantwoordelijkheid" : "structure and responsibility",
+          Uranus: isNL ? "vernieuwing en vrijheid" : "renewal and freedom",
+          Neptune: isNL ? "verbeelding en overgave" : "imagination and surrender",
+          Pluto: isNL ? "diepte en transformatie" : "depth and transformation",
+          NorthNode: isNL ? "ontwikkelrichting" : "growth direction",
+          SouthNode: isNL ? "vertrouwde patronen" : "familiar patterns",
+        };
+        const signThemes = {
+          Aries: isNL ? "directe en initiërende stijl" : "direct, initiating style",
+          Taurus: isNL ? "stabiele en belichaamde stijl" : "stable, embodied style",
+          Gemini: isNL ? "nieuwsgierige en beweeglijke stijl" : "curious, flexible style",
+          Cancer: isNL ? "gevoelige en beschermende stijl" : "sensitive, protective style",
+          Leo: isNL ? "expressieve en hartgerichte stijl" : "expressive, heart-led style",
+          Virgo: isNL ? "nauwkeurige en verfijnende stijl" : "precise, refining style",
+          Libra: isNL ? "afstemmende en relationele stijl" : "relational, balancing style",
+          Scorpio: isNL ? "intense en transformerende stijl" : "intense, transformative style",
+          Sagittarius: isNL ? "zoekende en verruimende stijl" : "seeking, expansive style",
+          Capricorn: isNL ? "doelgerichte en structurerende stijl" : "goal-oriented, structuring style",
+          Aquarius: isNL ? "onafhankelijke en vernieuwende stijl" : "independent, innovative style",
+          Pisces: isNL ? "intuïtieve en verbindende stijl" : "intuitive, unifying style",
+        };
+        const houseThemes = {
+          1: isNL ? "zichtbaarheid, uitstraling en eerste beweging" : "presence, appearance, and first movement",
+          2: isNL ? "waarden, middelen en stabiliteit" : "values, resources, and stability",
+          3: isNL ? "leren, communicatie en directe actie" : "learning, communication, and direct action",
+          4: isNL ? "thuis, basis en innerlijke bedding" : "home, foundation, and inner base",
+          5: isNL ? "creatie, plezier en expressie" : "creation, joy, and expression",
+          6: isNL ? "werkritme, gezondheid en dagelijkse afstemming" : "work rhythm, health, and daily alignment",
+          7: isNL ? "relaties, ontmoeting en samenwerking" : "relationships, encounter, and partnership",
+          8: isNL ? "diepte, loslaten en transformatie" : "depth, release, and transformation",
+          9: isNL ? "zingeving, visie en verruiming" : "meaning, vision, and expansion",
+          10: isNL ? "roeping, verantwoordelijkheid en zichtbaarheid" : "calling, responsibility, and visibility",
+          11: isNL ? "netwerk, collectief en toekomstdoelen" : "networks, collectives, and future goals",
+          12: isNL ? "rust, verwerking en innerlijke ruimte" : "rest, integration, and inner space",
+        };
+        const signFromLongitude = (lonDeg) => {
           if (lonDeg == null || Number.isNaN(Number(lonDeg))) return null;
           const idx = Math.floor((((Number(lonDeg) % 360) + 360) % 360) / 30);
-          return signs[idx] || null;
-        }
-        wrap.appendChild(
-          createSharedMethodHero({
-            kicker: isNL ? "Westerse astrologie • tropisch" : "Western astrology • tropical",
-            titleHtml: isNL
-              ? 'Jouw chart als spiegel van <span class="purple">identiteit</span>, <span class="gold">gevoel</span> en richting'
-              : 'Your chart as a mirror of <span class="purple">identity</span>, <span class="gold">emotion</span>, and direction',
-            intro: isNL
-              ? "Het tropische model toont je psychologische patroon via planeten, tekens, huizen en aspecten."
-              : "The tropical model shows your psychological pattern through planets, signs, houses, and aspects.",
-            metrics: [
-              { label: isNL ? "Zon" : "Sun", value: sun.sign ? `${localizeSign(sun.sign)}${sun.house ? ` • H${sun.house}` : ""}` : "-" },
-              { label: isNL ? "Maan" : "Moon", value: moon.sign ? `${localizeSign(moon.sign)}${moon.house ? ` • H${moon.house}` : ""}` : "-" },
-              { label: "Ascendant", value: asc != null ? `${Math.round(asc)}°` : "-" },
-            ],
-            orbLabel: isNL ? "Kernsignatuur" : "Core signature",
-            orbMain: localizeSign(sun.sign),
-            orbSub: moon.sign ? `${localizeSign(moon.sign)} • Asc ${asc != null ? Math.round(asc) + "°" : "-"}` : "—",
-          })
-        );
-
-        const rows = [];
-        if (placements && Object.keys(placements).length) {
-          Object.entries(placements).forEach(([key, val]) => {
-            const v = val || {};
-            const pGlyph = planetGlyph(key);
-            const sGlyph = signGlyph(v.sign);
-            rows.push([
-              symbolCell(pGlyph, localizePlanet(key), localizePlanet(key)),
-              symbolCell(sGlyph, localizeSign(v.sign), localizeSign(v.sign)),
-              v.house != null ? String(v.house) : "-",
-              v.degree_in_sign != null ? `${Number(v.degree_in_sign).toFixed(2)}°` : "-",
-            ]);
+          return signOrder[idx] || null;
+        };
+        const PLACEHOLDER = isNL ? "[PLACEHOLDER: nog niet beschikbaar]" : "[PLACEHOLDER: not available yet]";
+        const placeholderFor = (fieldLabel) =>
+          isNL ? `[PLACEHOLDER: ${fieldLabel} ontbreekt]` : `[PLACEHOLDER: missing ${fieldLabel}]`;
+        const safeText = (v, fallback) => {
+          const t = String(v == null ? "" : v).trim();
+          return t || fallback || PLACEHOLDER;
+        };
+        const formatDeg = (val, fieldLabel) => (val == null || Number.isNaN(Number(val)) ? placeholderFor(fieldLabel || "graad") : `${Number(val).toFixed(2)}°`);
+        const houseLabel = (house) => (house == null ? placeholderFor(isNL ? "huis" : "house") : (isNL ? `huis ${house}` : `house ${house}`));
+        const planetAccent = {
+          Sun: "#E67E22",
+          Moon: "#6E6A7B",
+          Mercury: "#2F7D32",
+          Venus: "#D94D73",
+          Mars: "#C92127",
+          Jupiter: "#E88918",
+          Saturn: "#315B9A",
+          Uranus: "#2F7D32",
+          Neptune: "#5F8FB7",
+          Pluto: "#33245C",
+          NorthNode: "#33245C",
+          SouthNode: "#7a7488",
+          Ascendant: "#C9A24D",
+        };
+        const getPlacement = (name) => placements[name] || {};
+        const ascSign = signFromLongitude(ascDeg);
+        const chartRulerName = ascSign ? rulerBySign[ascSign] : null;
+        const chartRulerPlacement = chartRulerName ? getPlacement(chartRulerName) : null;
+        const countedPlanets = Object.entries(placements).filter(([k]) => !["Ascendant"].includes(k));
+        const houseMap = {};
+        countedPlanets.forEach(([planet, pv]) => {
+          const h = (pv || {}).house;
+          if (h == null) return;
+          if (!houseMap[h]) houseMap[h] = [];
+          houseMap[h].push(planet);
+        });
+        const aspectTypeKind = (t) => (["trine", "sextile", "conjunction"].includes(t) ? "harmonie" : ["square", "opposition", "quincunx"].includes(t) ? "spanning" : "dynamiek");
+        const aspectsSorted = aspects.slice().sort((a, b) => Number(a.orb_deg || 99) - Number(b.orb_deg || 99));
+        const dominantElements = () => {
+          const src = (balance.elements && typeof balance.elements === "object") ? balance.elements : null;
+          if (src) return src;
+          const out = { fire: 0, earth: 0, air: 0, water: 0 };
+          const signElement = { Aries: "fire", Leo: "fire", Sagittarius: "fire", Taurus: "earth", Virgo: "earth", Capricorn: "earth", Gemini: "air", Libra: "air", Aquarius: "air", Cancer: "water", Scorpio: "water", Pisces: "water" };
+          countedPlanets.forEach(([, pv]) => {
+            const e = signElement[(pv || {}).sign];
+            if (e && Object.prototype.hasOwnProperty.call(out, e)) out[e] += 1;
           });
+          return out;
+        };
+        const dominantModalities = () => {
+          const src = (balance.modalities && typeof balance.modalities === "object") ? balance.modalities : null;
+          if (src) return src;
+          const out = { cardinal: 0, fixed: 0, mutable: 0 };
+          const signMod = { Aries: "cardinal", Cancer: "cardinal", Libra: "cardinal", Capricorn: "cardinal", Taurus: "fixed", Leo: "fixed", Scorpio: "fixed", Aquarius: "fixed", Gemini: "mutable", Virgo: "mutable", Sagittarius: "mutable", Pisces: "mutable" };
+          countedPlanets.forEach(([, pv]) => {
+            const m = signMod[(pv || {}).sign];
+            if (m && Object.prototype.hasOwnProperty.call(out, m)) out[m] += 1;
+          });
+          return out;
+        };
+        const elementScores = dominantElements();
+        const modalityScores = dominantModalities();
+        const polarityScores = (balance.polarity && typeof balance.polarity === "object") ? balance.polarity : { yin: 0, yang: 0 };
+        const topKey = (obj) => Object.entries(obj || {}).sort((a, b) => Number(b[1]) - Number(a[1]))[0];
+        const introPieces = [];
+        if (sun.sign && sun.house != null) introPieces.push(isNL ? `Je Zon in ${localizeSign(sun.sign)} in ${houseLabel(sun.house)} kan wijzen op een kern die zich ontwikkelt via ${houseThemes[sun.house] || "zichtbare thema's"}.` : "");
+        if (moon.sign && moon.house != null) introPieces.push(isNL ? `Met je Maan in ${localizeSign(moon.sign)} in ${houseLabel(moon.house)} wordt zichtbaar hoe gevoel en herstel zich in jouw ritme organiseren.` : "");
+        if (ascSign) introPieces.push(isNL ? `Je Ascendant in ${localizeSign(ascSign)} kleurt hoe je het leven binnenstapt en hoe eerste indrukken ontstaan.` : "");
+        if (chartRulerName && chartRulerPlacement && chartRulerPlacement.sign) introPieces.push(isNL ? `Omdat ${chartRulerName} je chart ruler is en in ${localizeSign(chartRulerPlacement.sign)}${chartRulerPlacement.house != null ? ` (${houseLabel(chartRulerPlacement.house)})` : ""} staat, krijgt die laag extra richting.` : "");
+        const topElement = topKey(elementScores);
+        const topModality = topKey(modalityScores);
+        const sunAspects = aspectsSorted.filter((a) => a.a === "Sun" || a.b === "Sun").slice(0, 2);
+        const moonAspects = aspectsSorted.filter((a) => a.a === "Moon" || a.b === "Moon").slice(0, 2);
+        if (topElement) introPieces.push(isNL ? `Qua temperament ligt er een nadruk op ${topElement[0]}, terwijl ${topModality ? topModality[0] : "de modaliteiten"} laten zien hoe dit in beweging komt.` : "");
+        const tightAspect = aspectsSorted.find((a) => a.orb_deg != null);
+        if (tightAspect) introPieces.push(isNL ? `Een opvallende dynamiek is ${localizePlanet(tightAspect.a)} ${localizeAspectType(tightAspect.type)} ${localizePlanet(tightAspect.b)} (orb ${formatDeg(tightAspect.orb_deg)}), wat mogelijk herkenbaar wordt in dagelijkse keuzes.` : "");
+        if (Object.keys(houseMap).some((h) => (houseMap[h] || []).length >= 2)) {
+          const cluster = Object.entries(houseMap).sort((a, b) => b[1].length - a[1].length)[0];
+          if (cluster) introPieces.push(isNL ? `Daarnaast ligt er een huizencluster in huis ${cluster[0]} met ${cluster[1].map((pName) => localizePlanet(pName)).join(", ")}, wat dit levensgebied extra op de voorgrond zet.` : "");
         }
-        if (asc != null) {
-          const ascSign = signFromLongitude(asc);
-          rows.push([
-            symbolCell(planetGlyph("Ascendant"), "Ascendant", "Ascendant"),
-            ascSign ? symbolCell(signGlyph(ascSign), localizeSign(ascSign), localizeSign(ascSign)) : "-",
-            "1",
-            `${Number(asc).toFixed(2)}°`,
+        const topSection = createLayoutSection(
+          isNL ? "Westerse horoscoop" : "Western horoscope",
+          ""
+        );
+        const methodEyebrow = createEl("div", "astro-eyebrow", isNL ? "Methode 1" : "Method 1");
+        topSection.insertBefore(methodEyebrow, topSection.firstChild);
+        const topLayersGrid = createEl("div", "explain-grid");
+        topLayersGrid.appendChild(createAstroCard(
+          sun.sign ? `${localizeSignShort(sun.sign)} ${isNL ? "in" : "in"} ${houseLabel(sun.house)}` : (isNL ? "Zonpositie ontbreekt" : "Sun placement unavailable"),
+          isNL ? "Levensrichting" : "Direction",
+          sun.sign ? `Je kernenergie zoekt groei, waarheid en verruiming. In ${houseLabel(sun.house)} wordt dit zichtbaar via ${houseThemes[sun.house] || "zichtbare thema's"}.${sunAspects.length ? ` Opvallend: ${sunAspects.map((a) => `${localizeAspectType(a.type)} met ${localizePlanet(a.a === "Sun" ? a.b : a.a)}`).join("; ")}.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat niet alle Zonwaarden beschikbaar zijn.",
+          { iconId: "sun", subtitleIconId: signGlyph(sun.sign), accentColor: planetAccent.Sun || "#884dc9", eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
+        ));
+        topLayersGrid.appendChild(createAstroCard(
+          moon.sign ? `${localizeSignShort(moon.sign)} ${isNL ? "in" : "in"} ${houseLabel(moon.house)}` : (isNL ? "Maanpositie ontbreekt" : "Moon placement unavailable"),
+          isNL ? "Innerlijke ruimte" : "Inner space",
+          moon.sign ? `Je gevoelswereld vraagt vrijheid en afstand om te verwerken. In ${houseLabel(moon.house)} wordt dit zichtbaar in ${houseThemes[moon.house] || "innerlijke lagen"}.${moonAspects.length ? ` Dynamiek: ${moonAspects.map((a) => `${localizeAspectType(a.type)} met ${localizePlanet(a.a === "Moon" ? a.b : a.a)}`).join("; ")}.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat niet alle Maanwaarden beschikbaar zijn.",
+          { iconId: "moon", subtitleIconId: signGlyph(moon.sign), accentColor: planetAccent.Moon || "#884dc9", eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
+        ));
+        topLayersGrid.appendChild(createAstroCard(
+          ascSign ? `${localizeSignShort(ascSign)} ${isNL ? "op de Ascendant" : "on the Ascendant"}` : (isNL ? "Ascendant ontbreekt" : "Ascendant unavailable"),
+          isNL ? "Eerste beweging" : "First movement",
+          ascSign ? `Je stapt het leven direct en instinctief binnen. De eerste impuls is vaak actie, daarna verfijning en richting.${chartRulerName ? ` De chart ruler ${localizePlanet(chartRulerName)} geeft extra sturing.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat hiervoor een geboortetijd nodig is.",
+          { iconId: "ascendant", subtitleIconId: signGlyph(ascSign), accentColor: planetAccent.Ascendant || "#884dc9", eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
+        ));
+        topSection.appendChild(topLayersGrid);
+        topSection.appendChild(
+          createEl(
+            "p",
+            "",
+            introPieces.length
+              ? introPieces.join(" ")
+              : (isNL
+                  ? "Deze persoonlijke introductie kan nog niet volledig worden samengesteld, omdat niet alle benodigde berekende waarden beschikbaar zijn."
+                  : "This personal introduction cannot yet be composed completely because required computed values are missing.")
+          )
+        );
+        wrap.appendChild(topSection);
+
+        const wheelSection = createLayoutSection(isNL ? "Radix wiel" : "Natal wheel", "");
+        attachWesternSectionHoverLead(
+          wheelSection,
+          isNL
+            ? "De buitenring toont de tekens, de binnenverdeling toont de huizen en de symbolen tonen de planeten. De lijnen in het midden laten aspecten zien: verbindingen, spanningen en stroming tussen delen van de chart."
+            : "The outer ring shows signs, the inner division shows houses, and symbols show planets. Center lines show aspects: links, tension, and flow between chart parts.",
+          isNL ? "Uitleg radix" : "Natal wheel help"
+        );
+        const radixVenster = createEl("div", "western-radix-venster");
+        const wheelLayout = createEl("div", "western-wheel-layout");
+        const wheelCol = createEl("div", "western-wheel-col");
+        const wheelWrap = createEl("div", "astro-wheel-wrap");
+        const wheelState = { signs: true, degrees: true, houses: true, planets: true, aspects: true, labels: true };
+        wheelWrap.innerHTML = getWesternWheelSvg(data, wheelState);
+        const infoToggle = createEl("button", "western-info-toggle", isNL ? "Info" : "Info");
+        infoToggle.type = "button";
+        infoToggle.addEventListener("click", () => wheelLayout.classList.toggle("is-info-open"));
+        const layerIconBar = createEl("div", "western-layer-iconbar");
+        const layerIconConfig = [
+          ["signs", "aries", isNL ? "Tekens tonen of verbergen" : "Toggle signs"],
+          ["planets", "sun", isNL ? "Planeten tonen of verbergen" : "Toggle planets"],
+          ["aspects", "trine", isNL ? "Aspectlijnen tonen of verbergen" : "Toggle aspects"],
+          ["labels", "mercury", isNL ? "Labels tonen of verbergen" : "Toggle labels"],
+        ];
+        layerIconConfig.forEach(([key, iconId, hint]) => {
+          const btn = createEl("button", "western-layer-iconbtn is-active");
+          btn.type = "button";
+          btn.dataset.layer = key;
+          btn.title = hint;
+          const src = iconPathById(iconId);
+          if (src) {
+            const img = document.createElement("img");
+            img.src = src;
+            img.alt = hint;
+            img.loading = "lazy";
+            img.decoding = "async";
+            btn.appendChild(img);
+          } else {
+            btn.textContent = key.slice(0, 1).toUpperCase();
+          }
+          btn.addEventListener("click", () => {
+            wheelState[key] = !wheelState[key];
+            btn.classList.toggle("is-active", !!wheelState[key]);
+            renderWheelAndBindings();
+          });
+          layerIconBar.appendChild(btn);
+        });
+        wheelCol.appendChild(layerIconBar);
+        wheelCol.appendChild(infoToggle);
+        const wheelFrame = createEl("div", "western-wheel-frame");
+        wheelFrame.appendChild(wheelWrap);
+        wheelCol.appendChild(wheelFrame);
+        const infoPanel = createEl("aside", "western-info-pane");
+        const orbDisplay = (a) => {
+          if (a.orb_deg != null && !Number.isNaN(Number(a.orb_deg))) return Number(a.orb_deg).toFixed(2);
+          if (typeof a.orb === "number" && !Number.isNaN(a.orb)) return a.orb.toFixed(2);
+          return "—";
+        };
+        const aspectSentence = (a) => {
+          const ph = a.applying === true ? (isNL ? "applicerend" : "applying") : a.applying === false ? (isNL ? "separerend" : "separating") : "";
+          const o = orbDisplay(a);
+          const base = `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)} · ${isNL ? "orb" : "orb"} ${o}°`;
+          return ph ? `${base} · ${ph}` : base;
+        };
+        const planetsInSignId = (signId) => Object.entries(placements).filter(([, pv]) => (pv || {}).sign === signId).map(([k]) => k);
+        const renderInfoPanel = (selection) => {
+          infoPanel.innerHTML = "";
+          const meta = createEl("div", "western-info-meta", isNL ? "Selectie op radix" : "Radix selection");
+          const title = createEl("h4", "western-info-title", isNL ? "Kies een item" : "Select an item");
+          const text = createEl("p", "western-info-text", isNL ? "Klik op een planeet, huis, teken of aspectlijn in het wiel. Gebruik de pictogrammen linksboven om lagen aan of uit te zetten." : "Click a planet, house, sign, or aspect line on the wheel. Use the icons at the top left to toggle layers.");
+          const detail = createEl("div", "western-info-detail");
+          const detailLabel = createEl("div", "western-info-detail__label", isNL ? "Verbanden & aspecten" : "Links & aspects");
+          const detailList = document.createElement("ul");
+          const seenDetail = new Set();
+          const pushDetail = (line) => {
+            if (!line || seenDetail.has(line)) return;
+            seenDetail.add(line);
+            const li = document.createElement("li");
+            li.textContent = line;
+            detailList.appendChild(li);
+          };
+          if (selection && selection.planet) {
+            const planetData = placements[selection.planet] || {};
+            title.textContent = localizePlanet(selection.planet);
+            text.textContent = `${planetData.sign ? localizeSignShort(planetData.sign) : placeholderFor("teken")} · ${planetData.house != null ? houseLabel(planetData.house) : placeholderFor("huis")} · ${planetData.degree_in_sign != null ? `${Number(planetData.degree_in_sign).toFixed(2)}°` : placeholderFor("graad")}`;
+            if (chartRulerName && selection.planet === chartRulerName) {
+              pushDetail(isNL ? "Dit is je chart ruler: extra gewicht in je profiel." : "This is your chart ruler: extra weight in your profile.");
+            }
+            const rel = aspectsSorted.filter((x) => x.a === selection.planet || x.b === selection.planet);
+            if (rel.length) {
+              rel.slice(0, 14).forEach((x) => pushDetail(aspectSentence(x)));
+            } else {
+              pushDetail(isNL ? "Geen aspecten gevonden voor dit punt (of data onvolledig)." : "No aspects found for this point (or incomplete data).");
+            }
+          } else if (selection && selection.type === "house") {
+            const houseNr = Number(selection.id);
+            title.textContent = `${isNL ? "Huis" : "House"} ${houseNr || placeholderFor("huis")}`;
+            text.textContent = houseThemes[houseNr] || placeholderFor(isNL ? "huisduiding" : "house reading");
+            const cuspDeg = cusps.length >= houseNr ? cusps[houseNr - 1] : null;
+            const cuspSign = signFromLongitude(cuspDeg);
+            if (cuspSign) pushDetail(isNL ? `Cusp: ${localizeSignShort(cuspSign)} (${formatDeg(cuspDeg, isNL ? "cusp" : "cusp")}).` : `Cusp: ${localizeSignShort(cuspSign)} (${formatDeg(cuspDeg, "cusp")}).`);
+            const inH = houseMap[houseNr] || [];
+            if (inH.length) {
+              pushDetail(isNL ? `Planeten in dit huis: ${inH.map((p) => localizePlanet(p)).join(", ")}.` : `Planets in this house: ${inH.map((p) => localizePlanet(p)).join(", ")}.`);
+              const rel = aspectsSorted.filter((x) => inH.includes(x.a) || inH.includes(x.b));
+              const seen = new Set();
+              rel.forEach((x) => {
+                const key = [x.a, x.type, x.b].join("|");
+                if (seen.has(key)) return;
+                seen.add(key);
+                pushDetail(aspectSentence(x));
+              });
+            } else {
+              pushDetail(isNL ? "Geen planeten in dit huis volgens de beschikbare data." : "No planets in this house in the available data.");
+            }
+          } else if (selection && selection.type === "sign") {
+            const sid = selection.id || "";
+            title.textContent = localizeSignShort(sid);
+            text.textContent = signThemes[sid] || placeholderFor(isNL ? "tekenbetekenis" : "sign meaning");
+            const inS = planetsInSignId(sid);
+            if (inS.length) {
+              pushDetail(isNL ? `Planeten in dit teken: ${inS.map((p) => localizePlanet(p)).join(", ")}.` : `Planets in this sign: ${inS.map((p) => localizePlanet(p)).join(", ")}.`);
+              const rel = aspectsSorted.filter((x) => inS.includes(x.a) || inS.includes(x.b));
+              rel.slice(0, 16).forEach((x) => pushDetail(aspectSentence(x)));
+            } else {
+              pushDetail(isNL ? "Geen planeten in dit teken volgens de beschikbare data." : "No planets in this sign in the available data.");
+            }
+          } else if (selection && selection.type === "aspect") {
+            const aName = selection.a ? localizePlanet(selection.a) : placeholderFor("planeet A");
+            const bName = selection.b ? localizePlanet(selection.b) : placeholderFor("planeet B");
+            title.textContent = `${localizeAspectType(selection.id || "")} · ${aName} - ${bName}`;
+            const picked = aspects.find((a) => a.a === selection.a && a.b === selection.b && a.type === selection.id);
+            const ph = picked && picked.phase != null ? picked.phase : (picked && picked.applying === true ? (isNL ? "applicerend" : "applying") : picked && picked.applying === false ? (isNL ? "separerend" : "separating") : "");
+            text.textContent = picked
+              ? `${isNL ? "Orb" : "Orb"} ${orbDisplay(picked)}°${ph ? ` · ${ph}` : ""} · ${aspectTypeKind(picked.type)}`
+              : placeholderFor(isNL ? "aspectdetails" : "aspect details");
+            if (picked) pushDetail(aspectSentence(picked));
+            [selection.a, selection.b].filter(Boolean).forEach((body) => {
+              const pv = placements[body] || {};
+              if (pv.sign || pv.house != null) {
+                pushDetail(`${localizePlanet(body)}: ${pv.sign ? localizeSignShort(pv.sign) : placeholderFor("teken")} · ${pv.house != null ? houseLabel(pv.house) : placeholderFor("huis")}`);
+              }
+              const otherAsp = aspectsSorted.filter((x) => x !== picked && (x.a === body || x.b === body)).slice(0, 6);
+              otherAsp.forEach((x) => pushDetail(isNL ? `Ook: ${aspectSentence(x)}` : `Also: ${aspectSentence(x)}`));
+            });
+          }
+          infoPanel.appendChild(meta);
+          infoPanel.appendChild(title);
+          infoPanel.appendChild(text);
+          if (selection && (selection.planet || selection.type) && detailList.children.length) {
+            detail.appendChild(detailLabel);
+            detail.appendChild(detailList);
+            infoPanel.appendChild(detail);
+          }
+        };
+        renderInfoPanel(null);
+        wheelLayout.appendChild(wheelCol);
+        wheelLayout.appendChild(infoPanel);
+        const rulerStrip = createEl("div", "western-ruler-strip");
+        if (!ascSign) {
+          rulerStrip.appendChild(createEl("p", "", "De chart ruler kan niet worden bepaald, omdat de Ascendant ontbreekt."));
+        } else if (!chartRulerName || !chartRulerPlacement || !chartRulerPlacement.sign) {
+          rulerStrip.appendChild(createEl("p", "", "De chart ruler is bekend, maar de positie ervan kon niet betrouwbaar worden gekoppeld."));
+        } else {
+          const rulerMain = createEl("div", "western-ruler-strip__main");
+          const stamp = createEl("div", "western-chart-ruler-stamp western-chart-ruler-stamp--in-strip");
+          const kickerRow = createEl("div", "western-chart-ruler-stamp__kicker-row");
+          kickerRow.appendChild(createEl("div", "western-chart-ruler-stamp__kicker", isNL ? "Chart ruler" : "Chart ruler"));
+          const rulerHintWrap = createEl("span", "western-hover-wrap");
+          const rulerHintBtn = createEl("button", "western-hover-btn", "i");
+          rulerHintBtn.type = "button";
+          rulerHintBtn.setAttribute("aria-label", isNL ? "Uitleg chart ruler" : "Chart ruler help");
+          rulerHintWrap.appendChild(rulerHintBtn);
+          rulerHintWrap.appendChild(createEl("div", "western-hover-pop", isNL ? "De heerser van je Ascendant laat zien waar je levensenergie extra richting krijgt." : "The ruler of the Ascendant points to where life energy gets extra direction."));
+          kickerRow.appendChild(rulerHintWrap);
+          stamp.appendChild(kickerRow);
+          const stampMain = createEl("div", "western-chart-ruler-stamp__main");
+          const gId = planetGlyph(chartRulerName);
+          if (gId && iconPathById(gId)) {
+            const gImg = document.createElement("img");
+            gImg.src = iconPathById(gId);
+            gImg.alt = localizePlanet(chartRulerName);
+            gImg.className = "western-chart-ruler-stamp__glyph";
+            gImg.loading = "lazy";
+            gImg.decoding = "async";
+            stampMain.appendChild(gImg);
+          }
+          const houseBit = chartRulerPlacement.house != null ? houseLabel(chartRulerPlacement.house) : placeholderFor("huis");
+          stampMain.appendChild(createEl("div", "western-chart-ruler-stamp__line", `${localizePlanet(chartRulerName)} · ${localizeSignShort(chartRulerPlacement.sign)} · ${houseBit}`));
+          stamp.appendChild(stampMain);
+          const copyP = createEl(
+            "p",
+            "western-ruler-strip__copy",
+            isNL
+              ? `Omdat je Ascendant in ${localizeSign(ascSign)} staat, is ${localizePlanet(chartRulerName)} je chart ruler — de planeet die dat teken regeert. ${localizePlanet(chartRulerName)} staat in ${localizeSignShort(chartRulerPlacement.sign)}${chartRulerPlacement.house != null ? `, ${houseLabel(chartRulerPlacement.house)}` : ""}. Daardoor krijgt ${planetThemes[chartRulerName] || "deze laag"} extra nadruk in je profiel en wordt dit onderdeel persoonlijker dan het kale wiel alleen.`
+              : `With your Ascendant in ${localizeSign(ascSign)}, ${localizePlanet(chartRulerName)} is your chart ruler — the planet that rules that sign. ${localizePlanet(chartRulerName)} is in ${localizeSignShort(chartRulerPlacement.sign)}${chartRulerPlacement.house != null ? `, ${houseLabel(chartRulerPlacement.house)}` : ""}, which emphasizes ${planetThemes[chartRulerName] || "this layer"} in your profile and makes this view more personal than the wheel alone.`
+          );
+          rulerMain.appendChild(stamp);
+          rulerMain.appendChild(copyP);
+          rulerStrip.appendChild(rulerMain);
+        }
+        radixVenster.appendChild(wheelLayout);
+        radixVenster.appendChild(rulerStrip);
+        wheelSection.appendChild(radixVenster);
+        const renderWheelAndBindings = () => {
+          wheelWrap.innerHTML = getWesternWheelSvg(data, wheelState);
+          bindWesternWheelSelection(wheelWrap, null, null, (selection) => {
+            renderInfoPanel(selection);
+            if (window.matchMedia("(max-width: 900px)").matches) wheelLayout.classList.add("is-info-open");
+          });
+        };
+        renderWheelAndBindings();
+        wrap.appendChild(wheelSection);
+
+        const energySection = createLayoutSection(
+          isNL ? "Energetische verdeling" : "Energetic distribution",
+          ""
+        );
+        attachWesternSectionHoverLead(
+          energySection,
+          isNL ? "Elementen, modaliteiten en polariteit tonen het temperament van de chart." : "Elements, modalities, and polarity show chart temperament.",
+          isNL ? "Uitleg energie" : "Energy help"
+        );
+        const energyGrid = createEl("div", "explain-grid");
+        const toPercentMap = (obj) => {
+          const entries = Object.entries(obj || {});
+          const total = entries.reduce((acc, [, v]) => acc + Number(v || 0), 0);
+          if (!total) return Object.fromEntries(entries.map(([k]) => [k, 0]));
+          return Object.fromEntries(entries.map(([k, v]) => [k, Math.round((Number(v || 0) / total) * 100)]));
+        };
+        const elementPct = toPercentMap(elementScores);
+        const modalityPct = toPercentMap(modalityScores);
+        const polarityPct = toPercentMap(polarityScores);
+        const makeBarsCard = (title, obj) => {
+          const card = createEl("div", "explain-card");
+          card.style.setProperty("--accent", "#884dc9");
+          const head = createEl("div", "astro-card__head");
+          const left = createEl("div", "astro-card__meta-left");
+          const iconId = title === (isNL ? "Elementen" : "Elements")
+            ? "fire"
+            : title === (isNL ? "Modaliteiten" : "Modalities")
+              ? "saturn"
+              : "ascendant";
+          if (iconPathById(iconId)) {
+            const iconWrap = createEl("span", "astro-inline-symbol__icon");
+            const img = document.createElement("img");
+            img.src = iconPathById(iconId);
+            img.alt = title;
+            img.loading = "lazy";
+            img.decoding = "async";
+            iconWrap.appendChild(img);
+            left.appendChild(iconWrap);
+          }
+          left.appendChild(createEl("span", "", isNL ? "Duiding" : "Reading"));
+          head.appendChild(left);
+          head.appendChild(createEl("span", "astro-card__badge", isNL ? "Kern" : "Core"));
+          card.appendChild(head);
+          card.appendChild(createEl("h4", "", title));
+          Object.entries(obj || {}).forEach(([k, v]) => {
+            const row = createEl("div", "bar-row");
+            row.appendChild(createEl("div", "astro-card__sub", `${k}: ${Number(v || 0)}%`));
+            const track = createEl("div", "bar-track");
+            const fill = createEl("div", "bar-fill");
+            fill.style.width = `${Math.max(0, Math.min(100, Number(v || 0)))}%`;
+            track.appendChild(fill);
+            row.appendChild(track);
+            card.appendChild(row);
+          });
+          return card;
+        };
+        energyGrid.appendChild(makeBarsCard(isNL ? "Elementen" : "Elements", elementPct));
+        energyGrid.appendChild(makeBarsCard(isNL ? "Modaliteiten" : "Modalities", modalityPct));
+        const polarityCard = makeBarsCard(isNL ? "Polariteit" : "Polarity", polarityPct);
+        const weakElement = Object.entries(elementScores).sort((a, b) => Number(a[1]) - Number(b[1]))[0];
+        polarityCard.appendChild(createEl("p", "", `Dominante elementen: ${topElement ? topElement[0] : "-"}; minder nadruk: ${weakElement ? weakElement[0] : "-"}. Dominante modaliteit: ${topModality ? topModality[0] : "-"}. Yin/Yang: ${Number(polarityScores.yin || 0)} / ${Number(polarityScores.yang || 0)}.`));
+        energyGrid.appendChild(polarityCard);
+        energySection.appendChild(energyGrid);
+        wrap.appendChild(energySection);
+
+        const houseSection = createLayoutSection(
+          isNL ? "Levensgebieden" : "Life areas",
+          ""
+        );
+        attachWesternSectionHoverLead(
+          houseSection,
+          isNL ? "De huizen tonen waar de energie van je chart vooral zichtbaar wordt." : "Houses show where chart energy becomes visible.",
+          isNL ? "Uitleg huizen" : "Houses help"
+        );
+        if (!cusps.length) {
+          houseSection.appendChild(createEl("p", "", "De huizenfocus kan niet betrouwbaar worden getoond, omdat hiervoor geboortetijd en geboorteplaats nodig zijn."));
+        } else {
+          const focusHouses = new Set();
+          if (sun.house != null) focusHouses.add(Number(sun.house));
+          if (moon.house != null) focusHouses.add(Number(moon.house));
+          if (chartRulerPlacement && chartRulerPlacement.house != null) focusHouses.add(Number(chartRulerPlacement.house));
+          [1, 4, 7, 10].forEach((h) => { if ((houseMap[h] || []).length) focusHouses.add(h); });
+          Object.entries(houseMap).forEach(([h, ps]) => { if ((ps || []).length >= 2) focusHouses.add(Number(h)); });
+          const houseGrid = createEl("div", "explain-grid");
+          Array.from(focusHouses).sort((a, b) => a - b).forEach((h) => {
+            const planetsIn = houseMap[h] || [];
+            const firstPlanet = planetsIn.length ? planetsIn[0] : null;
+            const iconId = firstPlanet ? planetGlyph(firstPlanet) : "";
+            const accent = firstPlanet ? (planetAccent[firstPlanet] || "#884dc9") : "#884dc9";
+            houseGrid.appendChild(createAstroCard(
+              `${isNL ? "Huis" : "House"} ${h}`,
+              planetsIn.length ? planetsIn.map((pn) => localizePlanet(pn)).join(" · ") : "-",
+              planetsIn.length ? `Het ${houseLabel(h)} krijgt nadruk door ${planetsIn.map((pn) => localizePlanet(pn)).join(", ")}. Dit wijst op focus in ${houseThemes[h] || "dit gebied"}.` : `Het ${houseLabel(h)} is relevant als anker in de chart en toont thema's rond ${houseThemes[h] || "dit gebied"}.`,
+              { iconId, accentColor: accent, eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
+            ));
+          });
+          houseSection.appendChild(houseGrid);
+        }
+        wrap.appendChild(houseSection);
+
+        const aspectSection = createLayoutSection(
+          isNL ? "Aspectdynamiek" : "Aspect dynamics",
+          ""
+        );
+        attachWesternSectionHoverLead(
+          aspectSection,
+          isNL ? "Aspecten tonen hoe verschillende delen van je chart samenwerken of spanning opbouwen." : "Aspects show how chart parts cooperate or build tension.",
+          isNL ? "Uitleg aspecten" : "Aspects help"
+        );
+        if (!aspects.length) {
+          aspectSection.appendChild(createEl("p", "", "De aspecten konden niet betrouwbaar worden berekend, omdat niet alle benodigde posities beschikbaar zijn."));
+        } else {
+          const harmonisch = aspectsSorted.filter((a) => ["trine", "sextile", "conjunction"].includes(a.type)).slice(0, 2);
+          const spanning = aspectsSorted.filter((a) => ["square", "opposition", "quincunx"].includes(a.type)).slice(0, 2);
+          const kernAspects = aspectsSorted.filter((a) => ["Sun", "Moon", chartRulerName].filter(Boolean).includes(a.a) || ["Sun", "Moon", chartRulerName].filter(Boolean).includes(a.b)).slice(0, 3);
+          const aspectSummaryCard = createEl("div", "explain-card");
+          aspectSummaryCard.appendChild(createEl("p", "", `Harmonische lijnen: ${harmonisch.length ? harmonisch.map((a) => `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`).join("; ") : "-"}.`));
+          aspectSummaryCard.appendChild(createEl("p", "", `Spanningslijnen: ${spanning.length ? spanning.map((a) => `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`).join("; ") : "-"}. Kleine orb: ${tightAspect ? `${localizePlanet(tightAspect.a)} ${localizeAspectType(tightAspect.type)} ${localizePlanet(tightAspect.b)} (${formatDeg(tightAspect.orb_deg)})` : "-"}.`));
+          aspectSummaryCard.appendChild(createEl("p", "", `Kernaspecten: ${kernAspects.length ? kernAspects.map((a) => `${localizePlanet(a.a)}-${localizePlanet(a.b)}`).join(", ") : "-"}.`));
+          aspectSection.appendChild(aspectSummaryCard);
+          const aspectRows = aspectsSorted.map((a) => [
+            symbolCell(aspectGlyph(a.type), `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`, `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`),
+            formatDeg(a.orb_deg, "orb"),
+            a.applying ? (isNL ? "applicerend" : "applying") : (isNL ? "separerend" : "separating"),
+            aspectTypeKind(a.type),
+            isNL ? `${planetThemes[a.a] || "Thema"} en ${planetThemes[a.b] || "thema"} raken elkaar via ${localizeAspectType(a.type)}.` : `${a.type} meaning.`,
           ]);
+          aspectSection.appendChild(createMethodTable([isNL ? "Aspect" : "Aspect", "Orb", isNL ? "Fase" : "Phase", isNL ? "Type" : "Type", isNL ? "Korte betekenis" : "Short meaning"], aspectRows));
         }
-        const astronomyBodies = ((data.astronomy || {}).bodies) || {};
-        Object.entries(astronomyBodies).forEach(([key, val]) => {
-          const body = val || {};
-          const existsInPlacements = placements && Object.prototype.hasOwnProperty.call(placements, key);
-          if (existsInPlacements) return;
-          if (body.lon_deg == null) return;
-          const sign = signFromLongitude(body.lon_deg);
-          const degInSign = (((Number(body.lon_deg) % 30) + 30) % 30);
+        wrap.appendChild(aspectSection);
+
+        const patternSection = createLayoutSection(
+          isNL ? "Belangrijkste patronen" : "Main patterns",
+          ""
+        );
+        attachWesternSectionHoverLead(
+          patternSection,
+          isNL ? "Niet elke losse plaatsing is even belangrijk. Deze patronen tonen de zwaartepunten in je chart." : "Not every single placement weighs the same. These patterns show chart focal points.",
+          isNL ? "Uitleg patronen" : "Patterns help"
+        );
+        const patternGrid = createEl("div", "explain-grid");
+        const clusters = Object.entries(houseMap).filter(([, ps]) => (ps || []).length >= 2);
+        patternGrid.appendChild(createAstroCard(
+          isNL ? "Huizenclusters" : "House clusters",
+          isNL ? "Patroon" : "Pattern",
+          clusters.length ? clusters.map(([h, ps]) => `Huis ${h}: ${ps.map((pn) => localizePlanet(pn)).join(", ")}`).join(" | ") : "Nog geen duidelijke huizenclusters gevonden.",
+          { iconId: "saturn", accentColor: "#315B9A", eyebrow: isNL ? "Patroon" : "Pattern", badge: isNL ? "Kern" : "Core" }
+        ));
+        patternGrid.appendChild(createAstroCard(
+          isNL ? "Dominante energie" : "Dominant energy",
+          isNL ? "Patroon" : "Pattern",
+          `Element: ${topElement ? topElement[0] : "-"}; Modaliteit: ${topModality ? topModality[0] : "-"}; Chart ruler: ${chartRulerName ? localizePlanet(chartRulerName) : "-"}.`,
+          { iconId: "jupiter", accentColor: "#E88918", eyebrow: isNL ? "Patroon" : "Pattern", badge: isNL ? "Kern" : "Core" }
+        ));
+        patternGrid.appendChild(createAstroCard(
+          isNL ? "Geavanceerde configuraties" : "Advanced configurations",
+          isNL ? "Patroon" : "Pattern",
+          isNL ? "Stellium, T-square, grand trine en yod staan gepland en worden later toegevoegd zodra configuratie-detectie actief is." : "Stellium, T-square, grand trine, and yod are planned and will be added when configuration detection is active.",
+          { iconId: "uranus", accentColor: "#2F7D32", eyebrow: isNL ? "Patroon" : "Pattern", badge: isNL ? "Technisch" : "Technical" }
+        ));
+        patternSection.appendChild(patternGrid);
+        wrap.appendChild(patternSection);
+
+        const reflectionSection = createLayoutSection(
+          isNL ? "Vragen om mee te nemen" : "Reflection prompts",
+          ""
+        );
+        attachWesternSectionHoverLead(
+          reflectionSection,
+          isNL ? "Gebruik je chart niet als eindantwoord, maar als ingang tot herkenning." : "Use your chart as an entry point, not a final answer.",
+          isNL ? "Uitleg reflectie" : "Reflection help"
+        );
+        const questions = [];
+        if (sun.house != null) questions.push(`Waar merk je dat je identiteit in ${houseThemes[sun.house] || "dit levensgebied"} het duidelijkst zichtbaar wordt?`);
+        if (moon.house != null) questions.push(`Wanneer heb je ruimte nodig om je Maan in ${localizeSign(moon.sign)} echt te laten herstellen?`);
+        if (chartRulerName) questions.push(`Hoe kun je de energie van ${localizePlanet(chartRulerName)} bewuster richten in je dagelijkse keuzes?`);
+        if (topElement) questions.push(`Hoe gebruik je je dominante ${topElement[0]}-energie zonder andere lagen te overschaduwen?`);
+        if (aspects.length) {
+          const firstStress = aspectsSorted.find((a) => ["square", "opposition", "quincunx"].includes(a.type));
+          if (firstStress) questions.push(`Waar voel je de spanning tussen ${localizePlanet(firstStress.a)} en ${localizePlanet(firstStress.b)}, en wat helpt om die productief te maken?`);
+        }
+        const questionGrid = createEl("div", "western-questions-grid");
+        (questions.length ? questions.slice(0, 5) : [
+          "Waar merk je dat je sneller handelt dan je gevoel kan bijhouden?",
+          "Welke overtuigingen geven je richting, en welke beperken je juist?",
+          "Hoe kun je startkracht verbinden met duurzame vorm?",
+        ]).forEach((q, idx) => {
+          const qCard = createEl("div", "explain-card");
+          qCard.style.setProperty("--accent", "#884dc9");
+          const head = createEl("div", "astro-card__head");
+          const left = createEl("div", "astro-card__meta-left");
+          if (iconPathById("mercury")) {
+            const iconWrap = createEl("span", "astro-inline-symbol__icon");
+            const img = document.createElement("img");
+            img.src = iconPathById("mercury");
+            img.alt = "Vraag";
+            img.loading = "lazy";
+            img.decoding = "async";
+            iconWrap.appendChild(img);
+            left.appendChild(iconWrap);
+          }
+          left.appendChild(createEl("span", "", isNL ? "Reflectie" : "Reflection"));
+          head.appendChild(left);
+          head.appendChild(createEl("span", "astro-card__badge", isNL ? "Reflectie" : "Reflection"));
+          qCard.appendChild(head);
+          qCard.appendChild(createEl("p", "", q));
+          questionGrid.appendChild(qCard);
+        });
+        reflectionSection.appendChild(questionGrid);
+        wrap.appendChild(reflectionSection);
+
+        const technical = document.createElement("details");
+        technical.className = "layout-section";
+        technical.open = false;
+        const sum = document.createElement("summary");
+        sum.textContent = isNL ? "Technische details (tabellen en berekening)" : "Technical details (tables and calculation)";
+        technical.appendChild(sum);
+
+        const planetRows = [];
+        Object.entries(placements).forEach(([key, val]) => {
+          const v = val || {};
           const pGlyph = planetGlyph(key);
-          const sGlyph = signGlyph(sign);
-          rows.push([
+          const sGlyph = signGlyph(v.sign);
+          const retro = v.retrograde === true ? (isNL ? "Ja" : "Yes") : (isNL ? "Nee" : "No");
+          planetRows.push([
             symbolCell(pGlyph, localizePlanet(key), localizePlanet(key)),
-            sign ? symbolCell(sGlyph, localizeSign(sign), localizeSign(sign)) : "-",
-            "-",
-            Number.isFinite(degInSign) ? `${degInSign.toFixed(2)}°` : "-",
+            symbolCell(sGlyph, localizeSign(v.sign), localizeSign(v.sign)),
+            v.house != null ? String(v.house) : placeholderFor("huis"),
+            v.degree_in_sign != null ? `${Number(v.degree_in_sign).toFixed(2)}°` : placeholderFor("graad"),
+            retro,
+            isNL ? (planetThemes[key] ? `${safeText(planetThemes[key], "Thema")} krijgt ${signThemes[v.sign] ? signThemes[v.sign].replace("stijl", "toon") : "een eigen toon"}.` : placeholderFor("kernbetekenis")) : PLACEHOLDER,
           ]);
         });
-
-        const sectionPlanet = createLayoutSection(
-          isNL ? "Planeetstanden" : "Planet placements",
-          isNL
-            ? "Volledige posities uit de berekening. Zo zie je direct welke planeet in welk teken en huis staat."
-            : "Full computed positions. This directly shows which planet is in which sign and house."
-        );
-        if (rows.length) {
-          sectionPlanet.appendChild(
-            createMethodTable(
-              [isNL ? "Planeet" : "Planet", isNL ? "Teken" : "Sign", isNL ? "Huis" : "House", isNL ? "Graad in teken" : "Degree in sign"],
-              rows
-            )
-          );
+        const secPlanet = createLayoutSection(isNL ? "Planeetstanden tabel" : "Planet placements table", "");
+        if (planetRows.length) {
+          secPlanet.appendChild(createMethodTable([isNL ? "Planeet" : "Planet", isNL ? "Teken" : "Sign", isNL ? "Huis" : "House", isNL ? "Graad" : "Degree", isNL ? "Retrograde" : "Retrograde", isNL ? "Kernbetekenis" : "Core meaning"], planetRows));
         } else {
-          sectionPlanet.appendChild(p(isNL ? "Nog geen planeetstanden beschikbaar voor deze invoer." : "No planet placements available for this input yet."));
+          secPlanet.appendChild(createEl("p", "", isNL ? "Nog geen planeetstanden beschikbaar voor deze invoer." : "No planet placements available yet."));
         }
-        wrap.appendChild(sectionPlanet);
+        technical.appendChild(secPlanet);
 
-        const aspects = Array.isArray(western.aspects) ? western.aspects : [];
-        const sectionAspects = createLayoutSection(
-          isNL ? "Aspecten" : "Aspects",
-          isNL
-            ? "Aspecten laten zien hoe verschillende delen van je chart samenwerken of spanning opbouwen."
-            : "Aspects show how different parts of your chart cooperate or create tension."
-        );
+        const secHouses = createLayoutSection(isNL ? "Huizentabel" : "Houses table", "");
+        if (cusps.length >= 12) {
+          const houseRows = cusps.slice(0, 12).map((deg, idx) => {
+            const signName = signFromLongitude(deg);
+            const houseId = idx + 1;
+            const planetsIn = houseMap[houseId] || [];
+            return [
+              String(houseId),
+              signName ? symbolCell(signGlyph(signName), localizeSign(signName), localizeSign(signName)) : placeholderFor("cuspteken"),
+              formatDeg(deg, isNL ? "cuspgraad" : "cusp degree"),
+              safeText(houseThemes[houseId], "-"),
+              planetsIn.length ? planetsIn.map((pn) => localizePlanet(pn)).join(", ") : placeholderFor("planeten in huis"),
+            ];
+          });
+          secHouses.appendChild(createMethodTable([isNL ? "Huis" : "House", isNL ? "Teken op cusp" : "Sign on cusp", isNL ? "Graad" : "Degree", isNL ? "Thema" : "Theme", isNL ? "Planeten in huis" : "Planets in house"], houseRows));
+        } else {
+          secHouses.appendChild(createEl("p", "", "De huizen kunnen niet betrouwbaar worden berekend zonder nauwkeurige geboortetijd en geboorteplaats."));
+        }
+        technical.appendChild(secHouses);
+
+        const secAspects = createLayoutSection(isNL ? "Aspectentabel" : "Aspects table", "");
         if (aspects.length) {
-          const aspectRows = aspects.map((a) => [
-            symbolCell(
-              aspectGlyph(a.type),
-              `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`,
-              `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`
-            ),
-            a.orb_deg != null ? `${Number(a.orb_deg).toFixed(2)}°` : "-",
-            a.applying ? (isNL ? "Applicerend" : "Applying") : (isNL ? "Separerend" : "Separating"),
+          const rows = aspectsSorted.map((a) => [
+            symbolCell(aspectGlyph(a.type), `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`, `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`),
+            formatDeg(a.orb_deg, "orb"),
+            a.applying ? (isNL ? "applicerend" : "applying") : (isNL ? "separerend" : "separating"),
+            aspectTypeKind(a.type),
+            isNL ? `${localizePlanet(a.a)} en ${localizePlanet(a.b)} tonen ${aspectTypeKind(a.type)}.` : PLACEHOLDER,
           ]);
-          sectionAspects.appendChild(
-            createMethodTable(
-              [isNL ? "Aspect" : "Aspect", "Orb", isNL ? "Fase" : "Phase"],
-              aspectRows
-            )
-          );
+          secAspects.appendChild(createMethodTable([isNL ? "Aspect" : "Aspect", "Orb", isNL ? "Fase" : "Phase", isNL ? "Type" : "Type", isNL ? "Korte betekenis" : "Short meaning"], rows));
         } else {
-          sectionAspects.appendChild(p(isNL ? "Geen aspectdata gevonden." : "No aspect data found."));
+          secAspects.appendChild(createEl("p", "", "De aspecten konden niet worden samengesteld, omdat niet alle planeetposities beschikbaar zijn."));
         }
-        wrap.appendChild(sectionAspects);
+        technical.appendChild(secAspects);
 
-        wrap.appendChild(renderWesternStory(data));
+        const secTech = createLayoutSection(isNL ? "Technische gegevens" : "Technical data", "");
+        const birth = ((data || {}).input || {}).birth || {};
+        const place = birth.place || {};
+        const tz = birth.timezone || {};
+        const techList = createEl("ul", "");
+        [
+          `${isNL ? "Gebruikte zodiak" : "Used zodiac"}: ${isNL ? "Tropisch" : "Tropical"}`,
+          `${isNL ? "Huizensysteem" : "House system"}: ${safeText((houses.meta || {}).house_system || houses.system || "-", "-")}`,
+          `${isNL ? "Geboortegegevens" : "Birth data"}: ${safeText(birth.date, "-")} ${safeText((birth.time_local || "").slice(0, 5), "-")}`,
+          `${isNL ? "Tijdzone/UTC" : "Timezone/UTC"}: ${safeText(tz.iana || (tz.utc_offset_hours != null ? `UTC${tz.utc_offset_hours >= 0 ? "+" : ""}${tz.utc_offset_hours}` : ""), "-")}`,
+          `${isNL ? "Coordinaten" : "Coordinates"}: ${place.lat != null && place.lon != null ? `${Number(place.lat).toFixed(4)}, ${Number(place.lon).toFixed(4)}` : "-"}`,
+          `${isNL ? "Berekeningsstatus" : "Calculation status"}: ${safeText(((data || {}).diagnostics || {}).confidence_overall, "-")}`,
+        ].forEach((line) => {
+          techList.appendChild(createEl("li", "", line));
+        });
+        secTech.appendChild(techList);
+        technical.appendChild(secTech);
+        wrap.appendChild(technical);
+
+        appendWesternGlossaryLegend(wrap);
+
         return wrap;
       }
 
@@ -2816,10 +4107,47 @@
         return el;
       }
 
-      function createAstroCard(title, subtitle, body) {
+      function createAstroCard(title, subtitle, body, options) {
+        const opts = options || {};
         const card = createEl("article", "astro-card");
+        if (opts.accentColor) card.style.setProperty("--accent", opts.accentColor);
+        if (opts.eyebrow || opts.badge || opts.iconId) {
+          const head = createEl("div", "astro-card__head");
+          const left = createEl("div", "astro-card__meta-left");
+          if (opts.iconId && iconPathById(opts.iconId)) {
+            const iconWrap = createEl("span", "astro-inline-symbol__icon");
+            const img = document.createElement("img");
+            img.src = iconPathById(opts.iconId);
+            img.alt = opts.eyebrow || title || "";
+            img.loading = "lazy";
+            img.decoding = "async";
+            iconWrap.appendChild(img);
+            left.appendChild(iconWrap);
+          }
+          if (opts.eyebrow) left.appendChild(createEl("span", "", opts.eyebrow));
+          head.appendChild(left);
+          if (opts.badge) head.appendChild(createEl("span", "astro-card__badge", opts.badge));
+          card.appendChild(head);
+        }
         card.appendChild(createEl("h4", "", title));
-        if (subtitle) card.appendChild(createEl("div", "astro-card__sub", subtitle));
+        if (subtitle) {
+          if (opts.subtitleIconId && iconPathById(opts.subtitleIconId)) {
+            const sub = createEl("div", "astro-card__sub");
+            sub.classList.add("astro-inline-symbol");
+            const iconWrap = createEl("span", "astro-inline-symbol__icon");
+            const img = document.createElement("img");
+            img.src = iconPathById(opts.subtitleIconId);
+            img.alt = subtitle;
+            img.loading = "lazy";
+            img.decoding = "async";
+            iconWrap.appendChild(img);
+            sub.appendChild(iconWrap);
+            sub.appendChild(createEl("span", "", subtitle));
+            card.appendChild(sub);
+          } else {
+            card.appendChild(createEl("div", "astro-card__sub", subtitle));
+          }
+        }
         if (body) card.appendChild(createEl("p", "", body));
         return card;
       }
@@ -2980,15 +4308,35 @@
         return `${vedic} (${local})`;
       }
 
-      function getWesternWheelSvg(data) {
+      function getWesternWheelSvg(data, options) {
+        const opts = Object.assign({
+          signs: true,
+          degrees: true,
+          houses: true,
+          planets: true,
+          aspects: true,
+          labels: true,
+        }, options || {});
         const zodiacSymbols = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"];
         const signOrderEn = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
         const symbols = { Sun: "sun", Moon: "moon", Mercury: "mercury", Venus: "venus", Mars: "mars", Jupiter: "jupiter", Saturn: "saturn", Uranus: "uranus", Neptune: "neptune", Pluto: "pluto", NorthNode: "north-node" };
         const placements = ((data.western || {}).placements) || {};
         const angles = (((data.western || {}).houses || {}).angles || {});
+        const segmentFill = [
+          "#f3c4b9", "#f1cf9f", "#f8dfb0", "#f8e6bf",
+          "#d8ecfb", "#d7e9cc", "#d4f0f2", "#c9ddfa",
+          "#dfc8f8", "#f7cfc8", "#d2ebf2", "#cbd7fa",
+        ];
         const polar = (angle, radius) => {
           const rad = ((angle - 90) * Math.PI) / 180;
           return { x: 200 + radius * Math.cos(rad), y: 200 + radius * Math.sin(rad) };
+        };
+        const arcPath = (a0, a1, rOuter, rInner) => {
+          const p0o = polar(a0, rOuter);
+          const p1o = polar(a1, rOuter);
+          const p1i = polar(a1, rInner);
+          const p0i = polar(a0, rInner);
+          return `M ${p0o.x} ${p0o.y} A ${rOuter} ${rOuter} 0 0 1 ${p1o.x} ${p1o.y} L ${p1i.x} ${p1i.y} A ${rInner} ${rInner} 0 0 0 ${p0i.x} ${p0i.y} Z`;
         };
         const planets = [];
         Object.entries(placements).forEach(([name, pv]) => {
@@ -2996,9 +4344,9 @@
           if (!p.sign || p.degree_in_sign == null) return;
           const idx = signOrderEn.indexOf(String(p.sign));
           if (idx < 0) return;
-          planets.push({ key: symbols[name] || "", label: name.slice(0, 2), angle: idx * 30 + Number(p.degree_in_sign) });
+          planets.push({ name, key: symbols[name] || "", label: name.slice(0, 2), angle: idx * 30 + Number(p.degree_in_sign) });
         });
-        if (angles.asc_deg != null) planets.push({ key: "ascendant", label: "Asc", angle: Number(angles.asc_deg) });
+        if (angles.asc_deg != null) planets.push({ name: "Ascendant", key: "ascendant", label: "Asc", angle: Number(angles.asc_deg) });
         const hasPlanetData = planets.length > 0;
         const signDeg = (sign, degreeInSign) => {
           const idx = signOrderEn.indexOf(String(sign || ""));
@@ -3016,19 +4364,42 @@
         svg += '<circle cx="200" cy="200" r="174" fill="#ffffff" stroke="#d8c5ef" stroke-width="2"/>';
         svg += '<circle cx="200" cy="200" r="138" fill="none" stroke="#e6d9f6" stroke-width="1.5"/>';
         svg += '<circle cx="200" cy="200" r="96" fill="none" stroke="#efe6fa" stroke-width="1.5"/>';
+        if (opts.degrees) {
+          for (let d = 0; d < 360; d += 5) {
+            const outer = polar(d, 174);
+            const inner = polar(d, d % 30 === 0 ? 162 : 168);
+            svg += `<line x1="${outer.x}" y1="${outer.y}" x2="${inner.x}" y2="${inner.y}" stroke="#dbcff0" stroke-width="${d % 30 === 0 ? 1.1 : 0.6}"/>`;
+          }
+        }
         for (let i = 0; i < 12; i++) {
+          const a0 = i * 30;
+          const a1 = (i + 1) * 30;
+          const fill = segmentFill[i % segmentFill.length];
+          svg += `<path d="${arcPath(a0, a1, 174, 138)}" fill="${fill}" fill-opacity="0.88" />`;
           const start = polar(i * 30, 174);
           const end = polar(i * 30, 96);
           const label = polar(i * 30 + 15, 154);
           const houseLabel = polar(i * 30 + 15, 112);
-          svg += `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" stroke="#dcc8f2" stroke-width="1"/>`;
-          const signIcon = iconPathById(zodiacSymbols[i]);
-          if (signIcon) {
-            svg += `<image href="${signIcon}" x="${label.x - 9}" y="${label.y - 9}" width="18" height="18" />`;
-          } else {
-            svg += `<text x="${label.x}" y="${label.y}" text-anchor="middle" dominant-baseline="middle" font-size="16" fill="#6a5c86">${zodiacSymbols[i]}</text>`;
+          const signName = signOrderEn[i];
+          if (opts.houses) {
+            svg += `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" stroke="#dcc8f2" stroke-width="1"/>`;
+            svg += `<circle class="wheel-house-hit" data-house="${i + 1}" cx="${houseLabel.x}" cy="${houseLabel.y}" r="11" fill="transparent"/>`;
+            svg += `<text x="${houseLabel.x}" y="${houseLabel.y}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#8f80aa">${i + 1}</text>`;
           }
-          svg += `<text x="${houseLabel.x}" y="${houseLabel.y}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#8f80aa">${i + 1}</text>`;
+          if (opts.signs) {
+            svg += `<path class="wheel-sign-hit" data-sign="${signName}" d="M ${polar(i * 30, 174).x} ${polar(i * 30, 174).y} A 174 174 0 0 1 ${polar((i + 1) * 30, 174).x} ${polar((i + 1) * 30, 174).y} L ${polar((i + 1) * 30, 138).x} ${polar((i + 1) * 30, 138).y} A 138 138 0 0 0 ${polar(i * 30, 138).x} ${polar(i * 30, 138).y} Z" fill="transparent"/>`;
+            const signIcon = iconPathById(zodiacSymbols[i]);
+            if (signIcon) {
+              svg += `<image href="${signIcon}" x="${label.x - 9}" y="${label.y - 9}" width="18" height="18" />`;
+            } else {
+              const signUnicode = ["\u2648","\u2649","\u264A","\u264B","\u264C","\u264D","\u264E","\u264F","\u2650","\u2651","\u2652","\u2653"];
+              svg += `<text x="${label.x}" y="${label.y}" text-anchor="middle" dominant-baseline="middle" font-size="16" fill="#ffffff">${signUnicode[i]}</text>`;
+            }
+            if (opts.labels && i % 2 === 0) {
+              const signTextPt = polar(i * 30 + 15, 146);
+              svg += `<text x="${signTextPt.x}" y="${signTextPt.y + 14}" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="#8b78aa" font-weight="400">${localizeSign(signOrderEn[i]).split(" ")[0]}</text>`;
+            }
+          }
         }
         const aspects = Array.isArray((data.western || {}).aspects) ? (data.western || {}).aspects : [];
         const aspectColor = (t) => {
@@ -3039,27 +4410,68 @@
           if (t === "sextile") return "#5f8fb7";
           return "#b8a3d6";
         };
-        aspects.slice(0, 18).forEach((a) => {
-          const la = longByPlanet[a.a];
-          const lb = longByPlanet[a.b];
-          if (la == null || lb == null) return;
-          const pa = polar(la, 92);
-          const pb = polar(lb, 92);
-          svg += `<line x1="${pa.x}" y1="${pa.y}" x2="${pb.x}" y2="${pb.y}" stroke="${aspectColor(a.type)}" stroke-opacity="0.92" stroke-width="2"/>`;
-        });
-        planets.forEach((planet, index) => {
-          const p = polar(planet.angle, 78 + (index % 3) * 12);
-          const r = planet.key === "ascendant" ? 17 : 14;
-          const fill = planet.key === "ascendant" ? "#C9A24D" : "#884DC9";
-          const fs = planet.key === "ascendant" ? 10 : 13;
-          svg += `<circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${fill}" opacity="0.95"/>`;
-          const planetIcon = iconPathById(planet.key);
-          if (planetIcon) {
-            const iconSize = planet.key === "ascendant" ? 14 : 12;
-            svg += `<image href="${planetIcon}" x="${p.x - iconSize / 2}" y="${p.y - iconSize / 2}" width="${iconSize}" height="${iconSize}" />`;
-          } else {
-            svg += `<text x="${p.x}" y="${p.y + 1}" text-anchor="middle" dominant-baseline="middle" font-size="${fs}" fill="#ffffff">${planet.label || ""}</text>`;
-          }
+        if (opts.aspects) {
+          aspects.slice(0, 18).forEach((a) => {
+            const la = longByPlanet[a.a];
+            const lb = longByPlanet[a.b];
+            if (la == null || lb == null) return;
+            const pa = polar(la, 92);
+            const pb = polar(lb, 92);
+            svg += `<line class="wheel-aspect-line" data-a="${a.a}" data-b="${a.b}" data-type="${a.type}" x1="${pa.x}" y1="${pa.y}" x2="${pb.x}" y2="${pb.y}" stroke="${aspectColor(a.type)}" stroke-opacity="0.92" stroke-width="2"/>`;
+          });
+        }
+        const planetColor = {
+          Sun: "#E67E22",
+          Moon: "#6E6A7B",
+          Mercury: "#2F7D32",
+          Venus: "#D94D73",
+          Mars: "#C92127",
+          Jupiter: "#E88918",
+          Saturn: "#315B9A",
+          Uranus: "#2F7D32",
+          Neptune: "#5F8FB7",
+          Pluto: "#33245C",
+          NorthNode: "#33245C",
+          SouthNode: "#7a7488",
+          Ascendant: "#C9A24D",
+        };
+        if (opts.planets) {
+          planets.forEach((planet, index) => {
+            const p = polar(planet.angle, 78 + (index % 3) * 12);
+            const fill = planetColor[planet.name] || "#884DC9";
+            const fs = planet.key === "ascendant" ? 10 : 13;
+            svg += `<g class="wheel-planet-marker" data-planet="${planet.name}">`;
+            svg += `<circle cx="${p.x}" cy="${p.y}" r="3.7" fill="${fill}" stroke="#ffffff" stroke-width="1"/>`;
+            const planetIcon = iconPathById(planet.key);
+            if (planetIcon) {
+              const iconSize = planet.key === "ascendant" ? 14 : 12;
+              svg += `<image href="${planetIcon}" x="${p.x - iconSize / 2}" y="${p.y - iconSize - 5}" width="${iconSize}" height="${iconSize}" />`;
+            } else {
+              svg += `<text x="${p.x}" y="${p.y - 8}" text-anchor="middle" dominant-baseline="middle" font-size="${fs}" fill="${fill}">${planet.label || ""}</text>`;
+            }
+            if (opts.labels) {
+              svg += `<text x="${p.x}" y="${p.y + 11}" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="${fill}">${planet.label || ""}</text>`;
+            }
+            svg += "</g>";
+          });
+        }
+        const asc = Number(angles.asc_deg);
+        const mc = Number(angles.mc_deg);
+        const axisMarkers = [];
+        if (!Number.isNaN(asc)) {
+          axisMarkers.push({ key: "Asc", ang: asc });
+          axisMarkers.push({ key: "Dsc", ang: (asc + 180) % 360 });
+        }
+        if (!Number.isNaN(mc)) {
+          axisMarkers.push({ key: "MC", ang: mc });
+          axisMarkers.push({ key: "IC", ang: (mc + 180) % 360 });
+        }
+        axisMarkers.forEach((m) => {
+          const outer = polar(m.ang, 138);
+          const inner = polar(m.ang, 127);
+          const txt = polar(m.ang, 121);
+          svg += `<line x1="${outer.x}" y1="${outer.y}" x2="${inner.x}" y2="${inner.y}" stroke="#1f1f1f" stroke-width="2.2"/>`;
+          svg += `<text x="${txt.x}" y="${txt.y}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#5f46a9">${m.key}</text>`;
         });
         if (!hasPlanetData) {
           const msg = uiIsNL()
@@ -3070,6 +4482,81 @@
         svg += '<text x="200" y="196" text-anchor="middle" font-size="10" fill="#8b78aa">Tropische radix</text>';
         svg += "</svg>";
         return svg;
+      }
+
+      function bindWesternWheelSelection(wheelWrap, listWrap, filterWrap, onSelectionChange) {
+        if (!wheelWrap) return;
+        const markerNodes = Array.from(wheelWrap.querySelectorAll(".wheel-planet-marker"));
+        const aspectNodes = Array.from(wheelWrap.querySelectorAll(".wheel-aspect-line"));
+        const signNodes = Array.from(wheelWrap.querySelectorAll(".wheel-sign-hit"));
+        const houseNodes = Array.from(wheelWrap.querySelectorAll(".wheel-house-hit"));
+        const valueNodes = listWrap ? Array.from(listWrap.querySelectorAll(".western-value-item")) : [];
+        const filterNodes = filterWrap ? Array.from(filterWrap.querySelectorAll(".western-filter-chip")) : [];
+        let activePlanet = null;
+        let activeAspectType = null;
+        function applySelection(planet, aspectType) {
+          activePlanet = planet || null;
+          activeAspectType = aspectType || null;
+          wheelWrap.classList.toggle("is-filtering", !!activePlanet || !!activeAspectType);
+          valueNodes.forEach((node) => node.classList.toggle("is-active", activePlanet && node.dataset.planet === activePlanet));
+          filterNodes.forEach((node) => node.classList.toggle("is-active", activeAspectType && node.dataset.aspectType === activeAspectType));
+          markerNodes.forEach((node) => {
+            const planetName = node.dataset.planet;
+            const byPlanet = activePlanet && planetName === activePlanet;
+            const byAspect = activeAspectType && aspectNodes.some((line) => line.dataset.type === activeAspectType && (line.dataset.a === planetName || line.dataset.b === planetName));
+            node.classList.toggle("is-active", !!(byPlanet || byAspect));
+          });
+          aspectNodes.forEach((node) => {
+            const hitPlanet = activePlanet && (node.dataset.a === activePlanet || node.dataset.b === activePlanet);
+            const hitType = activeAspectType && node.dataset.type === activeAspectType;
+            const hit = activePlanet && activeAspectType ? (hitPlanet && hitType) : (hitPlanet || hitType);
+            node.classList.toggle("is-active", !!hit);
+          });
+          if (typeof onSelectionChange === "function") {
+            onSelectionChange({ planet: activePlanet, aspectType: activeAspectType });
+          }
+        }
+        valueNodes.forEach((node) => {
+          node.addEventListener("click", () => {
+            const next = node.dataset.planet;
+            applySelection(activePlanet === next ? null : next, null);
+          });
+        });
+        filterNodes.forEach((node) => {
+          node.addEventListener("click", () => {
+            if (node.dataset.action === "reset") {
+              applySelection(null, null);
+              return;
+            }
+            const next = node.dataset.aspectType;
+            applySelection(null, activeAspectType === next ? null : next);
+          });
+        });
+        markerNodes.forEach((node) => {
+          node.style.cursor = "pointer";
+          node.addEventListener("click", () => {
+            const next = node.dataset.planet;
+            applySelection(activePlanet === next ? null : next, null);
+          });
+        });
+        signNodes.forEach((node) => {
+          node.style.cursor = "pointer";
+          node.addEventListener("click", () => {
+            if (typeof onSelectionChange === "function") onSelectionChange({ type: "sign", id: node.dataset.sign });
+          });
+        });
+        houseNodes.forEach((node) => {
+          node.style.cursor = "pointer";
+          node.addEventListener("click", () => {
+            if (typeof onSelectionChange === "function") onSelectionChange({ type: "house", id: node.dataset.house });
+          });
+        });
+        aspectNodes.forEach((node) => {
+          node.style.cursor = "pointer";
+          node.addEventListener("click", () => {
+            if (typeof onSelectionChange === "function") onSelectionChange({ type: "aspect", id: node.dataset.type, a: node.dataset.a, b: node.dataset.b });
+          });
+        });
       }
 
       function createKundaliGrid(activeVargaId, data) {
@@ -3507,7 +4994,7 @@
         return shell;
       }
 
-      function renderEnergyTabV2(data, energy, combined, profileBook) {
+      function renderEnergyTabV2(data, energy, combined) {
         const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
         const header = createEl("section", "astro-method-visual");
@@ -3524,6 +5011,7 @@
         );
         root.appendChild(header);
 
+        const profileBook = arguments[3] || null;
         const book = profileBook || {};
         const contentWrap = createEl("div", "energy-profile-layout");
 
@@ -3733,37 +5221,8 @@
       }
 
       function renderWesternTabV2(data) {
-        const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
-        const intro = createEl("section", "astro-method-visual");
-        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 1" : "Method 1"));
-        intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Westerse horoscoop" : "Western horoscope"));
-        const narr = buildWesternTropicalNarrativeParagraphs(data, isNL);
-        const narrWrap = createEl("div", "astro-section-narrative");
-        narr.paragraphs.forEach((para) => {
-          if (para && String(para).trim()) narrWrap.appendChild(createEl("p", "astro-section-sub", String(para).trim()));
-        });
-        intro.appendChild(narrWrap);
-        const hero = createAstroCard(
-          isNL ? "Radix wiel" : "Natal wheel",
-          isNL ? "Tropische berekening op basis van jouw invoer" : "Tropical calculation based on your input",
-          ""
-        );
-        const wheelSvg = createEl("div", "astro-wheel-wrap");
-        wheelSvg.innerHTML = getWesternWheelSvg(data);
-        hero.appendChild(wheelSvg);
-        intro.appendChild(hero);
-        const dashboard = renderResultDashboard("western", data);
-        // Place radix wheel between western hero and following content.
-        const methodLayout = dashboard && dashboard.firstElementChild;
-        if (methodLayout && methodLayout.children && methodLayout.children.length > 1) {
-          methodLayout.insertBefore(intro, methodLayout.children[1]);
-        } else if (methodLayout) {
-          methodLayout.appendChild(intro);
-        } else {
-          root.appendChild(intro);
-        }
-        root.appendChild(dashboard);
+        root.appendChild(renderResultDashboard("western", data));
         return root;
       }
 

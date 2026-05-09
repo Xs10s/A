@@ -2391,13 +2391,6 @@
         }
         wrap.appendChild(sectionAspects);
 
-        appendLegendSection(wrap, {
-          title: isNL ? "Soorten aspecten" : "Aspect types",
-          lead: isNL
-            ? "Algemene uitleg van hoekverhoudingen tussen planeten. Het orb-getal toont hoe dicht je stand bij het ‘ideale’ hoekpunt zit. Applicerend = nog naar exact toe; separerend = net na exact."
-            : "General meanings of angular relationships between planets. The orb value shows how close the positions are to the ideal angle. Applying = moving toward exact; separating = just past exact.",
-          items: westernAspectLegendItems(isNL),
-        });
         wrap.appendChild(renderWesternStory(data));
         return wrap;
       }
@@ -2476,27 +2469,7 @@
         sectionPanchanga.appendChild(pGrid);
         wrap.appendChild(sectionPanchanga);
         wrap.appendChild(renderVedicStory(data));
-        appendLegendSection(wrap, {
-          title: isNL ? "Panchanga — algemene uitleg" : "Panchanga — general meanings",
-          lead: isNL
-            ? "Algemene betekenis van de vijf panchanga-factoren. Dit is methodische achtergrond, geen persoonlijke score."
-            : "General meaning of the five panchanga factors. This is method background, not a personal score.",
-          items: vedicPanchangaLegendItems(isNL),
-        });
-        appendLegendSection(wrap, {
-          title: isNL ? "Graha’s — algemene betekenis" : "Grahas — general meanings",
-          lead: isNL
-            ? "Algemene duiding van de vedische planeten en knopen die in de D1-kaart worden gebruikt."
-            : "General interpretation of Vedic planets and nodes used in the D1 chart.",
-          items: vedicPlanetLegendItems(isNL),
-        });
-        appendLegendSection(wrap, {
-          title: isNL ? "Huizen — levensgebieden" : "Houses — life domains",
-          lead: isNL
-            ? "Algemene uitleg van de twaalf huizen als vaste levensgebieden binnen de vedische lezing."
-            : "General explanation of the twelve houses as fixed life domains in Vedic reading.",
-          items: vedicHouseLegendItems(isNL),
-        });
+        appendVedicGlossaryLegend(wrap);
         return wrap;
       }
 
@@ -4133,6 +4106,10 @@
             const code = document.createElement("span");
             code.className = "legend-card__code";
             code.textContent = item.codeLabel;
+            if (item.codeTitle) {
+              code.setAttribute("title", item.codeTitle);
+              code.setAttribute("aria-label", item.codeTitle);
+            }
             top.appendChild(code);
           }
           if (hasBadge) {
@@ -4179,6 +4156,8 @@
         const h = document.createElement("h3");
         h.className = "legend-section__title";
         h.textContent = opts.title;
+        h.setAttribute("role", "button");
+        h.setAttribute("tabindex", "0");
         headLeft.appendChild(h);
         if (opts.lead) {
           const leadEl = document.createElement("p");
@@ -4193,508 +4172,443 @@
         grid.id = sectionId;
         (opts.items || []).forEach((it) => grid.appendChild(createLegendCard(it)));
         h.setAttribute("aria-controls", sectionId);
+        const startCollapsed = opts.startCollapsed === true;
+        grid.hidden = startCollapsed;
+        h.setAttribute("aria-expanded", startCollapsed ? "false" : "true");
+        const toggleGrid = () => {
+          const nextHidden = !grid.hidden;
+          grid.hidden = nextHidden;
+          h.setAttribute("aria-expanded", nextHidden ? "false" : "true");
+        };
+        h.addEventListener("click", toggleGrid);
+        h.addEventListener("keydown", (ev) => {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            toggleGrid();
+          }
+        });
         wrap.appendChild(head);
         wrap.appendChild(grid);
         frag.appendChild(wrap);
       }
 
-      function westernPlanetLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
-        const dot = (id, short) => {
-          const g = planetGlyph(id) || "";
-          return g ? `${g} · ${short}` : short;
-        };
-        const foot = L("Planeet", "Planet");
+      function westernGlossarySections() {
         return [
           {
-            codeLabel: dot("Sun", L("Zon", "Sun")),
-            badge: L("Kern", "Core"),
-            title: L("Zon", "Sun"),
-            body: L(
-              "De Zon staat voor kernidentiteit, levensrichting en vitaliteit. In een radix laat ze zien waar je van nature naar toe groeit en hoe je jezelf naar buiten uitdrukt.",
-              "The Sun represents core identity, life direction, and vitality. In a natal chart it shows where you naturally grow and how you express yourself outwardly."
-            ),
-            footer: foot,
+            id: "zodiac-signs",
+            title: "Dierenriemtekens",
+            subtitle: "De twaalf tekens tonen hoe een planeet, punt of huis zich uitdrukt.",
+            intro: "De dierenriemtekens vormen de symbolische taal van de Westerse astrologie. Ze beschrijven niet wat er actief is, maar hoe die energie naar buiten komt. Een planeet laat zien welke functie werkt, het teken laat zien op welke manier die functie zich gedraagt.",
+            items: [
+              { id: "aries", title: "Ram", symbol: "♈", badge: "Initiatief", description: "Ram staat voor beginenergie, actie, moed, directheid en impuls. Deze energie wil starten, bewegen en ervaren door te doen.", alt: "Ram" },
+              { id: "taurus", title: "Stier", symbol: "♉", badge: "Stabiliteit", description: "Stier staat voor rust, lichaam, bezit, waarde, zintuiglijkheid en opbouw. Deze energie zoekt zekerheid, tastbaarheid en duurzame vorm.", alt: "Stier" },
+              { id: "gemini", title: "Tweelingen", symbol: "♊", badge: "Contact", description: "Tweelingen staat voor denken, taal, nieuwsgierigheid, informatie en verbinding. Deze energie wil begrijpen, uitwisselen en bewegen tussen perspectieven.", alt: "Tweelingen" },
+              { id: "cancer", title: "Kreeft", symbol: "♋", badge: "Veiligheid", description: "Kreeft staat voor gevoel, bescherming, herinnering, afkomst en emotionele geborgenheid. Deze energie zoekt verbinding via zorg en herkenning.", alt: "Kreeft" },
+              { id: "leo", title: "Leeuw", symbol: "♌", badge: "Expressie", description: "Leeuw staat voor creativiteit, zichtbaarheid, zelfexpressie, hartkracht en levensvreugde. Deze energie wil stralen, creeren en zichzelf laten zien.", alt: "Leeuw" },
+              { id: "virgo", title: "Maagd", symbol: "♍", badge: "Ordening", description: "Maagd staat voor analyse, verfijning, gezondheid, dienstbaarheid en verbetering. Deze energie wil begrijpen hoe iets werkt en het praktischer of zuiverder maken.", alt: "Maagd" },
+              { id: "libra", title: "Weegschaal", symbol: "♎", badge: "Balans", description: "Weegschaal staat voor relatie, harmonie, schoonheid, afstemming en keuze. Deze energie zoekt evenwicht tussen zichzelf en de ander.", alt: "Weegschaal" },
+              { id: "scorpio", title: "Schorpioen", symbol: "♏", badge: "Diepte", description: "Schorpioen staat voor intensiteit, transformatie, macht, kwetsbaarheid en overgave. Deze energie zoekt waarheid onder de oppervlakte.", alt: "Schorpioen" },
+              { id: "sagittarius", title: "Boogschutter", symbol: "♐", badge: "Visie", description: "Boogschutter staat voor vrijheid, groei, reizen, filosofie, zingeving en overtuiging. Deze energie wil het grotere geheel begrijpen.", alt: "Boogschutter" },
+              { id: "capricorn", title: "Steenbok", symbol: "♑", badge: "Structuur", description: "Steenbok staat voor verantwoordelijkheid, tijd, ambitie, discipline en vorm. Deze energie wil bouwen, dragen en iets duurzaam neerzetten.", alt: "Steenbok" },
+              { id: "aquarius", title: "Waterman", symbol: "♒", badge: "Vernieuwing", description: "Waterman staat voor vrijheid, originaliteit, systeemdenken, gemeenschap en verandering. Deze energie denkt vooruit en durft af te wijken.", alt: "Waterman" },
+              { id: "pisces", title: "Vissen", symbol: "♓", badge: "Overgave", description: "Vissen staat voor gevoeligheid, verbeelding, spiritualiteit, compassie en eenheid. Deze energie voelt grenzen subtiel aan en zoekt verbinding met het grotere geheel.", alt: "Vissen" },
+            ],
           },
           {
-            codeLabel: dot("Moon", L("Maan", "Moon")),
-            badge: L("Ritme", "Rhythm"),
-            title: L("Maan", "Moon"),
-            body: L(
-              "De Maan beschrijft emotionele behoeften, veiligheid en gewoontes. Ze toont hoe je je innerlijk voedt en instinctief op situaties reageert.",
-              "The Moon describes emotional needs, safety, and habits. It shows how you nurture yourself inwardly and react instinctively."
-            ),
-            footer: foot,
+            id: "planets-points",
+            title: "Planeten & punten",
+            subtitle: "Planeten tonen welke krachten, functies en drijfveren actief zijn.",
+            intro: "In de Westerse astrologie staan planeten symbool voor innerlijke functies. Ze laten zien wat er in iemand werkt: identiteit, gevoel, denken, verlangen, handelen, groeien, begrenzen en transformeren. Ook Zon en Maan worden astrologisch als lichten of planeten gelezen, omdat ze centrale functies in de horoscoop vertegenwoordigen.",
+            items: [
+              { id: "sun", title: "Zon", symbol: "☉", badge: "Kern", description: "De Zon staat voor kernidentiteit, levensrichting, bewustzijn, vitaliteit en de wil om jezelf te worden.", alt: "Zon" },
+              { id: "moon", title: "Maan", symbol: "☽", badge: "Ritme", description: "De Maan beschrijft emotionele behoeften, veiligheid, instinct, gewoontepatronen en hoe iemand innerlijk reageert.", alt: "Maan" },
+              { id: "mercury", title: "Mercurius", symbol: "☿", badge: "Contact", description: "Mercurius gaat over denken, leren, communicatie, taal, waarneming en het uitwisselen van ideeen.", alt: "Mercurius" },
+              { id: "venus", title: "Venus", symbol: "♀", badge: "Waarden", description: "Venus beschrijft liefde, aantrekkingskracht, schoonheid, harmonie, genot, smaak en wat iemand waardevol vindt.", alt: "Venus" },
+              { id: "mars", title: "Mars", symbol: "♂", badge: "Actie", description: "Mars staat voor wilskracht, verlangen, actie, assertiviteit, conflict, richting en lichamelijke energie.", alt: "Mars" },
+              { id: "jupiter", title: "Jupiter", symbol: "♃", badge: "Groei", description: "Jupiter staat voor vertrouwen, expansie, wijsheid, kansen, zingeving en het zoeken naar grotere verbanden.", alt: "Jupiter" },
+              { id: "saturn", title: "Saturnus", symbol: "♄", badge: "Grens", description: "Saturnus staat voor verantwoordelijkheid, structuur, beperking, discipline, volwassenwording en tijd.", alt: "Saturnus" },
+              { id: "uranus", title: "Uranus", symbol: "♅", badge: "Doorbraak", description: "Uranus staat voor vrijheid, vernieuwing, plotseling inzicht, rebellie, originaliteit en verandering.", alt: "Uranus" },
+              { id: "neptune", title: "Neptunus", symbol: "♆", badge: "Droom", description: "Neptunus staat voor verbeelding, spiritualiteit, idealen, verwarring, gevoeligheid en overgave.", alt: "Neptunus" },
+              { id: "pluto", title: "Pluto", symbol: "♇", badge: "Transformatie", description: "Pluto staat voor macht, crisis, schaduw, diepte, transformatie en wedergeboorte.", alt: "Pluto" },
+              { id: "chiron", title: "Chiron", symbol: "⚷", badge: "Heling", description: "Chiron staat voor kwetsbaarheid, oude pijn, heling, leraarschap en de plek waar wond en wijsheid elkaar raken.", alt: "Chiron" },
+              { id: "north-node", title: "Noordelijke Maansknoop", symbol: "☊", badge: "Groei", description: "De Noordelijke Maansknoop wijst op ontwikkelrichting, nieuwe ervaringen en thema's waar iemand in dit leven naartoe groeit.", alt: "Noordelijke Maansknoop" },
+              { id: "south-node", title: "Zuidelijke Maansknoop", symbol: "☋", badge: "Herkomst", description: "De Zuidelijke Maansknoop wijst op oude patronen, vertrouwd terrein, comfortzone en meegenomen ervaring.", alt: "Zuidelijke Maansknoop" },
+              { id: "asc", title: "Ascendant", symbol: "ASC", badge: "Ingang", description: "De Ascendant beschrijft uitstraling, eerste reactie, lichaamstaal, levenshouding en de manier waarop iemand het leven instapt.", alt: "Ascendant" },
+              { id: "dsc", title: "Descendant", symbol: "DSC", badge: "Relatie", description: "De Descendant toont wat iemand in relaties ontmoet, zoekt, projecteert of via de ander leert kennen.", alt: "Descendant" },
+              { id: "mc", title: "Medium Coeli", symbol: "MC", badge: "Roeping", description: "Het Medium Coeli toont maatschappelijke richting, zichtbaarheid, carriere, roeping en publieke positie.", alt: "Medium Coeli" },
+              { id: "ic", title: "Imum Coeli", symbol: "IC", badge: "Wortel", description: "Het Imum Coeli toont afkomst, thuisbasis, innerlijke fundering, familie en het priveleven.", alt: "Imum Coeli" },
+            ],
           },
           {
-            codeLabel: dot("Mercury", L("Mercurius", "Mercury")),
-            badge: L("Contact", "Contact"),
-            title: L("Mercurius", "Mercury"),
-            body: L(
-              "Mercurius gaat over denken, leren, communicatie en uitwisseling van ideeën. Hij schetst hoe je observeert, verbindt en jezelf verwoordt.",
-              "Mercury concerns thinking, learning, communication, and exchanging ideas. It sketches how you observe, connect, and put things into words."
-            ),
-            footer: foot,
+            id: "houses",
+            title: "Huizen",
+            subtitle: "De twaalf huizen tonen waar in het leven een energie zichtbaar wordt.",
+            intro: "Huizen maken de horoscoop concreet. Ze verdelen de kaart in levensgebieden. Een planeet laat zien wat er werkt, het teken laat zien hoe het werkt, en het huis laat zien waar dit vooral zichtbaar wordt.",
+            items: [
+              { id: "house-1", title: "1e huis", symbol: "1", badge: "Zelf", description: "Het eerste huis gaat over lichaam, uitstraling, eerste indruk, identiteit, instinctieve houding en de manier waarop iemand begint." },
+              { id: "house-2", title: "2e huis", symbol: "2", badge: "Waarde", description: "Het tweede huis gaat over bezit, geld, eigenwaarde, talenten, zekerheid, lichaam en wat iemand nodig heeft om zich stabiel te voelen." },
+              { id: "house-3", title: "3e huis", symbol: "3", badge: "Communicatie", description: "Het derde huis gaat over taal, leren, broers en zussen, buren, dagelijkse omgeving, korte reizen en informatie-uitwisseling." },
+              { id: "house-4", title: "4e huis", symbol: "4", badge: "Thuis", description: "Het vierde huis gaat over familie, wortels, emotionele basis, priveleven, afkomst en innerlijke veiligheid." },
+              { id: "house-5", title: "5e huis", symbol: "5", badge: "Creatie", description: "Het vijfde huis gaat over creativiteit, spel, plezier, kinderen, romantiek, zelfexpressie en levensvreugde." },
+              { id: "house-6", title: "6e huis", symbol: "6", badge: "Ritme", description: "Het zesde huis gaat over gezondheid, werkritme, routines, dienstbaarheid, verbetering, dagelijkse taken en praktische zorg." },
+              { id: "house-7", title: "7e huis", symbol: "7", badge: "Relatie", description: "Het zevende huis gaat over relaties, partnerschap, samenwerking, contracten, spiegeling en de ontmoeting met de ander." },
+              { id: "house-8", title: "8e huis", symbol: "8", badge: "Diepte", description: "Het achtste huis gaat over intimiteit, gedeelde middelen, verlies, crisis, macht, kwetsbaarheid en transformatie." },
+              { id: "house-9", title: "9e huis", symbol: "9", badge: "Visie", description: "Het negende huis gaat over studie, reizen, levensbeschouwing, religie, filosofie, waarheid en het grotere perspectief." },
+              { id: "house-10", title: "10e huis", symbol: "10", badge: "Roeping", description: "Het tiende huis gaat over loopbaan, verantwoordelijkheid, publieke rol, status, ambitie en maatschappelijke richting." },
+              { id: "house-11", title: "11e huis", symbol: "11", badge: "Netwerk", description: "Het elfde huis gaat over vrienden, groepen, idealen, toekomstvisie, collectieven en sociale betrokkenheid." },
+              { id: "house-12", title: "12e huis", symbol: "12", badge: "Stilte", description: "Het twaalfde huis gaat over het onbewuste, afzondering, spiritualiteit, dromen, loslaten en verborgen patronen." },
+            ],
           },
           {
-            codeLabel: dot("Venus", "Venus"),
-            badge: L("Waarden", "Values"),
-            title: "Venus",
-            body: L(
-              "Venus beschrijft waarden, aantrekkingskracht, genot en harmonie. Ze wijst op wat je mooi vindt en hoe je relateert rond liefde en esthetiek.",
-              "Venus describes values, attraction, pleasure, and harmony. It highlights what you find beautiful and how you relate around love and aesthetics."
-            ),
-            footer: foot,
+            id: "aspects",
+            title: "Aspecten",
+            subtitle: "Aspecten tonen hoe planeten samenwerken, botsen of elkaar versterken.",
+            intro: "Aspecten zijn hoekverhoudingen tussen planeten of belangrijke punten in de horoscoop. Ze laten zien hoe innerlijke functies met elkaar in gesprek zijn. Sommige aspecten geven stroming en gemak, andere geven spanning, bewustwording of groeidruk.",
+            items: [
+              { id: "conjunction", title: "Conjunctie", symbol: "☌", badge: "Samenvallen", description: "Twee planeten staan op ongeveer dezelfde lengtegraad. Hun thema's mengen zich en versterken elkaar. Dit kan krachtig, dominant of intens werken.", degree: "0°" },
+              { id: "sextile", title: "Sextiel", symbol: "⚹", badge: "Mogelijkheid", description: "Een open en beweeglijk aspect dat kansen, talenten en samenwerking toont. Het vraagt vaak wel bewuste inzet om benut te worden.", degree: "60°" },
+              { id: "square", title: "Vierkant", symbol: "□", badge: "Spanning", description: "Een hoek van frictie en actie. Het vierkant toont spanning die tot groei dwingt. Door wrijving wordt iets zichtbaar of veranderbaar.", degree: "90°" },
+              { id: "trine", title: "Driehoek", symbol: "△", badge: "Stroom", description: "Een harmonisch aspect dat natuurlijke steun en gemak toont. Energie kan vrij stromen, maar kan ook minder bewust worden ingezet.", degree: "120°" },
+              { id: "opposition", title: "Oppositie", symbol: "☍", badge: "Polariteit", description: "Twee planeten staan tegenover elkaar. Dit vraagt balans tussen twee polen en wordt vaak zichtbaar via relaties, contrast of spiegeling.", degree: "180°" },
+              { id: "quincunx", title: "Quincunx", symbol: "⚻", badge: "Aanpassing", description: "Twee planeten delen geen vanzelfsprekende taal. Dit vraagt aanpassing, compromis of een creatieve brug tussen verschillende behoeften.", degree: "150°" },
+              { id: "halfsextiel", title: "Halfsextiel", symbol: "⚺", badge: "Subtiel", description: "Een klein aspect dat een subtiel verschil of lichte afstemming toont. Vaak merkbaar als iets dat aandacht vraagt maar niet overheerst.", degree: "30°" },
+              { id: "halfvierkant", title: "Halfvierkant", symbol: "∠", badge: "Minor", description: "Een klein spanningsaspect dat lichte irritatie, onrust of interne druk kan geven. Minder zwaar dan een vierkant, maar wel merkbaar.", degree: "45°" },
+              { id: "sesquiquadraat", title: "Sesquiquadraat", symbol: "⚼", badge: "Minor", description: "Een spanningsaspect dat herhalende frictie of frustratie kan tonen. Het vraagt geduld, verfijning en bijsturing.", degree: "135°" },
+              { id: "orb", title: "Orb", symbol: "orb", badge: "Afwijking", description: "De orb is de toegestane afwijking rondom het exacte aspect. Hoe kleiner de orb, hoe sterker en directer het aspect meestal werkt." },
+              { id: "applicerend", title: "Applicerend", symbol: "→", badge: "Toenemend", description: "Een applicerend aspect beweegt naar exactheid toe. Dit wordt vaak als sterker, actiever of nog in ontwikkeling ervaren." },
+              { id: "separatief", title: "Separatief", symbol: "←", badge: "Verwerkt", description: "Een separatief aspect beweegt van exactheid af. Dit kan wijzen op een thema dat al bekender, meer verwerkt of minder acuut is." },
+            ],
           },
           {
-            codeLabel: dot("Mars", "Mars"),
-            badge: L("Actie", "Action"),
-            title: "Mars",
-            body: L(
-              "Mars staat voor drive, grenzen, moed en assertiviteit. Hij laat zien waar je actie onderneemt en hoe je energie richting doelen zet.",
-              "Mars stands for drive, boundaries, courage, and assertion. It shows where you take action and how you aim your energy toward goals."
-            ),
-            footer: foot,
+            id: "elements-modalities-polarity",
+            title: "Elementen, modaliteiten & polariteit",
+            subtitle: "Deze indeling toont temperament, bewegingsstijl en energetische balans.",
+            intro: "De twaalf tekens kunnen worden verdeeld in vier elementen, drie modaliteiten en twee polariteiten. Elementen tonen het soort energie. Modaliteiten tonen hoe die energie beweegt. Polariteit toont of de energie meer naar buiten of naar binnen gericht is.",
+            items: [
+              { id: "vuur", title: "Vuur", symbol: "△", badge: "Inspiratie", description: "Vuur staat voor actie, enthousiasme, levenskracht, spontaniteit en richting. De vuurtekens zijn Ram, Leeuw en Boogschutter." },
+              { id: "aarde", title: "Aarde", symbol: "▽", badge: "Vorm", description: "Aarde staat voor stabiliteit, lichaam, realisme, materie en praktische opbouw. De aardetekens zijn Stier, Maagd en Steenbok." },
+              { id: "lucht", title: "Lucht", symbol: "△", badge: "Denken", description: "Lucht staat voor communicatie, ideeen, relaties, taal, afstand en uitwisseling. De luchttekens zijn Tweelingen, Weegschaal en Waterman." },
+              { id: "water", title: "Water", symbol: "▽", badge: "Gevoel", description: "Water staat voor emotie, intuitie, herinnering, verbinding en gevoeligheid. De watertekens zijn Kreeft, Schorpioen en Vissen." },
+              { id: "kardinaal", title: "Kardinaal", symbol: "C", badge: "Start", description: "Kardinale energie begint, initieert en zet iets in beweging. De kardinale tekens zijn Ram, Kreeft, Weegschaal en Steenbok." },
+              { id: "vast", title: "Vast", symbol: "F", badge: "Stabiliteit", description: "Vaste energie houdt vast, verdiept, stabiliseert en bouwt kracht op. De vaste tekens zijn Stier, Leeuw, Schorpioen en Waterman." },
+              { id: "beweeglijk", title: "Beweeglijk", symbol: "M", badge: "Aanpassing", description: "Beweeglijke energie past zich aan, verbindt, rondt af en beweegt tussen mogelijkheden. De beweeglijke tekens zijn Tweelingen, Maagd, Boogschutter en Vissen." },
+              { id: "yang", title: "Actief / Yang", symbol: "+", badge: "Naar buiten", description: "Actieve of Yang-energie is meer naar buiten gericht, expressief, initierend en zichtbaar. Vuur en lucht vallen hieronder." },
+              { id: "yin", title: "Receptief / Yin", symbol: "-", badge: "Naar binnen", description: "Receptieve of Yin-energie is meer naar binnen gericht, ontvangend, belichaamd en verwerkend. Aarde en water vallen hieronder." },
+            ],
           },
           {
-            codeLabel: dot("Jupiter", "Jupiter"),
-            badge: L("Groei", "Growth"),
-            title: "Jupiter",
-            body: L(
-              "Jupiter staat voor groei, betekenis, optimisme en uitbreiding. Hij geeft aan waar ontwikkeling, vertrouwen en breder perspectief spelen.",
-              "Jupiter stands for growth, meaning, optimism, and expansion. It marks where development, faith, and a wider perspective matter."
-            ),
-            footer: foot,
+            id: "rulers-dignity",
+            title: "Heersers & planeetwaardigheid",
+            subtitle: "Dit blok toont hoe natuurlijk of gespannen een planeet zich in een teken uitdrukt.",
+            intro: "Elk teken heeft een planeet als heerser. Daarnaast kent de astrologie planeetwaardigheid: sommige plaatsingen voelen vanzelfsprekend, krachtig of natuurlijk, terwijl andere plaatsingen meer aanpassing, spanning of bewustwording vragen. Dit is geen oordeel over goed of slecht, maar een beschrijving van hoe makkelijk een planeet haar functie kan tonen.",
+            items: [
+              { id: "heerser", title: "Heerser", symbol: "ruler", badge: "Bestuur", description: "De heerser is de planeet die bij een teken hoort. Deze planeet geeft extra informatie over hoe dat teken of huis functioneert." },
+              { id: "domicile", title: "Domicile / Thuisstand", symbol: "home", badge: "Natuurlijk", description: "Een planeet staat in domicile wanneer zij in haar eigen teken staat. De energie kan direct, herkenbaar en natuurlijk werken." },
+              { id: "exaltatie", title: "Exaltatie", symbol: "exalt", badge: "Verheven", description: "Een planeet in exaltatie kan sterk, verfijnd of bijzonder effectief werken. De energie krijgt extra waardigheid of zichtbaarheid." },
+              { id: "detriment", title: "Detriment / Ballingschap", symbol: "exile", badge: "Aanpassing", description: "Een planeet staat in detriment wanneer zij tegenover haar eigen teken staat. De planeet moet zich aanpassen aan een omgeving die minder vanzelfsprekend voelt." },
+              { id: "val", title: "Val / Fall", symbol: "fall", badge: "Kwetsbaar", description: "Een planeet in val staat tegenover haar exaltatie. De energie kan minder direct of minder comfortabel tot uitdrukking komen." },
+              { id: "peregrine", title: "Peregrine", symbol: "neutral", badge: "Neutraal", description: "Een peregrine planeet heeft geen bijzondere waardigheid of verzwakking. De betekenis hangt dan sterker af van huis, aspecten en context." },
+              { id: "ruler-ram", title: "Ram - Mars", symbol: "♈ / ♂", badge: "Heerser", description: "Ram wordt traditioneel geregeerd door Mars. De uitdrukking is direct, initiatiefrijk en actiegericht." },
+              { id: "ruler-stier", title: "Stier - Venus", symbol: "♉ / ♀", badge: "Heerser", description: "Stier wordt traditioneel geregeerd door Venus. De uitdrukking zoekt rust, waarde, zintuiglijkheid en opbouw." },
+              { id: "ruler-tweelingen", title: "Tweelingen - Mercurius", symbol: "♊ / ☿", badge: "Heerser", description: "Tweelingen wordt traditioneel geregeerd door Mercurius. De uitdrukking is mentaal, beweeglijk en communicatief." },
+              { id: "ruler-kreeft", title: "Kreeft - Maan", symbol: "♋ / ☽", badge: "Heerser", description: "Kreeft wordt traditioneel geregeerd door de Maan. De uitdrukking is gevoelig, beschermend en relationeel." },
+              { id: "ruler-leeuw", title: "Leeuw - Zon", symbol: "♌ / ☉", badge: "Heerser", description: "Leeuw wordt traditioneel geregeerd door de Zon. De uitdrukking is creatief, zichtbaar en hartgedreven." },
+              { id: "ruler-maagd", title: "Maagd - Mercurius", symbol: "♍ / ☿", badge: "Heerser", description: "Maagd wordt traditioneel geregeerd door Mercurius. De uitdrukking is analytisch, praktisch en verfijnend." },
+              { id: "ruler-weegschaal", title: "Weegschaal - Venus", symbol: "♎ / ♀", badge: "Heerser", description: "Weegschaal wordt traditioneel geregeerd door Venus. De uitdrukking zoekt balans, harmonie en afstemming." },
+              { id: "ruler-schorpioen", title: "Schorpioen - Mars, modern ook Pluto", symbol: "♏ / ♂ ♇", badge: "Heerser", description: "Schorpioen heeft traditioneel Mars als heerser en modern vaak Pluto. De uitdrukking gaat over intensiteit, diepte en transformatie." },
+              { id: "ruler-boogschutter", title: "Boogschutter - Jupiter", symbol: "♐ / ♃", badge: "Heerser", description: "Boogschutter wordt traditioneel geregeerd door Jupiter. De uitdrukking is gericht op visie, groei en zingeving." },
+              { id: "ruler-steenbok", title: "Steenbok - Saturnus", symbol: "♑ / ♄", badge: "Heerser", description: "Steenbok wordt traditioneel geregeerd door Saturnus. De uitdrukking is gestructureerd, verantwoordelijk en doelgericht." },
+              { id: "ruler-waterman", title: "Waterman - Saturnus, modern ook Uranus", symbol: "♒ / ♄ ♅", badge: "Heerser", description: "Waterman heeft traditioneel Saturnus als heerser en modern vaak Uranus. De uitdrukking combineert systeemdenken met vernieuwing." },
+              { id: "ruler-vissen", title: "Vissen - Jupiter, modern ook Neptunus", symbol: "♓ / ♃ ♆", badge: "Heerser", description: "Vissen heeft traditioneel Jupiter als heerser en modern vaak Neptunus. De uitdrukking is intuïtief, empathisch en spiritueel georiënteerd." },
+            ],
           },
           {
-            codeLabel: dot("Saturn", L("Saturnus", "Saturn")),
-            badge: L("Structuur", "Structure"),
-            title: L("Saturnus", "Saturn"),
-            body: L(
-              "Saturnus wijst op structuur, verantwoordelijkheid, timing en volwassen worden. Hij toont waar discipline, grenzen en realiteit je vorm geven.",
-              "Saturn points to structure, responsibility, timing, and maturing. It shows where discipline, limits, and reality shape you."
-            ),
-            footer: foot,
+            id: "retrogrades-motion",
+            title: "Retrogrades & beweging",
+            subtitle: "Planeetbeweging nuanceert hoe een planeet wordt ervaren of verwerkt.",
+            intro: "Planeten bewegen vanuit ons perspectief niet altijd op dezelfde manier. Soms lijken ze achteruit te gaan, stil te staan of juist direct te bewegen. Astrologisch wordt dit gebruikt om te begrijpen of een thema meer naar buiten gericht, naar binnen gekeerd, herhalend of geconcentreerd werkt.",
+            items: [
+              { id: "direct", title: "Direct", symbol: "→", badge: "Vooruit", description: "Een directe planeet beweegt normaal vooruit door de dierenriem. De energie werkt meestal zichtbaarder en directer." },
+              { id: "retrograde", title: "Retrograde", symbol: "℞", badge: "Innerlijk", description: "Een retrograde planeet lijkt vanaf de aarde achteruit te bewegen. De energie wordt vaak meer innerlijk, reflectief, herhalend of persoonlijk verwerkt." },
+              { id: "stationair", title: "Stationair", symbol: "S", badge: "Concentratie", description: "Een stationaire planeet lijkt tijdelijk stil te staan. De werking van deze planeet kan daardoor extra geconcentreerd of nadrukkelijk zijn." },
+              { id: "pre-shadow", title: "Pre-shadow", symbol: "pre", badge: "Voorfase", description: "De pre-shadow is de fase voor een retrograde waarin thema's al zichtbaar kunnen worden." },
+              { id: "post-shadow", title: "Post-shadow", symbol: "post", badge: "Verwerking", description: "De post-shadow is de fase na een retrograde waarin thema's worden herzien, afgerond of geintegreerd." },
+              { id: "snel", title: "Snelle planeten", symbol: "fast", badge: "Persoonlijk", description: "De snelle planeten, zoals Maan, Mercurius, Venus en Mars, werken persoonlijker en zijn vaak directer merkbaar." },
+              { id: "langzaam", title: "Langzame planeten", symbol: "slow", badge: "Collectief", description: "De langzame planeten, zoals Jupiter, Saturnus, Uranus, Neptunus en Pluto, werken meer via levensfases, generaties en grotere ontwikkelingen." },
+            ],
           },
           {
-            codeLabel: dot("Uranus", "Uranus"),
-            badge: L("Vernieuwing", "Renewal"),
-            title: "Uranus",
-            body: L(
-              "Uranus staat voor vernieuwing, onafhankelijkheid en plotse wendingen. Hij markeert thema’s van vrijheid, originaliteit en verrassing.",
-              "Uranus stands for renewal, independence, and sudden shifts. It marks themes of freedom, originality, and surprise."
-            ),
-            footer: foot,
+            id: "configurations",
+            title: "Configuraties",
+            subtitle: "Configuraties tonen grotere patronen die ontstaan door meerdere aspecten samen.",
+            intro: "Aspecten tonen de relatie tussen twee punten. Configuraties tonen grotere patronen in de horoscoop. Ze laten zien waar energie gebundeld, gespannen, vloeiend of sterk gericht is.",
+            items: [
+              { id: "stellium", title: "Stellium", symbol: "cluster", badge: "Focus", description: "Een stellium ontstaat wanneer drie of meer planeten dicht bij elkaar staan in hetzelfde teken of huis. Dit geeft sterke nadruk op een thema of levensgebied." },
+              { id: "t-square", title: "T-square", symbol: "T", badge: "Druk", description: "Een T-square bestaat uit een oppositie waarbij beide planeten een vierkant maken met een derde planeet. Dit geeft spanning, richting en groeidruk." },
+              { id: "grand-trine", title: "Grand Trine", symbol: "△", badge: "Talent", description: "Een Grand Trine bestaat uit drie driehoeken, vaak binnen hetzelfde element. Dit toont natuurlijke stroming, talent en gemak." },
+              { id: "grand-cross", title: "Grand Cross", symbol: "+", badge: "Intensiteit", description: "Een Grand Cross bestaat uit meerdere vierkanten en opposities. Dit geeft veel spanning, maar ook sterke motivatie en ontwikkelkracht." },
+              { id: "yod", title: "Yod", symbol: "Y", badge: "Bestemming", description: "Een Yod bestaat uit twee quincunxen en een sextiel. Dit kan voelen als een bijzondere opdracht, aanpassing of levensrichting." },
+              { id: "kite", title: "Kite", symbol: "kite", badge: "Richting", description: "Een Kite ontstaat wanneer een Grand Trine extra richting krijgt door een oppositie en sextielen. Talent krijgt hierdoor meer focus en toepassing." },
+              { id: "mystic-rectangle", title: "Mystic Rectangle", symbol: "rectangle", badge: "Integratie", description: "Een Mystic Rectangle verbindt twee opposities met harmonische aspecten. Het vraagt om het integreren van tegenpolen." },
+              { id: "bowl-pattern", title: "Bowl Pattern", symbol: "bowl", badge: "Bundeling", description: "Bij een Bowl Pattern staan de meeste planeten in een helft van de horoscoop. Dit geeft focus, gerichtheid en een duidelijk ervaringsveld." },
+              { id: "splash-pattern", title: "Splash Pattern", symbol: "splash", badge: "Spreiding", description: "Bij een Splash Pattern staan planeten breed verspreid over de horoscoop. Dit toont veelzijdigheid, brede interesse en verschillende invalshoeken." },
+            ],
           },
           {
-            codeLabel: dot("Neptune", L("Neptunus", "Neptune")),
-            badge: L("Verbeelding", "Imagination"),
-            title: L("Neptunus", "Neptune"),
-            body: L(
-              "Neptunus gaat over verbeelding, inspiratie, compassie en wat moeilijk te vatten is. Hij kan dromen, idealen en onthechting aanduiden.",
-              "Neptune concerns imagination, inspiration, compassion, and what is hard to pin down. It can indicate dreams, ideals, and dissolution."
-            ),
-            footer: foot,
-          },
-          {
-            codeLabel: dot("Pluto", "Pluto"),
-            badge: L("Diepte", "Depth"),
-            title: "Pluto",
-            body: L(
-              "Pluto beschrijft transformatie, intensiteit en diepgang. Hij wijst op processen van loslaten, macht en fundamenteel vernieuwen.",
-              "Pluto describes transformation, intensity, and depth. It points to letting go, power, and fundamental renewal."
-            ),
-            footer: foot,
-          },
-          {
-            codeLabel: dot("Ascendant", L("Ascendant", "Ascendant")),
-            badge: L("Horizon", "Horizon"),
-            title: L("Ascendant", "Ascendant"),
-            body: L(
-              "De Ascendant is het oostpunt van je radix: het teken dat aan de oostelijke horizon opkwam op het geboortemoment. Hij beschrijft je eerste indruk, je lichaamstaal en hoe je nieuw binnenstapt — en bepaalt het begin van huis 1.",
-              "The Ascendant is the chart’s eastern point: the sign rising on the eastern horizon at birth. It describes first impression, physical presence, and how you meet what is new—and it starts the first house."
-            ),
-            footer: L("Punt", "Point"),
-          },
-          {
-            codeLabel: dot("NorthNode", L("Noordelijke maanknoop", "North node")),
-            badge: L("Richting", "Direction"),
-            title: L("Noordelijke maanknoop", "North node"),
-            body: L(
-              "De maanknoopen zijn geen planeten maar gevoelige punten: de Noordelijke knoop duidt vaak op groei, nieuwe ervaring en het uitbreiden van je repertoire.",
-              "The lunar nodes are not planets but sensitive points: the North node often suggests growth, new experience, and widening your range."
-            ),
-            footer: L("Punt", "Point"),
-          },
-          {
-            codeLabel: dot("SouthNode", L("Zuidelijke maanknoop", "South node")),
-            badge: L("Verankering", "Anchor"),
-            title: L("Zuidelijke maanknoop", "South node"),
-            body: L(
-              "De Zuidelijke knoop staat tegenover de Noordelijke: vaak ervaring, gewoonte of comfortzone die je al kent. Niet om te ‘verwerpen’, maar om bewust mee om te gaan terwijl je ook ruimte maakt voor de groei van de Noordelijke knoop.",
-              "The South node opposes the North: often familiar experience, habit, or comfort. Not something to reject outright, but to work with consciously while you also make room for North-node growth."
-            ),
-            footer: L("Punt", "Point"),
+            id: "transits-cycles",
+            title: "Transits & tijdcycli",
+            subtitle: "Tijdcycli tonen hoe de geboortehoroscoop door het leven heen wordt geactiveerd.",
+            intro: "Een geboortehoroscoop is de basiskaart, maar astrologie werkt ook met timing. Transits, progressies en returns laten zien wanneer bepaalde thema's sterker naar voren komen. Hierdoor wordt de horoscoop geen statisch beeld, maar een ontwikkelend levensprofiel.",
+            items: [
+              { id: "transit", title: "Transit", symbol: "transit", badge: "Activatie", description: "Een transit ontstaat wanneer een actuele planeet contact maakt met een geboorteplaneet of belangrijk punt. Dit activeert tijdelijk een thema." },
+              { id: "progressies", title: "Progressies", symbol: "progress", badge: "Ontwikkeling", description: "Progressies zijn symbolische timingtechnieken die innerlijke ontwikkeling en levensfases tonen." },
+              { id: "solar-return", title: "Solar Return", symbol: "solar", badge: "Jaarcyclus", description: "De Solar Return is de jaarhoroscoop rond het moment dat de Zon terugkeert naar haar geboortepositie." },
+              { id: "lunar-return", title: "Lunar Return", symbol: "lunar", badge: "Maandcyclus", description: "De Lunar Return toont de emotionele maandcyclus rond het moment dat de Maan terugkeert naar haar geboortepositie." },
+              { id: "saturn-return", title: "Saturn Return", symbol: "♄ return", badge: "Volwassenwording", description: "De Saturn Return vindt plaats wanneer Saturnus terugkeert naar zijn geboortepositie. Dit markeert vaak verantwoordelijkheid, structuur en volwassenwording." },
+              { id: "jupiter-return", title: "Jupiter Return", symbol: "♃ return", badge: "Groei", description: "De Jupiter Return vindt plaats wanneer Jupiter terugkeert naar zijn geboortepositie. Dit wijst vaak op groei, visie, kansen en uitbreiding." },
+              { id: "nodal-return", title: "Nodal Return", symbol: "☊ return", badge: "Koers", description: "De Nodal Return vindt plaats wanneer de maansknopen terugkeren naar hun geboorteplek. Dit kan levensrichting en koerscorrectie benadrukken." },
+              { id: "eclipsen", title: "Eclipsen", symbol: "eclipse", badge: "Kantelpunt", description: "Eclipsen zijn krachtige zon- of maancycli in de buurt van de maansknopen. Ze kunnen thema's rond richting, loslaten of verandering activeren." },
+              { id: "solar-arc", title: "Solar Arc", symbol: "arc", badge: "Timing", description: "Solar Arc is een symbolische timingtechniek waarbij punten in de horoscoop gelijkmatig worden verschoven om levensontwikkelingen te duiden." },
+            ],
           },
         ];
       }
 
-      function westernHouseLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
+      function jyotishGlossarySections() {
         return [
           {
-            badge: L("Zelf", "Self"),
-            title: L("Huis 1", "House 1"),
-            body: L(
-              "Het eerste huis sluit aan op de Ascendant: zelfbeeld, lichaam, eerste indruk en hoe je nieuwe situaties tegemoet treedt.",
-              "The first house links to the Ascendant: self-image, body, first impressions, and how you meet new situations."
-            ),
+            id: "jyotish-grahas",
+            title: "Graha’s",
+            subtitle: "De graha’s tonen welke kosmische krachten, functies en levensprincipes actief zijn.",
+            intro: "In Jyotish worden de planeten graha’s genoemd. Het woord graha betekent letterlijk 'grijper' of 'dat wat invloed uitoefent'. Een graha is een intelligent principe dat ervaringen, lessen en patronen activeert.",
+            items: [
+              { id: "surya", title: "Surya (Zon)", symbol: "☉", badge: "Zielskracht", description: "Surya staat voor zielskracht, vitaliteit, autoriteit, bewustzijn, vaderfiguur, leiderschap en innerlijke richting.", alt: "Surya, Vedische Zon" },
+              { id: "chandra", title: "Chandra (Maan)", symbol: "☽", badge: "Gevoel", description: "Chandra staat voor emoties, geest, moederfiguur, veiligheid, ritme, herinnering en innerlijke gevoeligheid.", alt: "Chandra, Vedische Maan" },
+              { id: "mangala", title: "Mangala (Mars)", symbol: "♂", badge: "Kracht", description: "Mangala staat voor energie, moed, strijd, actie, wilskracht, bescherming, conflict en fysieke daadkracht.", alt: "Mangala, Vedische Mars" },
+              { id: "budha", title: "Budha (Mercurius)", symbol: "☿", badge: "Intellect", description: "Budha staat voor denken, taal, handel, communicatie, analyse, leren, humor en aanpassingsvermogen.", alt: "Budha, Vedische Mercurius" },
+              { id: "guru", title: "Guru / Brihaspati (Jupiter)", symbol: "♃", badge: "Wijsheid", description: "Guru staat voor wijsheid, groei, geloof, onderwijs, dharma, bescherming, kennis en zingeving.", alt: "Guru, Vedische Jupiter" },
+              { id: "shukra", title: "Shukra (Venus)", symbol: "♀", badge: "Verlangen", description: "Shukra staat voor liefde, schoonheid, genot, kunst, relaties, comfort, waarden en aantrekkingskracht.", alt: "Shukra, Vedische Venus" },
+              { id: "shani", title: "Shani (Saturnus)", symbol: "♄", badge: "Karma", description: "Shani staat voor tijd, discipline, beperking, verantwoordelijkheid, karma, arbeid, geduld en volwassenwording.", alt: "Shani, Vedische Saturnus" },
+              { id: "rahu", title: "Rahu (Noordelijke Maansknoop)", symbol: "☊", badge: "Verlangen", description: "Rahu staat voor verlangen, ambitie, obsessie, vernieuwing, illusie en wereldse ervaring.", alt: "Rahu, Noordelijke Maansknoop" },
+              { id: "ketu", title: "Ketu (Zuidelijke Maansknoop)", symbol: "☋", badge: "Loslaten", description: "Ketu staat voor onthechting, oude ervaring, spiritualiteit, instinct en innerlijke bevrijding.", alt: "Ketu, Zuidelijke Maansknoop" },
+            ],
           },
           {
-            badge: L("Middelen", "Means"),
-            title: L("Huis 2", "House 2"),
-            body: L(
-              "Tweede huis: inkomen, middelen, talenten en wat je ‘bezit’ — materieel en innerlijk — plus waarden rond veiligheid.",
-              "Second house: income, resources, talents, and what you ‘own’—materially and inwardly—plus values around security."
-            ),
+            id: "jyotish-rashis",
+            title: "Rashi’s",
+            subtitle: "De rashi’s zijn de twaalf siderische tekens van de Vedische dierenriem.",
+            intro: "Rashi’s zijn de twaalf tekens binnen Jyotish en worden doorgaans siderisch gelezen met een ayanamsa-correctie. Een rashi toont in welke tekenkwaliteit een graha zich uitdrukt.",
+            items: [
+              { id: "mesha", title: "Mesha (Ram)", symbol: "♈", badge: "Initiatief", description: "Mesha staat voor actie, beginenergie, moed, directheid en impuls.", alt: "Mesha, Vedische Ram" },
+              { id: "vrishabha", title: "Vrishabha (Stier)", symbol: "♉", badge: "Stabiliteit", description: "Vrishabha staat voor lichaam, bezit, comfort, schoonheid, waarde en volharding.", alt: "Vrishabha, Vedische Stier" },
+              { id: "mithuna", title: "Mithuna (Tweelingen)", symbol: "♊", badge: "Communicatie", description: "Mithuna staat voor taal, denken, nieuwsgierigheid, handel en informatie.", alt: "Mithuna, Vedische Tweelingen" },
+              { id: "karka", title: "Karka (Kreeft)", symbol: "♋", badge: "Bescherming", description: "Karka staat voor gevoel, thuis, veiligheid en innerlijke beleving.", alt: "Karka, Vedische Kreeft" },
+              { id: "simha", title: "Simha (Leeuw)", symbol: "♌", badge: "Koninklijkheid", description: "Simha staat voor leiderschap, hartkracht, zichtbaarheid, creativiteit en autoriteit.", alt: "Simha, Vedische Leeuw" },
+              { id: "kanya", title: "Kanya (Maagd)", symbol: "♍", badge: "Analyse", description: "Kanya staat voor orde, detail, gezondheid, dienstbaarheid, studie en verfijning.", alt: "Kanya, Vedische Maagd" },
+              { id: "tula", title: "Tula (Weegschaal)", symbol: "♎", badge: "Balans", description: "Tula staat voor relaties, evenwicht, schoonheid, diplomatie en afstemming.", alt: "Tula, Vedische Weegschaal" },
+              { id: "vrischika", title: "Vrischika (Schorpioen)", symbol: "♏", badge: "Diepte", description: "Vrischika staat voor intensiteit, geheimen, transformatie en innerlijke kracht.", alt: "Vrischika, Vedische Schorpioen" },
+              { id: "dhanu", title: "Dhanu (Boogschutter)", symbol: "♐", badge: "Dharma", description: "Dhanu staat voor wijsheid, geloof, onderwijs, idealen en hogere kennis.", alt: "Dhanu, Vedische Boogschutter" },
+              { id: "makara", title: "Makara (Steenbok)", symbol: "♑", badge: "Structuur", description: "Makara staat voor discipline, status, verantwoordelijkheid, werk en tijd.", alt: "Makara, Vedische Steenbok" },
+              { id: "kumbha", title: "Kumbha (Waterman)", symbol: "♒", badge: "Systeem", description: "Kumbha staat voor gemeenschap, systemen, vernieuwing en sociale structuren.", alt: "Kumbha, Vedische Waterman" },
+              { id: "meena", title: "Meena (Vissen)", symbol: "♓", badge: "Overgave", description: "Meena staat voor spiritualiteit, compassie, verbeelding en eenheid.", alt: "Meena, Vedische Vissen" },
+            ],
           },
           {
-            badge: L("Omgeving", "Locale"),
-            title: L("Huis 3", "House 3"),
-            body: L(
-              "Derde huis: directe omgeving, siblings, korte reizen, leren en dagelijkse communicatie.",
-              "Third house: immediate environment, siblings, short trips, learning, and everyday communication."
-            ),
+            id: "jyotish-bhavas",
+            title: "Bhava’s (huizen)",
+            subtitle: "De bhava’s tonen de levensgebieden waarin karma en ervaring zichtbaar worden.",
+            intro: "Bhava betekent huis of levensgebied. Een graha toont welke kracht werkt, een rashi hoe die kracht werkt, en een bhava waar dit in het leven zichtbaar wordt.",
+            items: [
+              { id: "bhava-1", title: "1e bhava - Tanu Bhava", symbol: "1", badge: "Zelf", description: "Gaat over lichaam, karakter, vitaliteit en basisrichting van het leven." },
+              { id: "bhava-2", title: "2e bhava - Dhana Bhava", symbol: "2", badge: "Waarde", description: "Gaat over geld, bezit, familie, spraak, voeding en middelen." },
+              { id: "bhava-3", title: "3e bhava - Sahaja Bhava", symbol: "3", badge: "Moed", description: "Gaat over communicatie, siblings, vaardigheden, inspanning en initiatief." },
+              { id: "bhava-4", title: "4e bhava - Sukha Bhava", symbol: "4", badge: "Thuis", description: "Gaat over moeder, huis, emotionele veiligheid, grond en privéleven." },
+              { id: "bhava-5", title: "5e bhava - Putra Bhava", symbol: "5", badge: "Creatie", description: "Gaat over kinderen, intelligentie, mantra, creativiteit en romantiek." },
+              { id: "bhava-6", title: "6e bhava - Ari Bhava", symbol: "6", badge: "Uitdaging", description: "Gaat over ziekte, schulden, vijanden, werk en het overwinnen van obstakels." },
+              { id: "bhava-7", title: "7e bhava - Yuvati Bhava", symbol: "7", badge: "Partnerschap", description: "Gaat over huwelijk, relaties, contracten en de ontmoeting met de ander." },
+              { id: "bhava-8", title: "8e bhava - Randhra Bhava", symbol: "8", badge: "Transformatie", description: "Gaat over levensduur, geheimen, crisis, kwetsbaarheid en transformatie." },
+              { id: "bhava-9", title: "9e bhava - Dharma Bhava", symbol: "9", badge: "Wijsheid", description: "Gaat over dharma, leraar, hogere kennis, religie en morele richting." },
+              { id: "bhava-10", title: "10e bhava - Karma Bhava", symbol: "10", badge: "Werk", description: "Gaat over beroep, publieke rol, verantwoordelijkheid en zichtbare actie." },
+              { id: "bhava-11", title: "11e bhava - Labha Bhava", symbol: "11", badge: "Winst", description: "Gaat over inkomsten, wensen, netwerken, groepen en sociale opbrengst." },
+              { id: "bhava-12", title: "12e bhava - Vyaya Bhava", symbol: "12", badge: "Loslaten", description: "Gaat over verlies, uitgaven, afzondering, slaap en spirituele bevrijding." },
+            ],
           },
           {
-            badge: L("Thuis", "Home"),
-            title: L("Huis 4", "House 4"),
-            body: L(
-              "Vierde huis: thuisbasis, familie van herkomst, wortels en je emotionele fundament.",
-              "Fourth house: home base, family of origin, roots, and your emotional foundation."
-            ),
+            id: "jyotish-nakshatras",
+            title: "Nakshatra’s",
+            subtitle: "De nakshatra’s zijn 27 maanhuizen die een subtielere laag van karakter en timing tonen.",
+            intro: "Nakshatra’s verdelen de dierenriem in 27 sterrenvelden. Rashi toont de grotere laag, nakshatra geeft de fijnere zielskwaliteit. Vooral de nakshatra van de Maan is essentieel.",
+            items: [
+              { id: "ashwini", title: "Ashwini", badge: "Startkracht", symbol: "1", description: "Snelheid, genezing, beginenergie en directe actie." },
+              { id: "bharani", title: "Bharani", badge: "Draagkracht", symbol: "2", description: "Intensiteit, creatie, verantwoordelijkheid en transformatie." },
+              { id: "krittika", title: "Krittika", badge: "Zuivering", symbol: "3", description: "Scherpte, vuur, onderscheidingsvermogen en zuivering." },
+              { id: "rohini", title: "Rohini", badge: "Groei", symbol: "4", description: "Vruchtbaarheid, schoonheid, aantrekkingskracht en bloei." },
+              { id: "mrigashira", title: "Mrigashira", badge: "Zoeken", symbol: "5", description: "Nieuwsgierigheid, beweging en het volgen van subtiele signalen." },
+              { id: "ardra", title: "Ardra", badge: "Storm", symbol: "6", description: "Emotionele intensiteit, doorbraak en zuivering door storm." },
+              { id: "punarvasu", title: "Punarvasu", badge: "Herstel", symbol: "7", description: "Terugkeer, herstel, bescherming en hernieuwde richting." },
+              { id: "pushya", title: "Pushya", badge: "Voeding", symbol: "8", description: "Zorg, voeding, bescherming en spirituele ondersteuning." },
+              { id: "ashlesha", title: "Ashlesha", badge: "Verstrengeling", symbol: "9", description: "Psychologische diepte, binding en verborgen invloed." },
+              { id: "magha", title: "Magha", badge: "Voorouders", symbol: "10", description: "Afkomst, traditie, autoriteit en verbinding met voorouders." },
+              { id: "purva-phalguni", title: "Purva Phalguni", badge: "Genot", symbol: "11", description: "Liefde, creativiteit, ontspanning en aantrekkingskracht." },
+              { id: "uttara-phalguni", title: "Uttara Phalguni", badge: "Verbond", symbol: "12", description: "Contracten, loyaliteit, steun en duurzame verbinding." },
+              { id: "hasta", title: "Hasta", badge: "Vaardigheid", symbol: "13", description: "Handen, vakmanschap, grip en praktische intelligentie." },
+              { id: "chitra", title: "Chitra", badge: "Vormgeving", symbol: "14", description: "Schoonheid, beeldkracht, charisma en creatie." },
+              { id: "swati", title: "Swati", badge: "Vrijheid", symbol: "15", description: "Onafhankelijkheid, flexibiliteit, beweging en eigen koers." },
+              { id: "vishakha", title: "Vishakha", badge: "Doelgerichtheid", symbol: "16", description: "Ambitie, focus, toewijding en doelrealisatie." },
+              { id: "anuradha", title: "Anuradha", badge: "Devotie", symbol: "17", description: "Vriendschap, loyaliteit, samenwerking en discipline." },
+              { id: "jyeshtha", title: "Jyeshtha", badge: "Bescherming", symbol: "18", description: "Macht, verantwoordelijkheid, senioriteit en strategie." },
+              { id: "mula", title: "Mula", badge: "Wortel", symbol: "19", description: "Ontworteling, kernwaarheid en radicale transformatie." },
+              { id: "purva-ashadha", title: "Purva Ashadha", badge: "Overwinning", symbol: "20", description: "Zuivering, overtuiging, strijdlust en vertrouwen." },
+              { id: "uttara-ashadha", title: "Uttara Ashadha", badge: "Duurzaamheid", symbol: "21", description: "Blijvende overwinning, ethiek en lange-termijnkracht." },
+              { id: "shravana", title: "Shravana", badge: "Luisteren", symbol: "22", description: "Luisteren, leren, overdracht en ontvankelijkheid." },
+              { id: "dhanishta", title: "Dhanishta", badge: "Ritme", symbol: "23", description: "Ritme, rijkdom, timing en sociale kracht." },
+              { id: "shatabhisha", title: "Shatabhisha", badge: "Genezing", symbol: "24", description: "Genezing, onderzoek, systemen en verborgen kennis." },
+              { id: "purva-bhadrapada", title: "Purva Bhadrapada", badge: "Intensiteit", symbol: "25", description: "Vuur, diepte, radicaliteit en innerlijke ommekeer." },
+              { id: "uttara-bhadrapada", title: "Uttara Bhadrapada", badge: "Diepe rust", symbol: "26", description: "Wijsheid, stabiliteit, diepte en spirituele rijping." },
+              { id: "revati", title: "Revati", badge: "Begeleiding", symbol: "27", description: "Bescherming, afronding, compassie en veilige overgang." },
+            ],
           },
           {
-            badge: L("Expressie", "Expression"),
-            title: L("Huis 5", "House 5"),
-            body: L(
-              "Vijfde huis: creativiteit, spel, romance, kinderen en wat je voor je plezier uitdrukt.",
-              "Fifth house: creativity, play, romance, children, and what you express for joy."
-            ),
+            id: "jyotish-dashas",
+            title: "Dasha’s",
+            subtitle: "Dasha’s tonen wanneer graha-thema’s in de tijd worden geactiveerd.",
+            intro: "Dasha’s zijn tijdssystemen die laten zien welke graha in een levensfase de hoofdtoon zet. Zo wordt de geboortehoroscoop ook een tijdlijn van ontwikkeling en karma.",
+            items: [
+              { id: "mahadasha", title: "Mahadasha", symbol: "MD", badge: "Hoofdperiode", description: "De grote levensperiode waarin één graha langdurig de hoofdtoon zet." },
+              { id: "antardasha", title: "Antardasha", symbol: "AD", badge: "Subperiode", description: "Subperiode binnen de Mahadasha die specifieke thema’s activeert." },
+              { id: "pratyantardasha", title: "Pratyantardasha", symbol: "PD", badge: "Detailperiode", description: "Fijnere onderverdeling voor preciezere timing." },
+              { id: "vimshottari", title: "Vimshottari Dasha", symbol: "120", badge: "Klassiek systeem", description: "Meest gebruikt systeem, gebaseerd op de nakshatra van de Maan in een 120-jarige cyclus." },
+              { id: "yogini", title: "Yogini Dasha", symbol: "YD", badge: "Alternatief", description: "Alternatief timingsysteem om levensfases en gebeurtenissen aanvullend te duiden." },
+              { id: "chara-dasha", title: "Chara Dasha", symbol: "CD", badge: "Tekenperiode", description: "Jaimini-systeem dat primair met tekens werkt in plaats van planeten." },
+              { id: "dasha-lord", title: "Dasha Lord", symbol: "Lord", badge: "Heerser", description: "De graha die een periode bestuurt en daardoor interpretatief centraal komt te staan." },
+            ],
           },
           {
-            badge: L("Routine", "Routine"),
-            title: L("Huis 6", "House 6"),
-            body: L(
-              "Zesde huis: dagelijkse routine, werkprocessen, gezondheid, dienstbaarheid en het ordenen van het alledaagse.",
-              "Sixth house: daily routine, work processes, health, service, and organizing everyday life."
-            ),
+            id: "jyotish-vargas",
+            title: "Vargas / Divisional Charts",
+            subtitle: "Varga’s zijn deelhoroscopen die specifieke levensgebieden verfijnen.",
+            intro: "Naast de D1-hoofdkaart gebruikt Jyotish divisional charts. Elke varga zoomt in op een eigen levensdomein zoals huwelijk, carrière, ouders, kinderen of spiritualiteit.",
+            items: [
+              { id: "d1", title: "D1 / Rashi Chart", symbol: "D1", badge: "Basiskaart", description: "Algemene levensstructuur, persoonlijkheid en kernplaatsingen." },
+              { id: "d2", title: "D2 / Hora", symbol: "D2", badge: "Middelen", description: "Rijkdom, middelen, voeding en materiële ondersteuning." },
+              { id: "d3", title: "D3 / Drekkana", symbol: "D3", badge: "Moed", description: "Broers/zussen, moed, inspanning en praktische kracht." },
+              { id: "d4", title: "D4 / Chaturthamsha", symbol: "D4", badge: "Thuis", description: "Huis, grond, bezit en innerlijke stabiliteit." },
+              { id: "d7", title: "D7 / Saptamsha", symbol: "D7", badge: "Kinderen", description: "Kinderen, creativiteit en voortbrengende kracht." },
+              { id: "d9", title: "D9 / Navamsha", symbol: "D9", badge: "Dharma", description: "Belangrijke varga voor huwelijk, dharma, innerlijke rijping en planeetkracht." },
+              { id: "d10", title: "D10 / Dashamsha", symbol: "D10", badge: "Carrière", description: "Beroep, status, zichtbare bijdrage en werkontwikkeling." },
+              { id: "d12", title: "D12 / Dwadashamsha", symbol: "D12", badge: "Afkomst", description: "Ouders, familielijnen en erfelijke patronen." },
+              { id: "d16", title: "D16 / Shodashamsha", symbol: "D16", badge: "Comfort", description: "Voertuigen, comfort, luxe en materiële beleving." },
+              { id: "d20", title: "D20 / Vimshamsha", symbol: "D20", badge: "Spiritualiteit", description: "Spirituele ontwikkeling, sadhana, geloof en discipline." },
+              { id: "d24", title: "D24 / Chaturvimshamsha", symbol: "D24", badge: "Studie", description: "Onderwijs, studie, kennisopbouw en intellectuele groei." },
+              { id: "d30", title: "D30 / Trimshamsha", symbol: "D30", badge: "Moeilijkheden", description: "Tegenslagen, kwetsbaarheden en karmische uitdagingen." },
+              { id: "d60", title: "D60 / Shashtiamsha", symbol: "D60", badge: "Karmische diepte", description: "Diepe karmische kaart die nauwkeurige geboortetijd vereist." },
+            ],
           },
           {
-            badge: L("Relaties", "Relating"),
-            title: L("Huis 7", "House 7"),
-            body: L(
-              "Zevende huis: partnerschap, contracten, de Andere als spiegel en samenwerking op ooghoogte.",
-              "Seventh house: partnership, contracts, the Other as mirror, and cooperation as equals."
-            ),
+            id: "jyotish-yogas",
+            title: "Yoga’s",
+            subtitle: "Yoga’s zijn combinaties die specifieke patronen en thema’s tonen.",
+            intro: "Yoga betekent verbinding of combinatie. Yoga’s ontstaan uit specifieke relaties tussen graha’s, tekens, huizen en heersers, en kunnen talent, uitdaging of roeping markeren.",
+            items: [
+              { id: "raja-yoga", title: "Raja Yoga", symbol: "RY", badge: "Leiderschap", description: "Kan wijzen op kracht, invloed, status en bestuurlijke verantwoordelijkheid." },
+              { id: "dhana-yoga", title: "Dhana Yoga", symbol: "DY", badge: "Middelen", description: "Kan wijzen op inkomen, middelen, waarde en materiële groei." },
+              { id: "gaja-kesari", title: "Gaja Kesari Yoga", symbol: "GK", badge: "Bescherming", description: "Relatie tussen Jupiter en Maan, vaak geassocieerd met steun, wijsheid en respect." },
+              { id: "neecha-bhanga", title: "Neecha Bhanga Raja Yoga", symbol: "NB", badge: "Herstel", description: "Verzwakking van een planeet wordt deels gecompenseerd en kan in kracht omslaan." },
+              { id: "viparita", title: "Viparita Raja Yoga", symbol: "VRY", badge: "Omkering", description: "Voordeel via moeilijke omstandigheden; tegenslag kan groei opleveren." },
+              { id: "kendra-trikona", title: "Kendra-Trikona Yoga", symbol: "KT", badge: "Harmonie", description: "Verbinding tussen hoek- en driehoekshuizen met ondersteunende structuur." },
+              { id: "parivartana", title: "Parivartana Yoga", symbol: "PY", badge: "Uitwisseling", description: "Twee huisheersers wisselen teken en verbinden hun huizen intens." },
+              { id: "kala-sarpa", title: "Kala Sarpa Yoga", symbol: "KS", badge: "Intensiteit", description: "Alle planeten tussen Rahu en Ketu; intens patroon dat genuanceerd gelezen moet worden." },
+              { id: "chandra-mangala", title: "Chandra-Mangala Yoga", symbol: "CM", badge: "Onderneming", description: "Verbinding van Maan en Mars; kan ondernemingskracht of emotionele onrust tonen." },
+              { id: "budha-aditya", title: "Budha-Aditya Yoga", symbol: "BA", badge: "Intellect", description: "Verbinding van Zon en Mercurius; kan intellect, bestuur en analytische vaardigheid versterken." },
+            ],
           },
           {
-            badge: L("Delen", "Shared"),
-            title: L("Huis 8", "House 8"),
-            body: L(
-              "Achtste huis: gedeelde middelen, intimiteit, erfelijkheid, crisis en transformatie via anderen.",
-              "Eighth house: shared resources, intimacy, inheritance, crisis, and transformation through others."
-            ),
+            id: "jyotish-drishti",
+            title: "Drishti’s & Vedische aspecten",
+            subtitle: "Drishti betekent blik en toont hoe graha’s invloed uitoefenen.",
+            intro: "In Jyotish werken aspecten als drishti: planetaire 'blikken'. Elke graha heeft een 7e-huisblik; sommige graha’s hebben extra specifieke drishti’s.",
+            items: [
+              { id: "general-drishti", title: "Algemene drishti", symbol: "7e", badge: "7e blik", description: "Alle graha’s hebben een volledige drishti op het 7e huis vanaf hun positie." },
+              { id: "mars-drishti", title: "Mars drishti", symbol: "4/7/8", badge: "4e, 7e, 8e", description: "Mars aspecteert het 4e, 7e en 8e huis met actie, druk of bescherming." },
+              { id: "jupiter-drishti", title: "Jupiter drishti", symbol: "5/7/9", badge: "5e, 7e, 9e", description: "Jupiter aspecteert 5e, 7e en 9e huis; vaak beschermend, verruimend en wijs." },
+              { id: "saturn-drishti", title: "Saturnus drishti", symbol: "3/7/10", badge: "3e, 7e, 10e", description: "Saturnus aspecteert 3e, 7e en 10e huis met verantwoordelijkheid en vertraging." },
+              { id: "rahu-drishti", title: "Rahu drishti", symbol: "Rahu", badge: "Schaduwblik", description: "Tradities verschillen; vaak gekoppeld aan vergroting, verlangen en verwarring." },
+              { id: "ketu-drishti", title: "Ketu drishti", symbol: "Ketu", badge: "Onthechting", description: "Tradities verschillen; vaak gekoppeld aan loslaten, afstand en spirituele scherpte." },
+              { id: "rashi-drishti", title: "Rashi drishti", symbol: "Rashi", badge: "Tekenblik", description: "In Jaimini worden ook aspecten tussen tekens gelezen, niet alleen tussen planeten." },
+              { id: "graha-drishti", title: "Graha drishti", symbol: "Graha", badge: "Planeetblik", description: "Verwijst naar planetaire aspecten vanuit de graha zelf." },
+            ],
           },
           {
-            badge: L("Horizon", "Horizon"),
-            title: L("Huis 9", "House 9"),
-            body: L(
-              "Negende huis: breder perspectief, reizen, hoger onderwijs, levensbeschouwing en zoeken naar betekenis.",
-              "Ninth house: wider perspective, travel, higher education, worldview, and the search for meaning."
-            ),
+            id: "jyotish-panchanga",
+            title: "Panchanga",
+            subtitle: "Panchanga toont de dagkwaliteit aan de hand van vijf kalenderfactoren.",
+            intro: "Panchanga betekent 'vijf ledematen' en beschrijft de energetische dagkwaliteit voor timing, rituelen en dagelijkse duiding.",
+            items: [
+              { id: "tithi", title: "Tithi", symbol: "Tithi", badge: "Maandag", description: "Maan-dag/maanfase die de relatie tussen Zon en Maan en de emotionele dagkwaliteit toont." },
+              { id: "vara", title: "Vara", symbol: "Vara", badge: "Weekdag", description: "Weekdag gekoppeld aan een graha, bijvoorbeeld zondag-Zon en maandag-Maan." },
+              { id: "nakshatra-day", title: "Nakshatra", symbol: "Nakshatra", badge: "Maanhuis", description: "Toont door welk sterrenveld de Maan beweegt en kleurt de subtiele kwaliteit van de dag." },
+              { id: "yoga-day", title: "Yoga", symbol: "Yoga", badge: "Zon-Maan som", description: "Berekening uit Zon en Maan die een specifieke energetische combinatie aangeeft." },
+              { id: "karana", title: "Karana", symbol: "Karana", badge: "Halve tithi", description: "Halve tithi, gebruikt voor praktische timing en aard van handelingen." },
+              { id: "muhurta", title: "Muhurta", symbol: "Muhurta", badge: "Gunstig moment", description: "Selectie van een passend moment op basis van onder andere Panchanga-factoren." },
+            ],
           },
           {
-            badge: L("Roeping", "Vocation"),
-            title: L("Huis 10", "House 10"),
-            body: L(
-              "Tiende huis: carrière, reputatie, publieke rol en hoe je in de buitenwereld gezien wilt worden.",
-              "Tenth house: career, reputation, public role, and how you wish to be seen in the world."
-            ),
-          },
-          {
-            badge: L("Gemeenschap", "Community"),
-            title: L("Huis 11", "House 11"),
-            body: L(
-              "Elfde huis: vrienden, netwerken, groepsidealen en langetermijndoelen; hoop en toekomstplannen.",
-              "Eleventh house: friends, networks, group ideals, long-range goals; hope and future plans."
-            ),
-          },
-          {
-            badge: L("Integratie", "Integration"),
-            title: L("Huis 12", "House 12"),
-            body: L(
-              "Twaalfde huis: rust, afzondering, het onbewuste, healing en wat op de achtergrond meespeelt.",
-              "Twelfth house: retreat, solitude, the unconscious, healing, and what works in the background."
-            ),
+            id: "jyotish-karakas",
+            title: "Karaka’s",
+            subtitle: "Karaka’s zijn betekenaren die tonen welke graha voor welk thema staat.",
+            intro: "Karaka betekent significator. Karaka’s tonen welke graha sleutel is voor thema’s zoals ouderfiguren, partner, kinderen, werk, wijsheid en zielslessen.",
+            items: [
+              { id: "atmakaraka", title: "Atmakaraka", symbol: "AK", badge: "Ziel", description: "Graha met hoogste graad in teken (Jaimini), verbonden met zielsrichting en kernlessen." },
+              { id: "amatyakaraka", title: "Amatyakaraka", symbol: "AmK", badge: "Werk", description: "Wijst op beroep, roeping en praktische levensrichting." },
+              { id: "bhratrikaraka", title: "Bhratrikaraka", symbol: "BK", badge: "Broers/zussen", description: "Verbonden met broers/zussen, moed, steunfiguren en inzet." },
+              { id: "matrikaraka", title: "Matrikaraka", symbol: "MK", badge: "Moeder", description: "Verbonden met moeder, verzorging, emotionele basis en ondersteuning." },
+              { id: "putrakaraka", title: "Putrakaraka", symbol: "PK", badge: "Kinderen", description: "Verbonden met kinderen, creativiteit, studie en intelligentie." },
+              { id: "gnatikaraka", title: "Gnatikaraka", symbol: "GK", badge: "Obstakels", description: "Verbonden met conflicten, ziekte, obstakels en karmische spanning." },
+              { id: "darakaraka", title: "Darakaraka", symbol: "DK", badge: "Partner", description: "Verbonden met partner, huwelijk, relaties en leren via de ander." },
+              { id: "naisargika", title: "Naisargika Karaka", symbol: "NK", badge: "Natuurlijk", description: "Vaste natuurlijke betekenissen van graha’s, zoals Zon-vader en Jupiter-wijsheid." },
+              { id: "chara", title: "Chara Karaka", symbol: "CK", badge: "Variabel", description: "Variabele betekenaren die per chart worden bepaald via graadposities." },
+            ],
           },
         ];
       }
 
-      function westernAspectLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
-        const code = (type, angleLabel) => {
-          const g = aspectGlyph(type);
-          return g ? `${g} · ${angleLabel}` : angleLabel;
-        };
-        return [
-          {
-            codeLabel: code("conjunction", "0°"),
-            badge: L("Samenvallen", "Merge"),
-            title: L("Conjunctie", "Conjunction"),
-            body: L(
-              "Ongeveer dezelfde lengtegraad: twee planeten versterken of mengen hun thema’s. Kan intens harmonieus zijn of één thema dominant maken, afhankelijk van de planeten.",
-              "Near the same longitude: two planets blend or intensify their themes. It can feel fused—supportive or overwhelming—depending on the planets involved."
-            ),
-          },
-          {
-            codeLabel: code("sextile", "60°"),
-            badge: L("Mogelijkheid", "Opportunity"),
-            title: L("Sextiel", "Sextile"),
-            body: L(
-              "Een beweeglijke, open hoek: kansen om te leren, te verbinden en handelingsruimte te creëren. Vaak subtieler dan een driehoek, maar uitnodigend voor groei.",
-              "A flexible, open angle: chances to learn, connect, and create room to move. Often subtler than a trine, but inviting growth."
-            ),
-          },
-          {
-            codeLabel: code("square", "90°"),
-            badge: L("Spanning", "Tension"),
-            title: L("Vierkant", "Square"),
-            body: L(
-              "Rechte hoek: wrijving en innerlijke of uiterlijke spanning die tot actie dwingt. Juist door wrijving kun je iets fundamenteels leren of veranderen.",
-              "A right angle: friction and tension—inner or outer—that pushes for action. Friction often teaches or changes something important."
-            ),
-          },
-          {
-            codeLabel: code("trine", "120°"),
-            badge: L("Stroom", "Flow"),
-            title: L("Driehoek", "Trine"),
-            body: L(
-              "Harmonische hoek: natuurlijke steun en gemak tussen twee planeten. Energie kan vrij stromen; het risico is dat je het vanzelfsprekend vindt en minder bewust inzet.",
-              "A harmonious angle: natural support and ease between two planets. Energy can flow readily; the pitfall is taking it for granted."
-            ),
-          },
-          {
-            codeLabel: code("opposition", "180°"),
-            badge: L("Polariteit", "Polarity"),
-            title: L("Oppositie", "Opposition"),
-            body: L(
-              "Tegenover elkaar: balans zoeken tussen twee polen, of via anderen en relaties spiegelen. Kan trekken-duwen zijn, maar ook bewustwording door contrast.",
-              "Across the chart: balancing two poles, often mirrored through others or relationships. It can feel like pull-push, yet contrast clarifies."
-            ),
-          },
-          {
-            codeLabel: "45°",
-            badge: L("Minor", "Minor"),
-            title: L("Half vierkant", "Semi-square"),
-            body: L(
-              "Kleine spanning (45°): lichte irritatie of onrust die aanzet tot bijsturing. Minder zwaar dan een vol vierkant, maar wel merkbaar op de lange duur.",
-              "Minor tension (45°): a nudge of irritation or restlessness that prompts adjustment. Lighter than a full square, yet noticeable over time."
-            ),
-          },
-          {
-            codeLabel: "135°",
-            badge: L("Minor", "Minor"),
-            title: L("Sesquiquadraat", "Sesquiquadrate"),
-            body: L(
-              "Ook een ‘klein’ aspect met wrijving: herhalende frictie of het oplossen van oude patronen. Vraagt vaak om geduld en fine-tuning.",
-              "Another minor friction aspect: recurring irritation or working through old patterns. Often asks for patience and fine-tuning."
-            ),
-          },
-          {
-            codeLabel: "150°",
-            badge: L("Aanpassing", "Adjustment"),
-            title: L("Quincunx", "Quincunx"),
-            body: L(
-              "Geen gedeelde modaliteit of element: twee planeten ‘snappen’ elkaar niet vanzelf. Vraagt om aanpassing, compromis of creatieve brug — anders blijft het wringen.",
-              "No shared modality or element: two planets don’t naturally ‘get’ each other. Calls for adjustment, compromise, or a creative bridge—or it keeps grating."
-            ),
-          },
-        ];
-      }
-
-      function vedicPanchangaLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
-        return [
-          {
-            badge: L("Weekdag", "Weekday"),
-            title: "Vaara",
-            body: L(
-              "Vaara is de dagkwaliteit (zondag t/m zaterdag) en beschrijft de basiskleur van het moment.",
-              "Vaara is the weekday quality (Sunday through Saturday) and describes the base tone of the moment."
-            ),
-          },
-          {
-            badge: L("Maanfase", "Lunar phase"),
-            title: "Tithi",
-            body: L(
-              "Tithi is de relatiehoek tussen Zon en Maan. Het geeft het emotionele ritme en de timing van handelen aan.",
-              "Tithi is the angular relationship between Sun and Moon. It indicates emotional rhythm and timing of action."
-            ),
-          },
-          {
-            badge: L("Maanverblijf", "Lunar mansion"),
-            title: "Nakshatra",
-            body: L(
-              "Nakshatra beschrijft het sterrenveld waar de Maan doorheen beweegt en verfijnt de mentale en emotionele sfeer.",
-              "Nakshatra describes the stellar field the Moon moves through and refines the mental and emotional atmosphere."
-            ),
-          },
-          {
-            badge: L("Combinatie", "Combination"),
-            title: "Yoga",
-            body: L(
-              "Yoga is afgeleid uit de gecombineerde lengtes van Zon en Maan en geeft een samengestelde dagkwaliteit.",
-              "Yoga is derived from combined Sun and Moon longitudes and gives a composite day quality."
-            ),
-          },
-          {
-            badge: L("Sub-ritme", "Sub-rhythm"),
-            title: "Karana",
-            body: L(
-              "Karana is een halve tithi en werkt als fijnere laag van timing binnen het dagelijkse ritme.",
-              "Karana is half a tithi and acts as a finer timing layer within the daily rhythm."
-            ),
-          },
-        ];
-      }
-
-      function vedicPlanetLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
-        return [
-          { codeLabel: "Surya (☉)", badge: L("Kern", "Core"), title: L("Surya / Zon", "Surya / Sun"), body: L("Vitaliteit, identiteit, richting en zichtbaarheid.", "Vitality, identity, direction, and visibility.") },
-          { codeLabel: "Chandra (☽)", badge: L("Gevoel", "Emotion"), title: L("Chandra / Maan", "Chandra / Moon"), body: L("Innerlijk ritme, gevoel, hechting en mentale rust.", "Inner rhythm, emotion, bonding, and mental calm.") },
-          { codeLabel: "Mangala (♂)", badge: L("Actie", "Action"), title: L("Mangala / Mars", "Mangala / Mars"), body: L("Wilskracht, drive, bescherming en directe actie.", "Willpower, drive, protection, and direct action.") },
-          { codeLabel: "Budha (☿)", badge: L("Denken", "Mind"), title: L("Budha / Mercurius", "Budha / Mercury"), body: L("Leren, taal, analyse, handel en uitwisseling.", "Learning, language, analysis, trade, and exchange.") },
-          { codeLabel: "Guru (♃)", badge: L("Groei", "Growth"), title: L("Guru / Jupiter", "Guru / Jupiter"), body: L("Wijsheid, geloof, begeleiding, betekenis en expansie.", "Wisdom, faith, guidance, meaning, and expansion.") },
-          { codeLabel: "Shukra (♀)", badge: L("Relatie", "Relation"), title: L("Shukra / Venus", "Shukra / Venus"), body: L("Aantrekking, harmonie, plezier, kunst en verbinding.", "Attraction, harmony, pleasure, art, and connection.") },
-          { codeLabel: "Shani (♄)", badge: L("Structuur", "Structure"), title: L("Shani / Saturnus", "Shani / Saturn"), body: L("Grenzen, discipline, verantwoordelijkheid, tijd en rijping.", "Boundaries, discipline, responsibility, time, and maturation.") },
-          { codeLabel: "Rahu (☊)", badge: L("Verlangen", "Drive"), title: "Rahu", body: L("Vergroting, ambitie, nieuw terrein en wereldse honger.", "Amplification, ambition, new territory, and worldly hunger.") },
-          { codeLabel: "Ketu (☋)", badge: L("Loslaten", "Release"), title: "Ketu", body: L("Onthechting, verleden, innerlijke kennis en reductie van ego.", "Detachment, past patterns, inner knowledge, and ego reduction.") },
-        ];
-      }
-
-      function vedicHouseLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
-        return [
-          { badge: L("Zelf", "Self"), title: L("Huis 1", "House 1"), body: L("Lichaam, zelfbeeld, toon en levensaanzet.", "Body, self-image, tone, and life impulse.") },
-          { badge: L("Waarde", "Value"), title: L("Huis 2", "House 2"), body: L("Inkomen, middelen, stem, voeding en waarden.", "Income, resources, voice, nourishment, and values.") },
-          { badge: L("Actie", "Action"), title: L("Huis 3", "House 3"), body: L("Moed, communicatie, siblings en initiatief.", "Courage, communication, siblings, and initiative.") },
-          { badge: L("Basis", "Base"), title: L("Huis 4", "House 4"), body: L("Thuis, innerlijke veiligheid, moederlijke bedding.", "Home, inner security, and maternal grounding.") },
-          { badge: L("Creatie", "Creation"), title: L("Huis 5", "House 5"), body: L("Creativiteit, kinderen, expressie en intelligentie.", "Creativity, children, expression, and intelligence.") },
-          { badge: L("Dienst", "Service"), title: L("Huis 6", "House 6"), body: L("Werkritme, gezondheid, schulden en conflictbeheersing.", "Work rhythm, health, debts, and conflict management.") },
-          { badge: L("Partner", "Partner"), title: L("Huis 7", "House 7"), body: L("Relatie, huwelijk, contracten en spiegeling.", "Relationship, marriage, contracts, and mirroring.") },
-          { badge: L("Transformatie", "Transformation"), title: L("Huis 8", "House 8"), body: L("Diepte, crisis, gedeelde middelen en omvorming.", "Depth, crisis, shared assets, and transformation.") },
-          { badge: L("Dharma", "Dharma"), title: L("Huis 9", "House 9"), body: L("Zingeving, leerweg, leraar, visie en geluk.", "Meaning, learning path, teacher, vision, and fortune.") },
-          { badge: L("Roeping", "Vocation"), title: L("Huis 10", "House 10"), body: L("Beroep, status, verantwoordelijkheid en publieke rol.", "Career, status, responsibility, and public role.") },
-          { badge: L("Netwerk", "Network"), title: L("Huis 11", "House 11"), body: L("Doelen, opbrengst, vrienden en sociale stroom.", "Goals, gains, friends, and social flow.") },
-          { badge: L("Loslaten", "Release"), title: L("Huis 12", "House 12"), body: L("Terugtrekking, slaap, onderbewuste en bevrijding.", "Retreat, sleep, subconscious layers, and liberation.") },
-        ];
-      }
-
-      function vedicPanchangaLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
-        return [
-          {
-            badge: L("Weekdag", "Weekday"),
-            title: "Vaara",
-            body: L(
-              "Vaara is de dagkwaliteit (zondag t/m zaterdag) en beschrijft de basiskleur van het moment.",
-              "Vaara is the weekday quality (Sunday through Saturday) and describes the base tone of the moment."
-            ),
-          },
-          {
-            badge: L("Maanfase", "Lunar phase"),
-            title: "Tithi",
-            body: L(
-              "Tithi is de relatiehoek tussen Zon en Maan. Het geeft het emotionele ritme en de timing van handelen aan.",
-              "Tithi is the angular relationship between Sun and Moon. It indicates emotional rhythm and timing of action."
-            ),
-          },
-          {
-            badge: L("Maanverblijf", "Lunar mansion"),
-            title: "Nakshatra",
-            body: L(
-              "Nakshatra beschrijft het sterrenveld waar de Maan doorheen beweegt en verfijnt de mentale en emotionele sfeer.",
-              "Nakshatra describes the stellar field the Moon moves through and refines the mental and emotional atmosphere."
-            ),
-          },
-          {
-            badge: L("Combinatie", "Combination"),
-            title: "Yoga",
-            body: L(
-              "Yoga is afgeleid uit de gecombineerde lengtes van Zon en Maan en geeft een samengestelde dagkwaliteit.",
-              "Yoga is derived from combined Sun and Moon longitudes and gives a composite day quality."
-            ),
-          },
-          {
-            badge: L("Sub-ritme", "Sub-rhythm"),
-            title: "Karana",
-            body: L(
-              "Karana is een halve tithi en werkt als fijnere laag van timing binnen het dagelijkse ritme.",
-              "Karana is half a tithi and acts as a finer timing layer within the daily rhythm."
-            ),
-          },
-        ];
-      }
-
-      function vedicPlanetLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
-        return [
-          { codeLabel: "Surya (☉)", badge: L("Kern", "Core"), title: L("Surya / Zon", "Surya / Sun"), body: L("Vitaliteit, identiteit, richting en zichtbaarheid.", "Vitality, identity, direction, and visibility.") },
-          { codeLabel: "Chandra (☽)", badge: L("Gevoel", "Emotion"), title: L("Chandra / Maan", "Chandra / Moon"), body: L("Innerlijk ritme, gevoel, hechting en mentale rust.", "Inner rhythm, emotion, bonding, and mental calm.") },
-          { codeLabel: "Mangala (♂)", badge: L("Actie", "Action"), title: L("Mangala / Mars", "Mangala / Mars"), body: L("Wilskracht, drive, bescherming en directe actie.", "Willpower, drive, protection, and direct action.") },
-          { codeLabel: "Budha (☿)", badge: L("Denken", "Mind"), title: L("Budha / Mercurius", "Budha / Mercury"), body: L("Leren, taal, analyse, handel en uitwisseling.", "Learning, language, analysis, trade, and exchange.") },
-          { codeLabel: "Guru (♃)", badge: L("Groei", "Growth"), title: L("Guru / Jupiter", "Guru / Jupiter"), body: L("Wijsheid, geloof, begeleiding, betekenis en expansie.", "Wisdom, faith, guidance, meaning, and expansion.") },
-          { codeLabel: "Shukra (♀)", badge: L("Relatie", "Relation"), title: L("Shukra / Venus", "Shukra / Venus"), body: L("Aantrekking, harmonie, plezier, kunst en verbinding.", "Attraction, harmony, pleasure, art, and connection.") },
-          { codeLabel: "Shani (♄)", badge: L("Structuur", "Structure"), title: L("Shani / Saturnus", "Shani / Saturn"), body: L("Grenzen, discipline, verantwoordelijkheid, tijd en rijping.", "Boundaries, discipline, responsibility, time, and maturation.") },
-          { codeLabel: "Rahu (☊)", badge: L("Verlangen", "Drive"), title: "Rahu", body: L("Vergroting, ambitie, nieuw terrein en wereldse honger.", "Amplification, ambition, new territory, and worldly hunger.") },
-          { codeLabel: "Ketu (☋)", badge: L("Loslaten", "Release"), title: "Ketu", body: L("Onthechting, verleden, innerlijke kennis en reductie van ego.", "Detachment, past patterns, inner knowledge, and ego reduction.") },
-        ];
-      }
-
-      function vedicHouseLegendItems(isNL) {
-        const L = (nl, en) => (isNL ? nl : en);
-        return [
-          { badge: L("Zelf", "Self"), title: L("Huis 1", "House 1"), body: L("Lichaam, zelfbeeld, toon en levensaanzet.", "Body, self-image, tone, and life impulse.") },
-          { badge: L("Waarde", "Value"), title: L("Huis 2", "House 2"), body: L("Inkomen, middelen, stem, voeding en waarden.", "Income, resources, voice, nourishment, and values.") },
-          { badge: L("Actie", "Action"), title: L("Huis 3", "House 3"), body: L("Moed, communicatie, siblings en initiatief.", "Courage, communication, siblings, and initiative.") },
-          { badge: L("Basis", "Base"), title: L("Huis 4", "House 4"), body: L("Thuis, innerlijke veiligheid, moederlijke bedding.", "Home, inner security, and maternal grounding.") },
-          { badge: L("Creatie", "Creation"), title: L("Huis 5", "House 5"), body: L("Creativiteit, kinderen, expressie en intelligentie.", "Creativity, children, expression, and intelligence.") },
-          { badge: L("Dienst", "Service"), title: L("Huis 6", "House 6"), body: L("Werkritme, gezondheid, schulden en conflictbeheersing.", "Work rhythm, health, debts, and conflict management.") },
-          { badge: L("Partner", "Partner"), title: L("Huis 7", "House 7"), body: L("Relatie, huwelijk, contracten en spiegeling.", "Relationship, marriage, contracts, and mirroring.") },
-          { badge: L("Transformatie", "Transformation"), title: L("Huis 8", "House 8"), body: L("Diepte, crisis, gedeelde middelen en omvorming.", "Depth, crisis, shared assets, and transformation.") },
-          { badge: L("Dharma", "Dharma"), title: L("Huis 9", "House 9"), body: L("Zingeving, leerweg, leraar, visie en geluk.", "Meaning, learning path, teacher, vision, and fortune.") },
-          { badge: L("Roeping", "Vocation"), title: L("Huis 10", "House 10"), body: L("Beroep, status, verantwoordelijkheid en publieke rol.", "Career, status, responsibility, and public role.") },
-          { badge: L("Netwerk", "Network"), title: L("Huis 11", "House 11"), body: L("Doelen, opbrengst, vrienden en sociale stroom.", "Goals, gains, friends, and social flow.") },
-          { badge: L("Loslaten", "Release"), title: L("Huis 12", "House 12"), body: L("Terugtrekking, slaap, onderbewuste en bevrijding.", "Retreat, sleep, subconscious layers, and liberation.") },
-        ];
-      }
-
-      function appendWesternPlanetsAndHousesLegend(frag, isNL) {
-        appendLegendSection(frag, {
-          title: isNL ? "Planeten — algemene betekenis" : "Planets — general meanings",
-          lead: isNL
-            ? "Algemene uitleg om de tabel en het wiel hierboven te lezen. Dit is geen persoonlijke duiding."
-            : "General meanings to read the table and wheel above. This is not a personal reading.",
-          items: westernPlanetLegendItems(isNL),
+      function appendVedicGlossaryLegend(frag) {
+        jyotishGlossarySections().forEach((section) => {
+          appendLegendSection(frag, {
+            id: section.id,
+            title: section.title,
+            eyebrow: section.subtitle,
+            lead: section.intro,
+            items: (section.items || []).map((item) => ({
+              id: item.id,
+              codeLabel: item.symbol || item.code || "",
+              codeTitle: item.alt || item.meaning || item.title || "",
+              badge: item.badge || item.category || "",
+              title: item.title || "",
+              body: item.description || "",
+              footer: "",
+            })),
+          });
         });
-        appendLegendSection(frag, {
-          title: isNL ? "Huizen — levensgebieden" : "Houses — life areas",
-          lead: isNL
-            ? "De twaalf huizen zijn vaste themagebieden. Waar een planeet landt, benadrukt ze dat levensdomein."
-            : "The twelve houses are fixed topic areas. A planet in a house emphasizes that life domain.",
-          items: westernHouseLegendItems(isNL),
+      }
+
+      function appendWesternGlossaryLegend(frag) {
+        westernGlossarySections().forEach((section) => {
+          appendLegendSection(frag, {
+            id: section.id,
+            title: section.title,
+            eyebrow: section.subtitle,
+            lead: section.intro,
+            items: (section.items || []).map((item) => ({
+              id: item.id,
+              codeLabel: item.symbol || item.code || item.degree || "",
+              codeTitle: item.alt || item.meaning || item.title || "",
+              badge: item.badge || item.category || "",
+              title: item.title || "",
+              body: item.description || "",
+              footer: item.degree ? `Graad: ${item.degree}` : "",
+            })),
+          });
         });
       }
 
@@ -4881,10 +4795,9 @@
 
       function renderWesternStory(data) {
         const frag = document.createDocumentFragment();
-        const isNL = uiIsNL();
-        const { ok } = buildWesternTropicalNarrativeParagraphs(data, isNL);
+        const { ok } = buildWesternTropicalNarrativeParagraphs(data, true);
         if (!ok) return frag;
-        appendWesternPlanetsAndHousesLegend(frag, isNL);
+        appendWesternGlossaryLegend(frag);
         return frag;
       }
 
@@ -4920,7 +4833,7 @@
           },
         ]);
 
-        appendWesternPlanetsAndHousesLegend(frag, isNL);
+        appendWesternGlossaryLegend(frag);
 
         return frag;
       }

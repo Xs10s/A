@@ -158,6 +158,29 @@
       .app-panel--results {
         margin-top: 0;
       }
+      body.report-capture-mode {
+        background: #ffffff !important;
+        background-image: none !important;
+      }
+      body.report-capture-mode .site-header,
+      body.report-capture-mode .app-panel--form,
+      body.report-capture-mode .site-footer {
+        display: none !important;
+      }
+      body.report-capture-mode main {
+        max-width: none !important;
+        padding: 0 !important;
+      }
+      body.report-capture-mode #results {
+        margin: 0 auto !important;
+        box-shadow: none !important;
+      }
+      body.report-capture-mode #results .actions {
+        display: none !important;
+      }
+      body.report-capture-mode .tab {
+        pointer-events: none;
+      }
 
       .card__lead {
         font-size: var(--small);
@@ -243,6 +266,39 @@
       }
 
       .tab-panel.active { display: block; }
+
+      .energy-profile-layout {
+        display: block;
+      }
+      .energy-content > section {
+        border: 1px solid #eadff8;
+        background: #fff;
+        padding: 14px;
+        margin-bottom: 14px;
+      }
+      .energy-mini-grid {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .energy-balance-bars .bar-row { margin: 0 0 8px 0; }
+      .energy-balance-bars .bar-track {
+        background: #f2ecfa;
+        border: 1px solid #e6daf7;
+        height: 10px;
+      }
+      .energy-balance-bars .bar-fill {
+        height: 100%;
+        background: #884dc9;
+      }
+      .method-perspective-grid {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      @media (max-width: 980px) {
+        .energy-profile-layout { display: block; }
+      }
 
       .tab-panel--merged > * + * {
         margin-top: var(--xl);
@@ -1009,30 +1065,38 @@
       }
       .astro-hero p { color: #5e5375; margin: 0; }
       .astro-stats {
-        margin-top: 18px;
+        margin-top: 22px;
         display: grid;
-        gap: 10px;
+        gap: 14px;
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
       .astro-stat {
         border: 1px solid #eadff8;
         background: #faf7ff;
-        padding: 10px;
+        padding: 16px 14px;
+        min-height: 84px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
       .astro-stat__label {
         font-size: 11px;
-        letter-spacing: 0.09em;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
         color: #846da4;
+        font-weight: 600;
       }
       .astro-stat__value {
-        margin-top: 4px;
+        margin-top: 8px;
         font-family: "Lora", Georgia, serif;
-        font-size: 20px;
+        font-size: 22px;
+        line-height: 1.25;
         color: #2d2541;
+        word-break: break-word;
+        overflow-wrap: anywhere;
       }
       .astro-note {
-        margin-top: 12px;
+        margin-top: 16px;
         border-left: 4px solid #C9A24D;
         background: #fffaf0;
         padding: 10px 12px;
@@ -1044,10 +1108,70 @@
         background: #fff4f4;
         color: #6f3d3d;
       }
-      .astro-core { text-align: center; }
-      .astro-core__mark { font-size: 54px; line-height: 1; }
-      .astro-core__line { margin-top: 8px; font-size: 18px; }
-      .astro-core__sub { margin-top: 6px; font-size: 12px; color: rgba(255,255,255,.8); }
+      .astro-core {
+        text-align: center;
+        width: 100%;
+        max-width: 360px;
+      }
+      .astro-core__mark {
+        font-size: 60px;
+        line-height: 1;
+        color: rgba(255,255,255,0.92);
+      }
+      .astro-core__title {
+        margin-top: 14px;
+        font-family: "Lora", Georgia, serif;
+        font-size: 26px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #fff;
+      }
+      .astro-core__caption {
+        margin-top: 6px;
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.72);
+      }
+      .astro-core__divider {
+        margin: 16px auto 14px;
+        width: 80px;
+        height: 1px;
+        background: rgba(255,255,255,0.35);
+      }
+      .astro-core__list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: left;
+      }
+      .astro-core__row {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        align-items: baseline;
+        gap: 10px;
+        padding: 6px 4px;
+        border-bottom: 1px dashed rgba(255,255,255,0.18);
+      }
+      .astro-core__row:last-child { border-bottom: none; }
+      .astro-core__row-label {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.7);
+      }
+      .astro-core__row-value {
+        font-family: "Lora", Georgia, serif;
+        font-size: 16px;
+        color: #fff;
+      }
+      .astro-core__row-value--muted { color: rgba(255,255,255,0.55); font-style: italic; }
+      .astro-core__footer {
+        margin-top: 14px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: rgba(255,255,255,0.78);
+      }
 
       .astro-section-title {
         font-family: "Lora", Georgia, serif;
@@ -1423,6 +1547,9 @@
         .astro-section-title { font-size: 30px; }
         .astro-card h4 { font-size: 22px; }
         .row { flex-direction: column; }
+        .astro-core__title { font-size: 22px; }
+        .astro-core__row { grid-template-columns: 96px 1fr; }
+        .astro-core__row-value { font-size: 15px; }
       }
 
     </style>
@@ -1535,6 +1662,7 @@
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
       const form = document.getElementById("horoscoop-form");
       const results = document.getElementById("results");
@@ -1548,6 +1676,7 @@
       let lastEnergy = null;
       let lastCombinedEnergy = null;
       let lastInterpretations = null;
+      let lastProfileBook = null;
 
       function currentLocale() {
         const el = document.getElementById("ui-locale");
@@ -1716,6 +1845,85 @@
         });
       }
 
+      function setActiveTab(tabId) {
+        const tabs = document.querySelectorAll(".tab");
+        tabs.forEach((tab) => {
+          const isActive = tab.getAttribute("data-tab") === tabId;
+          tab.classList.toggle("active", isActive);
+        });
+        document.querySelectorAll(".tab-panel").forEach((panel) => {
+          panel.classList.remove("active");
+        });
+        const targetPanel = document.getElementById("panel-" + tabId);
+        if (targetPanel) targetPanel.classList.add("active");
+      }
+
+      async function captureTabScreenshotsForPdf() {
+        const target = document.getElementById("results");
+        if (!target) throw new Error(uiIsNL() ? "Resultaatblok niet gevonden." : "Results block not found.");
+        if (typeof window.html2canvas !== "function") {
+          throw new Error(uiIsNL() ? "Screenshot-module niet geladen." : "Screenshot module not loaded.");
+        }
+        const fixedWidthPx = 1360;
+        const tabs = [
+          { id: "energie", titleNl: "Energieprofiel", titleEn: "Energy profile" },
+          { id: "western", titleNl: "Westers", titleEn: "Western" },
+          { id: "vedic", titleNl: "Vedisch", titleEn: "Vedic" },
+          { id: "bazi", titleNl: "BaZi", titleEn: "BaZi" },
+          { id: "humandesign", titleNl: "Human Design", titleEn: "Human Design" },
+          { id: "maya", titleNl: "Maya", titleEn: "Maya" },
+        ];
+        const pages = [];
+        const isNL = uiIsNL();
+        const originalActive = document.querySelector(".tab.active");
+        const originalTabId = originalActive ? originalActive.getAttribute("data-tab") : "energie";
+        const restore = {
+          bodyClass: document.body.classList.contains("report-capture-mode"),
+          targetWidth: target.style.width,
+          targetMaxWidth: target.style.maxWidth,
+          targetMinHeight: target.style.minHeight,
+          scrollX: window.scrollX,
+          scrollY: window.scrollY,
+        };
+
+        try {
+          document.body.classList.add("report-capture-mode");
+          target.style.width = `${fixedWidthPx}px`;
+          target.style.maxWidth = `${fixedWidthPx}px`;
+          target.style.minHeight = "1800px";
+          window.scrollTo(0, 0);
+
+          for (const tab of tabs) {
+            setActiveTab(tab.id);
+            await new Promise((resolve) => setTimeout(resolve, 120));
+            const canvas = await window.html2canvas(target, {
+              backgroundColor: "#ffffff",
+              scale: 2,
+              useCORS: true,
+              logging: false,
+              scrollX: 0,
+              scrollY: 0,
+              windowWidth: fixedWidthPx,
+              windowHeight: Math.max(target.scrollHeight, 1800),
+            });
+            pages.push({
+              title: isNL ? tab.titleNl : tab.titleEn,
+              image_data_url: canvas.toDataURL("image/png"),
+            });
+          }
+        } finally {
+          if (!restore.bodyClass) {
+            document.body.classList.remove("report-capture-mode");
+          }
+          target.style.width = restore.targetWidth;
+          target.style.maxWidth = restore.targetMaxWidth;
+          target.style.minHeight = restore.targetMinHeight;
+          setActiveTab(originalTabId || "energie");
+          window.scrollTo(restore.scrollX, restore.scrollY);
+        }
+        return pages;
+      }
+
       function collectForm() {
         const data = {};
         new FormData(form).forEach((v, k) => {
@@ -1741,6 +1949,55 @@
           throw new Error("Request failed: " + res.status);
         }
         return res;
+      }
+
+      async function fetchReportBundleWithFallback(locale) {
+        try {
+          const bundleRes = await callApi("/api/report-bundle?locale=" + encodeURIComponent(locale));
+          const bundle = await bundleRes.json();
+          if (!bundle || !bundle.horoscoop) {
+            throw new Error("invalid_bundle");
+          }
+          return {
+            horoscoop: bundle.horoscoop,
+            energy: bundle.energy_profile || null,
+            combined: bundle.energy_profile_combined || null,
+            interpretations: bundle.interpretations || null,
+            profileBook: bundle.profile_book || null,
+          };
+        } catch (err) {
+          // Backward-compatible path when report-bundle route is unavailable (404) or invalid.
+          const res = await callApi("/api/horoscoop");
+          const json = await res.json();
+          let energy = null;
+          let combined = null;
+          let interpretations = null;
+          try {
+            const energyRes = await callApi("/api/energy-profile?system=western_tropical&locale=" + encodeURIComponent(locale));
+            energy = await energyRes.json();
+          } catch (e) {
+            energy = null;
+          }
+          try {
+            const combRes = await callApi("/api/energy-profile/combined?locale=" + encodeURIComponent(locale));
+            combined = await combRes.json();
+          } catch (e) {
+            combined = null;
+          }
+          try {
+            const iRes = await callApi("/api/interpretations?locale=" + encodeURIComponent(locale));
+            interpretations = await iRes.json();
+          } catch (e) {
+            interpretations = null;
+          }
+          return {
+            horoscoop: json,
+            energy,
+            combined,
+            interpretations,
+            profileBook: null,
+          };
+        }
       }
 
       let resolveTimer = null;
@@ -1777,27 +2034,15 @@
           const locale = currentLocale();
           // Ensure best chance at having lat/lon/tz before compute (if city provided).
           await resolveCityIfNeeded();
-          const res = await callApi("/api/horoscoop");
-          const json = await res.json();
-          // Energy profiles are derived from the same engine output.
-          try {
-            const energyRes = await callApi("/api/energy-profile?system=western_tropical&locale=" + encodeURIComponent(locale));
-            lastEnergy = await energyRes.json();
-          } catch (e) {
-            lastEnergy = null;
+          const bundle = await fetchReportBundleWithFallback(locale);
+          const json = bundle && bundle.horoscoop ? bundle.horoscoop : null;
+          if (!json) {
+            throw new Error(uiIsNL() ? "Rapportdata kon niet worden opgebouwd." : "Could not build report data.");
           }
-          try {
-            const combRes = await callApi("/api/energy-profile/combined?locale=" + encodeURIComponent(locale));
-            lastCombinedEnergy = await combRes.json();
-          } catch (e) {
-            lastCombinedEnergy = null;
-          }
-          try {
-            const iRes = await callApi("/api/interpretations?locale=" + encodeURIComponent(locale));
-            lastInterpretations = await iRes.json();
-          } catch (e) {
-            lastInterpretations = null;
-          }
+          lastEnergy = bundle.energy || null;
+          lastCombinedEnergy = bundle.combined || null;
+          lastInterpretations = bundle.interpretations || null;
+          lastProfileBook = bundle.profileBook || null;
           results.style.display = "block";
           await renderResult(json);
         } catch (err) {
@@ -1859,7 +2104,7 @@
 
         const panelEnergy = document.getElementById("panel-energie");
         panelEnergy.innerHTML = "";
-        panelEnergy.appendChild(renderEnergyTabV2(data, lastEnergy, lastCombinedEnergy));
+        panelEnergy.appendChild(renderEnergyTabV2(data, lastEnergy, lastCombinedEnergy, lastProfileBook));
 
         const panelWestern = document.getElementById("panel-western");
         panelWestern.innerHTML = "";
@@ -2338,14 +2583,39 @@
         return wrap;
       }
 
+      function createStaticQuickLinksSection(quickLinks, detailMap, isNL) {
+        const wrap = document.createElement("section");
+        wrap.className = "layout-section";
+        const title = document.createElement("h3");
+        title.className = "layout-section__title";
+        title.textContent = isNL ? "Vaste verbanden" : "Fixed cross-links";
+        wrap.appendChild(title);
+        const lead = document.createElement("p");
+        lead.className = "layout-section__lead";
+        lead.textContent = isNL
+          ? "Deze verbanden zijn vooraf opgebouwd uit je berekening en blijven vast als leeslaag in dit rapport."
+          : "These links are prebuilt from your calculation and stay fixed as a reading layer in this report.";
+        wrap.appendChild(lead);
+        const grid = document.createElement("div");
+        grid.className = "explain-grid";
+        quickLinks.forEach((label) => {
+          const d = detailMap[label] || {
+            title: label,
+            subtitle: "-",
+            text: isNL ? "Nog geen detail beschikbaar." : "No detail available yet.",
+          };
+          grid.appendChild(createExplainCard(`${d.title} - ${d.subtitle || "-"}`, d.text || "-"));
+        });
+        wrap.appendChild(grid);
+        return wrap;
+      }
+
       function renderResultDashboard(tabId, data) {
         const isNL = uiIsNL();
         const root = document.createElement("section");
         root.className = "result-dash";
-        const active = { item: null };
         const detailMap = {};
         const quickLinks = [];
-        const showBottomInsights = tabId === "energy";
         let methodLayout = null;
 
         if (tabId === "energy") {
@@ -2373,64 +2643,10 @@
           methodLayout = renderBaziTemplateLayout(data);
         }
 
-        active.item = quickLinks[0] || null;
-
-        function buildQuickPanel() {
-          const wrap = document.createElement("article");
-          wrap.className = "result-dash__quick";
-          const title = document.createElement("h3");
-          title.textContent = isNL ? "Snelle verbanden" : "Quick links";
-          wrap.appendChild(title);
-          const grid = document.createElement("div");
-          grid.className = "result-dash__quick-grid";
-          quickLinks.forEach((item) => {
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "result-chip" + (active.item === item ? " active" : "");
-            btn.textContent = item;
-            btn.addEventListener("click", () => {
-              active.item = item;
-              renderInteractive();
-            });
-            grid.appendChild(btn);
-          });
-          wrap.appendChild(grid);
-          return wrap;
+        root.appendChild(methodLayout);
+        if (tabId === "energy" && quickLinks.length) {
+          root.appendChild(createStaticQuickLinksSection(quickLinks, detailMap, isNL));
         }
-
-        function buildDetailPanel() {
-          const d = detailMap[active.item] || {
-            title: active.item || (isNL ? "Detail" : "Detail"),
-            subtitle: "-",
-            text: isNL ? "Nog geen detail beschikbaar." : "No detail available yet.",
-          };
-          const wrap = document.createElement("article");
-          wrap.className = "result-detail";
-          const h = document.createElement("h3");
-          h.textContent = d.title;
-          const s = document.createElement("p");
-          s.textContent = d.subtitle || "-";
-          const t = document.createElement("p");
-          t.textContent = d.text || "-";
-          wrap.appendChild(h);
-          wrap.appendChild(s);
-          wrap.appendChild(t);
-          return wrap;
-        }
-
-        function renderInteractive() {
-          root.innerHTML = "";
-          root.appendChild(methodLayout);
-          if (showBottomInsights && quickLinks.length) {
-            const split = document.createElement("div");
-            split.className = "result-dash__split";
-            split.appendChild(buildQuickPanel());
-            split.appendChild(buildDetailPanel());
-            root.appendChild(split);
-          }
-        }
-
-        renderInteractive();
         return root;
       }
 
@@ -3027,21 +3243,74 @@
         const timeValue = birth.time_local ? String(birth.time_local).slice(0, 5) : "-";
         const zoneValue = tz.iana || (tz.utc_offset_hours != null ? `UTC${tz.utc_offset_hours >= 0 ? "+" : ""}${tz.utc_offset_hours}` : "-");
         const utcValue = tz.utc_offset_hours != null ? `UTC${tz.utc_offset_hours >= 0 ? "+" : ""}${tz.utc_offset_hours}` : "-";
-        const ref = place.lat != null && place.lon != null ? `${Number(place.lat).toFixed(3)}, ${Number(place.lon).toFixed(3)}` : (birth.city || "-");
         const incompleteInput = !birth.date || !birth.time_local || place.lat == null || place.lon == null || (!tz.iana && tz.utc_offset_hours == null);
+
+        const western = data.western || {};
+        const vedic = data.vedic || {};
         const chinese = data.chinese || {};
-        const stems = (((chinese.bazi_pillars || {}).year || {}).stem && ((chinese.bazi_pillars || {}).day || {}).stem)
-          ? `${((data.western || {}).placements || {}).Sun && ((data.western || {}).placements || {}).Sun.sign ? localizeSign(((data.western || {}).placements || {}).Sun.sign) : "-"} • ${(localizeVaara(((data.vedic || {}).panchanga || {}).vaara)) || "-"} • ${(((chinese.bazi_pillars || {}).day || {}).stem || "-")} ${(chinese.day_master_element || "").toString().trim() || ""}`.trim()
-          : `${((data.western || {}).placements || {}).Sun && ((data.western || {}).placements || {}).Sun.sign ? localizeSign(((data.western || {}).placements || {}).Sun.sign) : "-"} • ${(localizeVaara(((data.vedic || {}).panchanga || {}).vaara)) || "-"} • ${((chinese.bazi_pillars || {}).day || {}).stem || "-"}`;
+        const humanDesign = data.human_design || {};
+        const maya = data.maya || {};
+
+        const sunSign = ((western.placements || {}).Sun || {}).sign;
+        const westernValue = sunSign ? localizeSign(sunSign) : null;
+
+        const panchanga = vedic.panchanga || {};
+        const vaaraValue = panchanga.vaara ? localizeVaara(panchanga.vaara) : null;
+        const nakshatraIdx = (panchanga.nakshatra && panchanga.nakshatra.index != null) ? panchanga.nakshatra.index : null;
+        const vedicValue = vaaraValue
+          ? (nakshatraIdx != null ? `${vaaraValue} • N${nakshatraIdx}` : vaaraValue)
+          : null;
+
+        const baziDay = ((chinese.bazi_pillars || {}).day || {}).stem;
+        const baziElement = (chinese.day_master_element || "").toString().trim();
+        const baziValue = baziDay
+          ? (baziElement ? `${baziDay} • ${baziElement}` : baziDay)
+          : null;
+
+        const hdComputed = !!(humanDesign.status && humanDesign.status.computed);
+        const hdValue = hdComputed
+          ? [humanDesign.type, humanDesign.profile && humanDesign.profile.value]
+              .filter(Boolean)
+              .join(" • ")
+          : null;
+
+        const mayaSign = maya.sign || {};
+        const mayaSignName = isNL ? mayaSign.nl : mayaSign.en;
+        const mayaValue = (maya.kin || mayaSignName)
+          ? [maya.kin ? `Kin ${maya.kin}` : null, mayaSignName].filter(Boolean).join(" • ")
+          : null;
+
+        const profileRows = [
+          { label: isNL ? "Westers" : "Western", value: westernValue },
+          { label: isNL ? "Vedisch" : "Vedic", value: vedicValue },
+          { label: "BaZi", value: baziValue },
+          { label: "Human Design", value: hdValue },
+          { label: "Maya", value: mayaValue },
+        ];
+
         const shell = createEl("section", "astro-hero");
         const left = createEl("div", "astro-hero__left");
-        left.appendChild(createEl("div", "astro-kicker", isNL ? "Statisch geboorteprofiel • tabbladen per methode" : "Static birth profile • tabs per method"));
-        left.appendChild(createEl("h3", "", isNL ? "Energieprofiel op basis van drie methodes" : "Energy profile based on three methods"));
+        left.appendChild(createEl(
+          "div",
+          "astro-kicker",
+          isNL ? "Statisch geboorteprofiel • één invoer, meerdere methodes" : "Static birth profile • one input, multiple methods"
+        ));
+        left.appendChild(createEl(
+          "h3",
+          "",
+          isNL ? "Energieprofiel uit meerdere methodes" : "Energy profile from multiple methods"
+        ));
         left.appendChild(createEl("p", "", isNL
-          ? "Deze layout brengt de Westerse horoscoop, de Vedische/Jyotish methode en BaZi samen. De tabs houden het overzichtelijk, terwijl elke methode voldoende ruimte krijgt voor kaart, termen, uitleg en interpretatie."
-          : "This layout combines Western, Vedic/Jyotish, and BaZi methods. Tabs keep the view clear while each method gets enough room for chart, terms, explanation, and interpretation."));
+          ? "Eén geboortemoment, gelezen via verschillende tradities. Westers, Vedisch/Jyotish, BaZi, Human Design en Maya hebben elk een eigen tabblad — met kaart, kerntermen, uitleg en interpretatie. Door de methodes naast elkaar te zetten worden overeenkomsten en verschillen direct zichtbaar, en blijft de opzet open voor methodes die later worden toegevoegd."
+          : "One birth moment, read through different traditions. Western, Vedic/Jyotish, BaZi, Human Design and Maya each have their own tab — with chart, key terms, explanation and interpretation. Placing the methods side by side makes overlaps and differences immediately visible, and keeps the structure open for methods added later."));
         const stats = createEl("div", "astro-stats");
-        [["Datum", dateValue], ["Tijd", timeValue], ["Tijdzone", zoneValue], ["UTC", utcValue]].forEach((it) => {
+        const statItems = [
+          [isNL ? "Datum" : "Date", dateValue],
+          [isNL ? "Tijd" : "Time", timeValue],
+          [isNL ? "Tijdzone" : "Timezone", zoneValue],
+          ["UTC", utcValue],
+        ];
+        statItems.forEach((it) => {
           const s = createEl("div", "astro-stat");
           s.appendChild(createEl("div", "astro-stat__label", it[0]));
           s.appendChild(createEl("div", "astro-stat__value", it[1]));
@@ -3058,194 +3327,183 @@
                 : "Warning: input data is incomplete. Exact birth time, location and timezone are required for houses and Ascendant. Results may differ or be partly unavailable."
             )
           );
-        } else {
-          left.appendChild(
-            createEl(
-              "div",
-              "astro-note",
-              isNL
-                ? `De datum en tijd zijn vast verwerkt. Voor huizen en Ascendant is een exacte geboorteplaats nodig; zolang die net apart is opgegeven gebruikt de app ${ref} als praktische referentielocatie.`
-                : `Date and time are fixed in the calculation. Houses and Ascendant require an exact birthplace; when not explicitly set, the app uses ${ref} as practical reference location.`
-            )
-          );
         }
+
         const right = createEl("div", "astro-hero__right");
         const core = createEl("div", "astro-core");
         core.appendChild(createEl("div", "astro-core__mark", "◉"));
-        core.appendChild(createEl("div", "astro-core__line", isNL ? "Profielkern" : "Profile core"));
-        core.appendChild(createEl("div", "astro-core__sub", stems));
+        core.appendChild(createEl("div", "astro-core__title", isNL ? "Profielkern" : "Profile core"));
+        core.appendChild(createEl("div", "astro-core__caption", isNL ? "Signatuur per methode" : "Signature per method"));
+        core.appendChild(createEl("div", "astro-core__divider"));
+        const list = createEl("div", "astro-core__list");
+        profileRows.forEach((row) => {
+          const r = createEl("div", "astro-core__row");
+          r.appendChild(createEl("div", "astro-core__row-label", row.label));
+          const valueText = row.value || (isNL ? "Nog niet beschikbaar" : "Not available yet");
+          const valueClass = row.value ? "astro-core__row-value" : "astro-core__row-value astro-core__row-value--muted";
+          r.appendChild(createEl("div", valueClass, valueText));
+          list.appendChild(r);
+        });
+        core.appendChild(list);
+        core.appendChild(createEl(
+          "div",
+          "astro-core__footer",
+          isNL
+            ? "Vijf invalshoeken op één geboortemoment — open de tabbladen voor de volledige duiding per methode."
+            : "Five angles on a single birth moment — open the tabs for the full reading per method."
+        ));
         right.appendChild(core);
         shell.appendChild(left);
         shell.appendChild(right);
         return shell;
       }
 
-      function renderEnergyTabV2(data, energy, combined) {
-        const root = createEl("section", "astro-shell");
-        const section = createEl("section", "");
+      function renderEnergyTabV2(data, energy, combined, profileBook) {
         const isNL = uiIsNL();
-        const t = {
-          eyebrow: isNL ? "Synthese" : "Synthesis",
-          title: isNL
-            ? "Energieprofiel volgens Voeding, Beweging, Energie en Bewustzijn"
-            : "Energy profile through Nourishment, Movement, Energy and Awareness",
-          sub: isNL
-            ? "De vier waarden van Leer Jouw Lichaam Kennen vormen hier de brug tussen de drie methodes. Elke waarde krijgt een eigen laag vanuit Westers, Vedisch en BaZi."
-            : "The four LJLK values form the bridge across the three methods. Each value gets its own layer from Western, Vedic and BaZi.",
-          west: isNL ? "Westers" : "Western",
-          vedic: isNL ? "Vedisch" : "Vedic",
-          bazi: "BaZi",
-          cards: {
-            voeding: {
-              title: isNL ? "Voeding" : "Nourishment",
-              lead: isNL ? "Wat voedt, stabiliseert, verzacht en opbouwt." : "What nourishes, stabilizes, softens and builds.",
-            },
-            beweging: {
-              title: isNL ? "Beweging" : "Movement",
-              lead: isNL ? "Hoe energie op gang komt en richting krijgt." : "How energy gets moving and finds direction.",
-            },
-            energie: {
-              title: isNL ? "Energie" : "Energy",
-              lead: isNL ? "Beschikbare kracht, draaglast en levensritme." : "Available power, carrying capacity and life rhythm.",
-            },
-            bewustzijn: {
-              title: isNL ? "Bewustzijn" : "Awareness",
-              lead: isNL ? "Hoe patronen worden gezien, begrepen en omgezet." : "How patterns are seen, understood and transformed.",
-            },
-          },
-        };
-        section.appendChild(createEl("div", "astro-eyebrow", t.eyebrow));
-        section.appendChild(createEl("h3", "astro-section-title", t.title));
-        section.appendChild(createEl("p", "astro-section-sub", t.sub));
-        const g2 = createEl("div", "astro-grid-2");
-        const slots = buildEnergyDomainSlots(energy);
-        const profiles = (combined && Array.isArray(combined.profiles)) ? combined.profiles : [];
-        const bySystem = {
-          western_tropical: profiles.find((p) => p && p.system && p.system.id === "western_tropical"),
-          vedic_panchanga: profiles.find((p) => p && p.system && p.system.id === "vedic_panchanga"),
-          chinese_bazi: profiles.find((p) => p && p.system && p.system.id === "chinese_bazi"),
-          human_design: profiles.find((p) => p && p.system && p.system.id === "human_design"),
-          maya: profiles.find((p) => p && p.system && p.system.id === "maya"),
-        };
-        const cards = [
-          { title: t.cards.voeding.title, key: "voeding", lead: t.cards.voeding.lead },
-          { title: t.cards.beweging.title, key: "beweging", lead: t.cards.beweging.lead },
-          { title: t.cards.energie.title, key: "energie", lead: t.cards.energie.lead },
-          { title: t.cards.bewustzijn.title, key: "bewustzijn", lead: t.cards.bewustzijn.lead },
-        ];
+        const root = createEl("section", "astro-shell");
+        const header = createEl("section", "astro-method-visual");
+        header.appendChild(createEl("div", "astro-eyebrow", isNL ? "Centrale synthese" : "Central synthesis"));
+        header.appendChild(createEl("h3", "astro-section-title", isNL ? "Energieprofiel - hoofdpagina" : "Energy profile - main page"));
+        header.appendChild(
+          createEl(
+            "p",
+            "astro-section-sub",
+            isNL
+              ? "Deze pagina verbindt Westers, Vedisch, BaZi, Human Design en Maya tot een persoonlijke, leesbare samenvatting van patronen, ritmes en ontwikkelrichtingen."
+              : "This page connects Western, Vedic, BaZi, Human Design, and Maya into one personal, readable synthesis of patterns, rhythms, and growth directions."
+          )
+        );
+        root.appendChild(header);
 
-        const t_hd = isNL ? "Human Design" : "Human Design";
-        const t_maya = isNL ? "Maya" : "Maya";
+        const book = profileBook || {};
+        const contentWrap = createEl("div", "energy-profile-layout");
 
-        function getSystemDomain(profile, domainKey) {
-          if (!profile || !domainKey) return null;
-          const domains = Array.isArray(profile.domains) ? profile.domains : [];
-          return domains.find((d) => d && d.key === domainKey) || null;
+        const content = createEl("div", "energy-content");
+
+        function addSection(id, title, builder) {
+          const sec = createEl("section", "");
+          sec.id = id;
+          sec.appendChild(createEl("h4", "", title));
+          builder(sec);
+          content.appendChild(sec);
         }
 
-        function domainBand(score) {
-          if (typeof score !== "number") return "mid";
-          if (score >= 60) return "high";
-          if (score <= 45) return "low";
-          return "mid";
-        }
-
-        function synthLine(domainKey) {
-          const w = getSystemDomain(bySystem.western_tropical, domainKey);
-          const v = getSystemDomain(bySystem.vedic_panchanga, domainKey);
-          const b = getSystemDomain(bySystem.chinese_bazi, domainKey);
-          const bands = [domainBand(w && w.score), domainBand(v && v.score), domainBand(b && b.score)];
-          const allSame = bands[0] === bands[1] && bands[1] === bands[2];
-          if (allSame) {
-            return isNL
-              ? "De drie methodes leggen hier een vergelijkbaar accent, wat wijst op een consistente rode draad in je profiel."
-              : "All three methods place a similar emphasis here, suggesting a consistent thread in your profile.";
-          }
-          const highs = [w, v, b].filter((d) => domainBand(d && d.score) === "high").length;
-          const lows = [w, v, b].filter((d) => domainBand(d && d.score) === "low").length;
-          if (highs >= 1 && lows >= 1) {
-            return isNL
-              ? "Hier zie je verschil tussen de methodes: sommige benadrukken kracht, andere juist ontwikkelruimte."
-              : "Here the methods differ: some emphasize strength while others point to developmental space.";
-          }
-          return isNL
-            ? "De methodes zitten dicht bij elkaar, maar met nuance in invalshoek en nadruk."
-            : "The methods are close overall, with nuance in angle and emphasis.";
-        }
-
-        cards.forEach((cfg) => {
-          const domain = slots[cfg.key];
-          const domainKey = domain && domain.key;
-          const subtitle = domain
-            ? `${domain.label || domain.key}`
-            : (isNL ? "Nog niet beschikbaar" : "Not available yet");
-          const allDetails = (energy && energy.narrative && Array.isArray(energy.narrative.details))
-            ? energy.narrative.details
-            : [];
-          const detail = allDetails.find((d) => d && (d.domain === domainKey || d.domain_key === domainKey || d.key === domainKey));
-          const text = detail && detail.text
-            ? shortenText(detail.text, 240)
-            : (domain && domain.evidence && domain.evidence.meaning
-              ? shortenText(domain.evidence.meaning, 240)
-              : (isNL ? "Wacht op gegenereerde duiding uit de berekening." : "Waiting for generated interpretation."));
-          const card = createAstroCard(cfg.title, cfg.lead, text);
-          card.appendChild(createEl("p", "astro-card__method-line", synthLine(domainKey)));
-          function appendMethodLine(label, value) {
-            const line = createEl("p", "astro-card__method-line");
-            const strong = document.createElement("strong");
-            strong.textContent = `${label}: `;
-            line.appendChild(strong);
-            line.appendChild(document.createTextNode(value));
-            card.appendChild(line);
-          }
-          appendMethodLine(t.west, systemDomainLine(bySystem.western_tropical, domainKey, isNL ? "Nog geen westers detail." : "No western detail yet."));
-          appendMethodLine(t.vedic, systemDomainLine(bySystem.vedic_panchanga, domainKey, isNL ? "Nog geen vedisch detail." : "No Vedic detail yet."));
-          appendMethodLine(t.bazi, systemDomainLine(bySystem.chinese_bazi, domainKey, isNL ? "Nog geen BaZi-detail." : "No BaZi-detail yet."));
-          appendMethodLine(t_hd, systemDomainLine(bySystem.human_design, domainKey, isNL ? "Geen Human Design data (tijd nodig)." : "No Human Design data (time required)."));
-          appendMethodLine(t_maya, systemDomainLine(bySystem.maya, domainKey, isNL ? "Geen Maya-detail." : "No Maya-detail."));
-          g2.appendChild(card);
+        addSection("ep-intro", isNL ? "Persoonlijke introductie" : "Personal introduction", (sec) => {
+          const txt =
+            (book.intro && book.intro.text) ||
+            (isNL
+              ? "Je profiel laat meerdere perspectieven samenkomen. De overlap tussen systemen vormt hier de rode draad."
+              : "Your profile brings multiple perspectives together. Overlap across systems forms the guiding thread.");
+          sec.appendChild(createEl("p", "", txt));
         });
-        section.appendChild(g2);
 
-        const g3 = createEl("div", "astro-grid-3");
-        g3.style.marginTop = "12px";
-        const summary = (energy && energy.narrative && energy.narrative.summary) || "";
-        const notes = (combined && Array.isArray(combined.parityNotes)) ? combined.parityNotes : [];
-        const domains = Array.isArray(energy && energy.domains) ? energy.domains : [];
-        const sortedDomains = domains.slice().sort((a, b) => scoreFromDomain(b) - scoreFromDomain(a));
-        const strongest = sortedDomains[0];
-        const weakest = sortedDomains[sortedDomains.length - 1];
-        g3.appendChild(
-          createAstroCard(
-            isNL ? "Wat steeds terugkomt" : "What repeats",
-            isNL ? "Overeenkomst tussen de drie systemen" : "Overlap across systems",
-            notes[0]
-              ? `${notes[0]} ${isNL ? "Dit terugkerende patroon maakt de kans groter dat dit thema in meerdere contexten van je leven zichtbaar is." : "This recurring pattern increases the chance that this theme shows up across multiple life contexts."}`
-              : (summary
-                ? `${shortenText(summary, 260)} ${isNL ? "Lees dit als een gedeeld fundament tussen de drie lenzen." : "Read this as shared ground across the three lenses."}`
-                : (isNL ? "Nog geen gecombineerde notitie beschikbaar; herbereken met complete invoer voor sterkere overlapanalyse." : "No combined note available yet; recompute with complete input for stronger overlap analysis."))
-          )
-        );
-        g3.appendChild(
-          createAstroCard(
-            isNL ? "Belangrijkste spanning" : "Main tension",
-            isNL ? "Hoogste versus laagste domeinscore" : "Highest versus lowest domain score",
-            strongest && weakest
-              ? `${strongest.label || strongest.key} ↔ ${weakest.label || weakest.key}. ${isNL ? "Deze spanning laat zien waar je natuurlijke kracht groter is dan je huidige draagvlak. Juist in de combinatie van beide ontstaat richting: benut je sterke kant om de zwakkere laag stapsgewijs te ondersteunen." : "This tension shows where natural strength is larger than current capacity. Direction comes from combining both: use your stronger side to gradually support the weaker layer."}`
-              : (isNL ? "Nog niet genoeg gegevens voor een spanningsas." : "Not enough data yet for a tension axis.")
-          )
-        );
-        g3.appendChild(
-          createAstroCard(
-            isNL ? "Praktische sleutel" : "Practical key",
-            isNL ? "Werk met het laagste domein" : "Work with the lowest domain",
-            weakest && weakest.evidence && weakest.evidence.meaning
-              ? `${weakest.evidence.meaning} ${isNL ? "Vertaal dit naar een klein, herhaalbaar ritme in je week (bijvoorbeeld slaap, planning, herstel of begrenzing), en evalueer na elke nieuwe berekening of deze laag stabieler wordt." : "Translate this into a small repeatable weekly rhythm (for example sleep, planning, recovery, or boundaries), and evaluate after each new calculation whether this layer becomes more stable."}`
-              : (isNL ? "Gebruik rust, ritme en reflectie als basis en volg veranderingen per nieuwe berekening." : "Use rest, rhythm and reflection as baseline and track changes on each recalculation.")
-          )
-        );
-        section.appendChild(g3);
-        root.appendChild(section);
+        addSection("ep-core", isNL ? "Core Summary" : "Core Summary", (sec) => {
+          const txt =
+            (book.core_summary && book.core_summary.text) ||
+            ((energy && energy.narrative && energy.narrative.summary) || (isNL ? "Nog geen kernsamenvatting." : "No core summary yet."));
+          String(txt)
+            .split("\n\n")
+            .forEach((para) => {
+              if (String(para || "").trim()) sec.appendChild(createEl("p", "", String(para).trim()));
+            });
+        });
+
+        addSection("ep-themes", isNL ? "Main Themes" : "Main Themes", (sec) => {
+          const themes = Array.isArray(book.main_themes) ? book.main_themes : [];
+          if (!themes.length) {
+            sec.appendChild(createEl("p", "", isNL ? "Nog geen thema's beschikbaar." : "No themes available yet."));
+            return;
+          }
+          const grid = createEl("div", "method-perspective-grid");
+          themes.slice(0, 5).forEach((t) => {
+            const card = createAstroCard(String(t.title || "-"), String(t.summary || "-"), String(t.explanation || "-"));
+            card.appendChild(createEl("p", "astro-card__method-line", String(t.daily_recognition || "-")));
+            card.appendChild(
+              createEl(
+                "p",
+                "astro-card__method-line",
+                `${isNL ? "Ondersteund door" : "Supported by"}: ${(Array.isArray(t.supported_by) ? t.supported_by.join(", ") : "-")}`
+              )
+            );
+            grid.appendChild(card);
+          });
+          sec.appendChild(grid);
+        });
+
+        addSection("ep-balance", isNL ? "Energetic Balance" : "Energetic Balance", (sec) => {
+          const avg = (book.energetic_balance && book.energetic_balance.average_domains) || {};
+          const bars = createEl("div", "energy-balance-bars");
+          Object.entries(avg)
+            .sort((a, b) => Number(b[1]) - Number(a[1]))
+            .forEach(([k, v]) => {
+              const row = createEl("div", "bar-row");
+              row.appendChild(createEl("div", "astro-card__sub", `${k} - ${v}`));
+              const track = createEl("div", "bar-track");
+              const fill = createEl("div", "bar-fill");
+              fill.style.width = `${Math.max(0, Math.min(100, Number(v) || 0))}%`;
+              track.appendChild(fill);
+              row.appendChild(track);
+              bars.appendChild(row);
+            });
+          sec.appendChild(bars);
+          sec.appendChild(
+            createEl(
+              "p",
+              "",
+              `${isNL ? "Elementconvergentie" : "Element convergence"}: ${((book.energetic_balance || {}).element_convergence) || "-"} | ${isNL ? "Polariteit" : "Polarity"}: ${((book.energetic_balance || {}).polarity_convergence) || "-"}`
+            )
+          );
+        });
+
+        addSection("ep-decision", isNL ? "Decision & Flow" : "Decision & Flow", (sec) => {
+          const d = book.decision_flow || {};
+          sec.appendChild(createEl("p", "", String(d.text || (isNL ? "Nog geen beslispatroon beschikbaar." : "No decision pattern available yet."))));
+        });
+
+        addSection("ep-timing", isNL ? "Timing & Cycles" : "Timing & Cycles", (sec) => {
+          const t = book.timing_cycles || {};
+          sec.appendChild(createEl("p", "", String(t.text || (isNL ? "Nog geen cyclische samenvatting beschikbaar." : "No cyclical summary available yet."))));
+        });
+
+        addSection("ep-tension", isNL ? "Tensions & Contrasts" : "Tensions & Contrasts", (sec) => {
+          const t = book.tensions_contrasts || {};
+          sec.appendChild(createEl("p", "", String(t.text || "-")));
+          const strongest = Array.isArray(t.strongest) ? t.strongest : [];
+          const weakest = Array.isArray(t.weakest) ? t.weakest : [];
+          if (strongest.length || weakest.length) {
+            sec.appendChild(
+              createEl(
+                "p",
+                "astro-card__method-line",
+                `${isNL ? "Sterk" : "Strong"}: ${strongest.map((x) => x.label || x.key).join(", ") || "-"} | ${isNL ? "Ontwikkelruimte" : "Growth edge"}: ${weakest.map((x) => x.label || x.key).join(", ") || "-"}`
+              )
+            );
+          }
+        });
+
+        addSection("ep-growth", isNL ? "Growth & Integration" : "Growth & Integration", (sec) => {
+          sec.appendChild(
+            createEl(
+              "p",
+              "",
+              String((book.growth_integration && book.growth_integration.text) || (isNL ? "Nog geen integratierichting beschikbaar." : "No integration direction available yet."))
+            )
+          );
+        });
+
+        addSection("ep-methods", isNL ? "Method Perspectives" : "Method Perspectives", (sec) => {
+          const items = Array.isArray(book.method_perspectives) ? book.method_perspectives : [];
+          const grid = createEl("div", "method-perspective-grid");
+          items.forEach((m) => {
+            const card = createAstroCard(String(m.title || m.method || "-"), String(m.what_it_reads || "-"), String(m.personal_summary || "-"));
+            card.appendChild(createEl("p", "astro-card__method-line", `${isNL ? "Belangrijkste bevinding" : "Key finding"}: ${String(m.key_finding || "-")}`));
+            grid.appendChild(card);
+          });
+          sec.appendChild(grid);
+        });
+
+        contentWrap.appendChild(content);
+        root.appendChild(contentWrap);
         return root;
       }
 
@@ -3421,15 +3679,6 @@
         selectorTitleWrap.appendChild(createEl("h4", "", isNL ? "Shodashavarga (16 divisiekaarten)" : "Shodashavarga (16 divisional charts)"));
         selectorTitleWrap.appendChild(createEl("div", "astro-card__sub", isNL ? "Overzicht van de 16 divisiekaarten naast de vaste D1-kundali." : "Overview of the 16 divisional charts next to the fixed D1 kundali."));
         selectorTop.appendChild(selectorTitleWrap);
-        const searchWrap = createEl("label", "vedic-search");
-        const searchLabel = createEl("div", "astro-card__sub", isNL ? "Zoek Varga" : "Search Varga");
-        searchLabel.style.margin = "0 0 3px";
-        const searchInput = createEl("input", "");
-        searchInput.type = "text";
-        searchInput.placeholder = isNL ? "D9, NAVAMSA, WERK..." : "D9, NAVAMSA, WORK...";
-        searchWrap.appendChild(searchLabel);
-        searchWrap.appendChild(searchInput);
-        selectorTop.appendChild(searchWrap);
         selectorSection.appendChild(selectorTop);
         const cardsGrid = createEl("div", "astro-grid-2 vedic-varga-grid");
         selectorSection.appendChild(cardsGrid);
@@ -3506,21 +3755,11 @@
           section.appendChild(houseWrap);
           return section;
         }
-        function filterVargas(query) {
-          const q = String(query || "").trim().toLowerCase();
-          if (!q) return VEDIC_VARGAS;
-          return VEDIC_VARGAS.filter((v) =>
-            `${v.id} ${v.name} ${v.sanskrit} ${v.theme} ${v.focus_nl || ""} ${v.focus_en || ""} ${v.layer_nl || ""} ${v.layer_en || ""}`
-              .toLowerCase()
-              .includes(q)
-          );
-        }
         function renderVargaCards() {
           cardsGrid.innerHTML = "";
-          const visible = filterVargas(searchInput.value);
+          const visible = VEDIC_VARGAS;
           visible.forEach((v) => {
-            const btn = createEl("button", "vedic-varga-card");
-            btn.type = "button";
+            const btn = createEl("article", "vedic-varga-card");
             if (v.id === "D1") btn.classList.add("is-active");
             const top = createEl("div", "vedic-varga-card-head");
             top.appendChild(createEl("div", "astro-card__sub", `${v.id} - ${v.sanskrit}`));
@@ -3533,14 +3772,9 @@
             const layer = createEl("div", "astro-card__sub", vargaLayer(v));
             layer.style.marginTop = "8px";
             btn.appendChild(layer);
-            btn.style.cursor = "default";
             cardsGrid.appendChild(btn);
           });
-          if (!visible.length) {
-            cardsGrid.appendChild(createEl("p", "astro-card__sub", isNL ? "Geen varga-kaarten gevonden voor deze zoekterm." : "No varga cards found for this search."));
-          }
         }
-        searchInput.addEventListener("input", renderVargaCards);
         refreshKundali();
         chartSection.appendChild(buildD1MeaningSection());
         renderVargaCards();
@@ -3958,23 +4192,7 @@
         const sectionId = `legend-${Math.random().toString(36).slice(2, 10)}`;
         grid.id = sectionId;
         (opts.items || []).forEach((it) => grid.appendChild(createLegendCard(it)));
-        h.setAttribute("role", "button");
-        h.setAttribute("tabindex", "0");
         h.setAttribute("aria-controls", sectionId);
-        h.setAttribute("aria-expanded", "false");
-        grid.hidden = true;
-        const toggle = () => {
-          const nextHidden = !grid.hidden;
-          grid.hidden = nextHidden;
-          h.setAttribute("aria-expanded", String(!nextHidden));
-        };
-        h.addEventListener("click", toggle);
-        h.addEventListener("keydown", (ev) => {
-          if (ev.key === "Enter" || ev.key === " ") {
-            ev.preventDefault();
-            toggle();
-          }
-        });
         wrap.appendChild(head);
         wrap.appendChild(grid);
         frag.appendChild(wrap);
@@ -4610,8 +4828,6 @@
           const articles = document.createElement("div");
           articles.className = "insight-articles";
 
-          const TRUNC = 160;
-
           details.forEach((d) => {
             const domainKey = d.domain || d.domain_key || d.key;
             const themeId = themeIdForDomainKey(domainKey);
@@ -4626,34 +4842,10 @@
 
             const excerptWrap = document.createElement("div");
             excerptWrap.className = "article-card__excerpt";
-
             const fullText = String(d.text || "");
             const src = d.source ? ` (${d.source})` : "";
-            const shortText = fullText.length > TRUNC ? fullText.slice(0, TRUNC) + "…" : fullText;
-            excerptWrap.textContent = shortText;
+            excerptWrap.textContent = fullText + src;
             card.appendChild(excerptWrap);
-
-            const more = document.createElement("div");
-            more.className = "article-card__more";
-            more.hidden = true;
-            more.textContent = fullText + src;
-            card.appendChild(more);
-
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "btn btn-secondary article-card__btn";
-            btn.textContent = isNL ? "Lees meer" : "Read more";
-            const shouldShowBtn = fullText.length > TRUNC || Boolean(d.source);
-            if (!shouldShowBtn) btn.hidden = true;
-
-            btn.addEventListener("click", () => {
-              const nextHidden = !more.hidden;
-              more.hidden = nextHidden;
-              btn.textContent = nextHidden ? (isNL ? "Lees meer" : "Read more") : (isNL ? "Toon minder" : "Show less");
-              btn.setAttribute("aria-expanded", String(nextHidden === false));
-            });
-
-            card.appendChild(btn);
             articles.appendChild(card);
           });
 
@@ -4874,11 +5066,8 @@
             "energie"
           );
           appendArticleCard(articles, isNL ? "Overzicht" : "Overview", overviewText, "energie");
-          const det = document.createElement("details");
+          const det = document.createElement("div");
           det.className = "insight-block__details";
-          const sum = document.createElement("summary");
-          sum.textContent = isNL ? "Alle termen tonen" : "Show all terms";
-          det.appendChild(sum);
           terms.forEach((it) => {
             if (!it || !it.text) return;
             const t = it.time_utc ? ` (${it.time_utc})` : "";
@@ -4976,12 +5165,27 @@
 
       document.getElementById("download-pdf").addEventListener("click", async () => {
         try {
-          const res = await callApi("/api/horoscoop/report.pdf");
+          const pages = await captureTabScreenshotsForPdf();
+          let res = await fetch("/api/report/screenshots.pdf", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              pages,
+              filename: "horoscoop-rapport-tabs.pdf",
+            }),
+          });
+          if (!res.ok && res.status === 404) {
+            // Fallback for older backend instances.
+            res = await callApi("/api/horoscoop/report.pdf");
+          }
+          if (!res.ok) {
+            throw new Error("Request failed: " + res.status);
+          }
           const blob = await res.blob();
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "horoscoop-rapport.pdf";
+          a.download = "horoscoop-rapport-tabs.pdf";
           a.click();
           URL.revokeObjectURL(url);
         } catch (err) {

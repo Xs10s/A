@@ -534,6 +534,25 @@
         vertical-align: top;
       }
 
+      .astro-inline-symbol {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .astro-inline-symbol__icon {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        flex: 0 0 auto;
+      }
+
+      .astro-inline-symbol__icon img {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
       .method-table th {
         font-family: var(--font-ui);
         font-size: 11px;
@@ -1733,55 +1752,126 @@
         Saturday: { nl: "Zaterdag", en: "Saturday" },
       };
 
-      const PLANET_GLYPHS = {
-        Sun: "☉",
-        Moon: "☾",
-        Mercury: "☿",
-        Venus: "♀",
-        Mars: "♂",
-        Jupiter: "♃",
-        Saturn: "♄",
-        Uranus: "♅",
-        Neptune: "♆",
-        Pluto: "♇",
-        NorthNode: "☊",
-        SouthNode: "☋",
-        Ascendant: "ASC",
+      const ASTRO_ICON_BASE = "/static/icons/astro";
+      const ICON_PATH_BY_ID = {
+        sun: "shared/planets/sun.svg",
+        moon: "shared/planets/moon.svg",
+        mercury: "shared/planets/mercury.svg",
+        venus: "shared/planets/venus.svg",
+        mars: "shared/planets/mars.svg",
+        jupiter: "shared/planets/jupiter.svg",
+        saturn: "shared/planets/saturn.svg",
+        uranus: "shared/planets/uranus.svg",
+        neptune: "shared/planets/neptune.svg",
+        pluto: "shared/planets/pluto.svg",
+        "north-node": "shared/points/north-node.svg",
+        "south-node": "shared/points/south-node.svg",
+        ascendant: "shared/points/ascendant.svg",
+        descendant: "shared/points/descendant.svg",
+        mc: "shared/points/mc.svg",
+        ic: "shared/points/ic.svg",
+        fire: "shared/elements/fire.svg",
+        earth: "shared/elements/earth.svg",
+        air: "shared/elements/air.svg",
+        water: "shared/elements/water.svg",
+        aries: "western/zodiac/aries.svg",
+        taurus: "western/zodiac/taurus.svg",
+        gemini: "western/zodiac/gemini.svg",
+        cancer: "western/zodiac/cancer.svg",
+        leo: "western/zodiac/leo.svg",
+        virgo: "western/zodiac/virgo.svg",
+        libra: "western/zodiac/libra.svg",
+        scorpio: "western/zodiac/scorpio.svg",
+        sagittarius: "western/zodiac/sagittarius.svg",
+        capricorn: "western/zodiac/capricorn.svg",
+        aquarius: "western/zodiac/aquarius.svg",
+        pisces: "western/zodiac/pisces.svg",
+        conjunction: "western/aspects/conjunction.svg",
+        sextile: "western/aspects/sextile.svg",
+        square: "western/aspects/square.svg",
+        trine: "western/aspects/trine.svg",
+        opposition: "western/aspects/opposition.svg",
+        quincunx: "western/aspects/quincunx.svg",
+        "semi-sextile": "western/aspects/semi-sextile.svg",
+        "semi-square": "western/aspects/semi-square.svg",
       };
-
-      const SIGN_GLYPHS = {
-        Aries: "♈",
-        Taurus: "♉",
-        Gemini: "♊",
-        Cancer: "♋",
-        Leo: "♌",
-        Virgo: "♍",
-        Libra: "♎",
-        Scorpio: "♏",
-        Sagittarius: "♐",
-        Capricorn: "♑",
-        Aquarius: "♒",
-        Pisces: "♓",
+      const PLANET_SYMBOL_IDS = {
+        Sun: "sun",
+        Moon: "moon",
+        Mercury: "mercury",
+        Venus: "venus",
+        Mars: "mars",
+        Jupiter: "jupiter",
+        Saturn: "saturn",
+        Uranus: "uranus",
+        Neptune: "neptune",
+        Pluto: "pluto",
+        NorthNode: "north-node",
+        SouthNode: "south-node",
+        Ascendant: "ascendant",
+        Descendant: "descendant",
+        MC: "mc",
+        IC: "ic",
+        Su: "sun",
+        Mo: "moon",
+        Me: "mercury",
+        Ve: "venus",
+        Ma: "mars",
+        Ju: "jupiter",
+        Sa: "saturn",
+        Ra: "north-node",
+        Ke: "south-node",
       };
-
-      const ASPECT_GLYPHS = {
-        conjunction: "☌",
-        sextile: "✶",
-        square: "□",
-        trine: "△",
-        opposition: "☍",
+      const SIGN_SYMBOL_IDS = {
+        Aries: "aries",
+        Taurus: "taurus",
+        Gemini: "gemini",
+        Cancer: "cancer",
+        Leo: "leo",
+        Virgo: "virgo",
+        Libra: "libra",
+        Scorpio: "scorpio",
+        Sagittarius: "sagittarius",
+        Capricorn: "capricorn",
+        Aquarius: "aquarius",
+        Pisces: "pisces",
       };
+      const ASPECT_SYMBOL_IDS = {
+        conjunction: "conjunction",
+        sextile: "sextile",
+        square: "square",
+        trine: "trine",
+        opposition: "opposition",
+        quincunx: "quincunx",
+      };
+      function iconPathById(symbolId) {
+        const rel = ICON_PATH_BY_ID[String(symbolId || "")];
+        return rel ? `${ASTRO_ICON_BASE}/${rel}` : "";
+      }
+      function iconImageHtml(symbolId, alt, size = 16) {
+        const src = iconPathById(symbolId);
+        if (!src) return "";
+        return `<span class="astro-inline-symbol__icon" style="width:${size}px;height:${size}px;"><img src="${src}" alt="${alt || ""}" loading="lazy" decoding="async"></span>`;
+      }
+      function symbolCell(symbolId, text, alt) {
+        const id = String(symbolId || "");
+        if (id && !iconPathById(id)) {
+          // Guardrail for future additions: unknown symbol ids should be visible during dev.
+          console.warn("[astro-icons] Unknown symbol id:", id);
+        }
+        return { symbolId: id, text: String(text || ""), alt: String(alt || text || "") };
+      }
 
       function planetGlyph(value) {
-        return PLANET_GLYPHS[String(value || "")] || "";
+        return PLANET_SYMBOL_IDS[String(value || "")] || "";
       }
 
       function signGlyph(value) {
-        return SIGN_GLYPHS[String(value || "")] || "";
+        return SIGN_SYMBOL_IDS[String(value || "")] || "";
       }
 
       function aspectGlyph(value) {
-        return ASPECT_GLYPHS[String(value || "")] || "";
+        return ASPECT_SYMBOL_IDS[String(value || "")] || "";
       }
 
       function localizePlanet(value) {
@@ -2193,7 +2283,28 @@
           const tr = document.createElement("tr");
           r.forEach((c) => {
             const td = document.createElement("td");
-            td.textContent = c;
+            const isSymbolCell = c && typeof c === "object" && Object.prototype.hasOwnProperty.call(c, "text");
+            if (isSymbolCell) {
+              const wrap = document.createElement("span");
+              wrap.className = "astro-inline-symbol";
+              if (c.symbolId) {
+                const iconWrap = document.createElement("span");
+                iconWrap.className = "astro-inline-symbol__icon";
+                const img = document.createElement("img");
+                img.src = iconPathById(c.symbolId);
+                img.alt = c.alt || "";
+                img.loading = "lazy";
+                img.decoding = "async";
+                iconWrap.appendChild(img);
+                wrap.appendChild(iconWrap);
+              }
+              const txt = document.createElement("span");
+              txt.textContent = c.text || "";
+              wrap.appendChild(txt);
+              td.appendChild(wrap);
+            } else {
+              td.textContent = c;
+            }
             tr.appendChild(td);
           });
           tbody.appendChild(tr);
@@ -2315,8 +2426,8 @@
             const pGlyph = planetGlyph(key);
             const sGlyph = signGlyph(v.sign);
             rows.push([
-              `${pGlyph ? pGlyph + " " : ""}${localizePlanet(key)}`,
-              `${sGlyph ? sGlyph + " " : ""}${localizeSign(v.sign)}`,
+              symbolCell(pGlyph, localizePlanet(key), localizePlanet(key)),
+              symbolCell(sGlyph, localizeSign(v.sign), localizeSign(v.sign)),
               v.house != null ? String(v.house) : "-",
               v.degree_in_sign != null ? `${Number(v.degree_in_sign).toFixed(2)}°` : "-",
             ]);
@@ -2325,8 +2436,8 @@
         if (asc != null) {
           const ascSign = signFromLongitude(asc);
           rows.push([
-            `${planetGlyph("Ascendant")} Ascendant`,
-            ascSign ? `${signGlyph(ascSign) ? signGlyph(ascSign) + " " : ""}${localizeSign(ascSign)}` : "-",
+            symbolCell(planetGlyph("Ascendant"), "Ascendant", "Ascendant"),
+            ascSign ? symbolCell(signGlyph(ascSign), localizeSign(ascSign), localizeSign(ascSign)) : "-",
             "1",
             `${Number(asc).toFixed(2)}°`,
           ]);
@@ -2342,8 +2453,8 @@
           const pGlyph = planetGlyph(key);
           const sGlyph = signGlyph(sign);
           rows.push([
-            `${pGlyph ? pGlyph + " " : ""}${localizePlanet(key)}`,
-            sign ? `${sGlyph ? sGlyph + " " : ""}${localizeSign(sign)}` : "-",
+            symbolCell(pGlyph, localizePlanet(key), localizePlanet(key)),
+            sign ? symbolCell(sGlyph, localizeSign(sign), localizeSign(sign)) : "-",
             "-",
             Number.isFinite(degInSign) ? `${degInSign.toFixed(2)}°` : "-",
           ]);
@@ -2376,7 +2487,11 @@
         );
         if (aspects.length) {
           const aspectRows = aspects.map((a) => [
-            `${planetGlyph(a.a) ? planetGlyph(a.a) + " " : ""}${localizePlanet(a.a)} ${aspectGlyph(a.type) ? aspectGlyph(a.type) + " " : ""}${localizeAspectType(a.type)} ${planetGlyph(a.b) ? planetGlyph(a.b) + " " : ""}${localizePlanet(a.b)}`,
+            symbolCell(
+              aspectGlyph(a.type),
+              `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`,
+              `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`
+            ),
             a.orb_deg != null ? `${Number(a.orb_deg).toFixed(2)}°` : "-",
             a.applying ? (isNL ? "Applicerend" : "Applying") : (isNL ? "Separerend" : "Separating"),
           ]);
@@ -2865,9 +2980,9 @@
       }
 
       function getWesternWheelSvg(data) {
-        const zodiacSymbols = ["\u2648", "\u2649", "\u264A", "\u264B", "\u264C", "\u264D", "\u264E", "\u264F", "\u2650", "\u2651", "\u2652", "\u2653"];
+        const zodiacSymbols = ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces"];
         const signOrderEn = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
-        const symbols = { Sun: "☉", Moon: "☾", Mercury: "☿", Venus: "♀", Mars: "♂", Jupiter: "♃", Saturn: "♄", Uranus: "♅", Neptune: "♆", Pluto: "♇", NorthNode: "☊" };
+        const symbols = { Sun: "sun", Moon: "moon", Mercury: "mercury", Venus: "venus", Mars: "mars", Jupiter: "jupiter", Saturn: "saturn", Uranus: "uranus", Neptune: "neptune", Pluto: "pluto", NorthNode: "north-node" };
         const placements = ((data.western || {}).placements) || {};
         const angles = (((data.western || {}).houses || {}).angles || {});
         const polar = (angle, radius) => {
@@ -2880,9 +2995,9 @@
           if (!p.sign || p.degree_in_sign == null) return;
           const idx = signOrderEn.indexOf(String(p.sign));
           if (idx < 0) return;
-          planets.push({ key: symbols[name] || name.slice(0, 2), angle: idx * 30 + Number(p.degree_in_sign) });
+          planets.push({ key: symbols[name] || "", label: name.slice(0, 2), angle: idx * 30 + Number(p.degree_in_sign) });
         });
-        if (angles.asc_deg != null) planets.push({ key: "Asc", angle: Number(angles.asc_deg) });
+        if (angles.asc_deg != null) planets.push({ key: "ascendant", label: "Asc", angle: Number(angles.asc_deg) });
         const hasPlanetData = planets.length > 0;
         const signDeg = (sign, degreeInSign) => {
           const idx = signOrderEn.indexOf(String(sign || ""));
@@ -2906,7 +3021,12 @@
           const label = polar(i * 30 + 15, 154);
           const houseLabel = polar(i * 30 + 15, 112);
           svg += `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" stroke="#dcc8f2" stroke-width="1"/>`;
-          svg += `<text x="${label.x}" y="${label.y}" text-anchor="middle" dominant-baseline="middle" font-size="16" fill="#6a5c86">${zodiacSymbols[i]}</text>`;
+          const signIcon = iconPathById(zodiacSymbols[i]);
+          if (signIcon) {
+            svg += `<image href="${signIcon}" x="${label.x - 9}" y="${label.y - 9}" width="18" height="18" />`;
+          } else {
+            svg += `<text x="${label.x}" y="${label.y}" text-anchor="middle" dominant-baseline="middle" font-size="16" fill="#6a5c86">${zodiacSymbols[i]}</text>`;
+          }
           svg += `<text x="${houseLabel.x}" y="${houseLabel.y}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#8f80aa">${i + 1}</text>`;
         }
         const aspects = Array.isArray((data.western || {}).aspects) ? (data.western || {}).aspects : [];
@@ -2928,11 +3048,17 @@
         });
         planets.forEach((planet, index) => {
           const p = polar(planet.angle, 78 + (index % 3) * 12);
-          const r = planet.key === "Asc" ? 17 : 14;
-          const fill = planet.key === "Asc" ? "#C9A24D" : "#884DC9";
-          const fs = planet.key === "Asc" ? 10 : 13;
+          const r = planet.key === "ascendant" ? 17 : 14;
+          const fill = planet.key === "ascendant" ? "#C9A24D" : "#884DC9";
+          const fs = planet.key === "ascendant" ? 10 : 13;
           svg += `<circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${fill}" opacity="0.95"/>`;
-          svg += `<text x="${p.x}" y="${p.y + 1}" text-anchor="middle" dominant-baseline="middle" font-size="${fs}" fill="#ffffff">${planet.key}</text>`;
+          const planetIcon = iconPathById(planet.key);
+          if (planetIcon) {
+            const iconSize = planet.key === "ascendant" ? 14 : 12;
+            svg += `<image href="${planetIcon}" x="${p.x - iconSize / 2}" y="${p.y - iconSize / 2}" width="${iconSize}" height="${iconSize}" />`;
+          } else {
+            svg += `<text x="${p.x}" y="${p.y + 1}" text-anchor="middle" dominant-baseline="middle" font-size="${fs}" fill="#ffffff">${planet.label || ""}</text>`;
+          }
         });
         if (!hasPlanetData) {
           const msg = uiIsNL()
@@ -2953,29 +3079,29 @@
           line: "#DCC8F2",
         };
         const signs = [
-          { id: 1, glyph: "♈", name: "Ram", sanskrit: "Mesha", alt: "Ram / Mesha: vuur, initiatief, begin, directe beweging." },
-          { id: 2, glyph: "♉", name: "Stier", sanskrit: "Vrishabha", alt: "Stier / Vrishabha: aarde, lichaam, zintuigen, stabiliteit." },
-          { id: 3, glyph: "♊", name: "Tweelingen", sanskrit: "Mithuna", alt: "Tweelingen / Mithuna: lucht, communicatie, leren, verbinding." },
-          { id: 4, glyph: "♋", name: "Kreeft", sanskrit: "Karka", alt: "Kreeft / Karka: water, emotie, thuis, bescherming." },
-          { id: 5, glyph: "♌", name: "Leeuw", sanskrit: "Simha", alt: "Leeuw / Simha: vuur, hart, expressie, zichtbaarheid." },
-          { id: 6, glyph: "♍", name: "Maagd", sanskrit: "Kanya", alt: "Maagd / Kanya: aarde, analyse, gezondheid, verfijning." },
-          { id: 7, glyph: "♎", name: "Weegschaal", sanskrit: "Tula", alt: "Weegschaal / Tula: lucht, balans, relatie, afstemming." },
-          { id: 8, glyph: "♏", name: "Schorpioen", sanskrit: "Vrischika", alt: "Schorpioen / Vrischika: water, diepte, transformatie, intensiteit." },
-          { id: 9, glyph: "♐", name: "Boogschutter", sanskrit: "Dhanu", alt: "Boogschutter / Dhanu: vuur, wijsheid, richting, zingeving." },
-          { id: 10, glyph: "♑", name: "Steenbok", sanskrit: "Makara", alt: "Steenbok / Makara: aarde, structuur, verantwoordelijkheid, rijping." },
-          { id: 11, glyph: "♒", name: "Waterman", sanskrit: "Kumbha", alt: "Waterman / Kumbha: lucht, groepen, vernieuwing, collectief." },
-          { id: 12, glyph: "♓", name: "Vissen", sanskrit: "Meena", alt: "Vissen / Meena: water, intuïtie, overgave, loslaten." },
+          { id: 1, symbolId: "aries", name: "Ram", sanskrit: "Mesha", alt: "Ram / Mesha: vuur, initiatief, begin, directe beweging." },
+          { id: 2, symbolId: "taurus", name: "Stier", sanskrit: "Vrishabha", alt: "Stier / Vrishabha: aarde, lichaam, zintuigen, stabiliteit." },
+          { id: 3, symbolId: "gemini", name: "Tweelingen", sanskrit: "Mithuna", alt: "Tweelingen / Mithuna: lucht, communicatie, leren, verbinding." },
+          { id: 4, symbolId: "cancer", name: "Kreeft", sanskrit: "Karka", alt: "Kreeft / Karka: water, emotie, thuis, bescherming." },
+          { id: 5, symbolId: "leo", name: "Leeuw", sanskrit: "Simha", alt: "Leeuw / Simha: vuur, hart, expressie, zichtbaarheid." },
+          { id: 6, symbolId: "virgo", name: "Maagd", sanskrit: "Kanya", alt: "Maagd / Kanya: aarde, analyse, gezondheid, verfijning." },
+          { id: 7, symbolId: "libra", name: "Weegschaal", sanskrit: "Tula", alt: "Weegschaal / Tula: lucht, balans, relatie, afstemming." },
+          { id: 8, symbolId: "scorpio", name: "Schorpioen", sanskrit: "Vrischika", alt: "Schorpioen / Vrischika: water, diepte, transformatie, intensiteit." },
+          { id: 9, symbolId: "sagittarius", name: "Boogschutter", sanskrit: "Dhanu", alt: "Boogschutter / Dhanu: vuur, wijsheid, richting, zingeving." },
+          { id: 10, symbolId: "capricorn", name: "Steenbok", sanskrit: "Makara", alt: "Steenbok / Makara: aarde, structuur, verantwoordelijkheid, rijping." },
+          { id: 11, symbolId: "aquarius", name: "Waterman", sanskrit: "Kumbha", alt: "Waterman / Kumbha: lucht, groepen, vernieuwing, collectief." },
+          { id: 12, symbolId: "pisces", name: "Vissen", sanskrit: "Meena", alt: "Vissen / Meena: water, intuïtie, overgave, loslaten." },
         ];
         const planetInfo = {
-          Su: { name: "Zon", symbol: "☉", color: "#E67E22", alt: "Zon / Surya: zielskern, vitaliteit, autoriteit, bewustzijn." },
-          Mo: { name: "Maan", symbol: "☽", color: "#5A5A5A", alt: "Maan / Chandra: gevoel, geest, ritme, intuïtie." },
-          Ma: { name: "Mars", symbol: "♂", color: "#C92127", alt: "Mars / Mangala: energie, actie, moed, wilskracht." },
-          Me: { name: "Mercurius", symbol: "☿", color: "#2F7D32", alt: "Mercurius / Budha: communicatie, denken, leren, intellect." },
-          Ju: { name: "Jupiter", symbol: "♃", color: "#E88918", alt: "Jupiter / Guru: groei, wijsheid, geluk, leraarenergie." },
-          Ve: { name: "Venus", symbol: "♀", color: "#D94D73", alt: "Venus / Shukra: liefde, relaties, schoonheid, plezier." },
-          Sa: { name: "Saturnus", symbol: "♄", color: "#315B9A", alt: "Saturnus / Shani: discipline, karma, structuur, tijd." },
-          Ra: { name: "Rahu", symbol: "☊", color: "#33245C", alt: "Rahu: ambitie, illusie, honger, materiële groei." },
-          Ke: { name: "Ketu", symbol: "☋", color: "#555555", alt: "Ketu: spiritualiteit, loslaten, oude patronen, onthechting." },
+          Su: { name: "Zon", symbolId: "sun", color: "#E67E22", alt: "Zon / Surya: zielskern, vitaliteit, autoriteit, bewustzijn." },
+          Mo: { name: "Maan", symbolId: "moon", color: "#5A5A5A", alt: "Maan / Chandra: gevoel, geest, ritme, intuïtie." },
+          Ma: { name: "Mars", symbolId: "mars", color: "#C92127", alt: "Mars / Mangala: energie, actie, moed, wilskracht." },
+          Me: { name: "Mercurius", symbolId: "mercury", color: "#2F7D32", alt: "Mercurius / Budha: communicatie, denken, leren, intellect." },
+          Ju: { name: "Jupiter", symbolId: "jupiter", color: "#E88918", alt: "Jupiter / Guru: groei, wijsheid, geluk, leraarenergie." },
+          Ve: { name: "Venus", symbolId: "venus", color: "#D94D73", alt: "Venus / Shukra: liefde, relaties, schoonheid, plezier." },
+          Sa: { name: "Saturnus", symbolId: "saturn", color: "#315B9A", alt: "Saturnus / Shani: discipline, karma, structuur, tijd." },
+          Ra: { name: "Rahu", symbolId: "north-node", color: "#33245C", alt: "Rahu: ambitie, illusie, honger, materiële groei." },
+          Ke: { name: "Ketu", symbolId: "south-node", color: "#555555", alt: "Ketu: spiritualiteit, loslaten, oude patronen, onthechting." },
         };
         const houseNames = {
           1: "Zelfbeeld", 2: "Waarde", 3: "Moed", 4: "Basis",
@@ -3045,6 +3171,19 @@
           svg.appendChild(el);
           return el;
         };
+        const addIcon = (x, y, symbolId, size, attrs) => {
+          const src = iconPathById(symbolId);
+          if (!src) return null;
+          const image = document.createElementNS(svgNS, "image");
+          image.setAttribute("x", String(x - size / 2));
+          image.setAttribute("y", String(y - size / 2));
+          image.setAttribute("width", String(size));
+          image.setAttribute("height", String(size));
+          image.setAttribute("href", src);
+          Object.entries(attrs || {}).forEach(([k, v]) => image.setAttribute(k, String(v)));
+          svg.appendChild(image);
+          return image;
+        };
 
         const rect = document.createElementNS(svgNS, "rect");
         rect.setAttribute("x", "0");
@@ -3083,12 +3222,12 @@
             fill: BRAND.gold, "font-family": "Lora, Georgia, serif", "font-size": "2.4px", "font-weight": "600",
           });
 
-          const signText = addText(cell.x, cell.y - 1.5, sign.glyph, {
-            fill: BRAND.purple, "font-size": "5.3px", "font-weight": "700", style: "cursor:help;",
-          });
-          signText.addEventListener("mouseenter", (ev) => setTip(ev, sign.alt));
-          signText.addEventListener("mousemove", (ev) => setTip(ev, sign.alt));
-          signText.addEventListener("mouseleave", clearTip);
+          const signIcon = addIcon(cell.x, cell.y - 1.5, sign.symbolId, 5.8, { style: "cursor:help;" });
+          if (signIcon) {
+            signIcon.addEventListener("mouseenter", (ev) => setTip(ev, sign.alt));
+            signIcon.addEventListener("mousemove", (ev) => setTip(ev, sign.alt));
+            signIcon.addEventListener("mouseleave", clearTip);
+          }
 
           if (cell.house === 1) {
             const ascText = addText(cell.x, cell.y + 4.4, "Asc", {
@@ -3105,12 +3244,12 @@
             const spacing = planetRows.length > 2 ? 4.2 : 5;
             const startX = cell.x - ((planetRows.length - 1) * spacing) / 2;
             planetRows.forEach((planet, idx) => {
-              const pText = addText(startX + idx * spacing, cell.y + 6.9, planet.info.symbol, {
-                fill: planet.info.color, "font-size": "4px", "font-weight": "700", style: "cursor:help;",
-              });
-              pText.addEventListener("mouseenter", (ev) => setTip(ev, tip));
-              pText.addEventListener("mousemove", (ev) => setTip(ev, tip));
-              pText.addEventListener("mouseleave", clearTip);
+              const pIcon = addIcon(startX + idx * spacing, cell.y + 6.9, planet.info.symbolId, 4.8, { style: "cursor:help;" });
+              if (pIcon) {
+                pIcon.addEventListener("mouseenter", (ev) => setTip(ev, tip));
+                pIcon.addEventListener("mousemove", (ev) => setTip(ev, tip));
+                pIcon.addEventListener("mouseleave", clearTip);
+              }
             });
           }
         });
@@ -3694,9 +3833,9 @@
             const signIdx = (ascendantSignId + house - 2) % 12;
             const signName = signs[signIdx];
             return [
-              `${planetGlyph(pl.key) || ""} ${getVedicPlanetDisplay(pl.key, isNL)}`.trim(),
+              symbolCell(planetGlyph(pl.key), getVedicPlanetDisplay(pl.key, isNL), getVedicPlanetDisplay(pl.key, isNL)),
               String(house),
-              `${signGlyph(signName) || ""} ${getVedicSignLabel(signName, isNL)}`.trim(),
+              symbolCell(signGlyph(signName), getVedicSignLabel(signName, isNL), getVedicSignLabel(signName, isNL)),
               houseMeta[house] || "-",
             ];
           });
@@ -3713,7 +3852,7 @@
             const signName = signs[signIdx];
             return [
               String(house),
-              `${signGlyph(signName) || ""} ${getVedicSignLabel(signName, isNL)}`.trim(),
+              symbolCell(signGlyph(signName), getVedicSignLabel(signName, isNL), getVedicSignLabel(signName, isNL)),
               houseMeta[house] || "-",
             ];
           });
@@ -4105,7 +4244,12 @@
           if (hasCode) {
             const code = document.createElement("span");
             code.className = "legend-card__code";
-            code.textContent = item.codeLabel;
+            if (item.codeLabel && typeof item.codeLabel === "object") {
+              const labelObj = item.codeLabel;
+              code.innerHTML = `${iconImageHtml(labelObj.symbolId, labelObj.alt || labelObj.text, 16)}<span>${labelObj.text || ""}</span>`;
+            } else {
+              code.textContent = item.codeLabel;
+            }
             if (item.codeTitle) {
               code.setAttribute("title", item.codeTitle);
               code.setAttribute("aria-label", item.codeTitle);
@@ -4573,6 +4717,12 @@
       }
 
       function appendVedicGlossaryLegend(frag) {
+        const symbolByGlossaryId = {
+          surya: "sun", chandra: "moon", mangala: "mars", budha: "mercury", guru: "jupiter", shukra: "venus", shani: "saturn",
+          rahu: "north-node", ketu: "south-node",
+          mesha: "aries", vrishabha: "taurus", mithuna: "gemini", karka: "cancer", simha: "leo", kanya: "virgo",
+          tula: "libra", vrischika: "scorpio", dhanu: "sagittarius", makara: "capricorn", kumbha: "aquarius", meena: "pisces",
+        };
         jyotishGlossarySections().forEach((section) => {
           appendLegendSection(frag, {
             id: section.id,
@@ -4581,7 +4731,9 @@
             lead: section.intro,
             items: (section.items || []).map((item) => ({
               id: item.id,
-              codeLabel: item.symbol || item.code || "",
+              codeLabel: symbolByGlossaryId[item.id]
+                ? symbolCell(symbolByGlossaryId[item.id], item.title || item.code || "", item.alt || item.title || "")
+                : (item.code || item.title || ""),
               codeTitle: item.alt || item.meaning || item.title || "",
               badge: item.badge || item.category || "",
               title: item.title || "",
@@ -4593,6 +4745,15 @@
       }
 
       function appendWesternGlossaryLegend(frag) {
+        const symbolByGlossaryId = {
+          aries: "aries", taurus: "taurus", gemini: "gemini", cancer: "cancer", leo: "leo", virgo: "virgo",
+          libra: "libra", scorpio: "scorpio", sagittarius: "sagittarius", capricorn: "capricorn", aquarius: "aquarius", pisces: "pisces",
+          sun: "sun", moon: "moon", mercury: "mercury", venus: "venus", mars: "mars", jupiter: "jupiter", saturn: "saturn",
+          uranus: "uranus", neptune: "neptune", pluto: "pluto", "north-node": "north-node", "south-node": "south-node",
+          asc: "ascendant", dsc: "descendant", mc: "mc", ic: "ic",
+          conjunction: "conjunction", sextile: "sextile", square: "square", trine: "trine", opposition: "opposition", quincunx: "quincunx",
+          vuur: "fire", aarde: "earth", lucht: "air", water: "water",
+        };
         westernGlossarySections().forEach((section) => {
           appendLegendSection(frag, {
             id: section.id,
@@ -4601,7 +4762,9 @@
             lead: section.intro,
             items: (section.items || []).map((item) => ({
               id: item.id,
-              codeLabel: item.symbol || item.code || item.degree || "",
+              codeLabel: symbolByGlossaryId[item.id]
+                ? symbolCell(symbolByGlossaryId[item.id], item.title || item.symbol || item.code || "", item.alt || item.title || "")
+                : (item.code || item.degree || item.title || ""),
               codeTitle: item.alt || item.meaning || item.title || "",
               badge: item.badge || item.category || "",
               title: item.title || "",

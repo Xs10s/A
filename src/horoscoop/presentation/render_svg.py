@@ -8,6 +8,7 @@ from __future__ import annotations
 import math
 from html import escape
 from typing import Any, Dict, List, Optional, Tuple
+from .astro_symbols import get_astro_symbol_or_fallback, get_inline_svg_payload
 
 STEM_META: Dict[str, Dict[str, str]] = {
     "Jiǎ": {"hanzi": "甲", "name_ascii": "Jia", "yin_yang": "Yang", "element_en": "Wood", "element_nl": "Hout"},
@@ -114,6 +115,22 @@ def _pol2xy(cx: float, cy: float, r: float, deg: float) -> Tuple[float, float]:
     return (cx + r * math.cos(a), cy + r * math.sin(a))
 
 
+def _render_symbol_icon(symbol_id: str, x: float, y: float, size: float) -> str:
+    payload = get_inline_svg_payload(symbol_id)
+    if payload:
+        viewbox, inner = payload
+        return (
+            f'<svg x="{x - size / 2.0:.1f}" y="{y - size / 2.0:.1f}" width="{size:.1f}" height="{size:.1f}" '
+            f'viewBox="{escape(viewbox)}" aria-hidden="true">{inner}</svg>'
+        )
+    fallback = get_astro_symbol_or_fallback(symbol_id).unicodeFallback or "?"
+    font_size = max(10, int(size * 0.65))
+    return (
+        f'<text x="{x:.1f}" y="{y:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="{font_size}" '
+        f'font-weight="700" text-anchor="middle" dominant-baseline="middle">{escape(fallback)}</text>'
+    )
+
+
 def render_wheel_svg(
     planet_lons_deg: Dict[str, float],
     house_cusps_deg: Optional[List[float]] = None,
@@ -137,15 +154,18 @@ def render_wheel_svg(
     r_houses_inner = r_outer * 0.60
     r_planets = r_outer * 0.69
 
-    zodiac_glyphs = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"]
-    planet_glyphs = {
-        "Su": "☉",
-        "Mo": "☽",
-        "Me": "☿",
-        "Ve": "♀",
-        "Ma": "♂",
-        "Ju": "♃",
-        "Sa": "♄",
+    zodiac_symbol_ids = [
+        "aries", "taurus", "gemini", "cancer", "leo", "virgo",
+        "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces",
+    ]
+    planet_symbol_ids = {
+        "Su": "sun",
+        "Mo": "moon",
+        "Me": "mercury",
+        "Ve": "venus",
+        "Ma": "mars",
+        "Ju": "jupiter",
+        "Sa": "saturn",
     }
 
     aspect_palette = {
@@ -189,11 +209,11 @@ def render_wheel_svg(
             )
         )
 
-    # 12 zodiac divisions + glyphs
+    # 12 zodiac divisions + custom icons
     for k in range(12):
         parts.append(line(k * 30.0, r_zodiac_inner, r_zodiac_outer, stroke="#888"))
         gx, gy = _pol2xy(cx, cy, (r_zodiac_outer + r_zodiac_inner) / 2.0, k * 30.0 + 15.0)
-        parts.append(text(gx, gy, zodiac_glyphs[k], size_px=20, weight="700"))
+        parts.append(_render_symbol_icon(zodiac_symbol_ids[k], gx, gy, 24.0))
 
     # House cusps and numbers
     if house_cusps_deg:
@@ -217,8 +237,11 @@ def render_wheel_svg(
         parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.2" fill="#000"/>')
         lx, ly = _pol2xy(cx, cy, r_planets * 0.93, lon)
         label_key = str(name)[:2] if name else "??"
-        glyph = planet_glyphs.get(label_key, label_key)
-        parts.append(text(lx, ly, glyph, size_px=13, weight="700"))
+        symbol_id = planet_symbol_ids.get(label_key)
+        if symbol_id:
+            parts.append(_render_symbol_icon(symbol_id, lx, ly, 17.0))
+        else:
+            parts.append(text(lx, ly, label_key, size_px=13, weight="700"))
         # Keep compact Latin keys in SVG for compatibility/tests.
         ax, ay = _pol2xy(cx, cy, r_planets * 0.985, lon)
         parts.append(text(ax, ay, label_key, size_px=8, weight="400"))
@@ -269,7 +292,7 @@ def render_wheel_svg(
         f'<text x="{lx + 10:.1f}" y="{ly + 18:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="12" font-weight="700">LEGENDA</text>'
     )
     legend_items = [
-        ("☉ ☽ ☿ ♀ ♂ ♃ ♄", "Planeten / Planets", "#111"),
+        ("Planeten / Planets", "custom", "#111"),
         ("ASC", "Ascendant", "#111"),
         ("Conjunctie / Conjunction", "0°", aspect_palette["conjunction"]),
         ("Sextiel / Sextile", "60°", aspect_palette["sextile"]),
@@ -280,12 +303,22 @@ def render_wheel_svg(
     yy = ly + 38
     for left, right, col in legend_items:
         parts.append(f'<line x1="{lx + 10:.1f}" y1="{yy - 4:.1f}" x2="{lx + 28:.1f}" y2="{yy - 4:.1f}" stroke="{col}" stroke-width="2"/>')
-        parts.append(
-            f'<text x="{lx + 34:.1f}" y="{yy:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="10" fill="#222">{escape(left)}</text>'
-        )
-        parts.append(
-            f'<text x="{lx + 188:.1f}" y="{yy:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="10" fill="#555">{escape(right)}</text>'
-        )
+        if right == "custom":
+            icon_ids = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn"]
+            start_x = lx + 34.0
+            for idx, icon_id in enumerate(icon_ids):
+                parts.append(_render_symbol_icon(icon_id, start_x + idx * 14.0, yy - 4.0, 12.0))
+            parts.append(
+                f'<text x="{lx + 138:.1f}" y="{yy:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="10" fill="#222">{escape(left)}</text>'
+            )
+        else:
+            parts.append(
+                f'<text x="{lx + 34:.1f}" y="{yy:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="10" fill="#222">{escape(left)}</text>'
+            )
+        if right != "custom":
+            parts.append(
+                f'<text x="{lx + 188:.1f}" y="{yy:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="10" fill="#555">{escape(right)}</text>'
+            )
         yy += 18
 
     parts.append("</svg>")
@@ -570,15 +603,15 @@ def render_panchanga_banner_svg(
     for tx, ty, t in topics:
         parts.append(f'<text x="{tx:.1f}" y="{ty:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="19" font-weight="700" fill="#2f2f2f" text-anchor="middle">{escape(title(t))}</text>')
 
-    # Vedic planets (graha symbols + Sanskrit/Devanagari), positioned by sidereal longitude
+    # Vedic planets (custom symbols + Sanskrit/Devanagari), positioned by sidereal longitude
     graha_meta: Dict[str, Tuple[str, str, str]] = {
-        "Sun": ("☉", "Surya", "सूर्य"),
-        "Moon": ("☽", "Chandra", "चन्द्र"),
-        "Mars": ("♂", "Mangala", "मंगल"),
-        "Mercury": ("☿", "Budha", "बुध"),
-        "Jupiter": ("♃", "Guru", "गुरु"),
-        "Venus": ("♀", "Shukra", "शुक्र"),
-        "Saturn": ("♄", "Shani", "शनि"),
+        "Sun": ("sun", "Surya", "सूर्य"),
+        "Moon": ("moon", "Chandra", "चन्द्र"),
+        "Mars": ("mars", "Mangala", "मंगल"),
+        "Mercury": ("mercury", "Budha", "बुध"),
+        "Jupiter": ("jupiter", "Guru", "गुरु"),
+        "Venus": ("venus", "Shukra", "शुक्र"),
+        "Saturn": ("saturn", "Shani", "शनि"),
     }
     try:
         bodies = (engine_json.get("astronomy") or {}).get("bodies") or {}
@@ -598,7 +631,7 @@ def render_panchanga_banner_svg(
         for key in graha_order:
             if key not in graha_meta:
                 continue
-            sym, latin, deva = graha_meta[key]
+            symbol_id, latin, deva = graha_meta[key]
             b = bodies.get(key) or {}
             lon = b.get("lon_deg") if isinstance(b, dict) else None
             if lon is None:
@@ -632,7 +665,7 @@ def render_panchanga_banner_svg(
                     gy += math.cos(ang) * 8.0
             plotted.append((gx, gy))
             parts.append(f'<rect x="{gx - 17:.1f}" y="{gy - 13:.1f}" width="34" height="26" fill="#ffffff" stroke="#d7c7eb" stroke-width="1"/>')
-            parts.append(f'<text x="{gx:.1f}" y="{gy - 1:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="13" font-weight="700" fill="#2f2f2f" text-anchor="middle">{escape(sym)}</text>')
+            parts.append(_render_symbol_icon(symbol_id, gx, gy - 1.0, 13.0))
             label = f"{deva} {latin}" if not is_en else f"{deva} {latin}"
             parts.append(f'<text x="{gx:.1f}" y="{gy + 12:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="9" fill="#6f6f6f" text-anchor="middle">{escape(label)}</text>')
     except Exception:

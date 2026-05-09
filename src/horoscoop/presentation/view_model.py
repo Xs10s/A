@@ -14,6 +14,7 @@ from .formatters import (
     SIGN_CODES,
 )
 from .diagnostics import normalize_diagnostics
+from .astro_symbols import get_astro_symbol_or_fallback
 
 
 def _input_summary(engine_json: dict[str, Any]) -> dict[str, Any]:
@@ -174,8 +175,7 @@ def _aspect_table(engine_json: dict[str, Any]) -> list[dict[str, Any]]:
         body_b = a.get("b", "")
         label_a = BODY_LABELS_NL.get(body_a, body_a)
         label_b = BODY_LABELS_NL.get(body_b, body_b)
-        aspect_symbols = {"conjunction": "☌", "sextile": "⚹", "square": "□", "trine": "△", "opposition": "☍"}
-        sym = aspect_symbols.get(a.get("type", ""), a.get("type", ""))
+        sym = get_astro_symbol_or_fallback(a.get("type", "")).unicodeFallback or a.get("type", "")
         pair = f"{label_a} {sym} {label_b}"
         orb_str = format_degrees(orb)
         if applying:

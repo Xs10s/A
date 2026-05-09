@@ -36,6 +36,7 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8001
 - Follow existing project conventions.
 - Keep functions deterministic and explicit where possible.
 - Prefer clear naming and small, testable units.
+- Astrological symbols/icons must use the central icon set (`/static/icons/astro`) via shared symbol helpers. Do not add new hardcoded unicode glyphs in rendering paths.
 
 ## Reporting issues
 

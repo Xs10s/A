@@ -1511,7 +1511,6 @@
           <div class="tab" data-tab="bazi">BaZi</div>
           <div class="tab" data-tab="humandesign">Human Design</div>
           <div class="tab" data-tab="maya">Maya</div>
-          <div class="tab" data-tab="cross">Cross-Systeem</div>
         </div>
 
         <div id="panel-energie" class="tab-panel tab-panel--merged active"></div>
@@ -1520,7 +1519,6 @@
         <div id="panel-bazi" class="tab-panel tab-panel--merged"></div>
         <div id="panel-humandesign" class="tab-panel tab-panel--merged"></div>
         <div id="panel-maya" class="tab-panel tab-panel--merged"></div>
-        <div id="panel-cross" class="tab-panel tab-panel--merged"></div>
 
         <div class="actions">
           <button type="button" id="download-pdf" class="btn btn-secondary">
@@ -1550,7 +1548,6 @@
       let lastEnergy = null;
       let lastCombinedEnergy = null;
       let lastInterpretations = null;
-      let lastCrossSystem = null;
 
       function currentLocale() {
         const el = document.getElementById("ui-locale");
@@ -1801,12 +1798,6 @@
           } catch (e) {
             lastInterpretations = null;
           }
-          try {
-            const csRes = await callApi("/api/cross-system?locale=" + encodeURIComponent(locale));
-            lastCrossSystem = await csRes.json();
-          } catch (e) {
-            lastCrossSystem = null;
-          }
           results.style.display = "block";
           await renderResult(json);
         } catch (err) {
@@ -1889,10 +1880,6 @@
         const panelMaya = document.getElementById("panel-maya");
         panelMaya.innerHTML = "";
         panelMaya.appendChild(await renderMayaTab(data));
-
-        const panelCross = document.getElementById("panel-cross");
-        panelCross.innerHTML = "";
-        panelCross.appendChild(renderCrossSystemTab(data, lastCrossSystem));
 
         const heroSlot = document.getElementById("dashboard-hero");
         heroSlot.innerHTML = "";
@@ -3851,81 +3838,6 @@
           ));
           intro.appendChild(cycCard);
         }
-
-        root.appendChild(intro);
-        return root;
-      }
-
-      // ---------------- Cross-system ----------------
-
-      function renderCrossSystemTab(data, cs) {
-        const isNL = uiIsNL();
-        const root = createEl("section", "astro-shell");
-        const intro = createEl("section", "astro-method-visual");
-        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Synthese" : "Synthesis"));
-        intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Cross-systeem resonantie" : "Cross-system resonance"));
-
-        if (!cs) {
-          intro.appendChild(createEl("p", "astro-section-sub", isNL ? "Cross-systeem laag is nog niet geladen." : "Cross-system layer is not loaded yet."));
-          root.appendChild(intro);
-          return root;
-        }
-
-        intro.appendChild(createEl("p", "astro-section-sub", String(cs.summary || "")));
-
-        const conv = cs.convergence || {};
-        const g3 = createEl("div", "astro-grid-3");
-        g3.appendChild(createAstroCard(
-          isNL ? "Element" : "Element",
-          isNL ? "Convergerend element" : "Converging element",
-          `${conv.element || "-"} (${conv.agreement_score_element || 0}/4 ${isNL ? "methodes akkoord" : "methods agree"})`
-        ));
-        g3.appendChild(createAstroCard(
-          isNL ? "Polariteit" : "Polarity",
-          isNL ? "Yang/Yin balans over methodes" : "Yang/Yin balance across methods",
-          String(conv.polarity || "-")
-        ));
-        g3.appendChild(createAstroCard(
-          isNL ? "Coherentie" : "Coherence",
-          isNL ? "Hoe sterk methodes elkaar bevestigen" : "How strongly methods reinforce each other",
-          (conv.agreement_score_element || 0) >= 3
-            ? (isNL ? "Hoge convergentie" : "High convergence")
-            : (conv.agreement_score_element || 0) === 2
-              ? (isNL ? "Gedeeltelijke convergentie" : "Partial convergence")
-              : (isNL ? "Diverse perspectieven" : "Diverse perspectives")
-        ));
-        intro.appendChild(g3);
-
-        const sectionsList = Array.isArray(cs.sections) ? cs.sections : [];
-        sectionsList.forEach((sec) => {
-          if (!sec || !sec.title) return;
-          const card = createAstroCard(
-            String(sec.title),
-            "",
-            String(sec.text || "")
-          );
-          // Add per-system tags
-          const data_ = sec.data || {};
-          if (sec.key === "element_resonance" && data_.systems) {
-            const tagWrap = createEl("div");
-            tagWrap.style.marginTop = "8px";
-            tagWrap.style.fontSize = "11px";
-            tagWrap.style.color = "#846da4";
-            Object.entries(data_.systems).forEach(([k, v]) => {
-              const t = createEl("span");
-              t.style.display = "inline-block";
-              t.style.padding = "3px 8px";
-              t.style.marginRight = "6px";
-              t.style.marginTop = "4px";
-              t.style.border = "1px solid #eadff8";
-              t.style.background = "#faf7ff";
-              t.textContent = `${k}: ${v || "-"}`;
-              tagWrap.appendChild(t);
-            });
-            card.appendChild(tagWrap);
-          }
-          intro.appendChild(card);
-        });
 
         root.appendChild(intro);
         return root;

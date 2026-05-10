@@ -1,2 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#884DC9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><text x="12" y="15.2" text-anchor="middle" font-size="10.0" font-family="Inter, Arial, sans-serif" font-weight="600" fill="#884DC9" stroke="none">M</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#884DC9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M5 17.2V6.8l3.8 4.6L12.8 6.8l3.8 4.6L20.2 6.8v10.4"/>
 </svg>

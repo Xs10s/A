@@ -488,7 +488,7 @@
         padding: 6px 8px 8px;
         border: 0;
         border-top: 1px solid #eadff6;
-        background: #faf8fc;
+        background: #fff;
         max-height: none;
         overflow: visible;
       }
@@ -626,10 +626,11 @@
         gap: 12px;
       }
       .method-layout--western-tight .western-chart-ruler__unified--stamp {
-        border: 0;
-        background: transparent;
-        padding: 0;
-        gap: 6px;
+        border: 1px solid #eadff6;
+        background: #fff;
+        padding: 14px 16px;
+        gap: 10px;
+        box-shadow: none;
       }
       .method-layout--western-tight .western-chart-ruler__stamp-row {
         display: flex;
@@ -669,23 +670,6 @@
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
-      }
-      .method-layout--western-tight .western-chart-ruler__stamp-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px 14px;
-        margin-top: 2px;
-      }
-      .method-layout--western-tight .western-chart-ruler__stamp-link {
-        font-family: "Inter", system-ui, sans-serif;
-        font-size: 11px;
-        font-weight: 600;
-        color: #6b4ea7;
-        text-decoration: underline;
-        text-underline-offset: 2px;
-      }
-      .method-layout--western-tight .western-chart-ruler__stamp-link:hover {
-        color: #4a2f7a;
       }
       .method-layout--western-tight .western-chart-ruler__glyph--stamp {
         width: 34px;
@@ -1114,6 +1098,9 @@
       .method-layout--western-tight .astro-wheel-wrap svg .wheel-house-hit:hover {
         fill: rgba(136, 77, 201, 0.12);
       }
+      .method-layout--western-tight .astro-wheel-wrap svg path.wheel-house-hit {
+        cursor: pointer;
+      }
       .method-layout--western-tight .astro-wheel-wrap svg .wheel-axis-hit:hover line {
         stroke: #884dc9;
       }
@@ -1133,6 +1120,11 @@
       .method-layout--western-tight .astro-wheel-wrap svg circle.wheel-house-hit.is-wheel-selected {
         stroke: #884dc9;
         stroke-width: 1.5;
+      }
+      .method-layout--western-tight .astro-wheel-wrap svg path.wheel-house-hit.is-wheel-selected {
+        stroke: #884dc9;
+        stroke-width: 1.5;
+        fill: rgba(136, 77, 201, 0.1);
       }
       .method-layout--western-tight .western-info-toggle {
         display: none;
@@ -1257,6 +1249,46 @@
       }
       .method-layout--western-tight .western-aspect-theme-card__list li {
         margin: 0 0 6px 0;
+      }
+      .method-layout--western-tight .western-aspect-theme-card__list li.western-aspect-theme-card__aspect-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        list-style: none;
+        margin-left: -1.05em;
+      }
+      .method-layout--western-tight .western-aspect-theme-card__aspect-icons {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .method-layout--western-tight .western-aspect-theme-card__aspect-note {
+        margin: 0;
+        max-width: 100%;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 12px;
+        line-height: 1.5;
+        font-weight: 500;
+        color: #5a536f;
+      }
+      .method-layout--western-tight .western-aspect-theme-card__list li.western-aspect-theme-card__aspect-row .astro-inline-symbol__icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+      .method-layout--western-tight .western-aspect-theme-card__list li.western-aspect-theme-card__aspect-row .astro-inline-symbol__icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .method-layout--western-tight .western-aspect-fallback {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #4f4961;
       }
       .method-layout--western-tight .western-aspect-theme-card__list li:last-child {
         margin-bottom: 0;
@@ -2047,8 +2079,16 @@
         text-transform: none;
         display: inline-flex;
         align-items: center;
+        gap: 6px;
         line-height: 0;
         color: inherit;
+      }
+      .legend-card__code .legend-card__code-sep {
+        font-size: 11px;
+        font-weight: 700;
+        color: #884dc9;
+        opacity: 0.5;
+        line-height: 1;
       }
       .legend-card__code.legend-card__code--icon-only .astro-inline-symbol__icon {
         width: 24px !important;
@@ -2820,6 +2860,9 @@
         Mars: { nl: "Mars", en: "Mars" },
         Jupiter: { nl: "Jupiter", en: "Jupiter" },
         Saturn: { nl: "Saturnus", en: "Saturn" },
+        Uranus: { nl: "Uranus", en: "Uranus" },
+        Neptune: { nl: "Neptunus", en: "Neptune" },
+        Pluto: { nl: "Pluto", en: "Pluto" },
         Asc: { nl: "Ascendant", en: "Ascendant" },
         Ascendant: { nl: "Ascendant", en: "Ascendant" },
         SouthNode: { nl: "Zuidelijke maanknoop", en: "South node" },
@@ -2846,6 +2889,50 @@
         square: { nl: "vierkant", en: "square" },
         trine: { nl: "driehoek", en: "trine" },
         opposition: { nl: "oppositie", en: "opposition" },
+        quincunx: { nl: "inconjunct", en: "quincunx" },
+        "semi-sextile": { nl: "halfsextiel", en: "semi-sextile" },
+        "semi-square": { nl: "halfvierkant", en: "semi-square" },
+        sesquiquadrate: { nl: "sesquiquadraat", en: "sesquiquadrate" },
+      };
+
+      /** Short line under aspect-icon rows (aligned with knowledgebase tone, trimmed for UI). */
+      const WESTERN_ASPECT_ROW_NOTES = {
+        conjunction: {
+          nl: "Sterke mengeling: twee thema’s vallen samen en versterken elkaar in het dagelijks leven.",
+          en: "A tight blend: two themes merge and amplify each other in everyday life.",
+        },
+        sextile: {
+          nl: "Ondersteunend en bruikbaar: kleine stappen en ideeën wisselen elkaar makkelijk verder.",
+          en: "Supportive and workable—small steps and ideas pass momentum back and forth.",
+        },
+        square: {
+          nl: "Spanningslijn: frictie die scherpstelt; groei ontstaat door bewust te kiezen in plaats van te forceren.",
+          en: "Tension line: friction that sharpens focus; growth comes from conscious choice, not forcing.",
+        },
+        trine: {
+          nl: "Vloeiende stroom: kwaliteiten versterken elkaar bijna vanzelf; blijf wel bewust van blind spots.",
+          en: "Flowing support: strengths reinforce each other almost by default—still mind blind spots.",
+        },
+        opposition: {
+          nl: "Twee polen: balans vraagt dialoog tussen tegenstrijdige behoeften — vaak zichtbaar via relaties of keuzes.",
+          en: "Two poles: balance needs dialogue between competing needs—often visible through relationships or choices.",
+        },
+        quincunx: {
+          nl: "Afstemming: verschillende ‘talen’ vragen bijsturen en creatieve bruggen in plaats van één vaste route.",
+          en: "Adjustment: different “languages” ask for fine-tuning and creative bridges instead of one fixed route.",
+        },
+        "semi-sextile": {
+          nl: "Subtiele nabijheid: lichte afstemming of hint die je met kleine aandacht merkbaar maakt.",
+          en: "Subtle nearness: a light alignment or hint that shows up when you pay gentle attention.",
+        },
+        "semi-square": {
+          nl: "Lichte irritatie-onderstroom: kleine druk die ritme en timing scherper zet zonder een zwaar conflict.",
+          en: "Minor irritant undercurrent: light pressure that tunes rhythm and timing without a heavy clash.",
+        },
+        sesquiquadrate: {
+          nl: "Herhalend leerproces: bijna-spanning die je vaker opnieuw afstelt tot het patroon helder wordt.",
+          en: "Repeated learning loop: “almost” tension you refine until the pattern becomes clear.",
+        },
       };
 
       const VAARA_LABELS = {
@@ -2958,6 +3045,9 @@
         trine: "trine",
         opposition: "opposition",
         quincunx: "quincunx",
+        "semi-sextile": "semi-sextile",
+        "semi-square": "semi-square",
+        sesquiquadrate: "semi-square",
       };
       function iconPathById(symbolId) {
         const rel = ICON_PATH_BY_ID[String(symbolId || "")];
@@ -2977,6 +3067,46 @@
         return { symbolId: id, text: String(text || ""), alt: String(alt || text || "") };
       }
 
+      /** Short sign/planet name for glossary icon alt text (NL/EN). */
+      function glossaryAltForIconId(symbolId) {
+        const sid = String(symbolId || "");
+        const signEn = {
+          aries: "Aries",
+          taurus: "Taurus",
+          gemini: "Gemini",
+          cancer: "Cancer",
+          leo: "Leo",
+          virgo: "Virgo",
+          libra: "Libra",
+          scorpio: "Scorpio",
+          sagittarius: "Sagittarius",
+          capricorn: "Capricorn",
+          aquarius: "Aquarius",
+          pisces: "Pisces",
+        }[sid];
+        if (signEn && SIGN_LABELS[signEn]) {
+          const m = SIGN_LABELS[signEn];
+          return uiIsNL() ? m.nl : m.en;
+        }
+        const planetEn = {
+          sun: "Sun",
+          moon: "Moon",
+          mercury: "Mercury",
+          venus: "Venus",
+          mars: "Mars",
+          jupiter: "Jupiter",
+          saturn: "Saturn",
+          uranus: "Uranus",
+          neptune: "Neptune",
+          pluto: "Pluto",
+        }[sid];
+        if (planetEn && PLANET_LABELS[planetEn]) {
+          const m = PLANET_LABELS[planetEn];
+          return uiIsNL() ? m.nl : m.en;
+        }
+        return sid;
+      }
+
       function planetGlyph(value) {
         return PLANET_SYMBOL_IDS[String(value || "")] || "";
       }
@@ -2986,7 +3116,8 @@
       }
 
       function aspectGlyph(value) {
-        return ASPECT_SYMBOL_IDS[String(value || "")] || "";
+        const k = normalizeAspectTypeKey(value);
+        return ASPECT_SYMBOL_IDS[k] || "";
       }
 
       function localizePlanet(value) {
@@ -3000,7 +3131,7 @@
         const v = String(value || "");
         const m = SIGN_LABELS[v];
         if (!m) return v || "-";
-        return uiIsNL() ? `${m.nl} (${m.en})` : m.en;
+        return uiIsNL() ? m.nl : m.en;
       }
 
       function localizeSignShort(value) {
@@ -3010,16 +3141,86 @@
 
       function localizeAspectType(value) {
         const v = String(value || "");
-        const m = ASPECT_TYPE_LABELS[v];
+        const m = ASPECT_TYPE_LABELS[v] || ASPECT_TYPE_LABELS[normalizeAspectTypeKey(v)];
         if (!m) return v || "-";
-        return uiIsNL() ? `${m.nl} (${m.en})` : m.en;
+        return uiIsNL() ? m.nl : m.en;
+      }
+
+      function normalizeAspectTypeKey(raw) {
+        const s = String(raw || "").toLowerCase().replace(/_/g, "-");
+        if (s === "semisextile") return "semi-sextile";
+        if (s === "semisquare") return "semi-square";
+        return s;
+      }
+
+      function westernAspectRowNote(aspectType, isNL) {
+        const key = normalizeAspectTypeKey(aspectType);
+        const row = WESTERN_ASPECT_ROW_NOTES[key];
+        if (row) return isNL ? row.nl : row.en;
+        const lab = localizeAspectType(aspectType);
+        return isNL
+          ? `Dit ${lab} verbindt twee planeten; de technische aspectentabel toont exacte graden en fase.`
+          : `This ${lab} links two bodies; the technical aspects table shows exact degrees and phase.`;
       }
 
       function localizeVaara(value) {
         const v = String(value || "");
         const m = VAARA_LABELS[v];
         if (!m) return v || "-";
-        return uiIsNL() ? `${m.nl} (${m.en})` : m.en;
+        return uiIsNL() ? m.nl : m.en;
+      }
+
+      /** One aspect row: planet — aspect — planet icons, plus a short interpretation line. */
+      function appendWesternAspectThemeListItem(ul, aspect) {
+        const a = aspect;
+        const isNL = uiIsNL();
+        const li = document.createElement("li");
+        li.className = "western-aspect-theme-card__aspect-row";
+        const lineLabel = `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`;
+        const noteText = westernAspectRowNote(a.type, isNL);
+        li.setAttribute("aria-label", `${lineLabel}. ${noteText}`);
+        const iconRow = createEl("div", "western-aspect-theme-card__aspect-icons");
+        const iconSize = 20;
+        const pushPlanetIcon = (key) => {
+          const id = planetGlyph(key);
+          if (id && iconPathById(id)) {
+            const wrap = createEl("span", "astro-inline-symbol__icon");
+            wrap.style.width = `${iconSize}px`;
+            wrap.style.height = `${iconSize}px`;
+            const img = document.createElement("img");
+            img.src = iconPathById(id);
+            img.alt = localizePlanet(key);
+            img.loading = "lazy";
+            img.decoding = "async";
+            wrap.appendChild(img);
+            iconRow.appendChild(wrap);
+          } else {
+            iconRow.appendChild(createEl("span", "western-aspect-fallback", localizePlanet(key)));
+          }
+        };
+        const pushAspectIcon = () => {
+          const id = aspectGlyph(a.type);
+          if (id && iconPathById(id)) {
+            const wrap = createEl("span", "astro-inline-symbol__icon");
+            wrap.style.width = `${iconSize}px`;
+            wrap.style.height = `${iconSize}px`;
+            const img = document.createElement("img");
+            img.src = iconPathById(id);
+            img.alt = localizeAspectType(a.type);
+            img.loading = "lazy";
+            img.decoding = "async";
+            wrap.appendChild(img);
+            iconRow.appendChild(wrap);
+          } else {
+            iconRow.appendChild(createEl("span", "western-aspect-fallback", localizeAspectType(a.type)));
+          }
+        };
+        pushPlanetIcon(a.a);
+        pushAspectIcon();
+        pushPlanetIcon(a.b);
+        li.appendChild(iconRow);
+        li.appendChild(createEl("p", "western-aspect-theme-card__aspect-note", noteText));
+        ul.appendChild(li);
       }
 
       const THEME_BY_DOMAIN_KEY = {
@@ -4056,7 +4257,6 @@
           const crSign = chartRulerPlacement.sign;
           const houseBit = chartRulerPlacement.house != null ? houseLabel(chartRulerPlacement.house) : placeholderFor("huis");
           const rulerGlyphId = planetGlyph(chartRulerName);
-          const rulerSignGlyphId = signGlyph(crSign);
           const stampWho = `${localizePlanet(chartRulerName)} · ${localizeSignShort(chartRulerPlacement.sign)} · ${houseBit}`;
           const stampNote = isNL
             ? `${localizePlanet(chartRulerName)} is je chart ruler bij ${localizeSignShort(ascSign)} op de Ascendant — ${planetThemes[chartRulerName] || "deze planeet"} krijgt daardoor extra gewicht.`
@@ -4081,28 +4281,6 @@
           row.appendChild(meta);
           card.appendChild(row);
           card.appendChild(createEl("p", "western-chart-ruler__stamp-note", stampNote));
-          const links = createEl("div", "western-chart-ruler__stamp-links");
-          const pushStampLink = (anchorId, label) => {
-            if (!anchorId) return;
-            const a = createEl("a", "western-chart-ruler__stamp-link");
-            a.href = `#${anchorId}`;
-            a.textContent = label;
-            a.addEventListener("click", (ev) => {
-              const el = document.getElementById(anchorId);
-              if (el) {
-                ev.preventDefault();
-                el.scrollIntoView({ behavior: "smooth", block: "start" });
-              }
-            });
-            links.appendChild(a);
-          };
-          if (rulerGlyphId && findWesternGlossaryEntry(rulerGlyphId)) {
-            pushStampLink(`wg-western-${rulerGlyphId}`, isNL ? `Woordenboek: ${localizePlanet(chartRulerName)}` : `Glossary: ${localizePlanet(chartRulerName)}`);
-          }
-          if (rulerSignGlyphId && findWesternGlossaryEntry(rulerSignGlyphId)) {
-            pushStampLink(`wg-western-${rulerSignGlyphId}`, isNL ? `Woordenboek: ${localizeSignShort(crSign)}` : `Glossary: ${localizeSignShort(crSign)}`);
-          }
-          if (links.childElementCount) card.appendChild(links);
           rulerStrip.appendChild(card);
         }
         wheelCol.appendChild(rulerStrip);
@@ -4325,9 +4503,7 @@
             const ul = createEl("ul", "western-aspect-theme-card__list");
             if (listAspects && listAspects.length) {
               listAspects.forEach((a) => {
-                ul.appendChild(
-                  createEl("li", "", `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`)
-                );
+                appendWesternAspectThemeListItem(ul, a);
               });
             } else {
               ul.appendChild(
@@ -5148,6 +5324,19 @@
           const p0i = polar(a0, rInner);
           return `M ${p0o.x} ${p0o.y} A ${rOuter} ${rOuter} 0 0 1 ${p1o.x} ${p1o.y} L ${p1i.x} ${p1i.y} A ${rInner} ${rInner} 0 0 0 ${p0i.x} ${p0i.y} Z`;
         };
+        /** House slice from longitude a0 to a1 (a1 may be >360 if wrapping). */
+        const houseWedgePath = (a0, a1End, rOuter, rInner) => {
+          const da = a1End - a0;
+          if (da <= 0.01) return "";
+          const safeDa = Math.min(da, 359.99);
+          const large = safeDa > 180 ? 1 : 0;
+          const a1 = a0 + safeDa;
+          const p0o = polar(a0, rOuter);
+          const p1o = polar(a1, rOuter);
+          const p1i = polar(a1, rInner);
+          const p0i = polar(a0, rInner);
+          return `M ${p0o.x} ${p0o.y} A ${rOuter} ${rOuter} 0 ${large} 1 ${p1o.x} ${p1o.y} L ${p1i.x} ${p1i.y} A ${rInner} ${rInner} 0 ${large} 0 ${p0i.x} ${p0i.y} Z`;
+        };
         const planets = [];
         Object.entries(placements).forEach(([name, pv]) => {
           const p = pv || {};
@@ -5230,17 +5419,29 @@
           }
           if (opts.houses && houseHitA != null) {
             const hp = polar(houseHitA, houseHitR);
-            svg += `<circle class="wheel-house-hit" data-house="${houseNr}" cx="${hp.x}" cy="${hp.y}" r="12" fill="transparent"/>`;
-            svg += `<text x="${hp.x}" y="${hp.y}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#8f80aa">${houseNr}</text>`;
+            svg += `<text pointer-events="none" x="${hp.x}" y="${hp.y}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#8f80aa">${houseNr}</text>`;
           }
           if (opts.signs) {
             svg += `<path class="wheel-sign-hit" data-sign="${signName}" d="M ${polar(a0, R_SG_OUT).x} ${polar(a0, R_SG_OUT).y} A ${R_SG_OUT} ${R_SG_OUT} 0 0 1 ${polar(a1, R_SG_OUT).x} ${polar(a1, R_SG_OUT).y} L ${polar(a1, R_SG_IN).x} ${polar(a1, R_SG_IN).y} A ${R_SG_IN} ${R_SG_IN} 0 0 0 ${polar(a0, R_SG_IN).x} ${polar(a0, R_SG_IN).y} Z" fill="transparent"/>`;
             const signIcon = iconPathById(zodiacSymbols[i]);
             if (signIcon) {
-              svg += `<image href="${signIcon}" x="${label.x - 9}" y="${label.y - 9}" width="18" height="18" />`;
+              svg += `<image pointer-events="none" href="${signIcon}" x="${label.x - 9}" y="${label.y - 9}" width="18" height="18" />`;
             } else {
               const signUnicode = ["\u2648","\u2649","\u264A","\u264B","\u264C","\u264D","\u264E","\u264F","\u2650","\u2651","\u2652","\u2653"];
-              svg += `<text x="${label.x}" y="${label.y}" text-anchor="middle" dominant-baseline="middle" font-size="16" fill="#ffffff">${signUnicode[i]}</text>`;
+              svg += `<text pointer-events="none" x="${label.x}" y="${label.y}" text-anchor="middle" dominant-baseline="middle" font-size="16" fill="#ffffff">${signUnicode[i]}</text>`;
+            }
+          }
+          if (opts.houses) {
+            let w0 = i * 30;
+            let w1 = (i + 1) * 30;
+            if (cuspList) {
+              w0 = cuspList[i];
+              w1 = cuspList[(i + 1) % 12];
+              while (w1 < w0) w1 += 360;
+            }
+            const wedgeD = houseWedgePath(w0, w1, R_SG_OUT, R_H_IN);
+            if (wedgeD) {
+              svg += `<path class="wheel-house-hit" data-house="${houseNr}" fill="transparent" d="${wedgeD}"/>`;
             }
           }
         }
@@ -6655,7 +6856,12 @@
         if (item.anchorId) {
           card.id = item.anchorId;
         }
-        const hasCode = item.codeLabel != null && String(item.codeLabel).trim() !== "";
+        const hasCode = (() => {
+          const cl = item.codeLabel;
+          if (cl == null) return false;
+          if (Array.isArray(cl)) return cl.length > 0;
+          return String(cl).trim() !== "";
+        })();
         const hasBadge = item.badge != null && String(item.badge).trim() !== "";
         if (hasCode || hasBadge) {
           const top = document.createElement("div");
@@ -6663,7 +6869,37 @@
           if (hasCode) {
             const code = document.createElement("span");
             code.className = "legend-card__code";
-            if (item.codeLabel && typeof item.codeLabel === "object") {
+            if (Array.isArray(item.codeLabel)) {
+              const parts = item.codeLabel;
+              const anyIcon = parts.some((p) => p && p.symbolId && iconPathById(String(p.symbolId).trim()));
+              if (anyIcon) {
+                code.classList.add("legend-card__code--icon-only");
+              }
+              parts.forEach((labelObj, idx) => {
+                if (idx > 0) {
+                  const sep = document.createElement("span");
+                  sep.className = "legend-card__code-sep";
+                  sep.setAttribute("aria-hidden", "true");
+                  sep.textContent = "·";
+                  code.appendChild(sep);
+                }
+                const sid = labelObj && labelObj.symbolId && String(labelObj.symbolId).trim();
+                if (sid && iconPathById(sid)) {
+                  const tmp = document.createElement("span");
+                  tmp.innerHTML = iconImageHtml(sid, labelObj.alt || labelObj.text || "", 22);
+                  while (tmp.firstChild) {
+                    code.appendChild(tmp.firstChild);
+                  }
+                } else if (labelObj && labelObj.text != null && String(labelObj.text).trim() !== "") {
+                  const t = document.createElement("span");
+                  t.textContent = String(labelObj.text);
+                  t.style.fontSize = "11px";
+                  t.style.letterSpacing = "0.12em";
+                  t.style.textTransform = "uppercase";
+                  code.appendChild(t);
+                }
+              });
+            } else if (item.codeLabel && typeof item.codeLabel === "object") {
               const labelObj = item.codeLabel;
               const sid = labelObj.symbolId && String(labelObj.symbolId).trim();
               if (sid && iconPathById(sid)) {
@@ -7671,24 +7907,54 @@
           conjunction: "conjunction", sextile: "sextile", square: "square", trine: "trine", opposition: "opposition", quincunx: "quincunx",
           vuur: "fire", aarde: "earth", lucht: "air", water: "water",
         };
+        const rulerRowIconIds = {
+          "ruler-ram": ["aries", "mars"],
+          "ruler-stier": ["taurus", "venus"],
+          "ruler-tweelingen": ["gemini", "mercury"],
+          "ruler-kreeft": ["cancer", "moon"],
+          "ruler-leeuw": ["leo", "sun"],
+          "ruler-maagd": ["virgo", "mercury"],
+          "ruler-weegschaal": ["libra", "venus"],
+          "ruler-schorpioen": ["scorpio", "mars", "pluto"],
+          "ruler-boogschutter": ["sagittarius", "jupiter"],
+          "ruler-steenbok": ["capricorn", "saturn"],
+          "ruler-waterman": ["aquarius", "saturn", "uranus"],
+          "ruler-vissen": ["pisces", "jupiter", "neptune"],
+        };
         westernGlossarySections().forEach((section) => {
           appendLegendSection(frag, {
             id: section.id,
             title: section.title,
             eyebrow: section.subtitle,
             lead: section.intro,
-            items: (section.items || []).map((item) => ({
-              id: item.id,
-              anchorId: `wg-western-${item.id}`,
-              codeLabel: symbolByGlossaryId[item.id]
-                ? symbolCell(symbolByGlossaryId[item.id], item.title || item.symbol || item.code || "", item.alt || item.title || "")
-                : (item.code || item.degree || item.title || ""),
-              codeTitle: item.alt || item.meaning || item.title || "",
-              badge: item.badge || item.category || "",
-              title: item.title || "",
-              body: item.description || "",
-              footer: item.degree ? `Graad: ${item.degree}` : "",
-            })),
+            items: (section.items || []).map((item) => {
+              const titleFull = item.title || "";
+              const rulerIds = rulerRowIconIds[item.id];
+              let codeLabel;
+              if (rulerIds && rulerIds.length) {
+                codeLabel = rulerIds.map((rid) =>
+                  symbolCell(rid, "", glossaryAltForIconId(rid))
+                );
+              } else if (symbolByGlossaryId[item.id]) {
+                codeLabel = symbolCell(
+                  symbolByGlossaryId[item.id],
+                  item.title || item.symbol || item.code || "",
+                  item.alt || item.title || ""
+                );
+              } else {
+                codeLabel = item.code || item.degree || item.title || "";
+              }
+              return {
+                id: item.id,
+                anchorId: `wg-western-${item.id}`,
+                codeLabel,
+                codeTitle: item.alt || item.meaning || titleFull || "",
+                badge: item.badge || item.category || "",
+                title: titleFull,
+                body: item.description || "",
+                footer: item.degree ? `Graad: ${item.degree}` : "",
+              };
+            }),
           });
         });
       }

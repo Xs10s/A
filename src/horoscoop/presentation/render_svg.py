@@ -138,13 +138,11 @@ def render_wheel_svg(
     size: int = 900,
     margin: int = 40,
 ) -> str:
-    """Produce a classic western-style astrological wheel SVG."""
-    # Reserve dedicated legend space below the wheel.
-    legend_reserved_h = 185.0
+    """Produce a classic western-style astrological wheel SVG (full canvas; no legend strip)."""
     cx = size / 2.0
-    cy = (size - legend_reserved_h) / 2.0 + 14.0
+    cy = size / 2.0
     max_r_x = min((size - margin) - cx, cx - margin)
-    max_r_y = min((size - margin - legend_reserved_h) - cy, cy - margin)
+    max_r_y = min((size - margin) - cy, cy - margin)
     r_outer = max(180.0, min(max_r_x, max_r_y))
     r_tick_outer = r_outer * 0.99
     r_tick_inner_minor = r_outer * 0.96
@@ -281,45 +279,6 @@ def render_wheel_svg(
                 f'<line x1="{float(p1["x"]):.1f}" y1="{float(p1["y"]):.1f}" x2="{float(p2["x"]):.1f}" y2="{float(p2["y"]):.1f}" '
                 f'stroke="{color}" stroke-opacity="0.7" stroke-width="1.1"/>'
             )
-
-    # Clear legend panel.
-    lx = margin
-    ly = size - legend_reserved_h + 8
-    lw = size - (2 * margin)
-    lh = legend_reserved_h - 20
-    parts.append(f'<rect x="{lx:.1f}" y="{ly:.1f}" width="{lw}" height="{lh}" fill="#ffffff" stroke="#222" stroke-width="1"/>')
-    parts.append(
-        f'<text x="{lx + 10:.1f}" y="{ly + 18:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="12" font-weight="700">LEGENDA</text>'
-    )
-    legend_items = [
-        ("Planeten / Planets", "custom", "#111"),
-        ("ASC", "Ascendant", "#111"),
-        ("Conjunctie / Conjunction", "0°", aspect_palette["conjunction"]),
-        ("Sextiel / Sextile", "60°", aspect_palette["sextile"]),
-        ("Kwadraat / Square", "90°", aspect_palette["square"]),
-        ("Driehoek / Trine", "120°", aspect_palette["trine"]),
-        ("Oppositie / Opposition", "180°", aspect_palette["opposition"]),
-    ]
-    yy = ly + 38
-    for left, right, col in legend_items:
-        parts.append(f'<line x1="{lx + 10:.1f}" y1="{yy - 4:.1f}" x2="{lx + 28:.1f}" y2="{yy - 4:.1f}" stroke="{col}" stroke-width="2"/>')
-        if right == "custom":
-            icon_ids = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn"]
-            start_x = lx + 34.0
-            for idx, icon_id in enumerate(icon_ids):
-                parts.append(_render_symbol_icon(icon_id, start_x + idx * 14.0, yy - 4.0, 12.0))
-            parts.append(
-                f'<text x="{lx + 138:.1f}" y="{yy:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="10" fill="#222">{escape(left)}</text>'
-            )
-        else:
-            parts.append(
-                f'<text x="{lx + 34:.1f}" y="{yy:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="10" fill="#222">{escape(left)}</text>'
-            )
-        if right != "custom":
-            parts.append(
-                f'<text x="{lx + 188:.1f}" y="{yy:.1f}" font-family="DM Sans,system-ui,sans-serif" font-size="10" fill="#555">{escape(right)}</text>'
-            )
-        yy += 18
 
     parts.append("</svg>")
     return "\n".join(parts)

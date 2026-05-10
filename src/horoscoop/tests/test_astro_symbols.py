@@ -77,7 +77,7 @@ def test_template_render_blocks_use_iconset_paths():
     ]
     guarded_blocks = [
         "function createMethodTable(headers, rows) {",
-        "function getWesternWheelSvg(data) {",
+        "function getWesternWheelSvg(data, options) {",
         "function createKundaliGrid(activeVargaId, data) {",
         "function appendVedicGlossaryLegend(frag) {",
         "function appendWesternGlossaryLegend(frag) {",

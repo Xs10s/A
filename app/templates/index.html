@@ -312,9 +312,15 @@
       }
       .method-layout--western-tight {
         gap: 8px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: clip;
       }
       .method-layout--western-tight > * {
         max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
       }
       .method-layout--western-tight .method-hero {
         box-shadow: none;
@@ -963,6 +969,64 @@
         min-height: 0;
         min-width: 0;
       }
+      /* Kundali: één paneel (geen dubbele kader-in-kader), chart gebruikt volle kaart-breedte */
+      .method-layout--western-tight .western-radix-venster.kundali-radix .western-wheel-layout {
+        border: 1px solid #eadff6;
+        background: #fff;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: minmax(0, 66fr) minmax(0, 34fr);
+        gap: 0;
+        overflow: hidden;
+      }
+      .method-layout--western-tight .western-radix-venster.kundali-radix {
+        height: auto;
+        max-height: none;
+        min-height: clamp(560px, 76dvh, 980px);
+      }
+      .method-layout--western-tight .western-radix-venster.kundali-radix .western-wheel-col {
+        border: 0;
+        background: transparent;
+        padding: 36px 10px 10px 12px;
+        min-width: 0;
+      }
+      .method-layout--western-tight .western-radix-venster.kundali-radix .western-info-pane {
+        border: 0;
+        border-left: 1px solid #eadff6;
+        background: #fff;
+        min-width: 0;
+      }
+      .method-layout--western-tight .western-radix-venster.kundali-radix .kundali-shell {
+        max-width: none;
+        width: 100%;
+        margin: 0;
+      }
+      .method-layout--western-tight .western-radix-venster.kundali-radix .kundali-frame {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        width: 100%;
+        max-width: none;
+        margin: 0 auto;
+      }
+      .method-layout--western-tight .western-radix-venster.kundali-radix .kundali-grid {
+        margin-top: 0;
+        width: 100%;
+      }
+      .method-layout--western-tight .western-radix-venster.kundali-radix .kundali-aspect {
+        width: min(100%, calc(100dvh - 20rem));
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .method-layout--western-tight .western-radix-venster.kundali-radix .western-wheel-frame {
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-width: 0;
+        padding: 10px 14px 12px;
+        box-sizing: border-box;
+      }
       .method-layout--western-tight .western-info-pane {
         padding: 14px;
         overflow: auto;
@@ -1166,6 +1230,19 @@
           min-height: 380px;
           position: relative;
         }
+        .method-layout--western-tight .western-radix-venster.kundali-radix .western-wheel-layout {
+          grid-template-columns: 1fr;
+        }
+        .method-layout--western-tight .western-radix-venster.kundali-radix {
+          min-height: min(100dvh - 7.5rem, 760px);
+        }
+        .method-layout--western-tight .western-radix-venster.kundali-radix .western-info-pane {
+          border-left: 0;
+        }
+        .method-layout--western-tight .western-radix-venster.kundali-radix .kundali-aspect {
+          width: min(100%, 86vw);
+          max-width: none;
+        }
         .method-layout--western-tight .western-info-toggle {
           display: inline-block;
         }
@@ -1185,6 +1262,10 @@
         border-top: 1px solid #eadff6;
         background: transparent;
         padding: 24px 0;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
       }
       .method-layout--western-tight .layout-section__title {
         font-size: clamp(2.05rem, 3.5vw, 2.75rem);
@@ -1561,6 +1642,32 @@
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: var(--sm);
+      }
+
+      .vedic-core-values-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 16px;
+        width: 100%;
+        min-width: 0;
+      }
+      .vedic-core-values-grid .astro-card { min-width: 0; }
+      .vedic-core-values-grid .astro-card:nth-child(-n + 3) {
+        grid-column: span 2;
+      }
+      .vedic-core-values-grid .astro-card:nth-child(4) {
+        grid-column: 1 / span 3;
+      }
+      .vedic-core-values-grid .astro-card:nth-child(5) {
+        grid-column: 4 / span 3;
+      }
+      @media (max-width: 900px) {
+        .vedic-core-values-grid {
+          grid-template-columns: 1fr;
+        }
+        .vedic-core-values-grid .astro-card:nth-child(-n + 5) {
+          grid-column: span 1;
+        }
       }
 
       .metric-card {
@@ -2378,6 +2485,8 @@
         color: #2d2541;
         text-transform: uppercase;
         letter-spacing: 0.04em;
+        overflow-wrap: anywhere;
+        word-break: break-word;
       }
       .astro-card__sub {
         margin-top: 4px;
@@ -2464,6 +2573,243 @@
         justify-content: space-between;
         gap: 10px;
         align-items: start;
+      }
+      .divisional-groups {
+        display: grid;
+        gap: 18px;
+      }
+      .divisional-group {
+        border-top: 1px solid #eadff6;
+        padding-top: 14px;
+      }
+      .divisional-group--material .divisional-group__title {
+        border-left: 4px solid #0f8f73;
+        padding-left: 10px;
+      }
+      .divisional-group--material .divisional-group__lead {
+        border-left: 4px solid #b4e82c;
+        padding-left: 10px;
+      }
+      .divisional-group__title {
+        margin: 0 0 4px 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+        color: #171126;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-weight: 400;
+      }
+      .divisional-group__lead {
+        margin: 0 0 10px 0;
+        color: #4f4961;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .divisional-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .divisional-card {
+        border: 1px solid #eadff6;
+        background: #fff;
+        padding: 12px;
+      }
+      .divisional-card__head {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: start;
+      }
+      .divisional-card__title {
+        margin: 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: 28px;
+        color: #171126;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-weight: 400;
+      }
+      .divisional-card__meta {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #6f6487;
+        line-height: 1.45;
+      }
+      .divisional-kv-grid {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .divisional-kv-grid .astro-card {
+        min-height: 0;
+      }
+      .divisional-insight-grid {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .divisional-insight {
+        border: 1px solid #eadff6;
+        padding: 10px;
+        background: #fff;
+      }
+      .divisional-insight h5 {
+        margin: 0 0 4px 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: 18px;
+        color: #2d2541;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        font-weight: 400;
+      }
+      .divisional-insight p {
+        margin: 0;
+        color: #4f4961;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .divisional-reflect {
+        margin-top: 8px;
+        border-left: 3px solid #884dc9;
+        padding-left: 10px;
+        color: #4f4961;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .divisional-summary {
+        border-top: 1px solid #eadff6;
+        padding-top: 14px;
+      }
+      .divisional-summary__grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .d2-hora-layout {
+        display: grid;
+        gap: 12px;
+      }
+      .d2-hora-top {
+        display: block;
+      }
+      .d2-hora-panel {
+        border: 1px solid #eadff6;
+        background: #fff;
+        padding: 10px;
+      }
+      .d2-hora-panel h5 {
+        margin: 6px 0 0 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: 26px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #2d2541;
+        font-weight: 400;
+      }
+      .d2-hora-core-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .d2-hora-core-item {
+        border: 1px solid #eadff6;
+        background: #fff;
+        padding: 10px;
+      }
+      .d2-hora-mid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 12px;
+      }
+      .d2-hora-map-grid {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .d2-hora-house {
+        min-height: 112px;
+        border: 1px solid #e4d3f7;
+        background: #fbf8ff;
+        padding: 10px;
+      }
+      .d2-hora-house__label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: #6e5a84;
+        font-weight: 700;
+      }
+      .d2-hora-house__footer {
+        margin-top: 8px;
+        border-top: 1px solid #efe5fb;
+        padding-top: 6px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #6e5a84;
+      }
+      .d2-hora-mini-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        border: 1px solid #eadcf9;
+        background: #fff;
+        padding: 3px 6px;
+        font-size: 11px;
+        color: #030b33;
+        margin: 0 4px 4px 0;
+      }
+      .d2-hora-mini-chip img {
+        width: 14px;
+        height: 14px;
+        object-fit: contain;
+      }
+      .d2-hora-chip-symbol {
+        color: #884dc9;
+        font-size: 13px;
+        line-height: 1;
+      }
+      .d2-hora-planet-list {
+        display: grid;
+        gap: 8px;
+      }
+      .d2-hora-planet-chip {
+        border: 1px solid #eadff6;
+        background: #fff;
+        padding: 10px;
+      }
+      .d2-hora-planet-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .d2-hora-planet-title img {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+      }
+      .d2-hora-planet-chip .astro-eyebrow {
+        color: #6e5a84;
+      }
+      .d2-hora-core-item {
+        border-top: 2px solid #c9a24d;
+      }
+      @media (max-width: 1000px) {
+        .d2-hora-core-grid,
+        .d2-hora-mid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 900px) {
+        .divisional-kv-grid,
+        .divisional-insight-grid,
+        .divisional-summary__grid {
+          grid-template-columns: 1fr;
+        }
       }
       .vedic-theme-badge {
         border: 1px solid #c9a24d;
@@ -2615,23 +2961,124 @@
         text-transform: uppercase;
         color: #17121F;
       }
-      .kundali-tooltip {
-        position: fixed;
-        z-index: 50;
-        max-width: 280px;
-        white-space: pre-line;
-        border: 1px solid #B79A63;
-        background: #ffffff;
-        padding: 8px 10px;
-        font-size: 12px;
-        line-height: 1.35;
-        color: #17121F;
-        box-shadow: 3px 3px 0 rgba(201, 162, 77, 0.35);
-        pointer-events: none;
-        display: none;
-      }
       .kundali-card {
         margin-bottom: 10px;
+      }
+      .kundali-frame--interactive .kundali-hit {
+        cursor: pointer;
+        transition: transform 140ms ease, opacity 140ms ease, stroke-width 140ms ease, fill-opacity 140ms ease;
+      }
+      .kundali-frame--interactive .kundali-hit:focus {
+        outline: none;
+      }
+      .kundali-frame--interactive.is-kundali-filtering .kundali-hit {
+        opacity: 0.32;
+      }
+      .kundali-frame--interactive .kundali-hit.is-kundali-selected {
+        opacity: 1;
+      }
+      .kundali-frame--interactive .kundali-hit--planet.is-kundali-selected,
+      .kundali-frame--interactive .kundali-hit--lagna.is-kundali-selected,
+      .kundali-frame--interactive .kundali-hit--sign.is-kundali-selected {
+        transform-box: fill-box;
+        transform-origin: center center;
+        transform: scale(1.18);
+      }
+      .kundali-frame--interactive .kundali-hit--house.is-kundali-selected {
+        fill: rgba(125, 92, 224, 0.16);
+        stroke: #7d5ce0;
+        stroke-width: 0.42;
+      }
+      .kundali-frame--interactive .kundali-hit--drishti.is-kundali-selected {
+        opacity: 1;
+        stroke: #5b3fd6;
+        stroke-width: 0.92;
+      }
+      .kundali-frame--hide-house-nums .kundali-house-num {
+        opacity: 0.1;
+      }
+      .kundali-frame--hide-rashis .kundali-layer-rashi {
+        opacity: 0.08;
+        pointer-events: none;
+      }
+      .kundali-frame--hide-grahas .kundali-hit--planet {
+        opacity: 0.08;
+        pointer-events: none;
+      }
+      .kundali-frame--hide-drishti-lines .kundali-drishti-lines,
+      .kundali-frame--hide-drishti-lines .kundali-drishti-hits {
+        display: none;
+      }
+      .kundali-drishti-lines line {
+        pointer-events: none;
+      }
+      .kundali-drishti-hits {
+        pointer-events: none;
+      }
+      .kundali-drishti-hits line {
+        stroke: rgba(125, 92, 224, 0.001);
+        stroke-width: 3.6px;
+      }
+      .kundali-grid-line {
+        pointer-events: none;
+      }
+      .kundali-house-facets polygon {
+        cursor: pointer;
+      }
+      .kundali-frame:not(.kundali-frame--interactive) .kundali-house-facets polygon {
+        cursor: default;
+      }
+      .kundali-tech {
+        margin-top: 14px;
+        border: 1px solid #dcc8f2;
+        background: #ffffff;
+        padding: 12px 14px;
+      }
+      .kundali-tech__title {
+        font-family: Lora, Georgia, serif;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin: 0 0 10px 0;
+        color: #5a4a7d;
+      }
+      .kundali-tech-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .kundali-tech-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Inter, system-ui, sans-serif;
+        font-size: 11px;
+        line-height: 1.35;
+        color: #17121f;
+      }
+      .kundali-tech-table th,
+      .kundali-tech-table td {
+        border: 1px solid #e8dff5;
+        padding: 6px 8px;
+        text-align: left;
+        vertical-align: top;
+        white-space: nowrap;
+      }
+      .kundali-tech-table th {
+        font-family: Lora, Georgia, serif;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #5a4a7d;
+        background: #faf8fc;
+      }
+      .kundali-tech-table td.kundali-tech-wrap {
+        white-space: normal;
+        min-width: 140px;
+      }
+      .kundali-frame--hide-nak-labels .kundali-nak-label {
+        display: none;
+      }
+      .kundali-nak-label {
+        pointer-events: none;
       }
       @media (max-width: 920px) {
         .vedic-chart-section {
@@ -2996,6 +3443,7 @@
         "ui-meaning": "western/ui/meaning-form.svg",
         "ui-connections": "western/ui/connections-link.svg",
         "ui-book": "western/ui/book.svg",
+        "house-1": "western/houses/house-1.svg",
       };
       const PLANET_SYMBOL_IDS = {
         Sun: "sun",
@@ -3125,6 +3573,29 @@
         const m = PLANET_LABELS[v];
         if (!m) return v || "-";
         return uiIsNL() ? m.nl : m.en;
+      }
+
+      /** Short label next to the card icon (replaces generic “Duiding/Reading” on core value cards). */
+      function astroCardIconEyebrow(iconId, isNL) {
+        const id = String(iconId || "");
+        if (id === "sun") return isNL ? PLANET_LABELS.Sun.nl : PLANET_LABELS.Sun.en;
+        if (id === "moon") return isNL ? PLANET_LABELS.Moon.nl : PLANET_LABELS.Moon.en;
+        if (id === "ascendant") return isNL ? PLANET_LABELS.Ascendant.nl : PLANET_LABELS.Ascendant.en;
+        if (id === "north-node") return isNL ? "Noordelijke maansknoop" : "North node";
+        if (id === "south-node") return isNL ? PLANET_LABELS.SouthNode.nl : PLANET_LABELS.SouthNode.en;
+        const byId = {
+          mercury: "Mercury",
+          venus: "Venus",
+          mars: "Mars",
+          jupiter: "Jupiter",
+          saturn: "Saturn",
+          uranus: "Uranus",
+          neptune: "Neptune",
+          pluto: "Pluto",
+        };
+        const pen = byId[id];
+        if (pen && PLANET_LABELS[pen]) return isNL ? PLANET_LABELS[pen].nl : PLANET_LABELS[pen].en;
+        return isNL ? "Symbool" : "Glyph";
       }
 
       function localizeSign(value) {
@@ -3908,19 +4379,19 @@
           sun.sign ? `${localizeSignShort(sun.sign)} ${isNL ? "in" : "in"} ${houseLabel(sun.house)}` : (isNL ? "Zonpositie ontbreekt" : "Sun placement unavailable"),
           isNL ? "Levensrichting" : "Direction",
           sun.sign ? `Je kernenergie zoekt groei, waarheid en verruiming. In ${houseLabel(sun.house)} wordt dit zichtbaar via ${houseThemes[sun.house] || "zichtbare thema's"}.${sunAspects.length ? ` Opvallend: ${sunAspects.map((a) => `${localizeAspectType(a.type)} met ${localizePlanet(a.a === "Sun" ? a.b : a.a)}`).join("; ")}.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat niet alle Zonwaarden beschikbaar zijn.",
-          { iconId: "sun", subtitleIconId: signGlyph(sun.sign), accentColor: planetAccent.Sun || "#884dc9", eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
+          { iconId: "sun", subtitleIconId: signGlyph(sun.sign), accentColor: planetAccent.Sun || "#884dc9", eyebrow: astroCardIconEyebrow("sun", isNL), badge: isNL ? "Kern" : "Core" }
         ));
         topLayersGrid.appendChild(createAstroCard(
           moon.sign ? `${localizeSignShort(moon.sign)} ${isNL ? "in" : "in"} ${houseLabel(moon.house)}` : (isNL ? "Maanpositie ontbreekt" : "Moon placement unavailable"),
           isNL ? "Innerlijke ruimte" : "Inner space",
           moon.sign ? `Je gevoelswereld vraagt vrijheid en afstand om te verwerken. In ${houseLabel(moon.house)} wordt dit zichtbaar in ${houseThemes[moon.house] || "innerlijke lagen"}.${moonAspects.length ? ` Dynamiek: ${moonAspects.map((a) => `${localizeAspectType(a.type)} met ${localizePlanet(a.a === "Moon" ? a.b : a.a)}`).join("; ")}.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat niet alle Maanwaarden beschikbaar zijn.",
-          { iconId: "moon", subtitleIconId: signGlyph(moon.sign), accentColor: planetAccent.Moon || "#884dc9", eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
+          { iconId: "moon", subtitleIconId: signGlyph(moon.sign), accentColor: planetAccent.Moon || "#884dc9", eyebrow: astroCardIconEyebrow("moon", isNL), badge: isNL ? "Kern" : "Core" }
         ));
         topLayersGrid.appendChild(createAstroCard(
           ascSign ? `${localizeSignShort(ascSign)} ${isNL ? "op de Ascendant" : "on the Ascendant"}` : (isNL ? "Ascendant ontbreekt" : "Ascendant unavailable"),
           isNL ? "Eerste beweging" : "First movement",
           ascSign ? `Je stapt het leven direct en instinctief binnen. De eerste impuls is vaak actie, daarna verfijning en richting.${chartRulerName ? ` De chart ruler ${localizePlanet(chartRulerName)} geeft extra sturing.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat hiervoor een geboortetijd nodig is.",
-          { iconId: "ascendant", subtitleIconId: signGlyph(ascSign), accentColor: planetAccent.Ascendant || "#884dc9", eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
+          { iconId: "ascendant", subtitleIconId: signGlyph(ascSign), accentColor: planetAccent.Ascendant || "#884dc9", eyebrow: astroCardIconEyebrow("ascendant", isNL), badge: isNL ? "Kern" : "Core" }
         ));
         topSection.appendChild(topLayersGrid);
         topSection.appendChild(
@@ -4755,81 +5226,996 @@
         return wrap;
       }
 
+      function __vedicBarCard(title, pairs, summary, isNL) {
+        const card = createEl("div", "explain-card");
+        card.style.setProperty("--accent", "#884dc9");
+        const head = createEl("div", "astro-card__head");
+        head.appendChild(createEl("span", "", isNL ? "Duiding" : "Reading"));
+        head.appendChild(createEl("span", "astro-card__badge", isNL ? "Samenvatting" : "Summary"));
+        card.appendChild(head);
+        card.appendChild(createEl("h4", "", title));
+        (pairs || []).forEach(([lab, pct]) => {
+          const row = createEl("div", "bar-row");
+          row.appendChild(createEl("div", "astro-card__sub", `${lab}: ${pct}%`));
+          const track = createEl("div", "bar-track");
+          const fill = createEl("div", "bar-fill");
+          fill.style.width = `${Math.max(0, Math.min(100, Number(pct || 0)))}%`;
+          track.appendChild(fill);
+          row.appendChild(track);
+          card.appendChild(row);
+        });
+        if (summary) card.appendChild(createEl("p", "explain-card__summary-line", summary));
+        return card;
+      }
+
+      function __renderVedicJyotishBody(wrap, data, isNL) {
+        const vedic = data.vedic || {};
+        const p = vedic.panchanga || {};
+        const jy = getJyotish(data) || {};
+        const lag = jy.lagna || null;
+        const lords = jy.lagnesha || null;
+        const grahas = Array.isArray(jy.grahas) ? jy.grahas : [];
+        const by = (en) => grahas.find((g) => g && g.name_en === en);
+        const moonG = by("Moon");
+        const sunG = by("Sun");
+        const akName = jy.atmakaraka_en;
+        const akG = akName ? by(akName) : null;
+        const aya = (jy.ayanamsha && jy.ayanamsha.mode) || (vedic.ayanamsha && vedic.ayanamsha.mode) || "Lahiri";
+        const signS = (sn) => (sn ? localizeSignShort(sn) : "—");
+        const nakLine = (g) => {
+          if (!g || g.nakshatra_index == null) return "—";
+          const lord = g.nakshatra_lord_en ? ` · ${localizePlanet(g.nakshatra_lord_en)}` : "";
+          const pd = g.pada != null ? ` · pada ${g.pada}` : "";
+          return `N${g.nakshatra_index}${pd}${lord}`;
+        };
+
+        const vedicIntroSection = createLayoutSection(isNL ? "Vedische horoscoop" : "Vedic horoscope", "");
+        vedicIntroSection.insertBefore(
+          createEl("div", "astro-eyebrow", isNL ? "Methode 2" : "Method 2"),
+          vedicIntroSection.firstChild
+        );
+        const vedicIntroPieces = [];
+        vedicIntroPieces.push(
+          isNL
+            ? `Dit is dezelfde methode-tab als elders in het dashboard, maar dan in de klassieke Indiase lijn (jyotish, vaak “Vedische astrologie” genoemd). We tonen sidereal posities met ${aya}-ayanamsha, whole-sign huizen in een noord-Indiase D1-kundali, plus Panchanga-context waar die uit de berekening komt. De vijf kernkaarten hieronder en het wiel vullen zich naarmate tijd, tijdzone en plaats nauwkeurig genoeg zijn.`
+            : `This is the same method tab as elsewhere in the dashboard, in the classical Indian line (Jyotish, often called “Vedic astrology”). We show sidereal positions with the ${aya} ayanamsha, whole-sign houses in a North Indian D1 kundali, plus Panchanga context when the pipeline supplies it. The five key cards below and the wheel fill in as time, timezone, and place are precise enough.`
+        );
+        const panchangaThin =
+          !p ||
+          (p.vaara == null &&
+            !(p.tithi && p.tithi.index != null) &&
+            !(p.nakshatra && p.nakshatra.index != null) &&
+            !(p.yoga && p.yoga.index != null));
+        if (panchangaThin) {
+          vedicIntroPieces.push(
+            isNL
+              ? "Als Vaara, tithi of nakshatra hier nog leeg of beperkt lijkt, komt dat doordat die laag voor deze invoer (nog) niet volledig wordt teruggegeven — niet omdat de methode zelf ‘korter’ zou zijn. Controleer datum, tijd en locatie; zodra de backend Panchanga meelevert, groeit ook deze uitleg vanzelf mee."
+              : "If Vaara, tithi, or nakshatra looks empty or thin here, it is because that layer is not fully returned for this input yet—not because the method itself is shallow. Check date, time, and location; once the backend supplies Panchanga, this narrative grows with it."
+          );
+        }
+        if (!lag) {
+          vedicIntroPieces.push(
+            isNL
+              ? "Zonder betrouwbare geboortetijd is Lagna (en daarmee de huisindeling in deze D1) niet vast te zetten; vul een zo exact mogelijke tijd in voor de belangrijkste kernwaarden en het wiel."
+              : "Without a reliable birth time, Lagna (and thus house framing on this D1) cannot be fixed; enter the most exact time you have for the main keys and the chart."
+          );
+        }
+        if (jy.status && Array.isArray(jy.status.warnings) && jy.status.warnings.length) {
+          vedicIntroPieces.push(
+            isNL
+              ? `Technische aanwijzing: ${jy.status.warnings.join("; ")}.`
+              : `Technical note: ${jy.status.warnings.join("; ")}.`
+          );
+        }
+        vedicIntroSection.appendChild(
+          createEl(
+            "p",
+            "",
+            vedicIntroPieces.length
+              ? vedicIntroPieces.join(" ")
+              : isNL
+                ? "Deze introductie kan nog niet volledig worden samengesteld, omdat niet alle benodigde waarden beschikbaar zijn."
+                : "This introduction cannot yet be composed completely because required values are missing."
+          )
+        );
+        wrap.appendChild(vedicIntroSection);
+
+        const secCore = createLayoutSection(isNL ? "Belangrijkste Vedische kernwaarden" : "Key Vedic values", "");
+        const cg = createEl("div", "vedic-core-values-grid");
+        const coreCard = (title, sub, body, iconId, sym, eyebrowOverride) =>
+          createAstroCard(title, sub, body, {
+            iconId,
+            subtitleIconId: sym ? signGlyph(sym) : null,
+            eyebrow: eyebrowOverride != null ? eyebrowOverride : astroCardIconEyebrow(iconId, isNL),
+            badge: isNL ? "kern" : "core",
+          });
+        cg.appendChild(
+          coreCard(
+            lag ? `LAGNA: ${signS(lag.rashi)}` : "LAGNA: —",
+            isNL ? "Vedische ascendant" : "Vedic ascendant",
+            isNL
+              ? "Levenspoort en belichaming; startpunt van de Kundali en concrete levensrichting."
+              : "Life portal and embodiment; starting point of the Kundali.",
+            "ascendant",
+            lag && lag.rashi,
+            isNL ? "Lagna" : "Ascendant"
+          )
+        );
+        cg.appendChild(
+          coreCard(
+            moonG ? `CHANDRA RASHI: ${signS(moonG.rashi)}` : "CHANDRA RASHI: —",
+            isNL ? "Maanteken" : "Moon sign",
+            isNL ? "Innerlijke beleving, mind en dagelijkse gevoelswereld." : "Inner experience, mind, daily feeling tone.",
+            "moon",
+            moonG && moonG.rashi
+          )
+        );
+        const moonNakG = moonG && moonG.nakshatra_index != null ? moonG : null;
+        cg.appendChild(
+          coreCard(
+            moonNakG ? `MAAN-NAKSHATRA: ${nakLine(moonNakG)}` : "MAAN-NAKSHATRA: —",
+            isNL ? "Sterrenveld van de Maan" : "Moon nakshatra",
+            isNL
+              ? "Subtieler ritme, instinct en emotionele toon; nodigt uit om patronen te herkennen."
+              : "Subtler rhythm and instinct; invites noticing patterns.",
+            "north-node",
+            null,
+            isNL ? "Nakshatra" : "Nakshatra"
+          )
+        );
+        cg.appendChild(
+          coreCard(
+            akG ? `ATMAKARAKA: ${localizePlanet(akG.name_en)}` : "ATMAKARAKA: —",
+            isNL ? "Zielsignificator (klassiek zeven)" : "Soul significator (classical seven)",
+            akG
+              ? isNL
+                ? `Hoogste graad in teken: ${signS(akG.rashi)}, huis ${akG.house != null ? akG.house : "—"}. Dit kan wijzen op een terugkerende levensles.`
+                : `Highest degree in sign: ${signS(akG.rashi)}, house ${akG.house != null ? akG.house : "-"}. May point to a recurring life lesson.`
+              : isNL
+                ? "Vereist volledige klassieke set posities."
+                : "Requires full classical body set.",
+            akG ? planetGlyph(akG.name_en) : "jupiter",
+            akG && akG.rashi,
+            akG && akG.name_en && PLANET_LABELS[akG.name_en] ? (isNL ? PLANET_LABELS[akG.name_en].nl : PLANET_LABELS[akG.name_en].en) : null
+          )
+        );
+        const varaLine = `${localizeVaara(p.vaara) || "—"}${jy.vaara_day_lord_en ? ` / ${localizePlanet(jy.vaara_day_lord_en)}` : ""}`;
+        cg.appendChild(
+          coreCard(
+            `VARA: ${varaLine}`,
+            isNL ? "Geboortedag" : "Weekday",
+            isNL
+              ? "Aanvullende toonlaag en dagkracht; minder zwaar dan Lagna of Chandra, maar kleurt handelen."
+              : "Extra tone layer for the weekday; lighter than Lagna or Moon, but colors action.",
+            "sun",
+            null,
+            null
+          )
+        );
+        secCore.appendChild(cg);
+        secCore.appendChild(
+          createEl(
+            "p",
+            "layout-section__lead",
+            isNL
+              ? "Deze vijf sleutels vormen samen je persoonlijke ingang tot de Vedische horoscoop: van lichaam en ritme tot diepere les en dagcontext."
+              : "These five keys form your personal entry to the Vedic chart: body, rhythm, deeper lesson, and day context."
+          )
+        );
+        wrap.appendChild(secCore);
+
+        const secK = createLayoutSection(isNL ? "Kundali · D1 Rashi chart" : "Kundali · D1 Rashi chart", isNL ? "Noord-Indiase whole-sign indeling; posities sidereaals berekend." : "North Indian whole-sign layout; sidereal positions.");
+        const radix = createEl("div", "western-radix-venster kundali-radix");
+        const wl = createEl("div", "western-wheel-layout");
+        const wcol = createEl("div", "western-wheel-col");
+        const kLayerBar = createEl("div", "western-layer-iconbar");
+        const kLayerCfg = [
+          ["houses", "house-1", isNL ? "Huisnummers tonen of verbergen" : "Toggle house numbers"],
+          ["rashis", "aries", isNL ? "Rashi-pictogrammen tonen of verbergen" : "Toggle rashi glyphs"],
+          ["grahas", "sun", isNL ? "Graha-pictogrammen tonen of verbergen" : "Toggle graha glyphs"],
+          ["drishti", "ui-connections", isNL ? "Drishti-lijnen op kaart + info" : "Drishti lines on chart + info"],
+          ["nakshatra", "north-node", isNL ? "Nakshatra-labels + woordenboek in paneel" : "Nakshatra labels + glossary in panel"],
+        ];
+        kLayerCfg.forEach(([key, iconId, hint]) => {
+          const btn = createEl("button", "western-layer-iconbtn");
+          btn.type = "button";
+          btn.dataset.layer = key;
+          btn.title = hint;
+          const src = iconPathById(iconId);
+          if (src) {
+            const img = document.createElement("img");
+            img.src = src;
+            img.alt = hint;
+            img.loading = "lazy";
+            img.decoding = "async";
+            btn.appendChild(img);
+          } else {
+            btn.textContent = String(key).slice(0, 1).toUpperCase();
+          }
+          kLayerBar.appendChild(btn);
+        });
+        wcol.appendChild(kLayerBar);
+        const kInfoToggle = createEl("button", "western-info-toggle", isNL ? "Info" : "Info");
+        kInfoToggle.type = "button";
+        wcol.appendChild(kInfoToggle);
+        const kWrap = createEl("div", "western-wheel-frame");
+        const kGrid = createKundaliGrid("D1", data, { interactive: true, isNL });
+        kWrap.appendChild(kGrid);
+        wcol.appendChild(kWrap);
+        const ip = createEl("aside", "western-info-pane");
+        wl.appendChild(wcol);
+        wl.appendChild(ip);
+        bindVedicKundaliRadixUI({
+          wheelLayout: wl,
+          gridEl: kGrid,
+          infoPanel: ip,
+          layerIconBar: kLayerBar,
+          infoToggle: kInfoToggle,
+          data,
+          isNL,
+        });
+        radix.appendChild(wl);
+        secK.appendChild(radix);
+        const kTechTable = renderVedicKundaliTechTable(data, isNL);
+        if (lords && lords.lord) {
+          const strip = createEl("div", "western-ruler-strip");
+          const card = createEl("article", "western-chart-ruler__unified western-chart-ruler__unified--stamp");
+          const vedicLordAccent = {
+            Sun: "#E67E22",
+            Moon: "#6E6A7B",
+            Mercury: "#2F7D32",
+            Venus: "#D94D73",
+            Mars: "#C92127",
+            Jupiter: "#E88918",
+            Saturn: "#315B9A",
+          };
+          card.style.setProperty("--cr-accent", vedicLordAccent[lords.lord] || "#884dc9");
+          const row = createEl("div", "western-chart-ruler__stamp-row");
+          const gid = planetGlyph(lords.lord);
+          if (gid && iconPathById(gid)) {
+            const gw = createEl("div", "western-chart-ruler__glyph-wrap");
+            const im = document.createElement("img");
+            im.src = iconPathById(gid);
+            im.alt = localizePlanet(lords.lord);
+            im.className = "western-chart-ruler__glyph western-chart-ruler__glyph--stamp";
+            im.loading = "lazy";
+            gw.appendChild(im);
+            row.appendChild(gw);
+          }
+          const meta = createEl("div", "western-chart-ruler__stamp-meta");
+          meta.appendChild(createEl("div", "western-chart-ruler__stamp-kicker", "LAGNESHA"));
+          meta.appendChild(
+            createEl(
+              "div",
+              "western-chart-ruler__stamp-who",
+              `${localizePlanet(lords.lord)} · ${signS(lords.in_rashi)} · ${isNL ? "huis" : "h"} ${lords.in_house != null ? lords.in_house : "—"}`
+            )
+          );
+          row.appendChild(meta);
+          card.appendChild(row);
+          card.appendChild(
+            createEl(
+              "p",
+              "western-chart-ruler__stamp-note",
+              isNL
+                ? `${localizePlanet(lords.lord)} beheerst je Lagna en toont hoe je levensrichting vorm krijgt. Deze plaatsing nodigt uit om te onderzoeken waar initiatief en structuur samenkomen.`
+                : `${localizePlanet(lords.lord)} rules your Lagna and shows how life direction takes shape. Explore where initiative and structure meet.`
+            )
+          );
+          strip.appendChild(card);
+          secK.appendChild(strip);
+        }
+        wrap.appendChild(secK);
+
+        const secD1 = createLayoutSection(isNL ? "Samenvatting van de D1-kaart" : "D1 chart summary", "");
+        const parts = [];
+        if (lag && moonG) {
+          parts.push(
+            isNL
+              ? `Met Lagna in ${signS(lag.rashi)} en Chandra in ${signS(moonG.rashi)} kleurt je chart een mengsel van uitstraling (${isNL ? "Asc" : "Asc"}) en innerlijke verwerking (Maan).`
+              : `With Lagna in ${signS(lag.rashi)} and Moon in ${signS(moonG.rashi)}, outward tone and inner processing interweave.`
+          );
+        }
+        const dust = grahas.filter((g) => g && g.house_kind_from_lagna === "dusthana").map((g) => localizePlanet(g.name_en));
+        if (dust.length) {
+          parts.push(
+            isNL
+              ? `Dusthana-accenten (6/8/12) bij: ${dust.join(", ")} — dit kan wijzen op levensgebieden die om bewustzijn en volharding vragen, niet op vaste uitkomsten.`
+              : `Dusthana emphasis (6/8/12) with: ${dust.join(", ")} — may highlight life areas asking for awareness, not fixed outcomes.`
+          );
+        }
+        if (jy.yogas && jy.yogas.length) {
+          parts.push(
+            isNL
+              ? `Patronen: ${jy.yogas.map((y) => y.name_nl || y.id).join("; ")}.`
+              : `Patterns: ${jy.yogas.map((y) => y.name_en || y.id).join("; ")}.`
+          );
+        }
+        secD1.appendChild(
+          createEl(
+            "p",
+            "",
+            parts.length
+              ? parts.join(" ")
+              : isNL
+                ? "Zodra Lagna en Maan beschikbaar zijn, wordt hier een persoonlijke D1-samenvatting opgebouwd."
+                : "Once Lagna and Moon are available, a personal D1 summary is composed here."
+          )
+        );
+        wrap.appendChild(secD1);
+
+        const secVHead = createLayoutSection(
+          isNL ? "Divisiekaarten (15 verdiepingslagen)" : "Divisional charts (15 depth layers)",
+          isNL
+            ? "Hier lees je de vijftien divisiekaarten naast je D1 (D2 t/m D60). Elke kaart toont alle persoonlijke informatie die de huidige invoer toelaat: varga-Lagna, kern-graha's, bezette huizen en een persoonlijke mini-tabel per divisie."
+            : "Here you read the fifteen divisional charts beside your D1 (D2 through D60). Each chart shows all personal information available from current input: varga Lagna, key grahas, occupied houses, and a personal mini-table per division."
+        );
+        wrap.appendChild(secVHead);
+        const divGroupsRoot = createEl("section", "divisional-groups");
+        const divGroupById = {};
+        DIVISIONAL_DASHBOARD_GROUPS.forEach((g) => {
+          const sec = createEl("section", "divisional-group");
+          if (g.id === "material-base") sec.classList.add("divisional-group--material");
+          sec.appendChild(createEl("h4", "divisional-group__title", isNL ? g.title_nl : g.title_en));
+          sec.appendChild(createEl("p", "divisional-group__lead", isNL ? g.lead_nl : g.lead_en));
+          const cards = createEl("div", "divisional-cards");
+          sec.appendChild(cards);
+          divGroupsRoot.appendChild(sec);
+          divGroupById[g.id] = cards;
+        });
+
+        const vargaPlanetAccent = {
+          Sun: "#E67E22",
+          Moon: "#6E6A7B",
+          Ascendant: "#C9A24D",
+          Atmakaraka: "#315B9A",
+          Lagnesha: "#884dc9",
+        };
+        const vargaBodyLine = (roleLabel, vrow) => {
+          if (!vrow || !vrow.rashi) {
+            return isNL
+              ? `${roleLabel}: geen varga-positie in de data (controleer berekening).`
+              : `${roleLabel}: no varga placement in the payload (check computation).`;
+          }
+          const h = vrow.house != null ? Number(vrow.house) : null;
+          const theme = h != null ? getVedicHouseMeta(isNL)[h] || "" : "";
+          const signLabel = getVedicSignLabel(vrow.rashi, isNL);
+          if (h == null) {
+            return isNL
+              ? `${roleLabel} in ${signLabel}; huis vraagt een vaste Lagna-tijd.`
+              : `${roleLabel} in ${signLabel}; house needs a fixed Lagna time.`;
+          }
+          return isNL
+            ? `${roleLabel} in ${signLabel}, huis ${h}. ${theme}`
+            : `${roleLabel} in ${signLabel}, house ${h}. ${theme}`;
+        };
+        const divisionalVargas = VEDIC_VARGAS.filter((v) => v.id !== "D1");
+        divisionalVargas.forEach((meta) => {
+          const vid = meta.id;
+          const sec = createLayoutSection(`${meta.name} · ${vid}`, isNL ? meta.focus_nl : meta.focus_en);
+          const eyeb = createEl("div", "astro-eyebrow", isNL ? meta.layer_nl : meta.layer_en);
+          sec.insertBefore(eyeb, sec.firstChild);
+          const dMeta = jy.divisional_charts && jy.divisional_charts[vid];
+          const dCfg = DIVISIONAL_PROFILE_CONFIG[vid] || {};
+          const sensitivity = getDivisionalSensitivityLabel(vid, isNL);
+          if (dMeta && (dMeta.note_nl || dMeta.note_en)) {
+            sec.appendChild(
+              createEl("p", "astro-card__sub", isNL ? String(dMeta.note_nl || "") : String(dMeta.note_en || ""))
+            );
+          }
+          sec.appendChild(
+            createEl(
+              "p",
+              "astro-card__sub",
+              `${isNL ? "Thema" : "Theme"}: ${isNL ? (dCfg.theme_nl || meta.focus_nl) : (dCfg.theme_en || meta.focus_en)} · ${isNL ? "Tijdgevoeligheid" : "Time sensitivity"}: ${sensitivity}`
+            )
+          );
+          if (vid === "D2") {
+            const lvD2 = lag && lag.vargas && lag.vargas.D2 ? lag.vargas.D2 : null;
+            const d2Rows = grahas.map((g) => {
+              const v = g && g.vargas && g.vargas.D2 ? g.vargas.D2 : null;
+              return {
+                en: g.name_en,
+                name: localizePlanet(g.name_en),
+                symbol: "●",
+                symbolId: planetGlyph(g.name_en),
+                rashi: v && v.rashi ? getVedicSignLabel(v.rashi, isNL) : "—",
+                house: v && v.house != null ? Number(v.house) : null,
+              };
+            }).filter((r) => r.house != null);
+            const inH1 = d2Rows.filter((r) => r.house === 1);
+            const inH12 = d2Rows.filter((r) => r.house === 12);
+            const d2Wrap = createEl("div", "d2-hora-layout");
+
+            const top = createEl("div", "d2-hora-top");
+            const left = createEl("div", "astro-card d2-hora-panel");
+            left.appendChild(createEl("div", "astro-eyebrow", isNL ? "Persoonlijke kern van deze D2" : "Personal core of this D2"));
+            left.appendChild(createEl("h5", "", isNL ? "De beschermende drager van waarde" : "The protective carrier of value"));
+            left.appendChild(createEl("p", "", isNL
+              ? "Deze Hora laat een duidelijke beweging zien tussen je D2-Lagna en de zones waar meerdere graha's samenkomen. Materiële kracht groeit niet alleen door vasthouden, maar door wat je werkelijk voedt en beschermt."
+              : "This Hora shows a clear movement between D2 Lagna and the zones where grahas cluster. Material strength grows not only by holding on, but by what truly nourishes and protects you."));
+            left.appendChild(createEl("p", "", isNL
+              ? "De ontwikkelrichting ligt in balans tussen geven en ontvangen: grenzen, rust en waardegevoel werken hier samen."
+              : "The growth direction lies in balancing giving and receiving: boundaries, rest, and value-sense work together here."));
+            top.appendChild(left);
+            d2Wrap.appendChild(top);
+            const coreCards = createEl("div", "d2-hora-core-grid");
+            [
+              {
+                e: isNL ? "Varga-Lagna" : "Varga Lagna",
+                t: lvD2 && lvD2.rashi ? `${getVedicSignLabel(lvD2.rashi, isNL)}${lvD2.house != null ? ` · ${isNL ? "huis" : "house"} ${lvD2.house}` : ""}` : "—",
+                b: isNL ? "Dit kan tonen hoe je draagkracht en waarde praktisch belichaamt." : "This can show how you embody capacity and value in practice.",
+              },
+              {
+                e: isNL ? "Dominante zone" : "Dominant zone",
+                t: inH12.length ? (isNL ? "Huis 12 actief" : "House 12 active") : (isNL ? "Geen dominante 12e-zone" : "No dominant 12th-zone"),
+                b: isNL ? "Achter-de-schermen processen zoals herstel, rust en loslaten kleuren je waardehuishouding." : "Behind-the-scenes processes such as recovery, rest, and release color your value economy.",
+              },
+              {
+                e: isNL ? "Centrale beweging" : "Central movement",
+                t: isNL ? "Geven ↔ ontvangen" : "Giving ↔ receiving",
+                b: isNL ? "Niet fatalistisch: dit kan wijzen op een ontwikkelrichting in energie, middelen en grenzen." : "Non-fatalistic: this may indicate a developmental direction in energy, resources, and boundaries.",
+              },
+            ].forEach((it) => {
+              const c = createEl("article", "astro-card d2-hora-core-item");
+              c.appendChild(createEl("div", "astro-eyebrow", it.e));
+              c.appendChild(createEl("h4", "", it.t));
+              c.appendChild(createEl("p", "", it.b));
+              coreCards.appendChild(c);
+            });
+            d2Wrap.appendChild(coreCards);
+
+            const mid = createEl("div", "d2-hora-mid");
+            const map = createEl("div", "astro-card d2-hora-panel");
+            map.appendChild(createEl("div", "astro-eyebrow", isNL ? "D2 kaart" : "D2 chart"));
+            map.appendChild(createEl("h5", "", isNL ? "Hora-verdeling" : "Hora distribution"));
+            const mapGrid = createEl("div", "d2-hora-map-grid");
+            const houseBox = (h, label, rows) => {
+              const box = createEl("div", "d2-hora-house");
+              box.appendChild(createEl("div", "d2-hora-house__label", `${isNL ? "Huis" : "House"} ${h}`));
+              const rowWrap = createEl("div", "");
+              (rows || []).forEach((r) => {
+                const chip = createEl("div", "d2-hora-mini-chip");
+                if (r.symbolId && iconPathById(r.symbolId)) {
+                  const im = document.createElement("img");
+                  im.src = iconPathById(r.symbolId);
+                  im.alt = r.name;
+                  im.loading = "lazy";
+                  im.decoding = "async";
+                  chip.appendChild(im);
+                } else {
+                  chip.appendChild(createEl("span", "d2-hora-chip-symbol", r.symbol || "•"));
+                }
+                chip.appendChild(createEl("span", "", r.name));
+                rowWrap.appendChild(chip);
+              });
+              box.appendChild(rowWrap);
+              box.appendChild(createEl("div", "d2-hora-house__footer", label));
+              return box;
+            };
+            mapGrid.appendChild(houseBox(12, isNL ? "loslaten · rust · herstel" : "release · rest · recovery", inH12));
+            mapGrid.appendChild(houseBox(1, isNL ? "zelfwaarde · richting · draagkracht" : "self-worth · direction · capacity", inH1));
+            mapGrid.appendChild(houseBox(2, isNL ? "middelen · bezit · stem" : "resources · assets · voice", d2Rows.filter((r) => r.house === 2)));
+            mapGrid.appendChild(houseBox(11, isNL ? "winst · netwerk · opbrengst" : "gains · network · returns", d2Rows.filter((r) => r.house === 11)));
+            map.appendChild(mapGrid);
+            mid.appendChild(map);
+
+            const plist = createEl("div", "d2-hora-planet-list");
+            d2Rows.forEach((p) => {
+              const pc = createEl("article", "astro-card d2-hora-planet-chip");
+              pc.appendChild(createEl("div", "astro-eyebrow", `${p.name} · ${isNL ? "huis" : "house"} ${p.house}`));
+              const title = createEl("h4", "d2-hora-planet-title");
+              if (p.symbolId && iconPathById(p.symbolId)) {
+                const im = document.createElement("img");
+                im.src = iconPathById(p.symbolId);
+                im.alt = p.name;
+                im.loading = "lazy";
+                im.decoding = "async";
+                title.appendChild(im);
+              } else {
+                title.appendChild(createEl("span", "d2-hora-chip-symbol", p.symbol || "•"));
+              }
+              title.appendChild(createEl("span", "", `${p.name} · ${p.rashi}`));
+              pc.appendChild(title);
+              pc.appendChild(createEl("p", "", isNL
+                ? `Deze plaatsing kan in D2 wijzen op jouw relatie met waarde, voeding en draagkracht via huis ${p.house}.`
+                : `In D2 this placement can indicate your relationship with value, nourishment, and capacity through house ${p.house}.`));
+              plist.appendChild(pc);
+            });
+            mid.appendChild(plist);
+            d2Wrap.appendChild(mid);
+
+            sec.appendChild(d2Wrap);
+            const grpD2 = getDivisionalGroupForVarga(vid);
+            const targetD2 = grpD2 && divGroupById[grpD2.id] ? divGroupById[grpD2.id] : divGroupsRoot;
+            targetD2.appendChild(sec);
+            return;
+          }
+          const grid3 = createEl("div", "explain-grid");
+          const lv = lag && lag.vargas && lag.vargas[vid];
+          const mv = moonG && moonG.vargas && moonG.vargas[vid];
+          const sv = sunG && sunG.vargas && sunG.vargas[vid];
+          const av = akG && akG.vargas && akG.vargas[vid];
+          const lordGraha = lords && lords.lord ? by(lords.lord) : null;
+          const lgv = lordGraha && lordGraha.vargas ? lordGraha.vargas[vid] : null;
+          const lagSign = lv && lv.rashi;
+          const lagTitle = lagSign
+            ? `${localizeSignShort(lagSign)} · ${isNL ? "varga-Lagna" : "varga Lagna"}`
+            : isNL
+              ? "Varga-Lagna onbekend"
+              : "Varga Lagna unknown";
+          grid3.appendChild(
+            createAstroCard(
+              lagTitle,
+              isNL ? "Eerste huis in deze divisie" : "First house in this division",
+              vargaBodyLine(isNL ? "Lagna / divisie-ingang" : "Lagna / divisional entry", lv),
+              {
+                iconId: "ascendant",
+                subtitleIconId: signGlyph(lagSign),
+                accentColor: vargaPlanetAccent.Ascendant,
+                eyebrow: astroCardIconEyebrow("ascendant", isNL),
+                badge: isNL ? "Kern" : "Core",
+              }
+            )
+          );
+          const moonSign = mv && mv.rashi;
+          const mh = mv && mv.house != null ? Number(mv.house) : null;
+          const moonTitle =
+            moonSign && mh != null
+              ? `${localizeSignShort(moonSign)} ${isNL ? "in huis" : "in house"} ${mh}`
+              : isNL
+                ? "Maan: positie onvolledig"
+                : "Moon: placement incomplete";
+          grid3.appendChild(
+            createAstroCard(
+              moonTitle,
+              isNL ? "Innerlijke basis in deze divisie" : "Inner baseline in this division",
+              vargaBodyLine(isNL ? "Maan" : "Moon", mv),
+              {
+                iconId: "moon",
+                subtitleIconId: signGlyph(moonSign),
+                accentColor: vargaPlanetAccent.Moon,
+                eyebrow: astroCardIconEyebrow("moon", isNL),
+                badge: isNL ? "Kern" : "Core",
+              }
+            )
+          );
+          const sunSign = sv && sv.rashi;
+          const sh = sv && sv.house != null ? Number(sv.house) : null;
+          const sunTitle =
+            sunSign && sh != null
+              ? `${localizeSignShort(sunSign)} ${isNL ? "in huis" : "in house"} ${sh}`
+              : isNL
+                ? "Zon: positie onvolledig"
+                : "Sun: placement incomplete";
+          grid3.appendChild(
+            createAstroCard(
+              sunTitle,
+              isNL ? "Richting en vuur in deze divisie" : "Direction and drive in this division",
+              vargaBodyLine(isNL ? "Zon" : "Sun", sv),
+              {
+                iconId: "sun",
+                subtitleIconId: signGlyph(sunSign),
+                accentColor: vargaPlanetAccent.Sun,
+                eyebrow: astroCardIconEyebrow("sun", isNL),
+                badge: isNL ? "Kern" : "Core",
+              }
+            )
+          );
+          const akSign = av && av.rashi;
+          const akHouse = av && av.house != null ? Number(av.house) : null;
+          const akTitle = akSign
+            ? `${localizePlanet(akG && akG.name_en)} · ${localizeSignShort(akSign)}${akHouse != null ? ` · ${isNL ? "huis" : "h"} ${akHouse}` : ""}`
+            : isNL ? "Atmakaraka: positie onvolledig" : "Atmakaraka: placement incomplete";
+          grid3.appendChild(
+            createAstroCard(
+              akTitle,
+              isNL ? "Terugkerende les in deze divisie" : "Recurring lesson in this division",
+              vargaBodyLine(isNL ? "Atmakaraka" : "Atmakaraka", av),
+              {
+                iconId: akG ? planetGlyph(akG.name_en) : "jupiter",
+                subtitleIconId: signGlyph(akSign),
+                accentColor: vargaPlanetAccent.Atmakaraka,
+                eyebrow: isNL ? "Atmakaraka" : "Atmakaraka",
+                badge: isNL ? "Persoonlijk" : "Personal",
+              }
+            )
+          );
+          const lgSign = lgv && lgv.rashi;
+          const lgHouse = lgv && lgv.house != null ? Number(lgv.house) : null;
+          const lgTitle = lgSign
+            ? `${localizePlanet(lords && lords.lord)} · ${localizeSignShort(lgSign)}${lgHouse != null ? ` · ${isNL ? "huis" : "h"} ${lgHouse}` : ""}`
+            : isNL ? "Lagnesha: positie onvolledig" : "Lagnesha: placement incomplete";
+          grid3.appendChild(
+            createAstroCard(
+              lgTitle,
+              isNL ? "Richtinggever van je Lagna in deze divisie" : "Lagna ruler direction in this division",
+              vargaBodyLine(isNL ? "Lagnesha" : "Lagna ruler", lgv),
+              {
+                iconId: lords && lords.lord ? planetGlyph(lords.lord) : "ascendant",
+                subtitleIconId: signGlyph(lgSign),
+                accentColor: vargaPlanetAccent.Lagnesha,
+                eyebrow: isNL ? "Lagnesha" : "Lagna ruler",
+                badge: isNL ? "Persoonlijk" : "Personal",
+              }
+            )
+          );
+          sec.appendChild(grid3);
+          const vRows = grahas.map((g) => {
+            const gv = g && g.vargas && g.vargas[vid] ? g.vargas[vid] : null;
+            return {
+              graha: localizePlanet(g.name_en),
+              rashi: gv && gv.rashi ? getVedicSignLabel(gv.rashi, isNL) : "—",
+              house: gv && gv.house != null ? String(gv.house) : "—",
+            };
+          });
+          const occCount = vRows.filter((r) => r.house !== "—").length;
+          const houseCount = {};
+          vRows.forEach((r) => {
+            if (r.house === "—") return;
+            houseCount[r.house] = (houseCount[r.house] || 0) + 1;
+          });
+          const topHouse = Object.entries(houseCount).sort((a, b) => b[1] - a[1])[0];
+          const synth = [];
+          if (lagSign && moonSign && sunSign && mh != null && sh != null) {
+            synth.push(
+              isNL
+                ? `In ${meta.name} vallen je varga-Lagna (${getVedicSignLabel(lagSign, isNL)}), je Maan (${getVedicSignLabel(moonSign, isNL)} in huis ${mh}) en je Zon (${getVedicSignLabel(sunSign, isNL)} in huis ${sh}) samen rond het thema “${meta.focus_nl}”. Lees dit als verdieping op je D1, niet als losstaande voorspelling.`
+                : `In ${meta.name}, your varga Lagna (${getVedicSignLabel(lagSign, isNL)}), Moon (${getVedicSignLabel(moonSign, isNL)} in house ${mh}), and Sun (${getVedicSignLabel(sunSign, isNL)} in house ${sh}) align with “${meta.focus_en}”. Read this as depth on your D1, not a standalone prediction.`
+            );
+          }
+          if (topHouse) {
+            synth.push(
+              isNL
+                ? `In deze divisie zijn ${occCount} graha-posities beschikbaar; huis ${topHouse[0]} is het meest bezet (${topHouse[1]}).`
+                : `In this division ${occCount} graha placements are available; house ${topHouse[0]} is most occupied (${topHouse[1]}).`
+            );
+          }
+          sec.appendChild(
+            createEl(
+              "p",
+              "",
+              synth.length
+                ? synth.join(" ")
+                : isNL
+                  ? "Zodra Lagna en de klassieke grahas volledig zijn doorgegeven, vullen deze zinnen automatisch aan."
+                  : "Once Lagna and the classical grahas are fully supplied, these lines fill in automatically."
+            )
+          );
+          const insightGrid = createEl("div", "divisional-insight-grid");
+          const topRows = vRows.filter((r) => r.house !== "—").slice(0, Math.min(5, Math.max(2, occCount)));
+          topRows.forEach((r) => {
+            const inCard = createEl("article", "divisional-insight");
+            inCard.appendChild(createEl("h5", "", `${r.graha} · ${r.rashi}`));
+            inCard.appendChild(
+              createEl(
+                "p",
+                "",
+                isNL
+                  ? `Deze factor kan in ${meta.name} wijzen op een persoonlijk thema via ${isNL ? "huis" : "h"} ${r.house}.`
+                  : `In ${meta.name}, this factor can point to a personal theme through house ${r.house}.`
+              )
+            );
+            inCard.appendChild(
+              createEl(
+                "div",
+                "astro-card__sub",
+                isNL ? "Reflectie: wanneer werkt deze kwaliteit voor je, en wanneer tegen je?" : "Reflection: when does this quality work for you, and when against you?"
+              )
+            );
+            insightGrid.appendChild(inCard);
+          });
+          if (insightGrid.children.length) sec.appendChild(insightGrid);
+          const d1h = dCfg && Array.isArray(dCfg.d1_houses) ? dCfg.d1_houses : [];
+          if (d1h.length) {
+            sec.appendChild(
+              createEl(
+                "div",
+                "divisional-reflect",
+                isNL
+                  ? `D1-koppeling: lees ${meta.name} naast D1-huis ${d1h.slice(0, 3).join(", ")} voor context en nuance.`
+                  : `D1 linkage: read ${meta.name} alongside D1 house ${d1h.slice(0, 3).join(", ")} for context and nuance.`
+              )
+            );
+          }
+          if (vid === "D60") {
+            sec.appendChild(
+              createEl(
+                "div",
+                "divisional-reflect",
+                isNL
+                  ? "D60 blijft zeer gevoelig voor geboortetijd; lees dit als reflectieve laag en niet als harde uitkomst."
+                  : "D60 remains highly birth-time sensitive; read this as a reflective layer, not a hard outcome."
+              )
+            );
+          }
+          const grp = getDivisionalGroupForVarga(vid);
+          const target = grp && divGroupById[grp.id] ? divGroupById[grp.id] : divGroupsRoot;
+          target.appendChild(sec);
+        });
+        wrap.appendChild(divGroupsRoot);
+        const secDivSummary = createLayoutSection(
+          isNL ? "Samenvattend Vedisch profiel" : "Summarized Vedic profile",
+          isNL
+            ? "Herhalende patronen over divisiekaarten heen."
+            : "Recurring patterns across divisional charts."
+        );
+        const summaryGrid = createEl("div", "divisional-summary__grid");
+        const roleCounter = {};
+        VEDIC_VARGAS.filter((v) => v.id !== "D1").forEach((v) => {
+          const cfg = DIVISIONAL_PROFILE_CONFIG[v.id] || {};
+          (cfg.planets || []).forEach((en) => {
+            roleCounter[en] = (roleCounter[en] || 0) + 1;
+          });
+        });
+        Object.entries(roleCounter).sort((a, b) => b[1] - a[1]).slice(0, 5).forEach(([planet, count]) => {
+          summaryGrid.appendChild(
+            createAstroCard(
+              `${localizePlanet(planet)} · ${count}x`,
+              isNL ? "Kernthema" : "Core theme",
+              isNL
+                ? `${localizePlanet(planet)} keert terug in meerdere divisies. Dit kan wijzen op een doorlopend ontwikkelthema.`
+                : `${localizePlanet(planet)} repeats across multiple divisions, which may indicate an ongoing developmental theme.`,
+              { iconId: planetGlyph(planet), badge: isNL ? "Profiel" : "Profile" }
+            )
+          );
+        });
+        if (!summaryGrid.children.length) {
+          summaryGrid.appendChild(
+            createAstroCard(
+              isNL ? "Nog beperkte divisiedata" : "Limited divisional data",
+              isNL ? "Profiel in opbouw" : "Profile in progress",
+              isNL ? "Met nauwkeuriger geboortetijd groeit deze samenvatting vanzelf mee." : "With a more precise birth time, this summary expands automatically.",
+              { iconId: "ui-info", badge: isNL ? "Fallback" : "Fallback" }
+            )
+          );
+        }
+        secDivSummary.appendChild(summaryGrid);
+        wrap.appendChild(secDivSummary);
+
+        const vargaTech = createEl("section", "");
+        vargaTech.appendChild(
+          createEl(
+            "h4",
+            "kundali-tech__title",
+            isNL ? "Technische tabel · D1, D9 en D10 (compact)" : "Technical table · D1, D9, D10 (compact)"
+          )
+        );
+        const vargaRows = grahas.map((g) => {
+          const retro = g.retrograde === true ? (isNL ? "ja" : "yes") : g.retrograde === false ? (isNL ? "nee" : "no") : "—";
+          const comb = g.combust ? (isNL ? "ja" : "yes") : (isNL ? "nee" : "no");
+          return [
+            localizePlanet(g.name_en),
+            signS(g.rashi),
+            g.house != null ? String(g.house) : "—",
+            signS(g.navamsa_rashi),
+            g.navamsa_house != null ? String(g.navamsa_house) : "—",
+            signS(g.dashamsa_rashi),
+            g.dashamsa_house != null ? String(g.dashamsa_house) : "—",
+            g.house_kind_from_lagna || "—",
+            retro,
+            comb,
+          ];
+        });
+        vargaTech.appendChild(
+          createMethodTable(
+            [
+              isNL ? "Graha" : "Graha",
+              "D1",
+              isNL ? "H1" : "H1",
+              "D9",
+              isNL ? "H9" : "H9",
+              "D10",
+              isNL ? "H10" : "H10",
+              isNL ? "Soort huis" : "House kind",
+              isNL ? "Retro" : "Rx",
+              isNL ? "Combust" : "Combust",
+            ],
+            vargaRows.length ? vargaRows : [[isNL ? "Geen data" : "No data", "—", "—", "—", "—", "—", "—", "—", "—"]]
+          )
+        );
+
+        const secPl = createLayoutSection(isNL ? "Planetaire waardigheid en kracht" : "Planetary dignity and strength", isNL ? "Overzicht per graha; Shadbala volgt wanneer betrouwbaar beschikbaar." : "Per-graha overview; Shadbala when reliably available.");
+        const pr = grahas.map((g) => [
+          localizePlanet(g.name_en),
+          `${signS(g.rashi)} · ${isNL ? "huis" : "h"} ${g.house != null ? g.house : "—"}`,
+          g.house_kind_from_lagna || "—",
+          g.combust ? (isNL ? "combust (nabij Zon)" : "combust (near Sun)") : "—",
+          isNL
+            ? `Dit kan wijzen op hoe zichtbaar deze graha is in je D1; combineer met huis en Drishti.`
+            : `Shows visibility in D1; combine with house and drishti.`,
+        ]);
+        secPl.appendChild(
+          createMethodTable(
+            [isNL ? "Graha" : "Graha", isNL ? "Plaats" : "Placement", isNL ? "Rol t.o.v. Lagna" : "Role vs Lagna", isNL ? "Status" : "Status", isNL ? "Leesrichting" : "Reading hint"],
+            pr.length ? pr : [[isNL ? "Geen grahas" : "No grahas", "—", "—", "—", "—"]]
+          )
+        );
+
+        const secH = createLayoutSection(isNL ? "Huizen en levensgebieden (Bhava)" : "Houses and life areas (Bhava)", "");
+        const hm = getVedicHouseMeta(isNL);
+        const asc1 = getVedicAscendantSignId("D1", data);
+        const signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+        const inHouse = (h) => grahas.filter((g) => g && g.house === h).map((g) => localizePlanet(g.name_en)).join(", ");
+        const hRows = Array.from({ length: 12 }, (_, i) => {
+          const h = i + 1;
+          const signIdx = (asc1 + h - 2 + 12) % 12;
+          const sn = signs[signIdx];
+          const mark = [moonG && moonG.house, akG && akG.house, lords && lords.in_house].includes(h) ? " *" : "";
+          return [
+            String(h) + mark,
+            symbolCell(signGlyph(sn), getVedicSignLabel(sn, isNL), getVedicSignLabel(sn, isNL)),
+            hm[h] || "—",
+            inHouse(h) || (isNL ? "leeg" : "empty"),
+          ];
+        });
+        secH.appendChild(
+          createMethodTable(
+            [isNL ? "Bhava" : "Bhava", isNL ? "Rashi op huis" : "Sign on house", isNL ? "Thema" : "Theme", isNL ? "Graha's" : "Grahas"],
+            hRows
+          )
+        );
+        secH.appendChild(
+          createEl(
+            "p",
+            "astro-card__sub",
+            isNL ? "* = huis van Maan, Atmakaraka of Lagnesha." : "* = house of Moon, Atmakaraka, or Lagnesha."
+          )
+        );
+
+        const secN = createLayoutSection(isNL ? "Nakshatra-laag" : "Nakshatra layer", "");
+        const nkRows = [];
+        const pushN = (label, g) => {
+          if (!g) return;
+          nkRows.push([label, `N${g.nakshatra_index}`, g.pada != null ? String(g.pada) : "—", g.nakshatra_lord_en ? localizePlanet(g.nakshatra_lord_en) : "—", signS(g.rashi)]);
+        };
+        pushN(isNL ? "Maan" : "Moon", moonG);
+        pushN("Lagna", lag);
+        pushN(isNL ? "Zon" : "Sun", sunG);
+        pushN("AK", akG);
+        secN.appendChild(
+          createMethodTable(
+            [isNL ? "Punt" : "Point", isNL ? "Nakshatra" : "Nakshatra", "Pada", isNL ? "Heerser" : "Lord", "Rashi"],
+            nkRows.length ? nkRows : [[isNL ? "Geen data" : "No data", "—", "—", "—", "—"]]
+          )
+        );
+
+        const secDr = createLayoutSection(isNL ? "Drishti’s en Yogas" : "Drishtis and Yogas", "");
+        const drRows = (jy.drishti || []).map((d) => [d.from, (d.houses || []).join(", ")]);
+        secDr.appendChild(
+          createMethodTable([isNL ? "Van" : "From", isNL ? "Huizen in blik" : "Houses aspected"], drRows.length ? drRows : [[isNL ? "Geen huizen (geen Lagna)" : "No houses (no Lagna)", "—"]])
+        );
+        const yRows = (jy.yogas || []).map((y) => [y.name_nl || y.id, y.reason_nl || "", (y.bodies || []).join(", ")]);
+        secDr.appendChild(createEl("h4", "", isNL ? "Gedetecteerde yogas" : "Detected yogas"));
+        secDr.appendChild(
+          createMethodTable([isNL ? "Yoga" : "Yoga", isNL ? "Waarom" : "Why", isNL ? "Graha's" : "Bodies"], yRows.length ? yRows : [[isNL ? "Geen automatische yoga" : "No auto yoga", "—", "—"]])
+        );
+
+        const secE = createLayoutSection(isNL ? "Energetische verdeling" : "Energetic distribution", isNL ? "Tattva’s, guna-samenvatting en Chara/Sthira/Dwisvabhava (grafisch, op basis van graha-rashi’s)." : "Tattvas, guna summary, and sign qualities from graha rashis.");
+        const eg = createEl("div", "explain-grid");
+        const tc = jy.tattva_counts || {};
+        const tPairs = [
+          [isNL ? "Vuur" : "Fire", tc.fire || 0],
+          [isNL ? "Aarde" : "Earth", tc.earth || 0],
+          [isNL ? "Lucht" : "Air", tc.air || 0],
+          [isNL ? "Water" : "Water", tc.water || 0],
+        ];
+        const tTot = tPairs.reduce((a, x) => a + x[1], 0) || 1;
+        eg.appendChild(
+          __vedicBarCard(
+            isNL ? "Tattva’s (grafisch)" : "Tattvas",
+            tPairs.map(([k, v]) => [k, Math.round((v / tTot) * 100)]),
+            isNL ? "Dit is een samenvattende laag, niet de kern van de lezing." : "This is a summarizing layer, not the core reading.",
+            isNL
+          )
+        );
+        const gc = jy.guna_counts || {};
+        const gPairs = [
+          ["Sattva", gc.sattva || 0],
+          ["Rajas", gc.rajas || 0],
+          ["Tamas", gc.tamas || 0],
+        ];
+        const gTot = gPairs.reduce((a, x) => a + x[1], 0) || 1;
+        eg.appendChild(
+          __vedicBarCard(
+            isNL ? "Guna’s (vereenvoudigd)" : "Gunas (simplified)",
+            gPairs.map(([k, v]) => [k, Math.round((v / gTot) * 100)]),
+            "",
+            isNL
+          )
+        );
+        const qc = jy.rashi_quality_counts || {};
+        const qPairs = [
+          [isNL ? "Chara (bewegelijk)" : "Chara (movable)", qc.chara || 0],
+          [isNL ? "Sthira (vast)" : "Sthira (fixed)", qc.sthira || 0],
+          [isNL ? "Dwisvabhava (dubbel)" : "Dwisvabhava (dual)", qc.dwisvabhava || 0],
+        ];
+        const qTot = qPairs.reduce((a, x) => a + x[1], 0) || 1;
+        eg.appendChild(
+          __vedicBarCard(
+            isNL ? "Rashi-kwaliteit" : "Sign modality",
+            qPairs.map(([k, v]) => [k, Math.round((v / qTot) * 100)]),
+            "",
+            isNL
+          )
+        );
+        secE.appendChild(eg);
+        wrap.appendChild(secE);
+
+        const secDash = createLayoutSection(isNL ? "Dasha / levensfasen" : "Dasha / life phases", "");
+        const vm = jy.vimshottari || {};
+        secDash.appendChild(
+          createEl(
+            "p",
+            "",
+            isNL ? String(vm.note_nl || "Vimshottari volgt.") : String(vm.note_en || "Vimshottari follows.")
+          )
+        );
+        wrap.appendChild(secDash);
+
+        const secQ = createLayoutSection(isNL ? "Vragen om mee te nemen" : "Questions to sit with", "");
+        const qs = isNL
+          ? [
+              "Waar vraagt mijn Lagna om concrete richting?",
+              "Hoe kleurt mijn Maan mijn dagelijkse beleving?",
+              "Welke terugkerende les toont mijn Atmakaraka?",
+              "Welke levensgebieden worden sterk geactiveerd in mijn D1?",
+              "Welke graha vraagt nu aandacht in mijn huidige levensfase (Dasha volgt later)?",
+            ]
+          : [
+              "Where does my Lagna ask for concrete direction?",
+              "How does my Moon color daily experience?",
+              "What recurring lesson does my Atmakaraka suggest?",
+              "Which life areas are most activated in my D1?",
+              "Which graha asks for attention in my current phase (Dasha later)?",
+            ];
+        const qg = createEl("div", "western-questions-grid");
+        qs.forEach((t) => {
+          const it = createEl("div", "western-reflect-item");
+          it.appendChild(createEl("div", "western-reflect-item__text", t));
+          qg.appendChild(it);
+        });
+        secQ.appendChild(qg);
+        wrap.appendChild(secQ);
+
+        const tech = document.createElement("details");
+        tech.className = "layout-section";
+        tech.open = false;
+        const techSummary = document.createElement("summary");
+        techSummary.textContent = isNL ? "Technische details (tabellen en berekening)" : "Technical details (tables and calculation)";
+        tech.appendChild(techSummary);
+        const birth = (data.input && data.input.birth) || {};
+        const place = birth.place || {};
+        const tz = birth.timezone || {};
+        const ul = createEl("ul", "");
+        const pushL = (s) => ul.appendChild(createEl("li", "", s));
+        pushL(`${isNL ? "Zodiak" : "Zodiac"}: sidereal (${aya})`);
+        pushL(`${isNL ? "Huizen" : "Houses"}: whole sign vanaf sidereale Lagna`);
+        pushL(`${isNL ? "Ayanamsha" : "Ayanamsha"}: ${aya} (${(jy.ayanamsha && jy.ayanamsha.deg != null) ? `${Number(jy.ayanamsha.deg).toFixed(5)}°` : "—"})`);
+        pushL(`${isNL ? "Geboorte" : "Birth"}: ${birth.date || "—"} ${(birth.time_local || "").slice(0, 5)}`);
+        pushL(`${isNL ? "TZ" : "TZ"}: ${tz.iana || "—"}`);
+        pushL(`${isNL ? "Coördinaten" : "Coordinates"}: ${place.lat != null ? `${Number(place.lat).toFixed(4)}, ${Number(place.lon).toFixed(4)}` : "—"}`);
+        if (jy.status && jy.status.warnings && jy.status.warnings.length) {
+          pushL(`${isNL ? "Waarschuwingen" : "Warnings"}: ${jy.status.warnings.join(", ")}`);
+        }
+        tech.appendChild(ul);
+        tech.appendChild(secPl);
+        tech.appendChild(secH);
+        tech.appendChild(secN);
+        tech.appendChild(secDr);
+        if (kTechTable) tech.appendChild(kTechTable);
+        tech.appendChild(vargaTech);
+        wrap.appendChild(tech);
+
+        wrap.appendChild(renderVedicStory(data));
+        appendVedicGlossaryLegend(wrap);
+      }
+
       function renderVedicTemplateLayout(data) {
         const isNL = uiIsNL();
         const wrap = document.createElement("section");
-        wrap.className = "method-layout";
-        const p = ((data.vedic || {}).panchanga) || {};
-        wrap.appendChild(
-          createSharedMethodHero({
-            kicker: "Jyotish • Panchanga",
-            titleHtml: isNL
-              ? 'Jouw chart als beweging van <span class="purple">tijd</span>, <span class="gold">ritme</span> en context'
-              : 'Your chart as movement of <span class="purple">time</span>, <span class="gold">rhythm</span>, and context',
-            intro: isNL
-              ? "Panchanga geeft de kwaliteit van het moment via Vaara, Tithi, Nakshatra, Yoga en Karana."
-              : "Panchanga describes the moment quality through Vaara, Tithi, Nakshatra, Yoga, and Karana.",
-            metrics: [
-              { label: "Vaara", value: localizeVaara(p.vaara) },
-              { label: "Tithi", value: (p.tithi && p.tithi.index != null) ? String(p.tithi.index) : "-" },
-              { label: "Nakshatra", value: (p.nakshatra && p.nakshatra.index != null) ? String(p.nakshatra.index) : "-" },
-            ],
-            orbLabel: "Panchanga",
-            orbMain: (p.tithi && p.tithi.index != null) ? String(p.tithi.index) : "-",
-            orbSub: `${localizeVaara(p.vaara)} • N ${(p.nakshatra && p.nakshatra.index != null) ? p.nakshatra.index : "-"}`,
-          })
-        );
-
-        const timelineRows = [
-          [isNL ? "Tithi eindigt" : "Tithi ends", (p.tithi && p.tithi.ends_at_local) ? String(p.tithi.ends_at_local) : "-"],
-          [isNL ? "Nakshatra eindigt" : "Nakshatra ends", (p.nakshatra && p.nakshatra.ends_at_local) ? String(p.nakshatra.ends_at_local) : "-"],
-          [isNL ? "Yoga eindigt" : "Yoga ends", (p.yoga && p.yoga.ends_at_local) ? String(p.yoga.ends_at_local) : "-"],
-        ];
-        const sectionTimeline = createLayoutSection(
-          isNL ? "Eindtijden en activatie" : "End times and activation",
-          isNL
-            ? "Deze tijden tonen wanneer een Panchanga-factor wisselt en de tijdskwaliteit verandert."
-            : "These times show when a Panchanga factor changes and the time quality shifts."
-        );
-        sectionTimeline.appendChild(createMethodTable([isNL ? "Onderdeel" : "Component", isNL ? "Lokale tijd" : "Local time"], timelineRows));
-        wrap.appendChild(sectionTimeline);
-
-        const sectionPanchanga = createLayoutSection(
-          "Panchanga",
-          isNL
-            ? "Per factor een korte duiding op basis van de berekende waarden."
-            : "Short explanation per factor based on computed values."
-        );
-        const pGrid = document.createElement("div");
-        pGrid.className = "explain-grid";
-        pGrid.appendChild(
-          createExplainCard(
-            "Vaara",
-            isNL
-              ? `Weekdagkwaliteit: ${localizeVaara(p.vaara)}. Dit kleurt de algemene toon van de dag.`
-              : `Weekday quality: ${localizeVaara(p.vaara)}. This colors the overall tone of the day.`
-          )
-        );
-        pGrid.appendChild(
-          createExplainCard(
-            "Tithi",
-            isNL
-              ? `Maanfase-index: ${(p.tithi && p.tithi.index != null) ? p.tithi.index : "-"}. Geeft emotionele timing en ritme.`
-              : `Lunar phase index: ${(p.tithi && p.tithi.index != null) ? p.tithi.index : "-"}. Indicates emotional timing and rhythm.`
-          )
-        );
-        pGrid.appendChild(
-          createExplainCard(
-            "Nakshatra",
-            isNL
-              ? `Sterrenveld-index: ${(p.nakshatra && p.nakshatra.index != null) ? p.nakshatra.index : "-"}. Geeft de subtiele mentale/emotionele sfeer.`
-              : `Star-field index: ${(p.nakshatra && p.nakshatra.index != null) ? p.nakshatra.index : "-"}. Gives the subtle mental/emotional atmosphere.`
-          )
-        );
-        sectionPanchanga.appendChild(pGrid);
-        wrap.appendChild(sectionPanchanga);
-        wrap.appendChild(renderVedicStory(data));
-        appendVedicGlossaryLegend(wrap);
+        wrap.className = "method-layout method-layout--western-tight";
+        __renderVedicJyotishBody(wrap, data, isNL);
         return wrap;
       }
 
@@ -5108,7 +6494,7 @@
 
       const VEDIC_VARGAS = [
         { id: "D1", name: "KUNDALI", sanskrit: "RASHI", theme: "BASIS", focus_nl: "Lichaam, levensrichting, karakter en zichtbare werkelijkheid", focus_en: "Body, life direction, character, and visible reality", layer_nl: "HOOFDKAART", layer_en: "MAIN CHART" },
-        { id: "D2", name: "HORA", sanskrit: "HORA", theme: "MIDDELEN", focus_nl: "Inkomen, voeding, bezit, draagkracht en de manier waarop materie wordt ontvangen", focus_en: "Income, nourishment, possessions, capacity, and how matter is received", layer_nl: "WAARDE", layer_en: "VALUE" },
+        { id: "D2", name: "HORA", sanskrit: "HORA", theme: "MIDDELEN", focus_nl: "Persoonlijke duiding van hoe jij waarde, voeding en draagkracht beleeft, bewaakt en in balans brengt.", focus_en: "Personal interpretation of how you experience, protect, and balance value, nourishment, and capacity.", layer_nl: "WAARDE", layer_en: "VALUE" },
         { id: "D3", name: "DREKKANA", sanskrit: "DRESHKANA", theme: "KRACHT", focus_nl: "Moed, broers/zussen, actiepatronen, initiatief en directe levensenergie", focus_en: "Courage, siblings, action patterns, initiative, and direct life force", layer_nl: "ACTIE", layer_en: "ACTION" },
         { id: "D4", name: "CHATURTHAMSA", sanskrit: "CATURTHAMSA", theme: "FUNDAMENT", focus_nl: "Woning, bezit, land, geluk en de innerlijke basis waarop iemand rust", focus_en: "Home, property, land, fortune, and the inner foundation one rests on", layer_nl: "GRONDING", layer_en: "GROUNDING" },
         { id: "D7", name: "SAPTAMSA", sanskrit: "SAPTAMSA", theme: "CREATIE", focus_nl: "Kinderen, voortbrenging, nalatenschap, creativiteit en wat via iemand verder leeft", focus_en: "Children, creation, legacy, creativity, and what continues through someone", layer_nl: "VOORTBRENGING", layer_en: "PROCREATION" },
@@ -5129,32 +6515,376 @@
         return VEDIC_VARGAS.find((v) => v.id === id) || VEDIC_VARGAS[0];
       }
 
+      const DIVISIONAL_DASHBOARD_GROUPS = [
+        {
+          id: "material-base",
+          title_nl: "Materiële basis - waarde, fundament en levenskwaliteit",
+          title_en: "Material foundation",
+          lead_nl: "Persoonlijke horoscooplaag rond hoe stabiliteit, bezit en levenskwaliteit zich voor jou opbouwen.",
+          lead_en: "Personal horoscope layer around how stability, assets, and life quality build up for you.",
+          vargas: ["D2", "D4", "D16"],
+        },
+        {
+          id: "action-creation",
+          title_nl: "Actie, moed en creatiekracht",
+          title_en: "Action, courage, and creative force",
+          lead_nl: "Initiatief, doorzetting en scheppende energie.",
+          lead_en: "Initiative, resilience, and creative force.",
+          vargas: ["D3", "D7"],
+        },
+        {
+          id: "relations-lineage",
+          title_nl: "Relatie, dharma en familielijn",
+          title_en: "Relationship, dharma, and lineage",
+          lead_nl: "Verbinding, rijping en afkomstspatronen.",
+          lead_en: "Bonding, maturation, and lineage patterns.",
+          vargas: ["D9", "D12"],
+        },
+        {
+          id: "work-learning",
+          title_nl: "Werk, kennis en ontwikkeling",
+          title_en: "Work, knowledge, and development",
+          lead_nl: "Maatschappelijke rol, studie en innerlijke weerbaarheid.",
+          lead_en: "Societal role, learning, and inner resilience.",
+          vargas: ["D10", "D24", "D27"],
+        },
+        {
+          id: "consciousness-karma",
+          title_nl: "Bewustzijn, schaduw en karma",
+          title_en: "Consciousness, shadow, and karma",
+          lead_nl: "Betekenis, schaduwlagen en subtiele patronen.",
+          lead_en: "Meaning, shadow layers, and subtle patterns.",
+          vargas: ["D20", "D30", "D40", "D45", "D60"],
+        },
+      ];
+
+      const DIVISIONAL_PROFILE_CONFIG = {
+        D2: { theme_nl: "Waarde en middelen", theme_en: "Value and resources", planets: ["Jupiter", "Venus"], d1_houses: [2, 11], sensitivity: "laag" },
+        D3: { theme_nl: "Moed en initiatief", theme_en: "Courage and initiative", planets: ["Mars"], d1_houses: [3, 6, 10, 11], sensitivity: "laag" },
+        D4: { theme_nl: "Thuis en fundament", theme_en: "Home and foundation", planets: ["Moon", "Venus", "Mars", "Saturn"], d1_houses: [4], sensitivity: "middel" },
+        D7: { theme_nl: "Creatie en nalatenschap", theme_en: "Creation and legacy", planets: ["Jupiter", "Moon"], d1_houses: [5, 9], sensitivity: "middel" },
+        D9: { theme_nl: "Relatie en dharma", theme_en: "Relationship and dharma", planets: ["Venus", "Jupiter"], d1_houses: [1, 7, 9, 10], sensitivity: "middel" },
+        D10: { theme_nl: "Werk en reputatie", theme_en: "Work and reputation", planets: ["Sun", "Saturn", "Mercury"], d1_houses: [1, 6, 7, 10], sensitivity: "middel" },
+        D12: { theme_nl: "Afkomst en familielijn", theme_en: "Ancestry and lineage", planets: ["Sun", "Moon", "Saturn"], d1_houses: [4, 8, 9], sensitivity: "hoog" },
+        D16: { theme_nl: "Comfort en levenskwaliteit", theme_en: "Comfort and life quality", planets: ["Venus", "Moon", "Mars", "Saturn"], d1_houses: [4], sensitivity: "hoog" },
+        D20: { theme_nl: "Spiritualiteit en praktijk", theme_en: "Spirituality and practice", planets: ["Jupiter", "Ketu"], d1_houses: [5, 9, 12], sensitivity: "hoog" },
+        D24: { theme_nl: "Leren en meesterschap", theme_en: "Learning and mastery", planets: ["Mercury", "Jupiter"], d1_houses: [4, 5, 9], sensitivity: "hoog" },
+        D27: { theme_nl: "Kracht en kwetsbaarheid", theme_en: "Strength and vulnerability", planets: ["Mars", "Saturn", "Moon", "Sun"], d1_houses: [1, 3, 6, 8], sensitivity: "hoog" },
+        D30: { theme_nl: "Schaduw en verstoring", theme_en: "Shadow and disruption", planets: ["Saturn", "Mars", "Rahu", "Ketu"], d1_houses: [6, 8, 12], sensitivity: "hoog" },
+        D40: { theme_nl: "Subtiele zegeningen", theme_en: "Subtle blessings", planets: ["Jupiter", "Venus", "Saturn"], d1_houses: [4, 8, 9, 12], sensitivity: "zeer hoog" },
+        D45: { theme_nl: "Karakter en ethiek", theme_en: "Character and ethics", planets: ["Sun", "Moon", "Jupiter", "Saturn"], d1_houses: [1, 5, 9, 10], sensitivity: "zeer hoog" },
+        D60: { theme_nl: "Diepe karmische onderstroom", theme_en: "Deep karmic undercurrent", planets: ["Sun", "Moon", "Saturn", "Jupiter"], d1_houses: [1, 8, 12], sensitivity: "zeer hoog" },
+      };
+
+      const VEDIC_SIGN_ORDER_EN = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+
+      const VEDIC_HOUSE_GROUP_LABELS = {
+        kendra: { nl: "Kendra (1·4·7·10)", en: "Kendra (1·4·7·10)" },
+        trikona: { nl: "Trikoṇa (1·5·9)", en: "Trikona (1·5·9)" },
+        dharma: { nl: "Dharma-trika (1·5·9)", en: "Dharma triad (1·5·9)" },
+        artha: { nl: "Artha-trika (2·6·10)", en: "Artha triad (2·6·10)" },
+        kama: { nl: "Kāma-trika (3·7·11)", en: "Kama triad (3·7·11)" },
+        moksha: { nl: "Mokṣa-trika (4·8·12)", en: "Moksha triad (4·8·12)" },
+        dusthana: { nl: "Duṣṭhāna (6·8·12)", en: "Dusthana (6·8·12)" },
+        upachaya: { nl: "Upachaya (3·6·10·11)", en: "Upachaya (3·6·10·11)" },
+      };
+
+      /** 27 nakṣatra’s: index 1..27, Sanskriet, NL/EN label, Vimśottari heerser, woordenboek-id. */
+      const VEDIC_NAKSHATRAS = [
+        { id: 1, sanskrit: "Aśvinī", nl: "Ashwini", en: "Ashwini", lordEn: "Ketu", glossaryId: "ashwini" },
+        { id: 2, sanskrit: "Bharanī", nl: "Bharani", en: "Bharani", lordEn: "Venus", glossaryId: "bharani" },
+        { id: 3, sanskrit: "Kṛttikā", nl: "Krittika", en: "Krittika", lordEn: "Sun", glossaryId: "krittika" },
+        { id: 4, sanskrit: "Rohiṇī", nl: "Rohini", en: "Rohini", lordEn: "Moon", glossaryId: "rohini" },
+        { id: 5, sanskrit: "Mṛgaśīrṣa", nl: "Mrigashira", en: "Mrigashira", lordEn: "Mars", glossaryId: "mrigashira" },
+        { id: 6, sanskrit: "Ārdrā", nl: "Ardra", en: "Ardra", lordEn: "Rahu", glossaryId: "ardra" },
+        { id: 7, sanskrit: "Punarvasu", nl: "Punarvasu", en: "Punarvasu", lordEn: "Jupiter", glossaryId: "punarvasu" },
+        { id: 8, sanskrit: "Puṣya", nl: "Pushya", en: "Pushya", lordEn: "Saturn", glossaryId: "pushya" },
+        { id: 9, sanskrit: "Āśleṣā", nl: "Ashlesha", en: "Ashlesha", lordEn: "Mercury", glossaryId: "ashlesha" },
+        { id: 10, sanskrit: "Maghā", nl: "Magha", en: "Magha", lordEn: "Ketu", glossaryId: "magha" },
+        { id: 11, sanskrit: "Pūrva Phālgunī", nl: "Purva Phalguni", en: "Purva Phalguni", lordEn: "Venus", glossaryId: "purva-phalguni" },
+        { id: 12, sanskrit: "Uttara Phālgunī", nl: "Uttara Phalguni", en: "Uttara Phalguni", lordEn: "Sun", glossaryId: "uttara-phalguni" },
+        { id: 13, sanskrit: "Hasta", nl: "Hasta", en: "Hasta", lordEn: "Moon", glossaryId: "hasta" },
+        { id: 14, sanskrit: "Citrā", nl: "Chitra", en: "Chitra", lordEn: "Mars", glossaryId: "chitra" },
+        { id: 15, sanskrit: "Svātī", nl: "Swati", en: "Swati", lordEn: "Rahu", glossaryId: "swati" },
+        { id: 16, sanskrit: "Viśākhā", nl: "Vishakha", en: "Vishakha", lordEn: "Jupiter", glossaryId: "vishakha" },
+        { id: 17, sanskrit: "Anurādhā", nl: "Anuradha", en: "Anuradha", lordEn: "Saturn", glossaryId: "anuradha" },
+        { id: 18, sanskrit: "Jyeṣṭhā", nl: "Jyeshtha", en: "Jyeshtha", lordEn: "Mercury", glossaryId: "jyeshtha" },
+        { id: 19, sanskrit: "Mūla", nl: "Mula", en: "Mula", lordEn: "Ketu", glossaryId: "mula" },
+        { id: 20, sanskrit: "Pūrva Aṣāḍhā", nl: "Purva Ashadha", en: "Purva Ashadha", lordEn: "Venus", glossaryId: "purva-ashadha" },
+        { id: 21, sanskrit: "Uttara Aṣāḍhā", nl: "Uttara Ashadha", en: "Uttara Ashadha", lordEn: "Sun", glossaryId: "uttara-ashadha" },
+        { id: 22, sanskrit: "Śravaṇa", nl: "Shravana", en: "Shravana", lordEn: "Moon", glossaryId: "shravana" },
+        { id: 23, sanskrit: "Dhaniṣṭhā", nl: "Dhanishta", en: "Dhanishta", lordEn: "Mars", glossaryId: "dhanishta" },
+        { id: 24, sanskrit: "Śatabhiṣā", nl: "Shatabhisha", en: "Shatabhisha", lordEn: "Rahu", glossaryId: "shatabhisha" },
+        { id: 25, sanskrit: "Pūrva Bhādrapadā", nl: "Purva Bhadrapada", en: "Purva Bhadrapada", lordEn: "Jupiter", glossaryId: "purva-bhadrapada" },
+        { id: 26, sanskrit: "Uttara Bhādrapadā", nl: "Uttara Bhadrapada", en: "Uttara Bhadrapada", lordEn: "Saturn", glossaryId: "uttara-bhadrapada" },
+        { id: 27, sanskrit: "Revatī", nl: "Revati", en: "Revati", lordEn: "Mercury", glossaryId: "revati" },
+      ];
+
+      function getVedicNakshatraMeta(index1to27) {
+        const n = Number(index1to27);
+        if (!Number.isFinite(n) || n < 1 || n > 27) return null;
+        return VEDIC_NAKSHATRAS[n - 1] || null;
+      }
+
+      function vedicNakshatraTitleTip(nk, isNL) {
+        if (!nk) return "";
+        const lord = nk.lordEn ? localizePlanet(nk.lordEn) : "";
+        return isNL
+          ? `${nk.nl} (${nk.sanskrit}) · Vimśottari-heerser: ${lord} · woordenboek: ${nk.glossaryId}`
+          : `${nk.en} (${nk.sanskrit}) · Vimshottari lord: ${lord} · glossary: ${nk.glossaryId}`;
+      }
+
+      function vedicLabelHouseGroup(tag, isNL) {
+        const row = VEDIC_HOUSE_GROUP_LABELS[String(tag || "")];
+        if (!row) return String(tag || "");
+        return isNL ? row.nl : row.en;
+      }
+
+      function vedicFormatHouseGroupList(tags, isNL) {
+        const arr = Array.isArray(tags) ? tags : [];
+        if (!arr.length) return "—";
+        return arr.map((t) => vedicLabelHouseGroup(t, isNL)).join(" · ");
+      }
+
+      function vedicTattvaLabel(tt, isNL) {
+        const m = {
+          fire: [isNL ? "Vuur (Agni)" : "Fire (Agni)", isNL ? "tattva" : "tattva"],
+          earth: [isNL ? "Aarde (Prithvi)" : "Earth (Prithvi)", ""],
+          air: [isNL ? "Lucht (Vāyu)" : "Air (Vayu)", ""],
+          water: [isNL ? "Water (Jala)" : "Water (Jala)", ""],
+        };
+        const row = m[String(tt || "")];
+        return row ? row[0] : String(tt || "—");
+      }
+
+      function vedicSignQualityLabel(sq, isNL) {
+        const s = String(sq || "");
+        const m = {
+          chara: isNL ? "Chara (beweglijk)" : "Chara (movable)",
+          sthira: isNL ? "Sthira (vast)" : "Sthira (fixed)",
+          dwisvabhava: isNL ? "Dvisvabhava (tweevoudig)" : "Dvishvabhava (dual)",
+        };
+        return m[s] || s || "—";
+      }
+
+      function vedicPolarityLabel(pol, isNL) {
+        const s = String(pol || "");
+        if (s === "purusha") return isNL ? "Purusha (roerend)" : "Purusha (masculine / active sign)";
+        if (s === "stri") return isNL ? "Stri (ontvankelijk)" : "Stri (feminine / receptive sign)";
+        return s || "—";
+      }
+
+      function vedicHouseKindLabel(kind, isNL) {
+        const s = String(kind || "");
+        const m = {
+          kendra: isNL ? "Kendra vanaf Lagna" : "Kendra from Lagna",
+          trikona: isNL ? "Trikoṇa vanaf Lagna" : "Trikona from Lagna",
+          dusthana: isNL ? "Duṣṭhāna" : "Dusthana",
+          other: isNL ? "Overig" : "Other",
+        };
+        return m[s] || s || "—";
+      }
+
+      function vedicD1BhavaByHouse(jy) {
+        const out = {};
+        (Array.isArray(jy && jy.d1_bhavas) ? jy.d1_bhavas : []).forEach((b) => {
+          if (b && b.house != null) out[Number(b.house)] = b;
+        });
+        return out;
+      }
+
+      function nakLineShortStatic(g, isNL) {
+        if (!g || g.nakshatra_index == null) return isNL ? "Nakshatra: —" : "Nakshatra: —";
+        const nk = getVedicNakshatraMeta(g.nakshatra_index);
+        const lord = g.nakshatra_lord_en ? ` · ${localizePlanet(g.nakshatra_lord_en)}` : "";
+        const pd = g.pada != null ? ` · p${g.pada}` : "";
+        const label = nk ? (isNL ? nk.nl : nk.en) : `N${g.nakshatra_index}`;
+        const sk = nk ? ` (${nk.sanskrit})` : "";
+        return (isNL ? "Nakṣatra: " : "Nakshatra: ") + `${label}${sk}${pd}${lord}`;
+      }
+
+      function buildVedicD1HouseTooltip(houseNum, d1Row, isNL) {
+        const h = Number(houseNum);
+        const meta = getVedicHouseMeta(isNL)[h] || "";
+        const parts = [];
+        parts.push(isNL ? `Bhāva ${h}` : `Bhava ${h}`);
+        if (meta) parts.push(meta);
+        if (d1Row && d1Row.rashi) {
+          parts.push(`${getVedicSignLabel(d1Row.rashi, isNL)}`);
+          parts.push(isNL ? `Heerser teken: ${localizePlanet(d1Row.lord_en)}` : `Sign lord: ${localizePlanet(d1Row.lord_en)}`);
+          if (d1Row.tattva) parts.push(vedicTattvaLabel(d1Row.tattva, isNL));
+          if (d1Row.sign_quality) parts.push(vedicSignQualityLabel(d1Row.sign_quality, isNL));
+          if (d1Row.polarity) parts.push(vedicPolarityLabel(d1Row.polarity, isNL));
+          const gtxt = vedicFormatHouseGroupList(d1Row.bhava_groups, isNL);
+          if (gtxt && gtxt !== "—") parts.push(isNL ? `Groepen: ${gtxt}` : `Groups: ${gtxt}`);
+        }
+        return parts.join("\n");
+      }
+
+      function buildVedicPlanetTooltip(gr, isNL) {
+        if (!gr || !gr.name_en) return "";
+        const key = jyotishGrahaToShortKey(gr.name_en);
+        const parts = [];
+        parts.push(getVedicPlanetDisplay(key, isNL));
+        if (gr.rashi) parts.push(getVedicSignLabel(gr.rashi, isNL));
+        if (gr.house != null) parts.push(isNL ? `Bhāva ${gr.house}` : `Bhava ${gr.house}`);
+        if (gr.degree_in_sign != null) parts.push(isNL ? `Graden in rāśi: ${gr.degree_in_sign}°` : `Degrees in sign: ${gr.degree_in_sign}°`);
+        if (gr.sidereal_lon_deg != null) parts.push(isNL ? `Sidereal: ${gr.sidereal_lon_deg}°` : `Sidereal: ${gr.sidereal_lon_deg}°`);
+        parts.push(nakLineShortStatic(gr, isNL));
+        const nd = gr.natural_dignity;
+        if (nd && (nd.label_nl || nd.label_en)) parts.push(isNL ? nd.label_nl || nd.label_en : nd.label_en || nd.label_nl);
+        if (gr.bhava_groups && gr.bhava_groups.length) parts.push(isNL ? `Huisgroepen: ${vedicFormatHouseGroupList(gr.bhava_groups, isNL)}` : `House groups: ${vedicFormatHouseGroupList(gr.bhava_groups, isNL)}`);
+        if (gr.house_kind_from_lagna) parts.push(vedicHouseKindLabel(gr.house_kind_from_lagna, isNL));
+        if (gr.retrograde === true) parts.push(isNL ? "Retrograde" : "Retrograde");
+        if (gr.combust === true) parts.push(isNL ? "Combust (astangata)" : "Combust (astangata)");
+        return parts.join("\n");
+      }
+
+      function svgAppendTitle(svgNS, parentEl, text) {
+        if (!parentEl || !text) return;
+        const t = document.createElementNS(svgNS, "title");
+        t.textContent = text;
+        parentEl.appendChild(t);
+      }
+
+      function renderVedicKundaliTechTable(data, isNL) {
+        const jy = getJyotish(data);
+        if (!jy || !Array.isArray(jy.grahas) || !jy.grahas.length) return null;
+        const wrap = createEl("div", "kundali-tech");
+        wrap.appendChild(createEl("h4", "kundali-tech__title", isNL ? "Technische tabel · D1 (JSON)" : "Technical table · D1 (JSON)"));
+        const scroll = createEl("div", "kundali-tech-scroll");
+        const tbl = document.createElement("table");
+        tbl.className = "kundali-tech-table";
+        const headRow = document.createElement("tr");
+        const ths = isNL
+          ? ["Graha", "Rāśi", "Huis", "° in teken", "Sidereal °", "Nak·pada", "Navamsa", "D10", "Dignity", "Retro", "Combust", "Huisgroepen", "Soort huis", "Drishti naar"]
+          : ["Graha", "Rashi", "House", "° in sign", "Sidereal °", "Nak·pada", "Navamsa", "D10", "Dignity", "Retro", "Combust", "House groups", "House kind", "Drishti to"];
+        ths.forEach((lab) => {
+          const th = document.createElement("th");
+          th.textContent = lab;
+          headRow.appendChild(th);
+        });
+        tbl.appendChild(headRow);
+        const drRows = Array.isArray(jy.drishti) ? jy.drishti : [];
+        const drMap = {};
+        drRows.forEach((r) => {
+          if (r && r.from) drMap[r.from] = Array.isArray(r.houses) ? r.houses.join(", ") : "";
+        });
+        (jy.grahas || []).forEach((g) => {
+          if (!g || !g.name_en) return;
+          const tr = document.createElement("tr");
+          const nd = g.natural_dignity && (isNL ? g.natural_dignity.label_nl || g.natural_dignity.label_en : g.natural_dignity.label_en || g.natural_dignity.label_nl);
+          const cells = [
+            localizePlanet(g.name_en),
+            g.rashi || "—",
+            g.house != null ? String(g.house) : "—",
+            g.degree_in_sign != null ? String(g.degree_in_sign) : "—",
+            g.sidereal_lon_deg != null ? String(g.sidereal_lon_deg) : "—",
+            nakLineShortStatic(g, isNL).replace(/^(Nakshatra|Nakṣatra): /, ""),
+            [g.navamsa_rashi, g.navamsa_house != null ? ` (${isNL ? "h" : "h"}${g.navamsa_house})` : ""].filter(Boolean).join("") || "—",
+            [g.dashamsa_rashi, g.dashamsa_house != null ? ` (${isNL ? "h" : "h"}${g.dashamsa_house})` : ""].filter(Boolean).join("") || "—",
+            nd || "—",
+            g.retrograde === true ? "R" : g.retrograde === false ? (isNL ? "nee" : "no") : "—",
+            g.combust === true ? "C" : "",
+            vedicFormatHouseGroupList(g.bhava_groups, isNL),
+            vedicHouseKindLabel(g.house_kind_from_lagna, isNL),
+            drMap[g.name_en] || "—",
+          ];
+          cells.forEach((txt, i) => {
+            const td = document.createElement("td");
+            if (i === 8 || i === 11 || i === 12) td.classList.add("kundali-tech-wrap");
+            td.textContent = txt;
+            tr.appendChild(td);
+          });
+          tbl.appendChild(tr);
+        });
+        scroll.appendChild(tbl);
+        wrap.appendChild(scroll);
+        const h2 = createEl("h4", "kundali-tech__title", isNL ? "Bhāva’s · whole sign vanaf Lagna" : "Bhavas · whole sign from Lagna");
+        h2.style.marginTop = "14px";
+        const scroll2 = createEl("div", "kundali-tech-scroll");
+        const tb2 = document.createElement("table");
+        tb2.className = "kundali-tech-table";
+        const hr2 = document.createElement("tr");
+        (isNL ? ["Huis", "Rāśi", "Heerser", "Element", "Modaliteit", "Polariteit", "Groepen"] : ["House", "Rashi", "Lord", "Element", "Modality", "Polarity", "Groups"]).forEach((lab) => {
+          const th = document.createElement("th");
+          th.textContent = lab;
+          hr2.appendChild(th);
+        });
+        tb2.appendChild(hr2);
+        (jy.d1_bhavas || []).forEach((b) => {
+          if (!b) return;
+          const tr = document.createElement("tr");
+          const vals = [
+            String(b.house),
+            getVedicSignLabel(b.rashi, isNL),
+            b.lord_en ? localizePlanet(b.lord_en) : "—",
+            b.tattva ? vedicTattvaLabel(b.tattva, isNL) : "—",
+            b.sign_quality ? vedicSignQualityLabel(b.sign_quality, isNL) : "—",
+            b.polarity ? vedicPolarityLabel(b.polarity, isNL) : "—",
+            vedicFormatHouseGroupList(b.bhava_groups, isNL),
+          ];
+          vals.forEach((txt, i) => {
+            const td = document.createElement("td");
+            if (i === 6) td.classList.add("kundali-tech-wrap");
+            td.textContent = txt;
+            tr.appendChild(td);
+          });
+          tb2.appendChild(tr);
+        });
+        scroll2.appendChild(tb2);
+        wrap.appendChild(h2);
+        wrap.appendChild(scroll2);
+        return wrap;
+      }
+
       function signNameToIndex(signName) {
         const signOrderEn = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
         return signOrderEn.indexOf(String(signName || ""));
       }
 
+      function getJyotish(data) {
+        return ((data || {}).vedic || {}).jyotish || null;
+      }
+
+      function jyotishGrahaToShortKey(nameEn) {
+        const m = { Sun: "Su", Moon: "Mo", Mars: "Ma", Mercury: "Me", Jupiter: "Ju", Venus: "Ve", Saturn: "Sa", Rahu: "Ra", Ketu: "Ke" };
+        return m[String(nameEn || "")] || "";
+      }
+
       function getVedicAscendantSignId(vargaId, data) {
-        const n = Math.max(1, Number(String(vargaId || "D1").replace("D", "")) || 1);
-        const western = (data || {}).western || {};
-        const ascDeg = (((western.houses || {}).angles || {}).asc_deg);
-        if (ascDeg != null && !Number.isNaN(Number(ascDeg))) {
-          const ascSignIdx = Math.floor(Number(ascDeg) / 30) % 12;
-          const ascInSign = Number(ascDeg) % 30;
-          const segSize = 30 / n;
-          const segment = Math.floor(Math.max(0, Math.min(29.999999, ascInSign)) / segSize);
-          return ((ascSignIdx + segment) % 12) + 1;
+        const jy = getJyotish(data);
+        const lag = jy && jy.lagna;
+        const vid = String(vargaId || "D1");
+        const lv = lag && lag.vargas && lag.vargas[vid];
+        if (lv && lv.rashi_index != null) {
+          return Number(lv.rashi_index) + 1;
         }
-        return ((n - 1) % 12) + 1;
+        if (vid === "D9" && lag && lag.navamsa_rashi_index != null) {
+          return Number(lag.navamsa_rashi_index) + 1;
+        }
+        if (vid === "D10" && lag && lag.dashamsa_rashi_index != null) {
+          return Number(lag.dashamsa_rashi_index) + 1;
+        }
+        if (lag && lag.rashi_index != null) {
+          return Number(lag.rashi_index) + 1;
+        }
+        return 1;
       }
 
       function getVedicPlacements(vargaId, data) {
         const keys = ["Su", "Mo", "Ma", "Me", "Ju", "Ve", "Sa", "Ra", "Ke"];
-        const n = Math.max(1, Number(String(vargaId || "D1").replace("D", "")) || 1);
-        const western = (data || {}).western || {};
-        const placements = western.placements || {};
-        const ascDeg = (((western.houses || {}).angles || {}).asc_deg);
-        const ascSign = ascDeg != null ? (Math.floor(Number(ascDeg) / 30) % 12) : 0;
+        const jy = getJyotish(data);
+        const rows = jy && Array.isArray(jy.grahas) ? jy.grahas : [];
+        if (!rows.length) {
+          return keys.map((key) => ({ key, house: null }));
+        }
+        const vid = String(vargaId || "D1");
+        const houseField = vid === "D9" ? "navamsa_house" : vid === "D10" ? "dashamsa_house" : "house";
+        const byEn = {};
+        rows.forEach((g) => {
+          if (g && g.name_en) byEn[String(g.name_en)] = g;
+        });
         const planetMap = {
           Su: "Sun",
           Mo: "Moon",
@@ -5163,43 +6893,42 @@
           Ju: "Jupiter",
           Ve: "Venus",
           Sa: "Saturn",
-          Ra: "NorthNode",
-          Ke: "SouthNode",
+          Ra: "Rahu",
+          Ke: "Ketu",
         };
-        const hasSource = Object.keys(placements).length > 0;
-        if (!hasSource) {
-          const shift = n % 12;
-          return keys.map((key, index) => ({ key, house: ((index * 2 + shift) % 12) + 1 }));
-        }
-        return keys.map((key, index) => {
-          const src = placements[planetMap[key]] || {};
-          const signIdx = signNameToIndex(src.sign);
-          const deg = Number(src.degree_in_sign);
-          if (signIdx < 0 || Number.isNaN(deg)) {
-            return { key, house: ((index * 2 + n) % 12) + 1 };
+        const lagRi = jy && jy.lagna && jy.lagna.rashi_index != null ? Number(jy.lagna.rashi_index) : null;
+        return keys.map((key) => {
+          const en = planetMap[key];
+          const g = byEn[en];
+          let h = null;
+          const vpack = g && g.vargas && g.vargas[vid];
+          if (vpack && vpack.house != null) {
+            h = Number(vpack.house);
+          } else if (g && g[houseField] != null) {
+            h = Number(g[houseField]);
           }
-          const segSize = 30 / n;
-          const segment = Math.floor(Math.max(0, Math.min(29.999999, deg)) / segSize);
-          const dSign = (signIdx + segment) % 12;
-          const house = ((dSign - ascSign + 12) % 12) + 1;
-          return { key, house };
+          if (h == null && vid === "D1" && g && g.rashi_index != null) {
+            const base = lagRi != null ? lagRi : 0;
+            h = ((Number(g.rashi_index) - base + 12) % 12) + 1;
+          }
+          return { key, house: h };
         });
       }
 
       function getVedicHouseMeta(isNL) {
         return {
-          1: isNL ? "Zelfbeeld, vitaliteit, richting en uitstraling." : "Identity, vitality, direction, and outward expression.",
-          2: isNL ? "Waarden, inkomen, voeding, stem en bezit." : "Values, income, nourishment, voice, and possessions.",
-          3: isNL ? "Moed, initiatief, siblings, communicatie en routine-actie." : "Courage, initiative, siblings, communication, and daily action.",
-          4: isNL ? "Thuis, basis, emotionele veiligheid en worteling." : "Home, foundation, emotional safety, and rootedness.",
-          5: isNL ? "Creativiteit, plezier, kinderen en expressie." : "Creativity, joy, children, and expression.",
-          6: isNL ? "Werkritme, gezondheid, dienstbaarheid en frictie." : "Work rhythm, health, service, and friction.",
-          7: isNL ? "Relaties, partnerschap, afstemming en ontmoeting." : "Relationships, partnership, alignment, and encounter.",
-          8: isNL ? "Transformatie, intimiteit, crisis en herstel." : "Transformation, intimacy, crisis, and renewal.",
-          9: isNL ? "Zingeving, studie, geloof en lange horizon." : "Meaning, study, faith, and long horizon.",
-          10: isNL ? "Roeping, beroep, zichtbaarheid en verantwoordelijkheid." : "Calling, career, visibility, and responsibility.",
-          11: isNL ? "Netwerk, opbrengst, doelen en collectieve steun." : "Network, gains, goals, and collective support.",
-          12: isNL ? "Loslaten, rust, onderbewuste en spirituele verwerking." : "Release, rest, subconscious processes, and spiritual processing.",
+          1: isNL ? "Lichaam, zelf, levenspad." : "Body, self, life path.",
+          2: isNL ? "Familie, spraak, bezit, voeding, waarden." : "Family, speech, wealth, nourishment, values.",
+          3: isNL ? "Moed, communicatie, inzet, broers/zussen." : "Courage, communication, effort, siblings.",
+          4: isNL ? "Thuis, moeder, innerlijke rust, fundament." : "Home, mother, inner peace, foundation.",
+          5: isNL ? "Intelligentie, creatie, kinderen, mantra, verdienste." : "Intelligence, creation, children, merit.",
+          6: isNL ? "Werkdruk, ziekte, dienstbaarheid, conflicten, discipline." : "Workload, illness, service, conflict, discipline.",
+          7: isNL ? "Relaties, partnerschap, publiek." : "Relationships, partnership, public life.",
+          8: isNL ? "Transformatie, geheimen, kwetsbaarheid, levensduurthema's." : "Transformation, secrets, vulnerability, longevity themes.",
+          9: isNL ? "Dharma, leraar, geluk, wijsheid, zingeving." : "Dharma, teacher, fortune, wisdom, meaning.",
+          10: isNL ? "Karma, werk, status, handeling, zichtbaarheid." : "Karma, work, status, action, visibility.",
+          11: isNL ? "Winst, netwerken, verlangens, opbrengst." : "Gains, networks, desires, returns.",
+          12: isNL ? "Loslaten, afzondering, slaap, moksha, uitgaven." : "Release, solitude, sleep, moksha, expenses.",
         };
       }
 
@@ -5242,6 +6971,117 @@
           return vedic;
         }
         return `${vedic} (${local})`;
+      }
+
+      function getDivisionalGroupForVarga(vargaId) {
+        return DIVISIONAL_DASHBOARD_GROUPS.find((g) => g.vargas.includes(String(vargaId || ""))) || null;
+      }
+
+      function getDivisionalConfidenceLabel(vargaId, availableCount, jy, isNL) {
+        const warn = (jy && jy.status && Array.isArray(jy.status.warnings)) ? jy.status.warnings : [];
+        if (String(vargaId) === "D60" && warn.includes("BIRTH_TIME_UNCERTAIN")) return isNL ? "Voorzichtig" : "Cautious";
+        if (availableCount >= 7) return isNL ? "Hoog" : "High";
+        if (availableCount >= 4) return isNL ? "Gemiddeld" : "Medium";
+        return isNL ? "Voorzichtig" : "Cautious";
+      }
+
+      function getDivisionalSensitivityLabel(vargaId, isNL) {
+        const cfg = DIVISIONAL_PROFILE_CONFIG[String(vargaId || "")] || {};
+        const raw = String(cfg.sensitivity || "");
+        const nlMap = { laag: "Laag", middel: "Middel", hoog: "Hoog", "zeer hoog": "Zeer hoog" };
+        const enMap = { laag: "Low", middel: "Medium", hoog: "High", "zeer hoog": "Very high" };
+        return isNL ? (nlMap[raw] || "Middel") : (enMap[raw] || "Medium");
+      }
+
+      function getGrahaVargaPlacement(grahaRow, vargaId) {
+        const v = grahaRow && grahaRow.vargas && grahaRow.vargas[String(vargaId || "")];
+        return v || null;
+      }
+
+      function buildDivisionalChartDashboardData(vargaId, data, isNL) {
+        const jy = getJyotish(data) || {};
+        const grahas = Array.isArray(jy.grahas) ? jy.grahas : [];
+        const lag = jy.lagna || null;
+        const meta = getVedicVargaById(vargaId);
+        const cfg = DIVISIONAL_PROFILE_CONFIG[String(vargaId || "")] || {};
+        const group = getDivisionalGroupForVarga(vargaId);
+        const byEn = (en) => grahas.find((g) => g && g.name_en === en) || null;
+        const lagV = lag && lag.vargas ? lag.vargas[String(vargaId || "")] : null;
+        const keyPlanets = (cfg.planets || []).map((en) => ({ en, row: byEn(en), v: byEn(en) ? getGrahaVargaPlacement(byEn(en), vargaId) : null }));
+        const usable = keyPlanets.filter((k) => k && k.v && k.v.rashi);
+        const occ = {};
+        grahas.forEach((g) => {
+          const v = getGrahaVargaPlacement(g, vargaId);
+          if (!v || v.house == null) return;
+          const h = Number(v.house);
+          if (Number.isNaN(h)) return;
+          if (!occ[h]) occ[h] = [];
+          occ[h].push(g);
+        });
+        const occupiedSorted = Object.entries(occ).sort((a, b) => b[1].length - a[1].length);
+        const top = occupiedSorted[0] || null;
+        const confidence = getDivisionalConfidenceLabel(vargaId, usable.length + (lagV && lagV.rashi ? 1 : 0), jy, isNL);
+        const cautionD60 = String(vargaId) === "D60";
+        const summary = isNL
+          ? `${meta.name} (${vargaId}) belicht ${cfg.theme_nl || (meta.focus_nl || "een specifieke laag")}. ${lagV && lagV.rashi ? `Lagna in ${getVedicSignLabel(lagV.rashi, true)}.` : "Lagna-positie is beperkt."}${top ? ` Huis ${top[0]} draagt extra nadruk.` : ""}`
+          : `${meta.name} (${vargaId}) highlights ${cfg.theme_en || (meta.focus_en || "a specific layer")}. ${lagV && lagV.rashi ? `Lagna in ${getVedicSignLabel(lagV.rashi, false)}.` : "Lagna placement is limited."}${top ? ` House ${top[0]} carries extra emphasis.` : ""}`;
+        const insights = [];
+        if (usable.length) {
+          usable.slice(0, 3).forEach((u) => {
+            insights.push({
+              title: isNL ? `${localizePlanet(u.en)} in ${getVedicSignLabel(u.v.rashi, true)}` : `${localizePlanet(u.en)} in ${getVedicSignLabel(u.v.rashi, false)}`,
+              body: isNL
+                ? `Deze plaatsing kan wijzen op ${cfg.theme_nl || "een belangrijk divisiethema"} via ${u.v.house != null ? `huis ${u.v.house}` : "de tekenlaag"}.`
+                : `This placement may show ${cfg.theme_en || "a key divisional theme"} through ${u.v.house != null ? `house ${u.v.house}` : "the sign layer"}.`,
+              basedOn: [localizePlanet(u.en), u.v.house != null ? `${isNL ? "huis" : "house"} ${u.v.house}` : "—"],
+              reflection: isNL ? "Waar herken je dit in je dagelijkse keuzes?" : "Where do you recognize this in daily choices?",
+            });
+          });
+        }
+        if (top) {
+          insights.push({
+            title: isNL ? `Nadruk op huis ${top[0]}` : `Emphasis on house ${top[0]}`,
+            body: isNL
+              ? `${top[1].length} graha(’s) vallen hier samen. Dit kan wijzen op concentratie van aandacht in dit levensgebied.`
+              : `${top[1].length} graha(s) cluster here, suggesting focus in this life domain.`,
+            basedOn: top[1].map((g) => localizePlanet(g.name_en)),
+            reflection: isNL ? "Wanneer werkt deze concentratie constructief voor je?" : "When does this concentration work constructively for you?",
+          });
+        }
+        const d1Connections = [];
+        if (cfg.d1_houses && cfg.d1_houses.length) {
+          const items = cfg.d1_houses.slice(0, 2).map((h) => isNL ? `D1 huis ${h}` : `D1 house ${h}`);
+          d1Connections.push({
+            title: isNL ? "Koppeling met D1" : "D1 linkage",
+            body: isNL
+              ? `Deze divisie krijgt extra betekenis wanneer je haar leest naast ${items.join(" en ")} in je D1-Kundali.`
+              : `This division becomes clearer when read alongside ${items.join(" and ")} in your D1 Kundali.`,
+          });
+        }
+        if (cautionD60) {
+          d1Connections.push({
+            title: isNL ? "Voorzichtigheid bij D60" : "Caution for D60",
+            body: isNL
+              ? "D60 is sterk tijdgevoelig. Lees deze laag als reflectieve richting, niet als harde conclusie."
+              : "D60 is highly time-sensitive. Read this layer as reflective direction, not a hard conclusion.",
+          });
+        }
+        return {
+          id: vargaId,
+          meta,
+          group,
+          cfg,
+          confidence,
+          sensitivity: getDivisionalSensitivityLabel(vargaId, isNL),
+          lagna: lagV,
+          keyPlanets,
+          insights,
+          d1Connections,
+          summary,
+          reflection: isNL
+            ? "Welke kwaliteit vraagt hier om bewuste ontwikkeling, zonder het als vaststaand lot te zien?"
+            : "Which quality asks for conscious development here, without framing it as fixed fate?",
+        };
       }
 
       function getVedicPlanetDisplay(key, isNL) {
@@ -5678,7 +7518,10 @@
         });
       }
 
-      function createKundaliGrid(activeVargaId, data) {
+      function createKundaliGrid(activeVargaId, data, opts) {
+        const options = opts || {};
+        const interactive = !!options.interactive;
+        const isNL = !!options.isNL;
         const BRAND = {
           purple: "#7D5CE0",
           gold: "#8F80AA",
@@ -5686,18 +7529,18 @@
           line: "#DCC8F2",
         };
         const signs = [
-          { id: 1, symbolId: "aries", name: "Ram", sanskrit: "Mesha", alt: "Ram / Mesha: vuur, initiatief, begin, directe beweging." },
-          { id: 2, symbolId: "taurus", name: "Stier", sanskrit: "Vrishabha", alt: "Stier / Vrishabha: aarde, lichaam, zintuigen, stabiliteit." },
-          { id: 3, symbolId: "gemini", name: "Tweelingen", sanskrit: "Mithuna", alt: "Tweelingen / Mithuna: lucht, communicatie, leren, verbinding." },
-          { id: 4, symbolId: "cancer", name: "Kreeft", sanskrit: "Karka", alt: "Kreeft / Karka: water, emotie, thuis, bescherming." },
-          { id: 5, symbolId: "leo", name: "Leeuw", sanskrit: "Simha", alt: "Leeuw / Simha: vuur, hart, expressie, zichtbaarheid." },
-          { id: 6, symbolId: "virgo", name: "Maagd", sanskrit: "Kanya", alt: "Maagd / Kanya: aarde, analyse, gezondheid, verfijning." },
-          { id: 7, symbolId: "libra", name: "Weegschaal", sanskrit: "Tula", alt: "Weegschaal / Tula: lucht, balans, relatie, afstemming." },
-          { id: 8, symbolId: "scorpio", name: "Schorpioen", sanskrit: "Vrischika", alt: "Schorpioen / Vrischika: water, diepte, transformatie, intensiteit." },
-          { id: 9, symbolId: "sagittarius", name: "Boogschutter", sanskrit: "Dhanu", alt: "Boogschutter / Dhanu: vuur, wijsheid, richting, zingeving." },
-          { id: 10, symbolId: "capricorn", name: "Steenbok", sanskrit: "Makara", alt: "Steenbok / Makara: aarde, structuur, verantwoordelijkheid, rijping." },
-          { id: 11, symbolId: "aquarius", name: "Waterman", sanskrit: "Kumbha", alt: "Waterman / Kumbha: lucht, groepen, vernieuwing, collectief." },
-          { id: 12, symbolId: "pisces", name: "Vissen", sanskrit: "Meena", alt: "Vissen / Meena: water, intuïtie, overgave, loslaten." },
+          { id: 1, name_en: "Aries", symbolId: "aries", name: "Ram", sanskrit: "Mesha", alt: "Ram / Mesha: vuur, initiatief, begin, directe beweging." },
+          { id: 2, name_en: "Taurus", symbolId: "taurus", name: "Stier", sanskrit: "Vrishabha", alt: "Stier / Vrishabha: aarde, lichaam, zintuigen, stabiliteit." },
+          { id: 3, name_en: "Gemini", symbolId: "gemini", name: "Tweelingen", sanskrit: "Mithuna", alt: "Tweelingen / Mithuna: lucht, communicatie, leren, verbinding." },
+          { id: 4, name_en: "Cancer", symbolId: "cancer", name: "Kreeft", sanskrit: "Karka", alt: "Kreeft / Karka: water, emotie, thuis, bescherming." },
+          { id: 5, name_en: "Leo", symbolId: "leo", name: "Leeuw", sanskrit: "Simha", alt: "Leeuw / Simha: vuur, hart, expressie, zichtbaarheid." },
+          { id: 6, name_en: "Virgo", symbolId: "virgo", name: "Maagd", sanskrit: "Kanya", alt: "Maagd / Kanya: aarde, analyse, gezondheid, verfijning." },
+          { id: 7, name_en: "Libra", symbolId: "libra", name: "Weegschaal", sanskrit: "Tula", alt: "Weegschaal / Tula: lucht, balans, relatie, afstemming." },
+          { id: 8, name_en: "Scorpio", symbolId: "scorpio", name: "Schorpioen", sanskrit: "Vrischika", alt: "Schorpioen / Vrischika: water, diepte, transformatie, intensiteit." },
+          { id: 9, name_en: "Sagittarius", symbolId: "sagittarius", name: "Boogschutter", sanskrit: "Dhanu", alt: "Boogschutter / Dhanu: vuur, wijsheid, richting, zingeving." },
+          { id: 10, name_en: "Capricorn", symbolId: "capricorn", name: "Steenbok", sanskrit: "Makara", alt: "Steenbok / Makara: aarde, structuur, verantwoordelijkheid, rijping." },
+          { id: 11, name_en: "Aquarius", symbolId: "aquarius", name: "Waterman", sanskrit: "Kumbha", alt: "Waterman / Kumbha: lucht, groepen, vernieuwing, collectief." },
+          { id: 12, name_en: "Pisces", symbolId: "pisces", name: "Vissen", sanskrit: "Meena", alt: "Vissen / Meena: water, intuïtie, overgave, loslaten." },
         ];
         const planetInfo = {
           Su: { name: "Zon", symbolId: "sun", color: "#E67E22", alt: "Zon / Surya: zielskern, vitaliteit, autoriteit, bewustzijn." },
@@ -5725,6 +7568,14 @@
           ascendantSignId,
           planets: getVedicPlacements(activeVargaId || "D1", data),
         };
+        const jyGrid = getJyotish(data) || {};
+        const nakByEn = {};
+        (jyGrid.grahas || []).forEach((g) => {
+          if (g && g.name_en) nakByEn[g.name_en] = g;
+        });
+        const d1ByHouse = vedicD1BhavaByHouse(jyGrid);
+        const shortToEnNak = { Su: "Sun", Mo: "Moon", Ma: "Mars", Me: "Mercury", Ju: "Jupiter", Ve: "Venus", Sa: "Saturn", Ra: "Rahu", Ke: "Ketu" };
+        const houseCenterByHouse = Object.fromEntries(houseCenters.map((c) => [c.house, { x: c.x, y: c.y }]));
         const mod = (value, base) => ((value % base) + base) % base;
         const getSignForHouse = (house, ascendantSignId) => {
           const signId = mod(ascendantSignId + house - 2, 12) + 1;
@@ -5732,30 +7583,18 @@
         };
         const getPlanetRows = (planets) => (Array.isArray(planets) ? planets : [])
           .map((planet) => ({ ...planet, info: planetInfo[planet.key] }))
-          .filter((planet) => planet.info);
-        const getPlanetTooltip = (planetRows) => planetRows.map((p) => p.info.alt).filter(Boolean).join("\n");
+          .filter((planet) => planet.info && planet.house != null && !Number.isNaN(Number(planet.house)));
 
         const grid = createEl("div", "kundali-grid");
         const shell = createEl("div", "kundali-shell");
         const frame = createEl("div", "kundali-frame");
+        if (interactive) frame.classList.add("kundali-frame--interactive");
         const aspect = createEl("div", "kundali-aspect");
         const svgNS = "http://www.w3.org/2000/svg";
         const svg = document.createElementNS(svgNS, "svg");
         svg.setAttribute("viewBox", "0 0 100 100");
         svg.setAttribute("role", "img");
         svg.setAttribute("aria-label", "Noord-Indiase kundali kaart");
-
-        const tooltip = createEl("div", "kundali-tooltip");
-        const setTip = (ev, text) => {
-          if (!text) return;
-          tooltip.textContent = text;
-          tooltip.style.left = `${ev.clientX + 10}px`;
-          tooltip.style.top = `${ev.clientY + 10}px`;
-          tooltip.style.display = "block";
-        };
-        const clearTip = () => {
-          tooltip.style.display = "none";
-        };
 
         const addLine = (x1, y1, x2, y2, strokeWidth) => {
           const line = document.createElementNS(svgNS, "line");
@@ -5765,6 +7604,7 @@
           line.setAttribute("y2", String(y2));
           line.setAttribute("stroke", BRAND.line);
           line.setAttribute("stroke-width", String(strokeWidth));
+          line.setAttribute("class", "kundali-grid-line");
           svg.appendChild(line);
         };
         const addText = (x, y, text, attrs) => {
@@ -5787,6 +7627,11 @@
           image.setAttribute("width", String(size));
           image.setAttribute("height", String(size));
           image.setAttribute("href", src);
+          try {
+            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", src);
+          } catch (e) {
+            /* ignore */
+          }
           Object.entries(attrs || {}).forEach(([k, v]) => image.setAttribute(k, String(v)));
           svg.appendChild(image);
           return image;
@@ -5802,6 +7647,40 @@
         rect.setAttribute("stroke-width", "0.42");
         svg.appendChild(rect);
 
+        const cx = 50;
+        const cy = 50;
+        const houseHitPolygons = {
+          1: "25,25 50,0 75,25 50,50",
+          2: "0,0 50,0 25,25",
+          3: "0,0 25,25 0,50",
+          4: "0,50 25,25 50,50 25,75",
+          5: "0,50 25,75 0,100",
+          6: "0,100 50,100 25,75",
+          7: "25,75 50,50 75,75 50,100",
+          8: "50,100 100,100 75,75",
+          9: "100,100 100,50 75,75",
+          10: "100,50 75,25 50,50 75,75",
+          11: "100,0 100,50 75,25",
+          12: "50,0 100,0 75,25",
+        };
+        const facetGroup = document.createElementNS(svgNS, "g");
+        facetGroup.setAttribute("class", "kundali-house-facets");
+        if (interactive) {
+          houseCenters.forEach((cell) => {
+            const pts = houseHitPolygons[cell.house];
+            if (!pts) return;
+            const poly = document.createElementNS(svgNS, "polygon");
+            poly.setAttribute("points", pts);
+            poly.setAttribute("fill", "rgba(255,255,255,0.03)");
+            poly.setAttribute("stroke", "none");
+            poly.setAttribute("class", "kundali-hit kundali-hit--house");
+            poly.setAttribute("data-hit", "house");
+            poly.setAttribute("data-house", String(cell.house));
+            facetGroup.appendChild(poly);
+          });
+        }
+        svg.appendChild(facetGroup);
+
         addLine(0, 0, 100, 100, 0.22);
         addLine(100, 0, 0, 100, 0.22);
         addLine(50, 0, 0, 50, 0.22);
@@ -5811,63 +7690,641 @@
 
         houseCenters.forEach((cell) => {
           const sign = getSignForHouse(cell.house, chart.ascendantSignId);
-          const planets = chart.planets.filter((planet) => planet.house === cell.house);
+          const planets = chart.planets.filter((planet) => Number(planet.house) === Number(cell.house));
           const planetRows = getPlanetRows(planets);
-          const houseAlt = `Huis ${cell.house} (${houseNames[cell.house]}). Teken: ${sign.name} / ${sign.sanskrit}.`;
-
-          const hit = document.createElementNS(svgNS, "circle");
-          hit.setAttribute("cx", String(cell.x));
-          hit.setAttribute("cy", String(cell.y));
-          hit.setAttribute("r", "10");
-          hit.setAttribute("fill", "transparent");
-          hit.addEventListener("mouseenter", (ev) => setTip(ev, houseAlt));
-          hit.addEventListener("mousemove", (ev) => setTip(ev, houseAlt));
-          hit.addEventListener("mouseleave", clearTip);
-          svg.appendChild(hit);
 
           addText(cell.x, cell.y - 7.4, String(cell.house), {
-            fill: BRAND.gold, "font-family": "Lora, Georgia, serif", "font-size": "2.4px", "font-weight": "600",
+            fill: BRAND.gold,
+            "font-family": "Lora, Georgia, serif",
+            "font-size": "2.4px",
+            "font-weight": "600",
+            ...(interactive ? { class: "kundali-layer-house kundali-house-num", "pointer-events": "none" } : {}),
           });
 
-          const signIcon = addIcon(cell.x, cell.y - 1.5, sign.symbolId, 5.8, { style: "cursor:help;" });
-          if (signIcon) {
-            signIcon.addEventListener("mouseenter", (ev) => setTip(ev, sign.alt));
-            signIcon.addEventListener("mousemove", (ev) => setTip(ev, sign.alt));
-            signIcon.addEventListener("mouseleave", clearTip);
+          const signIconAttrs = interactive
+            ? {
+                class: "kundali-layer-rashi",
+                "pointer-events": "none",
+                style: "cursor:default;",
+              }
+            : { style: "cursor:default;", "pointer-events": "none" };
+          addIcon(cell.x, cell.y - 1.5, sign.symbolId, 5.8, signIconAttrs);
+          if (interactive) {
+            const signHit = document.createElementNS(svgNS, "circle");
+            signHit.setAttribute("cx", String(cell.x));
+            signHit.setAttribute("cy", String(cell.y - 1.5));
+            signHit.setAttribute("r", "3.7");
+            signHit.setAttribute("fill", "transparent");
+            signHit.setAttribute("class", "kundali-hit kundali-hit--sign");
+            signHit.setAttribute("data-hit", "sign");
+            signHit.setAttribute("data-house", String(cell.house));
+            signHit.setAttribute("data-sign-en", String(sign.name_en));
+            signHit.setAttribute("style", "cursor:pointer;");
+            svg.appendChild(signHit);
           }
 
           if (cell.house === 1) {
-            const ascText = addText(cell.x, cell.y + 4.4, "Asc", {
-              fill: BRAND.ink, "font-size": "2.2px", "font-weight": "500",
+            addText(cell.x, cell.y + 4.4, "Asc", {
+              fill: BRAND.ink,
+              "font-size": "2.2px",
+              "font-weight": "500",
+              ...(interactive ? { class: "kundali-hit kundali-hit--lagna", "data-hit": "lagna", style: "cursor:pointer;" } : {}),
             });
-            const ascInfo = "Ascendant: het rijzende teken en het beginpunt van de huizen.";
-            ascText.addEventListener("mouseenter", (ev) => setTip(ev, ascInfo));
-            ascText.addEventListener("mousemove", (ev) => setTip(ev, ascInfo));
-            ascText.addEventListener("mouseleave", clearTip);
           }
 
           if (planetRows.length > 0) {
-            const tip = getPlanetTooltip(planetRows);
             const spacing = planetRows.length > 2 ? 4.2 : 5;
             const startX = cell.x - ((planetRows.length - 1) * spacing) / 2;
             planetRows.forEach((planet, idx) => {
-              const pIcon = addIcon(startX + idx * spacing, cell.y + 6.9, planet.info.symbolId, 4.8, { style: "cursor:help;" });
-              if (pIcon) {
-                pIcon.addEventListener("mouseenter", (ev) => setTip(ev, tip));
-                pIcon.addEventListener("mousemove", (ev) => setTip(ev, tip));
-                pIcon.addEventListener("mouseleave", clearTip);
+              const pAttrs = interactive
+                ? {
+                    class: "kundali-layer-graha kundali-hit kundali-hit--planet",
+                    "data-hit": "planet",
+                    "data-graha-key": planet.key,
+                    "data-house": String(cell.house),
+                    style: "cursor:pointer;",
+                  }
+                : { style: "cursor:default;" };
+              addIcon(startX + idx * spacing, cell.y + 6.9, planet.info.symbolId, 5.2, pAttrs);
+              const enNak = shortToEnNak[planet.key];
+              const gNak = enNak ? nakByEn[enNak] : null;
+              if (interactive && gNak && gNak.nakshatra_index != null) {
+                const ntxt = `N${gNak.nakshatra_index}${gNak.pada != null ? "·" + gNak.pada : ""}`;
+                addText(startX + idx * spacing, cell.y + 10.25, ntxt, {
+                  class: "kundali-layer-nak kundali-nak-label",
+                  fill: "#9a87b8",
+                  "font-family": "system-ui, Segoe UI, sans-serif",
+                  "font-size": "1.5px",
+                  "font-weight": "600",
+                  "pointer-events": "none",
+                });
               }
             });
           }
         });
+
+        const drGroup = document.createElementNS(svgNS, "g");
+        drGroup.setAttribute("class", "kundali-drishti-lines");
+        const drHitGroup = document.createElementNS(svgNS, "g");
+        drHitGroup.setAttribute("class", "kundali-drishti-hits");
+        if (interactive && Array.isArray(jyGrid.drishti)) {
+          const gh = {};
+          (jyGrid.grahas || []).forEach((g) => {
+            if (g && g.name_en != null && g.house != null) gh[g.name_en] = Number(g.house);
+          });
+          jyGrid.drishti.forEach((row) => {
+            if (!row || !row.from) return;
+            const hFrom = row.from_house != null ? Number(row.from_house) : gh[row.from];
+            if (hFrom == null) return;
+            const p0 = houseCenterByHouse[hFrom];
+            if (!p0) return;
+            const targets = Array.isArray(row.houses) ? row.houses : [];
+            targets.forEach((th) => {
+              const t = Number(th);
+              if (Number.isNaN(t) || t < 1 || t > 12 || t === hFrom) return;
+              const p1 = houseCenterByHouse[t];
+              if (!p1) return;
+              const dl = document.createElementNS(svgNS, "line");
+              dl.setAttribute("x1", String(p0.x));
+              dl.setAttribute("y1", String(p0.y));
+              dl.setAttribute("x2", String(p1.x));
+              dl.setAttribute("y2", String(p1.y));
+              dl.setAttribute("stroke", "#7D5CE0");
+              dl.setAttribute("stroke-opacity", "0.32");
+              dl.setAttribute("stroke-width", "0.38");
+              drGroup.appendChild(dl);
+              const hl = document.createElementNS(svgNS, "line");
+              hl.setAttribute("x1", String(p0.x));
+              hl.setAttribute("y1", String(p0.y));
+              hl.setAttribute("x2", String(p1.x));
+              hl.setAttribute("y2", String(p1.y));
+              hl.setAttribute("stroke", "transparent");
+              hl.setAttribute("stroke-width", "3.8");
+              hl.setAttribute("class", "kundali-hit kundali-hit--drishti");
+              hl.setAttribute("data-hit", "drishti");
+              hl.setAttribute("data-from", String(row.from));
+              hl.setAttribute("data-from-house", String(hFrom));
+              hl.setAttribute("data-to-house", String(t));
+              hl.setAttribute("style", "cursor:pointer; pointer-events:stroke;");
+              drHitGroup.appendChild(hl);
+            });
+          });
+        }
+        svg.appendChild(drGroup);
+        if (interactive) svg.appendChild(drHitGroup);
 
         aspect.appendChild(svg);
         frame.appendChild(aspect);
         shell.appendChild(frame);
 
         grid.appendChild(shell);
-        grid.appendChild(tooltip);
         return grid;
+      }
+
+      function bindVedicKundaliRadixUI(args) {
+        const { wheelLayout, gridEl, infoPanel, layerIconBar, infoToggle, data, isNL } = args;
+        const frame = gridEl.querySelector(".kundali-frame");
+        const vedicHouseMeta = getVedicHouseMeta(isNL);
+        const signOrderEn = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+        const westSignToJyotishGloss = {
+          Aries: "mesha",
+          Taurus: "vrishabha",
+          Gemini: "mithuna",
+          Cancer: "karka",
+          Leo: "simha",
+          Virgo: "kanya",
+          Libra: "tula",
+          Scorpio: "vrischika",
+          Sagittarius: "dhanu",
+          Capricorn: "makara",
+          Aquarius: "kumbha",
+          Pisces: "meena",
+        };
+        const shortToGlossPlanet = {
+          Su: "surya",
+          Mo: "chandra",
+          Ma: "mangala",
+          Me: "budha",
+          Ju: "guru",
+          Ve: "shukra",
+          Sa: "shani",
+          Ra: "rahu",
+          Ke: "ketu",
+        };
+        const shortToEn = { Su: "Sun", Mo: "Moon", Ma: "Mars", Me: "Mercury", Ju: "Jupiter", Ve: "Venus", Sa: "Saturn", Ra: "Rahu", Ke: "Ketu" };
+        const layerState = { houses: true, rashis: true, grahas: true, drishti: true, nakshatra: false };
+        const NAK_INDEX_TO_GLOSS_ID = [
+          "ashwini", "bharani", "krittika", "rohini", "mrigashira", "ardra", "punarvasu", "pushya", "ashlesha",
+          "magha", "purva-phalguni", "uttara-phalguni", "hasta", "chitra", "swati", "vishakha", "anuradha", "jyeshtha",
+          "mula", "purva-ashadha", "uttara-ashadha", "shravana", "dhanishta", "shatabhisha", "purva-bhadrapada", "uttara-bhadrapada", "revati",
+        ];
+        const applyLayerClasses = () => {
+          if (!frame) return;
+          frame.classList.toggle("kundali-frame--hide-house-nums", !layerState.houses);
+          frame.classList.toggle("kundali-frame--hide-rashis", !layerState.rashis);
+          frame.classList.toggle("kundali-frame--hide-grahas", !layerState.grahas);
+          frame.classList.toggle("kundali-frame--hide-drishti-lines", !layerState.drishti);
+          frame.classList.toggle("kundali-frame--hide-nak-labels", !layerState.nakshatra);
+        };
+        applyLayerClasses();
+        Array.from(layerIconBar.querySelectorAll("[data-layer]")).forEach((btn) => {
+          const key = btn.dataset.layer;
+          if (key in layerState) btn.classList.toggle("is-active", !!layerState[key]);
+        });
+        if (infoToggle) {
+          infoToggle.addEventListener("click", () => wheelLayout.classList.toggle("is-info-open"));
+        }
+        Array.from(layerIconBar.querySelectorAll("[data-layer]")).forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const key = btn.dataset.layer;
+            if (!key || !(key in layerState)) return;
+            layerState[key] = !layerState[key];
+            btn.classList.toggle("is-active", !!layerState[key]);
+            applyLayerClasses();
+            renderVedicKundaliInfoPanel(selected);
+          });
+        });
+        let selected = null;
+        const grahaEnFromShort = (sk) => shortToEn[sk] || "";
+        const grahaRowByEn = (jy, en) => (Array.isArray(jy && jy.grahas) ? jy.grahas : []).find((g) => g && g.name_en === en) || null;
+        const nakLineShort = (g) => {
+          if (!g || g.nakshatra_index == null) return "—";
+          const nk = getVedicNakshatraMeta(g.nakshatra_index);
+          const lord = g.nakshatra_lord_en ? ` · ${localizePlanet(g.nakshatra_lord_en)}` : "";
+          const pd = g.pada != null ? ` · p${g.pada}` : "";
+          const lab = nk ? nk.sanskrit : `N${g.nakshatra_index}`;
+          return `${lab}${pd}${lord}`;
+        };
+        const mod = (value, base) => ((value % base) + base) % base;
+        const signIdForBhava = (house, ascSid) => mod(Number(ascSid) + house - 2, 12) + 1;
+        const westernSignForBhava = (house, ascSid) => signOrderEn[(signIdForBhava(house, ascSid) - 1 + 12) % 12];
+        const drishtiTargets = (jy, nameEn) => {
+          const dr = jy && jy.drishti;
+          if (!Array.isArray(dr)) return [];
+          const row = dr.find((x) => x && x.from === nameEn);
+          return row && Array.isArray(row.houses) ? row.houses.map((h) => Number(h)).filter((n) => !Number.isNaN(n)) : [];
+        };
+        const selectionKey = (sel) => {
+          if (!sel || !sel.kind) return "";
+          if (sel.kind === "house") return `h:${sel.house}`;
+          if (sel.kind === "sign") return `s:${sel.house}:${sel.signEn}`;
+          if (sel.kind === "planet") return `p:${sel.grahaKey}:${sel.house}`;
+          if (sel.kind === "lagna") return "lagna";
+          if (sel.kind === "drishti") return `d:${sel.fromEn}:${sel.toHouse}`;
+          return "";
+        };
+        const applySelectionHighlight = () => {
+          const hits = gridEl.querySelectorAll(".kundali-hit");
+          hits.forEach((el) => el.classList.remove("is-kundali-selected"));
+          if (!selected || !selected.kind) {
+            frame.classList.remove("is-kundali-filtering");
+            return;
+          }
+          frame.classList.add("is-kundali-filtering");
+          hits.forEach((el) => {
+            const hit = el.dataset.hit;
+            if (selected.kind === "house" && hit === "house" && Number(el.dataset.house) === selected.house) el.classList.add("is-kundali-selected");
+            if (selected.kind === "lagna" && hit === "lagna") el.classList.add("is-kundali-selected");
+            if (selected.kind === "sign" && hit === "sign" && Number(el.dataset.house) === selected.house) el.classList.add("is-kundali-selected");
+            if (selected.kind === "planet" && hit === "planet" && el.dataset.grahaKey === selected.grahaKey && Number(el.dataset.house) === selected.house) {
+              el.classList.add("is-kundali-selected");
+            }
+            if (
+              selected.kind === "drishti" &&
+              hit === "drishti" &&
+              String(el.dataset.from) === String(selected.fromEn) &&
+              Number(el.dataset.toHouse) === Number(selected.toHouse)
+            ) {
+              el.classList.add("is-kundali-selected");
+            }
+          });
+        };
+        const drishtiGlossIdFor = (fromEn) => {
+          const fe = String(fromEn || "");
+          if (fe === "Mars") return "mars-drishti";
+          if (fe === "Jupiter") return "jupiter-drishti";
+          if (fe === "Saturn") return "saturn-drishti";
+          return "general-drishti";
+        };
+        const glossaryIdFor = (sel) => {
+          if (!sel || !sel.kind) return null;
+          if (sel.kind === "house") return `bhava-${sel.house}`;
+          if (sel.kind === "sign") return westSignToJyotishGloss[sel.signEn] || null;
+          if (sel.kind === "planet") return shortToGlossPlanet[sel.grahaKey] || null;
+          if (sel.kind === "lagna") return "bhava-1";
+          if (sel.kind === "drishti") return drishtiGlossIdFor(sel.fromEn);
+          return null;
+        };
+        function renderVedicKundaliInfoPanel(sel) {
+          if (infoPanel._vedicKundaliRo) {
+            infoPanel._vedicKundaliRo.disconnect();
+            delete infoPanel._vedicKundaliRo;
+          }
+          infoPanel.innerHTML = "";
+          const jy = getJyotish(data) || {};
+          const ascSid = getVedicAscendantSignId("D1", data);
+          const lag = jy.lagna || null;
+          const d1Map = vedicD1BhavaByHouse(jy);
+          const signLordBySign = {
+            Aries: "Mars", Taurus: "Venus", Gemini: "Mercury", Cancer: "Moon", Leo: "Sun", Virgo: "Mercury",
+            Libra: "Venus", Scorpio: "Mars", Sagittarius: "Jupiter", Capricorn: "Saturn", Aquarius: "Saturn", Pisces: "Jupiter",
+          };
+          const safeSignEn = (candidate, houseNo) => {
+            const c = String(candidate || "");
+            if (signOrderEn.includes(c)) return c;
+            return westernSignForBhava(Number(houseNo) || 1, ascSid);
+          };
+          const d1RowWithFallback = (houseNo) => {
+            const h = Number(houseNo);
+            const row = d1Map[h];
+            if (row) return row;
+            const signEn = safeSignEn("", h);
+            return {
+              house: h,
+              rashi: signEn,
+              rashi_index: signOrderEn.indexOf(signEn),
+              lord_en: signLordBySign[signEn] || null,
+              bhava_groups: [],
+              tattva: null,
+              sign_quality: null,
+              polarity: null,
+            };
+          };
+          const meta = createEl("div", "western-info-meta", isNL ? "Selectie op Kundali" : "Kundali selection");
+          const title = createEl("h4", "western-info-title", isNL ? "Kies een huis, teken of graha" : "Pick a house, sign, or graha");
+          const intro = createEl(
+            "p",
+            "western-info-text",
+            isNL
+              ? "Tik op een van de twaalf vlakken (driehoek vanaf het midden), op een graha, of op Asc. Details verschijnen in dit paneel; geen zwevende hover-teksten op de kaart. Nakshatra-laag toont N·pada-labels."
+              : "Tap one of the twelve facets (triangle from the centre), a graha, or Asc. Details appear in this panel; no floating hover text on the chart. The nakshatra layer shows N·pada labels."
+          );
+          const detailList = document.createElement("ul");
+          const seen = new Set();
+          const pushDetail = (line) => {
+            if (!line || seen.has(line)) return;
+            seen.add(line);
+            const li = document.createElement("li");
+            li.textContent = line;
+            detailList.appendChild(li);
+          };
+          const kvRow = (label, value) => `<span class="western-acc-kv__k">${label}</span>: ${value}`;
+          const pushNakshatraGlossaryForGraha = (g) => {
+            if (!layerState.nakshatra || !g || g.nakshatra_index == null) return;
+            const n = Number(g.nakshatra_index);
+            if (n < 1 || n > 27) return;
+            const gid = NAK_INDEX_TO_GLOSS_ID[n - 1];
+            const ge = gid ? findJyotishGlossaryEntry(gid) : null;
+            if (!ge || !ge.item) return;
+            const nm = getVedicPlanetDisplay(jyotishGrahaToShortKey(g.name_en), isNL);
+            const snip = shortenText(ge.item.description || "", 220);
+            pushDetail(`${nm} · ${ge.item.title}: ${snip}`);
+          };
+          let basisHtml = "";
+          let meaningText = "";
+          if (!sel || !sel.kind) {
+            title.textContent = isNL ? "Kies een item" : "Select an item";
+            basisHtml = "";
+            meaningText = "";
+          } else if (sel.kind === "house") {
+            const h = Number(sel.house);
+            const d1h = d1RowWithFallback(h);
+            const wSign = safeSignEn(d1h && d1h.rashi, h);
+            title.textContent = isNL ? `Huis ${h}` : `House ${h}`;
+            const houseBits = [
+              kvRow(isNL ? "Whole-sign rashi" : "Whole-sign rashi", getVedicSignLabel(wSign, isNL)),
+              kvRow(isNL ? "Thema (kort)" : "Theme (short)", vedicHouseMeta[h] || "—"),
+            ];
+            if (d1h) {
+              houseBits.push(kvRow(isNL ? "Rāśi-index" : "Rashi index", d1h.rashi_index != null ? String(d1h.rashi_index) : "—"));
+              houseBits.push(kvRow(isNL ? "Heerser teken (rāśiś)" : "Sign lord (rashish)", d1h.lord_en ? localizePlanet(d1h.lord_en) : "—"));
+              houseBits.push(kvRow(isNL ? "Element" : "Element", d1h.tattva ? vedicTattvaLabel(d1h.tattva, isNL) : "—"));
+              houseBits.push(kvRow(isNL ? "Modaliteit" : "Modality", d1h.sign_quality ? vedicSignQualityLabel(d1h.sign_quality, isNL) : "—"));
+              houseBits.push(kvRow(isNL ? "Polariteit" : "Polarity", d1h.polarity ? vedicPolarityLabel(d1h.polarity, isNL) : "—"));
+              houseBits.push(kvRow(isNL ? "Huisgroepen" : "House groups", vedicFormatHouseGroupList(d1h.bhava_groups, isNL)));
+            }
+            basisHtml = houseBits.join("<br/>");
+            meaningText = vedicHouseMeta[h] || (isNL ? "Een bhava toont waar een thema in het leven zichtbaar wordt." : "A bhava shows where a life theme becomes visible.");
+            const inH = (jy.grahas || []).filter((g) => g && Number(g.house) === h);
+            if (inH.length) {
+              inH.forEach((g) => {
+                pushDetail(`${getVedicPlanetDisplay(jyotishGrahaToShortKey(g.name_en), isNL)} · ${getVedicSignLabel(g.rashi, isNL)} · ${nakLineShort(g)}`);
+                pushNakshatraGlossaryForGraha(g);
+              });
+            } else {
+              pushDetail(isNL ? "Geen graha’s in dit huis in de beschikbare data." : "No grahas in this house in the available data.");
+            }
+          } else if (sel.kind === "sign") {
+            const houseNo = Number(sel.house);
+            const signEn = safeSignEn(sel.signEn, houseNo);
+            title.textContent = getVedicSignLabel(signEn, isNL);
+            const d1s = d1Map[houseNo] || d1RowWithFallback(houseNo);
+            const signBits = [
+              kvRow(
+                isNL ? "Rashi in deze bhava" : "Rashi in this bhava",
+                `${getVedicSignLabel(signEn, isNL)} · ${isNL ? "huis" : "house"} ${sel.house}`
+              ),
+            ];
+            if (d1s) {
+              signBits.push(kvRow(isNL ? "Heerser teken" : "Sign lord", d1s.lord_en ? localizePlanet(d1s.lord_en) : "—"));
+              signBits.push(kvRow(isNL ? "Element" : "Element", d1s.tattva ? vedicTattvaLabel(d1s.tattva, isNL) : "—"));
+              signBits.push(kvRow(isNL ? "Modaliteit" : "Modality", d1s.sign_quality ? vedicSignQualityLabel(d1s.sign_quality, isNL) : "—"));
+              signBits.push(kvRow(isNL ? "Polariteit" : "Polarity", d1s.polarity ? vedicPolarityLabel(d1s.polarity, isNL) : "—"));
+              signBits.push(kvRow(isNL ? "Huisgroepen" : "House groups", vedicFormatHouseGroupList(d1s.bhava_groups, isNL)));
+            }
+            basisHtml = signBits.join("<br/>");
+            meaningText = isNL
+              ? "In whole sign valt een volledig teken in één huis; het teken kleurt het levensgebied."
+              : "In whole sign, one sign fills a house; the sign colors that life area.";
+            const inSign = (jy.grahas || []).filter((g) => g && String(g.rashi) === String(signEn));
+            if (inSign.length) {
+              inSign.forEach((g) => {
+                pushDetail(`${getVedicPlanetDisplay(jyotishGrahaToShortKey(g.name_en), isNL)} · ${isNL ? "huis" : "h"} ${g.house != null ? g.house : "—"} · ${nakLineShort(g)}`);
+                pushNakshatraGlossaryForGraha(g);
+              });
+            } else {
+              pushDetail(isNL ? "Geen graha’s in dit teken volgens de data." : "No grahas in this sign in the data.");
+            }
+          } else if (sel.kind === "planet") {
+            const en = grahaEnFromShort(sel.grahaKey);
+            const g = grahaRowByEn(jy, en);
+            title.textContent = getVedicPlanetDisplay(sel.grahaKey, isNL);
+            const ndLab =
+              g && g.natural_dignity
+                ? isNL
+                  ? g.natural_dignity.label_nl || g.natural_dignity.label_en
+                  : g.natural_dignity.label_en || g.natural_dignity.label_nl
+                : "—";
+            basisHtml = [
+              kvRow(isNL ? "Rashi" : "Rashi", g && g.rashi ? getVedicSignLabel(g.rashi, isNL) : "—"),
+              kvRow(isNL ? "Bhava" : "Bhava", g && g.house != null ? String(g.house) : "—"),
+              kvRow(isNL ? "Graden in teken" : "Degrees in sign", g && g.degree_in_sign != null ? `${g.degree_in_sign}°` : "—"),
+              kvRow(isNL ? "Sidereal lengtegraad" : "Sidereal longitude", g && g.sidereal_lon_deg != null ? `${g.sidereal_lon_deg}°` : "—"),
+              kvRow(isNL ? "Nakshatra" : "Nakshatra", nakLineShort(g)),
+              kvRow(
+                isNL ? "Tekeneheer teken (rāśi)" : "Sign lord (rashi)",
+                g && g.natural_dignity && g.natural_dignity.rashilord_en ? localizePlanet(g.natural_dignity.rashilord_en) : "—"
+              ),
+              kvRow(isNL ? "Dignity (naisargika)" : "Natural dignity", ndLab),
+              kvRow(isNL ? "Huisgroepen" : "House groups", g && g.bhava_groups ? vedicFormatHouseGroupList(g.bhava_groups, isNL) : "—"),
+              kvRow(isNL ? "Soort huis t.o.v. Lagna" : "House kind vs Lagna", g && g.house_kind_from_lagna ? vedicHouseKindLabel(g.house_kind_from_lagna, isNL) : "—"),
+              kvRow(
+                "Retrograde",
+                g && g.retrograde === true ? (isNL ? "ja" : "yes") : g && g.retrograde === false ? (isNL ? "nee" : "no") : "—"
+              ),
+              kvRow("Combust", g && g.combust === true ? (isNL ? "ja (astāṅgata)" : "yes (astangata)") : g && g.combust === false ? (isNL ? "nee" : "no") : "—"),
+            ].join("<br/>");
+            meaningText =
+              g && g.name_en
+                ? isNL
+                  ? `${localizePlanet(g.name_en)} — sidereale plaats; lees rashi, bhava en nakshatra samen.`
+                  : `${localizePlanet(g.name_en)} — sidereal placement; read rashi, bhava and nakshatra together.`
+                : isNL
+                  ? "Data onvolledig voor deze graha."
+                  : "Incomplete data for this graha.";
+            if (layerState.drishti && en) {
+              const t = drishtiTargets(jy, en);
+              if (t.length) {
+                pushDetail(`${isNL ? "Drishti naar huizen" : "Drishti to houses"}: ${t.join(", ")}.`);
+              } else {
+                pushDetail(
+                  isNL ? "Geen drishti-doelen in dataset (of knopen uitgesloten)." : "No drishti targets in dataset (or nodes excluded)."
+                );
+              }
+            }
+            const others = (jy.grahas || []).filter((x) => x && x.house != null && g && x.name_en !== g.name_en && Number(x.house) === Number(g.house));
+            if (others.length) {
+              pushDetail(`${isNL ? "Ook in dit huis" : "Also in this house"}: ${others.map((x) => getVedicPlanetDisplay(jyotishGrahaToShortKey(x.name_en), isNL)).join(", ")}`);
+            }
+            pushNakshatraGlossaryForGraha(g);
+          } else if (sel.kind === "drishti") {
+            const fromEn = String(sel.fromEn || "");
+            const fh = Number(sel.fromHouse);
+            const to = Number(sel.toHouse);
+            title.textContent = isNL ? `Drishti · ${localizePlanet(fromEn)}` : `Drishti · ${localizePlanet(fromEn)}`;
+            basisHtml = [
+              kvRow(isNL ? "Van bhāva" : "From bhava", !Number.isNaN(fh) ? String(fh) : "—"),
+              kvRow(isNL ? "Naar bhāva" : "To bhava", !Number.isNaN(to) ? String(to) : "—"),
+              kvRow(isNL ? "Bron-graha" : "Source graha", fromEn ? localizePlanet(fromEn) : "—"),
+            ].join("<br/>");
+            meaningText = isNL
+              ? "Parāśari drishti op hele huizen (whole sign), niet op Westerse orbs. Mars 4/7/8; Jupiter 5/7/9; Saturnus 3/7/10; overige klassieke zeven + 7e."
+              : "Parashari drishti to whole-sign houses, not Western orbs. Mars 4/7/8; Jupiter 5/7/9; Saturn 3/7/10; other classical seven + 7th.";
+            const tgtRow = (jy.grahas || []).find((x) => x && x.name_en === fromEn);
+            if (tgtRow && tgtRow.house != null) {
+              pushDetail(
+                `${isNL ? "Graha in" : "Graha in"} huis ${tgtRow.house} · ${getVedicSignLabel(tgtRow.rashi, isNL)} · ${nakLineShort(tgtRow)}`
+              );
+            }
+            const signTo = westernSignForBhava(to, ascSid);
+            pushDetail(`${isNL ? "Teken op doel-bhāva" : "Sign on target bhava"}: ${getVedicSignLabel(signTo, isNL)}`);
+            const occ = (jy.grahas || []).filter((g) => g && Number(g.house) === to);
+            if (occ.length) {
+              occ.forEach((g) =>
+                pushDetail(`${getVedicPlanetDisplay(jyotishGrahaToShortKey(g.name_en), isNL)} · ${nakLineShort(g)}`)
+              );
+            } else {
+              pushDetail(isNL ? "Geen graha’s in de doel-bhāva." : "No grahas in the target bhava.");
+            }
+          } else if (sel.kind === "lagna") {
+            title.textContent = isNL ? "Lagna (Ascendant)" : "Lagna (Ascendant)";
+            const wSign = lag && lag.rashi ? lag.rashi : westernSignForBhava(1, ascSid);
+            const d1lag = d1Map[1];
+            const lagBits = [
+              kvRow(isNL ? "Sidereale rashi" : "Sidereal rashi", wSign ? getVedicSignLabel(wSign, isNL) : "—"),
+              kvRow(isNL ? "1e bhava" : "1st bhava", isNL ? "Tanubhava — lichaam en levensingang" : "Tanu bhava — body and life entry"),
+              kvRow(isNL ? "Nakshatra pada" : "Nakshatra pada", lag && lag.nakshatra_index != null ? nakLineShort(lag) : "—"),
+              kvRow(isNL ? "Sidereal Lagna °" : "Sidereal Lagna °", lag && lag.sidereal_deg != null ? String(lag.sidereal_deg) : "—"),
+            ];
+            if (d1lag) {
+              lagBits.push(kvRow(isNL ? "Element / modaliteit / polariteit" : "Element / modality / polarity", `${vedicTattvaLabel(d1lag.tattva, isNL)} · ${vedicSignQualityLabel(d1lag.sign_quality, isNL)} · ${vedicPolarityLabel(d1lag.polarity, isNL)}`));
+              lagBits.push(kvRow(isNL ? "Huisgroepen op Lagna-teken" : "House groups on Lagna sign", vedicFormatHouseGroupList(d1lag.bhava_groups, isNL)));
+            }
+            basisHtml = lagBits.join("<br/>");
+            meaningText = isNL
+              ? "Whole-sign huizen roteren vanaf dit teken; Lagna is het anker van de Kundali."
+              : "Whole-sign houses rotate from this sign; Lagna anchors the chart.";
+          }
+          const glossPick = glossaryIdFor(sel) ? findJyotishGlossaryEntry(glossaryIdFor(sel)) : null;
+          const accordion = createEl("div", "western-info-accordion");
+          const sectionDefs = [
+            { key: "basis", label: isNL ? "Basisinformatie" : "Basic info", iconId: "ui-info" },
+            { key: "meaning", label: isNL ? "Betekenis" : "Meaning", iconId: "ui-meaning" },
+            { key: "links", label: isNL ? "Verbindingen" : "Connections", iconId: "ui-connections" },
+            { key: "gloss", label: isNL ? "Woordenboek" : "Glossary", iconId: "ui-book" },
+          ];
+          sectionDefs.forEach((def) => {
+            const item = createEl("div", "western-acc-item");
+            const head = createEl("button", "western-acc-head");
+            head.type = "button";
+            const ic = createEl("span", "western-acc-head__icon");
+            const ipath = iconPathById(def.iconId);
+            if (ipath) {
+              const im = document.createElement("img");
+              im.src = ipath;
+              im.alt = "";
+              im.loading = "lazy";
+              im.decoding = "async";
+              ic.appendChild(im);
+            }
+            head.appendChild(ic);
+            head.appendChild(document.createTextNode(def.label));
+            const body = createEl("div", "western-acc-body");
+            if (def.key === "basis") {
+              if (basisHtml) {
+                const p = createEl("p", "");
+                p.innerHTML = basisHtml;
+                body.appendChild(p);
+              } else {
+                body.appendChild(createEl("p", "", intro.textContent));
+              }
+            } else if (def.key === "meaning") {
+              body.appendChild(
+                createEl(
+                  "p",
+                  "",
+                  meaningText || (sel && sel.kind ? (isNL ? "Geen aparte toelichting beschikbaar." : "No separate reading available.") : intro.textContent)
+                )
+              );
+            } else if (def.key === "links") {
+              if (detailList.children.length) body.appendChild(detailList);
+              else body.appendChild(createEl("p", "", isNL ? "Geen verbindingen om weer te geven." : "No connections to show."));
+            } else if (def.key === "gloss") {
+              if (glossPick && glossPick.item) {
+                const chip = createEl("div", "western-gloss-chip", glossPick.item.badge || glossPick.section.title || "");
+                body.appendChild(chip);
+                body.appendChild(createEl("p", "", glossPick.item.description || glossPick.item.title || ""));
+              } else {
+                body.appendChild(createEl("p", "", isNL ? "Geen woordenboek-item voor deze selectie." : "No glossary entry for this selection."));
+              }
+            }
+            item.appendChild(head);
+            item.appendChild(body);
+            accordion.appendChild(item);
+          });
+          const syncVedicKundaliAccordionLayout = () => {
+            const items = Array.from(accordion.querySelectorAll(".western-acc-item"));
+            if (!items.length) return;
+            infoPanel.classList.remove("western-info-pane--compact-accordion", "western-info-pane--expand-all-accordion");
+            items.forEach((it) => it.classList.add("is-open"));
+            infoPanel.classList.add("western-info-pane--expand-all-accordion");
+            const ch = infoPanel.clientHeight;
+            const sh = infoPanel.scrollHeight;
+            const overflow = ch > 0 && sh > ch + 2;
+            if (overflow) {
+              infoPanel.classList.remove("western-info-pane--expand-all-accordion");
+              infoPanel.classList.add("western-info-pane--compact-accordion");
+              items.forEach((it) => it.classList.remove("is-open"));
+              if (items[0]) items[0].classList.add("is-open");
+            }
+          };
+          accordion.addEventListener("click", (ev) => {
+            const head = ev.target.closest(".western-acc-head");
+            if (!head || !accordion.contains(head)) return;
+            const item = head.closest(".western-acc-item");
+            if (!item) return;
+            if (infoPanel.classList.contains("western-info-pane--expand-all-accordion")) {
+              item.classList.toggle("is-open");
+              return;
+            }
+            const items = Array.from(accordion.querySelectorAll(".western-acc-item"));
+            const wasOpen = item.classList.contains("is-open");
+            items.forEach((it) => it.classList.remove("is-open"));
+            if (!wasOpen) item.classList.add("is-open");
+            else if (items[0]) items[0].classList.add("is-open");
+          });
+          infoPanel.appendChild(meta);
+          infoPanel.appendChild(title);
+          infoPanel.appendChild(accordion);
+          const runAccordionLayout = () => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                syncVedicKundaliAccordionLayout();
+              });
+            });
+          };
+          runAccordionLayout();
+          if (typeof ResizeObserver !== "undefined") {
+            const ro = new ResizeObserver(() => {
+              syncVedicKundaliAccordionLayout();
+            });
+            ro.observe(infoPanel);
+            infoPanel._vedicKundaliRo = ro;
+          }
+        }
+        gridEl.addEventListener("click", (ev) => {
+          const raw = ev.target.closest(".kundali-hit");
+          if (!raw || !gridEl.contains(raw)) return;
+          const kind = raw.dataset.hit;
+          let next = null;
+          if (kind === "house") {
+            const h = Number(raw.dataset.house);
+            if (!Number.isNaN(h)) next = { kind: "house", house: h };
+          } else if (kind === "sign") {
+            const h = Number(raw.dataset.house);
+            const signEn = raw.dataset.signEn;
+            if (!Number.isNaN(h) && signEn) next = { kind: "sign", house: h, signEn };
+          } else if (kind === "planet") {
+            const h = Number(raw.dataset.house);
+            const grahaKey = raw.dataset.grahaKey;
+            if (!Number.isNaN(h) && grahaKey) next = { kind: "planet", house: h, grahaKey };
+          } else if (kind === "lagna") {
+            next = { kind: "lagna" };
+          } else if (kind === "drishti") {
+            const fromEn = raw.dataset.from;
+            const fromHouse = Number(raw.dataset.fromHouse);
+            const toH = Number(raw.dataset.toHouse);
+            if (fromEn && !Number.isNaN(toH)) next = { kind: "drishti", fromEn, fromHouse, toHouse: toH };
+          }
+          if (!next) return;
+          if (selectionKey(selected) === selectionKey(next)) selected = null;
+          else selected = next;
+          applySelectionHighlight();
+          renderVedicKundaliInfoPanel(selected);
+          if (window.matchMedia("(max-width: 900px)").matches) wheelLayout.classList.add("is-info-open");
+          ev.stopPropagation();
+        });
+        renderVedicKundaliInfoPanel(null);
       }
 
       function normalizeBaziChar(value, kind) {
@@ -6378,144 +8835,8 @@
       }
 
       function renderVedicTabV2(data) {
-        const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
-        const intro = createEl("section", "astro-method-visual");
-        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 2" : "Method 2"));
-        intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Vedische horoscoop / Jyotish" : "Vedic horoscope / Jyotish"));
-        const narr = buildVedicNarrativeParagraphs(data, isNL);
-        const narrWrap = createEl("div", "astro-section-narrative");
-        narr.paragraphs.forEach((para) => {
-          if (para && String(para).trim()) narrWrap.appendChild(createEl("p", "astro-section-sub", String(para).trim()));
-        });
-        intro.appendChild(narrWrap);
-        const chartSection = createEl("section", "vedic-chart-section");
-        const chartHeader = createEl("div", "vedic-chart-header");
-        const chartTitle = createEl("h4", "", "");
-        const chartSub = createEl("div", "astro-card__sub", "");
-        chartHeader.appendChild(chartTitle);
-        chartHeader.appendChild(chartSub);
-        chartSection.appendChild(chartHeader);
-        const kundaliHost = createEl("div", "kundali-card");
-        chartSection.appendChild(kundaliHost);
-        intro.appendChild(chartSection);
-
-        const selectorSection = createEl("section", "vedic-varga-section");
-        const selectorTop = createEl("div", "vedic-varga-top");
-        const selectorTitleWrap = createEl("div", "");
-        selectorTitleWrap.appendChild(createEl("h4", "", isNL ? "Shodashavarga (16 divisiekaarten)" : "Shodashavarga (16 divisional charts)"));
-        selectorTitleWrap.appendChild(createEl("div", "astro-card__sub", isNL ? "Overzicht van de 16 divisiekaarten naast de vaste D1-kundali." : "Overview of the 16 divisional charts next to the fixed D1 kundali."));
-        selectorTop.appendChild(selectorTitleWrap);
-        selectorSection.appendChild(selectorTop);
-        const cardsGrid = createEl("div", "astro-grid-2 vedic-varga-grid");
-        selectorSection.appendChild(cardsGrid);
-        intro.appendChild(selectorSection);
-
-        function vargaFocus(v) {
-          return isNL ? String(v.focus_nl || "-") : String(v.focus_en || "-");
-        }
-        function vargaLayer(v) {
-          return isNL ? String(v.layer_nl || "-") : String(v.layer_en || "-");
-        }
-        function refreshKundali() {
-          const active = getVedicVargaById("D1");
-          chartTitle.textContent = `${active.name} (${active.id})`;
-          chartSub.textContent = `${active.sanskrit} - ${vargaFocus(active)}${isNL ? " - afgeleid uit je actuele geboorteplaatsingen" : " - derived from your current natal placements"}`;
-          kundaliHost.innerHTML = "";
-          kundaliHost.appendChild(createKundaliGrid("D1", data));
-        }
-        function buildD1MeaningSection() {
-          const section = createEl("section", "vedic-inline-section");
-          section.appendChild(createEl("h3", "layout-section__title", isNL ? "D1 overzicht: planeten en huizen" : "D1 overview: planets and houses"));
-          section.appendChild(
-            createEl(
-              "p",
-              "layout-section__lead",
-              isNL
-                ? "Net als in de western tabel: waar elke planeet staat en welk levensgebied daardoor extra nadruk krijgt."
-                : "Like the western table: where each planet stands and which life domain gets emphasized."
-            )
-          );
-          const houseMeta = getVedicHouseMeta(isNL);
-          const ascendantSignId = getVedicAscendantSignId("D1", data);
-          const signs = [
-            "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
-            "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces",
-          ];
-          const d1 = getVedicPlacements("D1", data);
-          const planetRows = d1.map((pl) => {
-            const house = Number(pl.house) || 1;
-            const signIdx = (ascendantSignId + house - 2) % 12;
-            const signName = signs[signIdx];
-            return [
-              symbolCell(planetGlyph(pl.key), getVedicPlanetDisplay(pl.key, isNL), getVedicPlanetDisplay(pl.key, isNL)),
-              String(house),
-              symbolCell(signGlyph(signName), getVedicSignLabel(signName, isNL), getVedicSignLabel(signName, isNL)),
-              houseMeta[house] || "-",
-            ];
-          });
-          section.appendChild(
-            createMethodTable(
-              [isNL ? "Planeet" : "Planet", isNL ? "Huis" : "House", isNL ? "Teken" : "Sign", isNL ? "Betekenis" : "Meaning"],
-              planetRows
-            )
-          );
-
-          const houseRows = Array.from({ length: 12 }, (_, i) => {
-            const house = i + 1;
-            const signIdx = (ascendantSignId + house - 2) % 12;
-            const signName = signs[signIdx];
-            return [
-              String(house),
-              symbolCell(signGlyph(signName), getVedicSignLabel(signName, isNL), getVedicSignLabel(signName, isNL)),
-              houseMeta[house] || "-",
-            ];
-          });
-          const houseWrap = document.createElement("div");
-          houseWrap.style.marginTop = "12px";
-          houseWrap.appendChild(
-            createMethodTable(
-              [isNL ? "Huis" : "House", isNL ? "Teken op cusp" : "Sign on cusp", isNL ? "Levensgebied" : "Life domain"],
-              houseRows
-            )
-          );
-          section.appendChild(houseWrap);
-          return section;
-        }
-        function renderVargaCards() {
-          cardsGrid.innerHTML = "";
-          const visible = VEDIC_VARGAS;
-          visible.forEach((v) => {
-            const btn = createEl("article", "vedic-varga-card");
-            if (v.id === "D1") btn.classList.add("is-active");
-            const top = createEl("div", "vedic-varga-card-head");
-            top.appendChild(createEl("div", "astro-card__sub", `${v.id} - ${v.sanskrit}`));
-            const badge = createEl("span", "vedic-theme-badge", v.theme);
-            top.appendChild(badge);
-            btn.appendChild(top);
-            btn.appendChild(createEl("h4", "", v.name));
-            const focus = createEl("p", "", vargaFocus(v));
-            btn.appendChild(focus);
-            const layer = createEl("div", "astro-card__sub", vargaLayer(v));
-            layer.style.marginTop = "8px";
-            btn.appendChild(layer);
-            cardsGrid.appendChild(btn);
-          });
-        }
-        refreshKundali();
-        chartSection.appendChild(buildD1MeaningSection());
-        renderVargaCards();
-
-        const dashboard = renderResultDashboard("vedic", data);
-        const methodLayout = dashboard && dashboard.firstElementChild;
-        if (methodLayout && methodLayout.children && methodLayout.children.length > 1) {
-          methodLayout.insertBefore(intro, methodLayout.children[1]);
-        } else if (methodLayout) {
-          methodLayout.appendChild(intro);
-        } else {
-          root.appendChild(intro);
-        }
-        root.appendChild(dashboard);
+        root.appendChild(renderResultDashboard("vedic", data));
         return root;
       }
 
@@ -7192,6 +9513,19 @@
         return null;
       }
 
+      function findJyotishGlossaryEntry(itemId) {
+        const want = String(itemId || "");
+        if (!want) return null;
+        const sections = jyotishGlossarySections();
+        for (let i = 0; i < sections.length; i++) {
+          const items = sections[i].items || [];
+          for (let j = 0; j < items.length; j++) {
+            if (items[j].id === want) return { section: sections[i], item: items[j] };
+          }
+        }
+        return null;
+      }
+
       function baziGlossarySections() {
         return [
           {
@@ -7817,6 +10151,7 @@
           tula: "libra", vrischika: "scorpio", dhanu: "sagittarius", makara: "capricorn", kumbha: "aquarius", meena: "pisces",
         };
         jyotishGlossarySections().forEach((section) => {
+          if (section.id === "jyotish-panchanga") return;
           appendLegendSection(frag, {
             id: section.id,
             title: section.title,
@@ -8186,68 +10521,7 @@
       }
 
       function renderVedicStory(data) {
-        const frag = document.createDocumentFragment();
-        const isNL = uiIsNL();
-        const interp = lastInterpretations && lastInterpretations.vedic_panchanga ? lastInterpretations.vedic_panchanga : null;
-        const vedic = data.vedic || {};
-        const panchanga = vedic.panchanga || {};
-        if (!panchanga || Object.keys(panchanga).length === 0) {
-          frag.appendChild(p(isNL ? "Vedische Panchanga was niet beschikbaar voor deze invoer." : "Vedic Panchanga wasn’t available for this input."));
-          return frag;
-        }
-        const vaara = panchanga.vaara;
-        const tithi = (panchanga.tithi || {}).index;
-        const nak = (panchanga.nakshatra || {}).index;
-        const yoga = (panchanga.yoga || {}).index;
-        const parts = [];
-        if (vaara) parts.push(`Vaara: ${localizeVaara(vaara)}`);
-        if (tithi != null) parts.push(`Tithi: ${tithi}`);
-        if (nak != null) parts.push(`Nakshatra: ${nak}`);
-        if (yoga != null) parts.push(`Yoga: ${yoga}`);
-        const panchIntro =
-          parts.length
-            ? (isNL
-                ? `Op dat moment leest de Panchanga als een weerkaart van tijd: ${parts.join(", ")}. Vaara is de weekdag-kwaliteit, Tithi is de maandag en gemoed, Nakshatra is het maansverblijf (emotioneel veld) en Yoga beschrijft hoe Zon en Maan samenkomen.`
-                : `At that moment, the Panchanga reads like a weather report of time: ${parts.join(", ")}. Vaara is the weekday quality, Tithi is the lunar day and mood, Nakshatra is the lunar mansion (emotional field), and Yoga describes how Sun and Moon combine.`)
-            : (isNL ? "Panchanga-waarden waren aanwezig, maar incompleet." : "Panchanga values were present but incomplete.");
-        appendInsightBlock(frag, isNL ? "Panchanga (context)" : "Panchanga (context)", "voeding", [
-          {
-            title: isNL ? "Weerkaart van tijd" : "Weather map of time",
-            text: panchIntro,
-            themeId: "voeding",
-          },
-        ]);
-        if (interp) {
-          const { block, articles } = createInsightBlock(
-            isNL ? "Vedische factoren (uitgebreid)" : "Vedic factors (extended)",
-            "energie"
-          );
-          const items = [
-            { key: "vaara", title: "Vaara", themeId: "beweging" },
-            { key: "tithi", title: "Tithi", themeId: "energie" },
-            { key: "nakshatra", title: "Nakshatra", themeId: "bewustzijn" },
-            { key: "yoga", title: "Yoga", themeId: "energie" },
-            { key: "karana", title: "Karana", themeId: "beweging" },
-          ];
-          items.forEach((it) => {
-            const src = interp[it.key] || {};
-            const text = src.text;
-            if (!text) return;
-            appendArticleCard(articles, it.title, String(text), it.themeId);
-          });
-          if (articles.childElementCount) frag.appendChild(block);
-        }
-
-        appendInsightBlock(frag, isNL ? "Achtergrondklimaat" : "Background climate", "bewustzijn", [
-          {
-            title: isNL ? "Samenhang" : "Together",
-            text: isNL
-              ? "Samen beschrijven deze vedische factoren de algemene gunst en toon van de dag, zodat je ziet hoe het geboortemoment je leven kleurt als een achtergrondklimaat."
-              : "Together, these Vedic factors describe the overall auspiciousness and tone of the day, so you can see how the moment of birth colors your life like a background climate.",
-            themeId: "bewustzijn",
-          },
-        ]);
-        return frag;
+        return document.createDocumentFragment();
       }
 
       function renderChineseStory(data) {

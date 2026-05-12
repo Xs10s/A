@@ -1315,6 +1315,11 @@
         font-size: 12.5px;
         line-height: 1.55;
         color: #4f4961;
+        white-space: pre-line;
+      }
+      .method-layout--western-tight .explain-grid .astro-card p {
+        white-space: pre-line;
+        line-height: 1.65;
       }
       .method-layout--western-tight .explain-card.western-aspect-theme-card {
         min-height: 0;
@@ -1353,6 +1358,16 @@
         line-height: 1.5;
         font-weight: 500;
         color: #5a536f;
+      }
+      .method-layout--western-tight .western-aspect-theme-card__aspect-tip {
+        margin: 0;
+        max-width: 100%;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 11.5px;
+        line-height: 1.45;
+        font-style: italic;
+        font-weight: 400;
+        color: #6b6280;
       }
       .method-layout--western-tight .western-aspect-theme-card__list li.western-aspect-theme-card__aspect-row .astro-inline-symbol__icon {
         width: 20px;
@@ -2294,6 +2309,32 @@
       }
       .astro-shell .result-dash {
         margin-top: 0;
+      }
+      .method-personal-reading {
+        border: 1px solid #eadff6;
+        background: #faf7ff;
+        border-radius: 12px;
+        padding: 18px 16px 20px;
+      }
+      .method-personal-reading .layout-section__lead {
+        margin-bottom: 12px;
+        line-height: 1.55;
+        color: #4f4961;
+      }
+      .method-personal-reading .explain-grid {
+        margin-top: 6px;
+      }
+      .method-personal-reading .astro-card p {
+        white-space: pre-line;
+        line-height: 1.62;
+        color: #3d364d;
+      }
+      .method-personal-reading__closing {
+        margin: 14px 0 0 0;
+        font-size: 13px;
+        line-height: 1.55;
+        color: #5a536f;
+        font-style: italic;
       }
       .astro-hero {
         border: 1px solid #d9c8ef;
@@ -3382,6 +3423,163 @@
         },
       };
 
+      /**
+       * Method 1 top cards: sign-specific core copy so different charts read as different people.
+       * Aspects are explained separately with plain-language glosses from WESTERN_ASPECT_ROW_NOTES.
+       */
+      const WESTERN_CARD_SUN_BY_SIGN = {
+        Aries: {
+          nl: "Je Zon zoekt helderheid door actie: je komt tot jezelf als je durft te beginnen en openlijk te tonen wat je wilt. Je identiteit groeit wanneer je niet eindeloos plant, maar kleur bekent en bijstuurt na een echte poging.",
+          en: "Your Sun wants clarity through action: you come alive when you start and show plainly what you want. Your identity grows when you stop endless planning, commit, and adjust after a real attempt.",
+        },
+        Taurus: {
+          nl: "Je Zon zoekt betrouwbaarheid en tastbare kwaliteit: je kern wordt warm als je iets moois opbouwt en mag voelen dat het blijft. Je identiteit groeit door ritme, zorg voor je lichaam en waarden die je bewust kiest.",
+          en: "Your Sun wants reliability and tangible quality: your core warms when you build something beautiful that can stay. Your identity grows through rhythm, body care, and values you choose on purpose.",
+        },
+        Gemini: {
+          nl: "Je Zon zoekt levendigheid en begrip: je kern vraagt om nieuwsgierigheid, gesprek en het verbinden van losse stukjes tot een verhaal. Je identiteit groeit als je mag wisselen zonder jezelf ‘lichtzinnig’ te hoeven noemen.",
+          en: "Your Sun wants aliveness and understanding: your core needs curiosity, conversation, and turning fragments into a story. Your identity grows when you’re allowed to shift without calling yourself flaky.",
+        },
+        Cancer: {
+          nl: "Je Zon zoekt veiligheid en echtheid: je kern wordt zacht als je thuis mag voelen—bij mensen, plekken of rituelen. Je identiteit groeit door zorg geven en ontvangen, grenzen die kloppen en loyaliteit die je bewust kiest.",
+          en: "Your Sun wants safety and sincerity: your core softens when you feel at home—with people, places, or rituals. Your identity grows through caring and receiving care, boundaries that fit, and loyalty you choose mindfully.",
+        },
+        Leo: {
+          nl: "Je Zon zoekt warmte en spreekrecht: je kern wil zichtbaar mogen zijn zonder toneel te hoeven spelen. Je identiteit groeit als je creativiteit, spel en moed combineert om eerlijk te tonen wat je raakt.",
+          en: "Your Sun wants warmth and voice: your core wants to be seen without having to perform. Your identity grows when you mix creativity, play, and courage to show honestly what moves you.",
+        },
+        Virgo: {
+          nl: "Je Zon zoekt zinvol nut en precisie: je kern wordt rustig als je iets echt beter maakt—voor jezelf of voor anderen. Je identiteit groeit door vakmanschap, eerlijke feedback en kleine verbeteringen die wél merkbaar zijn.",
+          en: "Your Sun wants meaningful usefulness and precision: your core calms when you truly improve something—for yourself or others. Your identity grows through craft, honest feedback, and small upgrades that actually show.",
+        },
+        Libra: {
+          nl: "Je Zon zoekt eerlijkheid in verbinding: je kern leert via tegenstellingen, schoonheid en het zoeken naar wat eerlijk voelt voor iedereen. Je identiteit groeit als je diplomatie niet verwart met jezelf wegcijferen.",
+          en: "Your Sun wants honesty in connection: your core learns through contrast, beauty, and finding what feels fair. Your identity grows when you don’t confuse diplomacy with erasing yourself.",
+        },
+        Scorpio: {
+          nl: "Je Zon zoekt diepgang en waarheid: je kern wordt wakker als er ruimte is voor intensiteit, vertrouwen en taboes die je wél benoemt. Je identiteit groeit door transparantie, grenzen en het loslaten van schijnveiligheid.",
+          en: "Your Sun wants depth and truth: your core wakes when intensity and trust are allowed—and taboos can be named. Your identity grows through transparency, boundaries, and dropping false safety.",
+        },
+        Sagittarius: {
+          nl: "Je Zon zoekt zin en horizon: je kern hunkert naar verhaal, vrijheid en leren door ervaring. Je identiteit groeit als je idealen aan de grond zet—met humor, reis en principes die je dagelijks toetst.",
+          en: "Your Sun wants meaning and horizon: your core hungers for story, freedom, and learning by doing. Your identity grows when you land ideals on the ground—with humor, travel, and principles you test daily.",
+        },
+        Capricorn: {
+          nl: "Je Zon zoekt volharding en integriteit: je kern respecteert tijd, inspanning en het halen van beloftes—vooral aan jezelf. Je identiteit groeit als je ambitie koppelt aan zorg voor je menselijkheid, niet alleen aan prestatie.",
+          en: "Your Sun wants endurance and integrity: your core respects time, effort, and keeping promises—especially to yourself. Your identity grows when ambition stays tied to humanity, not only achievement.",
+        },
+        Aquarius: {
+          nl: "Je Zon zoekt vrijheid en rechtvaardigheid: je kern wordt scherp van grotere verbanden, vriendschap en eigen koers. Je identiteit groeit als je ‘anders zijn’ niet hoeft te bewijzen, maar mag inzetten voor iets dat groter is dan jij alleen.",
+          en: "Your Sun wants freedom and fairness: your core sharpens on bigger patterns, friendship, and your own course. Your identity grows when difference doesn’t need proving but can serve something larger than you alone.",
+        },
+        Pisces: {
+          nl: "Je Zon zoekt meevoelen en overgave: je kern wordt groot door verbeelding, compassie en grenzen die zacht maar duidelijk zijn. Je identiteit groeit als je intuïtie serieus neemt en toch voet op de grond houdt.",
+          en: "Your Sun wants empathy and surrender: your core expands through imagination, compassion, and boundaries that are gentle yet clear. Your identity grows when you take intuition seriously while staying grounded.",
+        },
+      };
+
+      const WESTERN_CARD_MOON_BY_SIGN = {
+        Aries: {
+          nl: "Je Maan reageert snel en eerlijk: je hebt ruimte nodig om emotie uit je lijf te laten—beweging, actie, directheid. Je innerlijke rust komt als je frustratie mag benoemen voordat het in spanning blijft hangen.",
+          en: "Your Moon reacts fast and straight: you need room to move emotion through your body—motion, action, directness. Inner calm returns when you can name frustration before it stays wired tight.",
+        },
+        Taurus: {
+          nl: "Je Maan zoekt rust via het zintuiglijke: warmte, smaak, aanraking, voorspelbaarheid. Je verwerkt gevoelens langzaam maar diep; plotseling geduw maakt je onveilig, terwijl trouw ritme je weer verzamelt.",
+          en: "Your Moon seeks calm through the senses: warmth, taste, touch, predictability. You process feelings slowly but deeply; sudden pushing feels unsafe, while steady rhythm gathers you again.",
+        },
+        Gemini: {
+          nl: "Je Maan denkt gevoelens vaak hardop: praten, schrijven of nieuwsgiet helpt je ordenen. Je hebt afwisseling nodig; als alles vastzit, wordt je onrustig—niet omdat je oppervlakkig bent, maar omdat je brein wil verbinden.",
+          en: "Your Moon often thinks feelings out loud: talking, writing, or fresh input helps you sort them. You need variety; when everything locks, you get restless—not because you’re shallow, but because your mind wants to connect.",
+        },
+        Cancer: {
+          nl: "Je Maan vraagt veiligheid om te voelen: thuis—letterlijk of figuurlijk—is je laadpaal. Je neemt stemmingen van anderen snel mee; grenzen en ‘mag ik dit voelen?’ zijn geen luxe maar onderhoud.",
+          en: "Your Moon needs safety to feel: home—literal or figurative—is your charger. You pick up others’ moods quickly; boundaries and “is this mine?” aren’t luxury—they’re maintenance.",
+        },
+        Leo: {
+          nl: "Je Maan wil gezien worden in wat je voelt: erkenning en warmte zijn voeding, koude of negeren raakt diep. Je verwerkt door creatie, spel of iemand te tonen wat je echt raakt—niet dramatisch, wel menselijk.",
+          en: "Your Moon wants feeling to be seen: warmth and recognition feed you; coldness or ignoring cuts deep. You process through creativity, play, or showing someone what truly touches you—human, not dramatic.",
+        },
+        Virgo: {
+          nl: "Je Maan zoekt grip via zorg en detail: opruimen, lijstjes, iets concreets verbeteren kalmeert je zenuwstelsel. Je bent gevoelig voor schuldgevoel; zelfcompassie is voor jou geen slogan maar een vaardigheid om te oefenen.",
+          en: "Your Moon seeks grip through care and detail: tidying, lists, fixing something concrete calms your nervous system. You’re sensitive to guilt; self-compassion isn’t a slogan for you—it’s a skill to practice.",
+        },
+        Libra: {
+          nl: "Je Maan zoekt harmonie, maar soms ten koste van je eigen stem: je voelt spanning in relaties fysiek. Je hebt tijd nodig om eerlijk te kiezen—niet ‘het middel’, maar wat jij werkelijk wilt.",
+          en: "Your Moon wants harmony, sometimes at the cost of your own voice: you feel relationship tension in your body. You need time to choose honestly—not the middle, but what you truly want.",
+        },
+        Scorpio: {
+          nl: "Je Maan gaat naar de bodem: je vertrouwt pas als er ruimte is voor taboe, schaduw en loyaliteit. Je verwerkt in golven—intens loslaten of juist vasthouden—tot er échte woorden zijn voor wat er speelt.",
+          en: "Your Moon goes to the floor: you trust when there’s room for taboo, shadow, and loyalty. You process in waves—intense release or holding—until real words exist for what’s happening.",
+        },
+        Sagittarius: {
+          nl: "Je Maan heeft lucht nodig: humor, betekenis, ruimte om niet alles te hoeven uitleggen. Je wordt somber van starre regels; hoop en perspectief—ook klein—helpen je gevoel weer verplaatsen.",
+          en: "Your Moon needs air: humor, meaning, space where you don’t have to explain everything. Rigid rules dim you; hope and perspective—even small—help your feelings move again.",
+        },
+        Capricorn: {
+          nl: "Je Maan houdt gevoel strak tot het veilig voelt: je verwerkt door structuur, tijd en verantwoordelijkheid nemen. Dat kan stoer lijken van buiten; van binnen vraag je vooral of je genoeg mag rusten zonder alles te verliezen.",
+          en: "Your Moon holds feeling tight until it feels safe: you process through structure, time, and taking responsibility. It can look stoic outside; inside you’re often asking if you’re allowed to rest without losing everything.",
+        },
+        Aquarius: {
+          nl: "Je Maan wil vrijheid én erbij horen: afstand helpt je ordenen, maar te lang alleen voelt koud. Je verwerkt door praten over principes, vriendschap en ‘waarom doen we dit zo?’—emotioneel én rationeel.",
+          en: "Your Moon wants freedom and belonging: distance helps you sort things, but too long alone feels cold. You process through principles, friendship, and “why do we do it this way?”—emotional and rational.",
+        },
+        Pisces: {
+          nl: "Je Maan absorbeert de sfeer: muziek, stilte, water of stille empathie zijn filters die je nodig hebt. Grenzen zijn geen straf maar bescherming; anders draag je de wereld mee naar bed.",
+          en: "Your Moon absorbs atmosphere: music, silence, water, or quiet empathy are filters you need. Boundaries aren’t punishment but protection; otherwise you carry the world to bed with you.",
+        },
+      };
+
+      const WESTERN_CARD_ASC_BY_SIGN = {
+        Aries: {
+          nl: "Je Ascendant is direct en energiek: mensen merken eerst moed, tempo of een lichte strijdvaardigheid—niet per se agressie, wel ‘hier ben ik’.",
+          en: "Your Ascendant reads direct and energetic: people first notice courage, pace, or a hint of readiness—not necessarily aggression, but “here I am.”",
+        },
+        Taurus: {
+          nl: "Je Ascendant oogt kalm en zintuiglijk: je maakt een indruk van stabiliteit, smaak of ‘ik neem de tijd’—vertrouwen groeit als je consistent bent.",
+          en: "Your Ascendant reads calm and sensual: you land as stable, tasteful, or “I take time”—trust grows when you’re consistent.",
+        },
+        Gemini: {
+          nl: "Je Ascendant is beweeglijk en nieuwsgierig: je komt binnen met woorden, vragen of lichtheid—mensen lezen snelheid van denken en openheid.",
+          en: "Your Ascendant reads mobile and curious: you enter with words, questions, or lightness—people read quick mind and openness.",
+        },
+        Cancer: {
+          nl: "Je Ascendant is zacht en beschermend: de eerste indruk is vaak warmte, zorg of voorzichtigheid—je voelt de kamer snel en stelt je veiligheid voorop.",
+          en: "Your Ascendant reads soft and protective: first impressions are warmth, care, or caution—you feel the room fast and put safety first.",
+        },
+        Leo: {
+          nl: "Je Ascendant straalt: je wordt snel ‘gezien’—met hart, stijl of speelsheid. Dat trekt aandacht; jouw groei is om warmte te delen zonder constant bewijs te hoeven leveren.",
+          en: "Your Ascendant radiates: you’re quickly “seen”—with heart, style, or playfulness. That draws attention; growth is sharing warmth without constantly proving it.",
+        },
+        Virgo: {
+          nl: "Je Ascendant is ingetogen en scherp: mensen lezen zorg, precisie of bescheidenheid—soms verkeerd als afstand, terwijl je vooral wilt kloppen wat je doet.",
+          en: "Your Ascendant reads contained and sharp: people see care, precision, or modesty—sometimes misread as distance when you mainly want what you do to be right.",
+        },
+        Libra: {
+          nl: "Je Ascendant is charmant en afstemmend: je zoekt schoonheid, eerlijkheid en balans in de eerste minuut—conflict voelt snel lichamelijk.",
+          en: "Your Ascendant reads charming and tuning: you seek beauty, fairness, and balance in the first minutes—conflict lands in your body fast.",
+        },
+        Scorpio: {
+          nl: "Je Ascendant is intens en waakzaam: mensen voelen diepgang, magnetisme of reserve—vertrouwen win je door consequent te zijn, niet door harder te glimlachen.",
+          en: "Your Ascendant reads intense and watchful: people feel depth, magnetism, or reserve—you earn trust through consistency, not bigger smiles.",
+        },
+        Sagittarius: {
+          nl: "Je Ascendant is open en zoekend: je komt binnen met optimisme, humor of ‘wat als’—je eerste beweging is vaak ruimte maken voor mogelijkheden.",
+          en: "Your Ascendant reads open and seeking: you enter with optimism, humor, or “what if”—your first move often makes room for possibilities.",
+        },
+        Capricorn: {
+          nl: "Je Ascendant is ingetogen en serieuze indruk: mensen lezen discipline, verantwoordelijkheid of reserve—onder water kan er veel gevoel zijn dat je eerst ordent.",
+          en: "Your Ascendant reads understated and serious: people see discipline, responsibility, or reserve—there can be a lot of feeling underneath that you sort first.",
+        },
+        Aquarius: {
+          nl: "Je Ascendant is eigenzinnig en helder: je valt op door origineel gedrag, principes of lichte distantie—niet koud, wel eigen koers.",
+          en: "Your Ascendant reads individual and clear: you stand out through originality, principles, or light distance—not cold, just your own course.",
+        },
+        Pisces: {
+          nl: "Je Ascendant is zacht en meevoelend: mensen lezen openheid, dromerigheid of grensvervaging—jouw taak is om zachtheid te koppelen aan duidelijke grenzen.",
+          en: "Your Ascendant reads soft and empathic: people see openness, dreaminess, or porous boundaries—your work is pairing softness with clear edges.",
+        },
+      };
+
       const VAARA_LABELS = {
         Sunday: { nl: "Zondag", en: "Sunday" },
         Monday: { nl: "Maandag", en: "Monday" },
@@ -3634,6 +3832,19 @@
           : `This ${lab} links two bodies; the technical aspects table shows exact degrees and phase.`;
       }
 
+      /** Last column of Western planet table: theme + sign flavor (NL/EN). */
+      function westernPlanetPersonalCell(key, v, isNL, planetThemes, signThemes, placeholderFor, safeText) {
+        const pt = planetThemes[key];
+        const st = v && v.sign ? signThemes[v.sign] : "";
+        if (!pt) return placeholderFor(isNL ? "kernbetekenis" : "core meaning");
+        if (isNL) {
+          const tone = st ? st.replace("stijl", "toon") : "een eigen toon";
+          return `${safeText(pt, "Thema")} krijgt ${tone}.`;
+        }
+        const stCore = st ? String(st).replace(/\s+style\s*$/i, "").trim() : "";
+        return `${safeText(pt, "Theme")} reads in a ${stCore ? `${stCore} way` : "distinct way"} in this chart.`;
+      }
+
       function localizeVaara(value) {
         const v = String(value || "");
         const m = VAARA_LABELS[v];
@@ -3691,6 +3902,10 @@
         pushPlanetIcon(a.b);
         li.appendChild(iconRow);
         li.appendChild(createEl("p", "western-aspect-theme-card__aspect-note", noteText));
+        const tip = isNL
+          ? "Tip: let de komende week op waar dit harder of zachter voelt — dat is je levende test van dit aspect."
+          : "Tip: notice where this feels louder or softer this week—that is your lived test of this aspect.";
+        li.appendChild(createEl("p", "western-aspect-theme-card__aspect-tip", tip));
         ul.appendChild(li);
       }
 
@@ -4146,6 +4361,70 @@
         return card;
       }
 
+      /** Reads structured personal-reading bundle from last /api/report-bundle or /api/interpretations. */
+      function getMethodExplanationBundleFromCache(bundleKey) {
+        const me = lastInterpretations && lastInterpretations.method_explanations;
+        if (!me || typeof me !== "object") return null;
+        const b = me[bundleKey];
+        return b && typeof b === "object" ? b : null;
+      }
+
+      /**
+       * Appends overview + blocks (headline + personal_layer) + optional reflection lines + closing.
+       * Safe when bundle missing (no-op).
+       */
+      function appendMethodPersonalReadingSection(parentEl, bundleKey) {
+        if (!parentEl) return;
+        const isNL = uiIsNL();
+        const bundle = getMethodExplanationBundleFromCache(bundleKey);
+        if (!bundle) return;
+        const overview = String(bundle.overview || "").trim();
+        const section = createLayoutSection(
+          isNL ? "Persoonlijke lezing" : "Personal reading",
+          overview || (isNL ? "Korte persoonlijke duiding bij deze methode." : "Short personal guidance for this method.")
+        );
+        section.classList.add("method-personal-reading");
+        const blocks = Array.isArray(bundle.blocks) ? bundle.blocks : [];
+        if (blocks.length) {
+          const grid = createEl("div", "explain-grid");
+          blocks.forEach((raw, idx) => {
+            const b = raw && typeof raw === "object" ? raw : {};
+            const title = String(b.title || (isNL ? "Onderdeel" : "Part"));
+            const headline = String(b.headline || "").trim();
+            const personal = String(b.personal_layer || "").trim();
+            const sub = isNL ? "Wat de berekening zegt" : "What the calculation shows";
+            const parts = [];
+            if (headline) parts.push(headline);
+            if (personal) {
+              if (parts.length) parts.push("");
+              parts.push(`${isNL ? "Persoonlijk" : "Personally"}: ${personal}`);
+            }
+            const rq = Array.isArray(b.reflection_questions) ? b.reflection_questions : [];
+            if (rq.length) {
+              if (parts.length) parts.push("");
+              parts.push(isNL ? "Vragen om bij stil te staan:" : "Questions to sit with:");
+              rq.forEach((q) => {
+                const line = String(q || "").trim();
+                if (line) parts.push(`- ${line}`);
+              });
+            }
+            const body = parts.join("\n") || (isNL ? "Geen tekst voor dit blok." : "No copy for this block.");
+            const card = createAstroCard(title, sub, body, {
+              eyebrow: isNL ? "Lezing" : "Reading",
+              badge: String(idx + 1),
+            });
+            grid.appendChild(card);
+          });
+          section.appendChild(grid);
+        }
+        const closing = String(bundle.closing_note || "").trim();
+        if (closing) {
+          const p = createEl("p", "method-personal-reading__closing", closing);
+          section.appendChild(p);
+        }
+        parentEl.appendChild(section);
+      }
+
       function renderWesternFormulaSections() {
         const isNL = uiIsNL();
         const frag = document.createDocumentFragment();
@@ -4294,7 +4573,12 @@
           if (!houseMap[h]) houseMap[h] = [];
           houseMap[h].push(planet);
         });
-        const aspectTypeKind = (t) => (["trine", "sextile", "conjunction"].includes(t) ? "harmonie" : ["square", "opposition", "quincunx"].includes(t) ? "spanning" : "dynamiek");
+        const aspectTypeKind = (t) => {
+          const ty = String(t || "");
+          if (["trine", "sextile", "conjunction"].includes(ty)) return isNL ? "harmonie" : "harmony";
+          if (["square", "opposition", "quincunx"].includes(ty)) return isNL ? "spanning" : "tension";
+          return isNL ? "dynamiek" : "dynamic";
+        };
         const aspectsSorted = aspects.slice().sort((a, b) => Number(a.orb_deg || 99) - Number(b.orb_deg || 99));
         const dominantElements = () => {
           const src = (balance.elements && typeof balance.elements === "object") ? balance.elements : null;
@@ -4338,35 +4622,136 @@
         };
         const polarityScores = dominantPolarities();
         const topKey = (obj) => Object.entries(obj || {}).sort((a, b) => Number(b[1]) - Number(a[1]))[0];
+        const L = (o) => (o && (isNL ? o.nl : o.en)) || "";
+        const otherInAspect = (a, focal) => (a.a === focal ? a.b : a.a);
+        const formatAspectsForCard = (list, focal) => {
+          if (!list.length) return "";
+          const bits = list.map((a) => {
+            const other = otherInAspect(a, focal);
+            const key = normalizeAspectTypeKey(a.type);
+            const note = WESTERN_ASPECT_ROW_NOTES[key];
+            const tech = localizeAspectType(a.type);
+            const gloss = note ? L(note) : "";
+            if (isNL) {
+              return gloss
+                ? `${localizePlanet(other)} (${tech} — ${gloss})`
+                : `${localizePlanet(other)} (${tech})`;
+            }
+            return gloss
+              ? `${localizePlanet(other)} (${tech} — ${gloss})`
+              : `${localizePlanet(other)} (${tech})`;
+          });
+          return isNL ? ` Verbindingen: ${bits.join(" · ")}.` : ` Connections: ${bits.join(" · ")}.`;
+        };
         const introPieces = [];
-        if (sun.sign && sun.house != null) introPieces.push(isNL ? `Je Zon in ${localizeSign(sun.sign)} in ${houseLabel(sun.house)} kan wijzen op een kern die zich ontwikkelt via ${houseThemes[sun.house] || "zichtbare thema's"}.` : "");
-        if (moon.sign && moon.house != null) introPieces.push(isNL ? `Met je Maan in ${localizeSign(moon.sign)} in ${houseLabel(moon.house)} wordt zichtbaar hoe gevoel en herstel zich in jouw ritme organiseren.` : "");
-        if (ascSign) introPieces.push(isNL ? `Je Ascendant in ${localizeSign(ascSign)} kleurt hoe je het leven binnenstapt en hoe eerste indrukken ontstaan.` : "");
-        if (chartRulerName && chartRulerPlacement && chartRulerPlacement.sign) introPieces.push(isNL ? `Omdat ${chartRulerName} je chart ruler is en in ${localizeSign(chartRulerPlacement.sign)}${chartRulerPlacement.house != null ? ` (${houseLabel(chartRulerPlacement.house)})` : ""} staat, krijgt die laag extra richting.` : "");
+        if (sun.sign && moon.sign && ascSign) {
+          introPieces.push(
+            isNL
+              ? `Hier lees je drie ingangen die samen jouw basis schetsen: je Zon in ${localizeSign(sun.sign)} (wat je wilt uitgroeien), je Maan in ${localizeSign(moon.sign)} (hoe je innerlijk landt) en je Ascendant in ${localizeSign(ascSign)} (hoe mensen je vaak eerst ervaren).`
+              : `Three gates sketch your baseline here: your Sun in ${localizeSign(sun.sign)} (what you grow into), your Moon in ${localizeSign(moon.sign)} (how you land inwardly), and your Ascendant in ${localizeSign(ascSign)} (how people often meet you first).`
+          );
+        }
+        if (sun.sign && sun.house != null) {
+          introPieces.push(
+            isNL
+              ? `Je Zon staat in ${localizeSign(sun.sign)} in ${houseLabel(sun.house)}: dat is je morele kompas voor zelfrespect en richting, los van wat er die week speelt.`
+              : `Your Sun sits in ${localizeSign(sun.sign)} in ${houseLabel(sun.house)}: your compass for self-respect and direction, separate from the week’s weather.`
+          );
+        } else if (sun.sign) {
+          introPieces.push(
+            isNL
+              ? `Je Zon staat in ${localizeSign(sun.sign)}. Zonder betrouwbare huizen is het levensgebied minder scherp te benoemen, maar het tekenkleur blijft leidend.`
+              : `Your Sun is in ${localizeSign(sun.sign)}. Without reliable houses the life-area is fuzzier, but the sign tone still leads.`
+          );
+        }
+        if (moon.sign && moon.house != null) {
+          introPieces.push(
+            isNL
+              ? `Je Maan in ${localizeSign(moon.sign)} in ${houseLabel(moon.house)} laat zien waar je gevoel rust vindt, wat je snel raakt en hoe je jezelf weer oplaadt.`
+              : `Your Moon in ${localizeSign(moon.sign)} in ${houseLabel(moon.house)} shows where feeling rests, what lands fast, and how you refill.`
+          );
+        } else if (moon.sign) {
+          introPieces.push(
+            isNL
+              ? `Je Maan staat in ${localizeSign(moon.sign)}; het huis vult pas detail aan als de geboortetijd klopt.`
+              : `Your Moon is in ${localizeSign(moon.sign)}; the house adds detail when birth time is solid.`
+          );
+        }
+        if (ascSign) {
+          introPieces.push(
+            isNL
+              ? `Je Ascendant in ${localizeSign(ascSign)} is geen ‘masker’, maar je eerste reflex in nieuwe ruimtes — vaak voordat je het zelf in woorden hebt.`
+              : `Your Ascendant in ${localizeSign(ascSign)} isn’t a “mask,” but your first reflex in new space—often before you’ve named it.`
+          );
+        }
+        const sunEl = sun.sign ? signElementByName[sun.sign] : null;
+        const moonEl = moon.sign ? signElementByName[moon.sign] : null;
+        if (sunEl && moonEl && sunEl !== moonEl) {
+          const elNl = (e) => ({ fire: "vuur", earth: "aarde", air: "lucht", water: "water" }[e] || e);
+          introPieces.push(
+            isNL
+              ? `Tussen ${elNl(sunEl)} (Zon) en ${elNl(moonEl)} (Maan) zit een natuurlijke spanning: je mag voelen dat ‘wil’ en ‘behoefte’ soms twee tempo’s hebben.`
+              : `Between ${sunEl} (Sun) and ${moonEl} (Moon) there’s natural tension: “want” and “need” can run at two speeds.`
+          );
+        }
+        if (chartRulerName && chartRulerPlacement && chartRulerPlacement.sign) {
+          const pt = planetThemes[chartRulerName] || (isNL ? "thema’s van deze planeet" : "this planet’s themes");
+          const hbit =
+            chartRulerPlacement.house != null
+              ? isNL
+                ? ` in ${houseLabel(chartRulerPlacement.house)}`
+                : ` in ${houseLabel(chartRulerPlacement.house)}`
+              : "";
+          introPieces.push(
+            isNL
+              ? `Je chart ruler is ${localizePlanet(chartRulerName)} (${pt}), geplaatst in ${localizeSign(chartRulerPlacement.sign)}${hbit}: dat geeft een doorlopende rode draad aan hoe je kansen pakt en weer verzamelt.`
+              : `Your chart ruler is ${localizePlanet(chartRulerName)} (${pt}), placed in ${localizeSign(chartRulerPlacement.sign)}${hbit}: a thread for how you seize chances and gather yourself again.`
+          );
+        }
         const topElement = topKey(elementScores);
         const topModality = topKey(modalityScores);
         const weakElement = Object.entries(elementScores).sort((a, b) => Number(a[1]) - Number(b[1]))[0];
         const weakModality = Object.entries(modalityScores).sort((a, b) => Number(a[1]) - Number(b[1]))[0];
         const elNameNl = (k) => ({ fire: "vuur", earth: "aarde", air: "lucht", water: "water" }[k] || k);
         const modNameNl = (k) => ({ cardinal: "kardinaal", fixed: "vast", mutable: "beweeglijk" }[k] || k);
+        const modExplainNl = (k) =>
+          ({
+            cardinal: "kardinaal — starten, sturen en kansen grijpen",
+            fixed: "vast — volhouden, verdiepen en kwaliteit vastzetten",
+            mutable: "beweeglijk — schakelen, bijsturen en meerdere opties openhouden",
+          }[k] || k);
         const sunAspects = aspectsSorted.filter((a) => a.a === "Sun" || a.b === "Sun").slice(0, 2);
         const moonAspects = aspectsSorted.filter((a) => a.a === "Moon" || a.b === "Moon").slice(0, 2);
         if (topElement) {
           const elW = isNL ? elNameNl(topElement[0]) : topElement[0];
           const modW = topModality
-            ? (isNL ? modNameNl(topModality[0]) : topModality[0])
-            : (isNL ? "de modaliteiten" : "modalities");
+            ? (isNL ? modExplainNl(topModality[0]) : topModality[0])
+            : (isNL ? "de drie modaliteiten" : "the three modalities");
           introPieces.push(
             isNL
-              ? `Qua temperament ligt er een nadruk op ${elW}, terwijl ${modW} laat zien hoe dit in beweging komt.`
-              : `Temperament-wise there is emphasis on ${topElement[0]}, while ${topModality ? topModality[0] : "modalities"} show how that comes into motion.`
+              ? `In je kaartweegschaal valt ${elW} op als temperament; ${modW} zegt iets over hoe je van plan naar daad gaat — niet goed of fout, wel herkenningspunten.`
+              : `${elW} stands out in your chart mix; ${modW} hints how you move from idea to action—neither good nor bad, just fingerprints.`
           );
         }
         const tightAspect = aspectsSorted.find((a) => a.orb_deg != null);
-        if (tightAspect) introPieces.push(isNL ? `Een opvallende dynamiek is ${localizePlanet(tightAspect.a)} ${localizeAspectType(tightAspect.type)} ${localizePlanet(tightAspect.b)} (orb ${formatDeg(tightAspect.orb_deg)}), wat mogelijk herkenbaar wordt in dagelijkse keuzes.` : "");
+        if (tightAspect) {
+          const key = normalizeAspectTypeKey(tightAspect.type);
+          const gloss = WESTERN_ASPECT_ROW_NOTES[key] ? L(WESTERN_ASPECT_ROW_NOTES[key]) : "";
+          introPieces.push(
+            isNL
+              ? `Een heel strak aspect is ${localizePlanet(tightAspect.a)} ${localizeAspectType(tightAspect.type)} ${localizePlanet(tightAspect.b)} (afwijking ${formatDeg(tightAspect.orb_deg, "orb")}): ${gloss || "twee thema’s die in je leven vaak tegelijk aangaan."}`
+              : `A very tight pattern is ${localizePlanet(tightAspect.a)} ${localizeAspectType(tightAspect.type)} ${localizePlanet(tightAspect.b)} (orb ${formatDeg(tightAspect.orb_deg, "orb")}): ${gloss || "two themes that tend to switch on together."}`
+          );
+        }
         if (Object.keys(houseMap).some((h) => (houseMap[h] || []).length >= 2)) {
           const cluster = Object.entries(houseMap).sort((a, b) => b[1].length - a[1].length)[0];
-          if (cluster) introPieces.push(isNL ? `Daarnaast ligt er een huizencluster in huis ${cluster[0]} met ${cluster[1].map((pName) => localizePlanet(pName)).join(", ")}, wat dit levensgebied extra op de voorgrond zet.` : "");
+          if (cluster) {
+            introPieces.push(
+              isNL
+                ? `Meerdere planeten in ${houseLabel(Number(cluster[0]))} zetten dat levensgebied extra op scherp: ${cluster[1].map((pName) => localizePlanet(pName)).join(", ")} wisselen daar energie uit.`
+                : `Several planets in ${houseLabel(Number(cluster[0]))} sharpen that life area: ${cluster[1].map((pName) => localizePlanet(pName)).join(", ")} trade energy there.`
+            );
+          }
         }
         const topSection = createLayoutSection(
           isNL ? "Westerse horoscoop" : "Western horoscope",
@@ -4375,22 +4760,89 @@
         const methodEyebrow = createEl("div", "astro-eyebrow", isNL ? "Methode 1" : "Method 1");
         topSection.insertBefore(methodEyebrow, topSection.firstChild);
         const topLayersGrid = createEl("div", "explain-grid");
+        const sunCardBody = sun.sign
+          ? (() => {
+              const row = WESTERN_CARD_SUN_BY_SIGN[sun.sign];
+              const core = row
+                ? L(row)
+                : (isNL
+                    ? `Je Zon klinkt door in een ${signThemes[sun.sign] || "eigen stijl"}.`
+                    : `Your Sun comes through in a ${signThemes[sun.sign] || "distinct style"}.`);
+              const houseBit =
+                sun.house != null
+                  ? isNL
+                    ? ` In ${houseLabel(sun.house)} speelt dit vooral rond ${houseThemes[sun.house] || "herkenbare thema’s in je agenda"}: daar zoek je bevestiging, groei of spanning die je richting geeft.`
+                    : ` In ${houseLabel(sun.house)} it shows especially around ${houseThemes[sun.house] || "recurring themes in your days"}—where you seek growth, friction, or confirmation.`
+                  : isNL
+                    ? " Zonder huizen is lastiger te zeggen in welk levensdomein dit het hardst klinkt; het teken blijft wel je leidraad."
+                    : " Without houses it’s harder to name which life domain carries it loudest; the sign still leads.";
+              return `${core}${houseBit}${formatAspectsForCard(sunAspects, "Sun")}`;
+            })()
+          : (isNL ? "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat niet alle Zonwaarden beschikbaar zijn." : "This section can’t be shown reliably yet because Sun values are missing.");
+        const moonCardBody = moon.sign
+          ? (() => {
+              const row = WESTERN_CARD_MOON_BY_SIGN[moon.sign];
+              const core = row
+                ? L(row)
+                : (isNL
+                    ? `Je Maan beweegt in een ${signThemes[moon.sign] || "eigen ritme"}.`
+                    : `Your Moon moves in a ${signThemes[moon.sign] || "distinct rhythm"}.`);
+              const houseBit =
+                moon.house != null
+                  ? isNL
+                    ? ` In ${houseLabel(moon.house)} komt dat gevoel het meest terug in ${houseThemes[moon.house] || "concrete situaties"}: daar laad je op of raak je sneller leeg.`
+                    : ` In ${houseLabel(moon.house)} that feeling returns most around ${houseThemes[moon.house] || "concrete situations"}—where you refill or drain faster.`
+                  : isNL
+                    ? " Zonder huizen blijft het emotionele ‘waar’ vaag; het teken van je Maan vertelt nog steeds veel over je onderstroom."
+                    : " Without houses the emotional “where” stays fuzzy; your Moon sign still says a lot about the undercurrent.";
+              return `${core}${houseBit}${formatAspectsForCard(moonAspects, "Moon")}`;
+            })()
+          : (isNL ? "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat niet alle Maanwaarden beschikbaar zijn." : "This section can’t be shown reliably yet because Moon values are missing.");
+        const ascModality = ascSign ? signModalityByName[ascSign] : null;
+        const ascModBit =
+          ascModality === "cardinal"
+            ? isNL
+              ? " Typische eerste stap: schakelen, richting geven of meteen inzetten als er ruimte is."
+              : " Typical first move: orient, steer, or engage when space opens."
+            : ascModality === "fixed"
+              ? isNL
+                ? " Typische eerste stap: vastzetten wat werkt en pas losser worden als het veilig voelt."
+                : " Typical first move: set what works; soften only when it feels safe."
+              : ascModality === "mutable"
+                ? isNL
+                  ? " Typische eerste stap: meelezen, bijsturen en opties openhouden voordat je kiest."
+                  : " Typical first move: scan, adjust, keep options open before you commit."
+                : "";
+        const crTheme = chartRulerName ? planetThemes[chartRulerName] : "";
+        const ascRulerBit =
+          chartRulerName && chartRulerPlacement && chartRulerPlacement.sign
+            ? isNL
+              ? ` Je chart ruler ${localizePlanet(chartRulerName)} staat in ${localizeSign(chartRulerPlacement.sign)}${chartRulerPlacement.house != null ? ` (${houseLabel(chartRulerPlacement.house)})` : ""} en hangt samen met ${crTheme || "jouw persoonlijke stuurthema’s"}—dat kleurt je eerste indruk in momenten van keuze.`
+              : ` Your chart ruler ${localizePlanet(chartRulerName)} sits in ${localizeSign(chartRulerPlacement.sign)}${chartRulerPlacement.house != null ? ` (${houseLabel(chartRulerPlacement.house)})` : ""}, tied to ${crTheme || "your steering themes"}, tinting first impressions when choices matter.`
+            : chartRulerName
+              ? isNL
+                ? ` Je chart ruler ${localizePlanet(chartRulerName)} (${crTheme || "persoonlijke sturing"}) geeft extra toon aan hoe je naar buiten treedt.`
+                : ` Your chart ruler ${localizePlanet(chartRulerName)} (${crTheme || "personal steering"}) adds tone to how you step out.`
+              : "";
+        const ascCardBody = ascSign
+          ? `${L(WESTERN_CARD_ASC_BY_SIGN[ascSign]) || (isNL ? `Je Ascendant gebruikt een ${signThemes[ascSign] || "eigen toon"}.` : `Your Ascendant uses a ${signThemes[ascSign] || "distinct tone"}.`)}${ascModBit}${ascRulerBit}`
+          : (isNL ? "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat hiervoor een geboortetijd nodig is." : "This section needs birth time to compute the Ascendant.");
         topLayersGrid.appendChild(createAstroCard(
           sun.sign ? `${localizeSignShort(sun.sign)} ${isNL ? "in" : "in"} ${houseLabel(sun.house)}` : (isNL ? "Zonpositie ontbreekt" : "Sun placement unavailable"),
           isNL ? "Levensrichting" : "Direction",
-          sun.sign ? `Je kernenergie zoekt groei, waarheid en verruiming. In ${houseLabel(sun.house)} wordt dit zichtbaar via ${houseThemes[sun.house] || "zichtbare thema's"}.${sunAspects.length ? ` Opvallend: ${sunAspects.map((a) => `${localizeAspectType(a.type)} met ${localizePlanet(a.a === "Sun" ? a.b : a.a)}`).join("; ")}.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat niet alle Zonwaarden beschikbaar zijn.",
+          sunCardBody,
           { iconId: "sun", subtitleIconId: signGlyph(sun.sign), accentColor: planetAccent.Sun || "#884dc9", eyebrow: astroCardIconEyebrow("sun", isNL), badge: isNL ? "Kern" : "Core" }
         ));
         topLayersGrid.appendChild(createAstroCard(
           moon.sign ? `${localizeSignShort(moon.sign)} ${isNL ? "in" : "in"} ${houseLabel(moon.house)}` : (isNL ? "Maanpositie ontbreekt" : "Moon placement unavailable"),
           isNL ? "Innerlijke ruimte" : "Inner space",
-          moon.sign ? `Je gevoelswereld vraagt vrijheid en afstand om te verwerken. In ${houseLabel(moon.house)} wordt dit zichtbaar in ${houseThemes[moon.house] || "innerlijke lagen"}.${moonAspects.length ? ` Dynamiek: ${moonAspects.map((a) => `${localizeAspectType(a.type)} met ${localizePlanet(a.a === "Moon" ? a.b : a.a)}`).join("; ")}.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat niet alle Maanwaarden beschikbaar zijn.",
+          moonCardBody,
           { iconId: "moon", subtitleIconId: signGlyph(moon.sign), accentColor: planetAccent.Moon || "#884dc9", eyebrow: astroCardIconEyebrow("moon", isNL), badge: isNL ? "Kern" : "Core" }
         ));
         topLayersGrid.appendChild(createAstroCard(
           ascSign ? `${localizeSignShort(ascSign)} ${isNL ? "op de Ascendant" : "on the Ascendant"}` : (isNL ? "Ascendant ontbreekt" : "Ascendant unavailable"),
           isNL ? "Eerste beweging" : "First movement",
-          ascSign ? `Je stapt het leven direct en instinctief binnen. De eerste impuls is vaak actie, daarna verfijning en richting.${chartRulerName ? ` De chart ruler ${localizePlanet(chartRulerName)} geeft extra sturing.` : ""}` : "Dit onderdeel kan nog niet betrouwbaar worden getoond, omdat hiervoor een geboortetijd nodig is.",
+          ascCardBody,
           { iconId: "ascendant", subtitleIconId: signGlyph(ascSign), accentColor: planetAccent.Ascendant || "#884dc9", eyebrow: astroCardIconEyebrow("ascendant", isNL), badge: isNL ? "Kern" : "Core" }
         ));
         topSection.appendChild(topLayersGrid);
@@ -4773,8 +5225,8 @@
         const energySection = createLayoutSection(
           isNL ? "Energetische verdeling" : "Energetic distribution",
           isNL
-            ? "Drie korte profielen: hoe je energie zich over elementen verdeelt, welk bewegingsritme (modaliteit) overheerst, en of de chart meer actieve (yang) of ontvankelijke (yin) signatuur toont."
-            : "Three quick profiles: how energy spreads across elements, which movement style (modality) dominates, and whether the chart leans more active (yang) or receptive (yin)."
+            ? "Drie korte profielen: hoe je energie zich over elementen verdeelt, welk bewegingsritme (modaliteit) overheerst, en of de chart meer actieve (yang) of ontvankelijke (yin) signatuur toont. Dit is geen oordeel over wie je bent, maar een kompas om patronen te herkennen."
+            : "Three quick profiles: how energy spreads across elements, which movement style (modality) dominates, and whether the chart leans more active (yang) or receptive (yin). This is not a verdict on who you are—a compass to notice patterns."
         );
         const energyGrid = createEl("div", "explain-grid");
         const toPercentMap = (obj) => {
@@ -4837,38 +5289,94 @@
           if (summaryText) card.appendChild(createEl("p", "explain-card__summary-line", summaryText));
           return card;
         };
+        const elementVoiceNl = {
+          fire: "In je dagelijks leven merk je dit vaak als pit: dingen willen starten, ongeduld als het stilstaat, en herstel door beweging, humor of eerlijke confrontatie.",
+          earth: "Praktisch word je hier warm van: tastbare resultaten, afspraken die kloppen, lichaamssignalen en 'het gewoon goed doen' zonder drama.",
+          air: "Je hoofd en je netwerk spelen mee: ideeën, gesprekken en vergelijken — soms krijg je rust pas als je iets hardop hebt geordend.",
+          water: "Gevoel en sfeer zijn je kompas: onderstroom, empathie en veiligheid; je raakt snel leeg als er geen ruimte is om te voelen wat er is.",
+        };
+        const elementVoiceEn = {
+          fire: "In daily life this often reads as spark: wanting motion, impatience when it stalls, and recovery through movement, humor, or honest friction.",
+          earth: "You warm to the tangible: solid results, agreements that hold, body signals, and doing it well without extra drama.",
+          air: "Mind and network join in: ideas, conversation, comparison—calm sometimes arrives only after you’ve sorted it out loud.",
+          water: "Feeling and atmosphere steer you: empathy and safety; you drain fast when there’s no room to feel what’s real.",
+        };
+        const elementGapNl = {
+          fire: "Waar vuur licht is, mis je soms pit of moed om te kiezen; kleine stappen geven al lucht.",
+          earth: "Weinig aarde kan betekenen dat gronding lastig is: structuur, slaap en eenvoudige routines zijn dan je medicijn.",
+          air: "Weinig lucht wil niet zeggen dat je niet nadenkt; soms mis je juist woorden, perspectief of iemand die meedenkt.",
+          water: "Weinig water kan voelen als 'te droog' voor gevoel: film, muziek of een veilige ventielpersoon helpt weer bij te tanken.",
+        };
+        const elementGapEn = {
+          fire: "Light fire can mean less spark to choose; tiny actions still reopen air.",
+          earth: "Light earth can make grounding harder—structure, sleep, and simple routines become medicine.",
+          air: "Light air doesn’t mean you don’t think; you may miss words, perspective, or a thinking partner.",
+          water: "Light water can feel dry for feeling—music, film, or a safe vent helps you refill.",
+        };
+        const modalityVoiceNl = {
+          cardinal: "Je komt vaak in beweging via keuzes en starts: nieuwe fases, duidelijke knopen, soms 'te vroeg' schakelen omdat stilstand onrust geeft.",
+          fixed: "Je houdt vol wat eenmaal klopt: volharding en diepgang; wrijving ontstaat als iemand je ritme of grenzen te bruusk wil veranderen.",
+          mutable: "Je past en herschikt: meerdere sporen tegelijk; spanning als alles tegelijk moet of als er geen richting meer is.",
+        };
+        const modalityVoiceEn = {
+          cardinal: "You move through choices and starts: new phases, clear pivots, sometimes switching early because stillness feels restless.",
+          fixed: "You hold what works: depth and loyalty; friction when someone pushes your rhythm or edges too hard.",
+          mutable: "You adapt and retune: several tracks at once; tension when everything must happen at once or direction disappears.",
+        };
+        const modalityGapNl = {
+          cardinal: "Weinig kardinaal kan voelen alsof 'starten' niet vanzelf komt; dan helpt bewust één kleine eerste zet.",
+          fixed: "Weinig vast kan betekenen dat je sneller loslaat of wisselt; check of je daardoor geen bodem mist.",
+          mutable: "Weinig beweeglijk kan stijfheid geven; oefen met één flexibele tussenstap in plaats van alles wit of zwart te zien.",
+        };
+        const modalityGapEn = {
+          cardinal: "Low cardinal can make ‘starting’ less automatic; one small deliberate first step still helps.",
+          fixed: "Low fixed can mean quicker release or switching; notice if you miss a floor under your feet.",
+          mutable: "Low mutable can feel rigid; practice one flexible middle step instead of all-or-nothing.",
+        };
         const elementSummaryText = (() => {
           if (!topElement || !weakElement) return isNL ? "Nog onvoldoende data om een persoonlijke element-samenvatting te geven." : "Not enough data yet for a personal element summary.";
           const t = topElement[0];
           const w = weakElement[0];
-          if (isNL) {
-            return `Voor deze chart: ${barRowLabel("elements", t)} weegt het zwaarst (${elementPct[t]}% van de planeten); ${barRowLabel("elements", w)} is het minst vertegenwoordigd (${elementPct[w]}%). Dat kleurt je profiel met meer ${elNameNl(t)}-thema’s en minder nadruk op ${elNameNl(w)}.`;
-          }
-          return `For this chart: ${barRowLabel("elements", t)} carries the most weight (${elementPct[t]}% of placements); ${barRowLabel("elements", w)} is lightest (${elementPct[w]}%). That tilts the profile toward ${t} themes with less emphasis on ${w}.`;
+          const base = isNL
+            ? `Voor deze chart: ${barRowLabel("elements", t)} weegt het zwaarst (${elementPct[t]}% van de planeten); ${barRowLabel("elements", w)} is het minst vertegenwoordigd (${elementPct[w]}%). Dat kleurt je profiel met meer ${elNameNl(t)}-thema’s en minder nadruk op ${elNameNl(w)}.`
+            : `For this chart: ${barRowLabel("elements", t)} carries the most weight (${elementPct[t]}% of placements); ${barRowLabel("elements", w)} is lightest (${elementPct[w]}%). That tilts the profile toward ${t} themes with less emphasis on ${w}.`;
+          const v = isNL ? (elementVoiceNl[t] || "") : (elementVoiceEn[t] || "");
+          const g = isNL ? (elementGapNl[w] || "") : (elementGapEn[w] || "");
+          return [base, v, g].filter(Boolean).join("\n\n");
         })();
         const modalitySummaryText = (() => {
           if (!topModality || !weakModality) return isNL ? "Nog onvoldoende data om een persoonlijke modaliteit-samenvatting te geven." : "Not enough data yet for a personal modality summary.";
           const t = topModality[0];
           const w = weakModality[0];
-          if (isNL) {
-            return `Voor deze chart: ${barRowLabel("modalities", t)} domineert (${modalityPct[t]}%); ${barRowLabel("modalities", w)} is relatief het minst (${modalityPct[w]}%). Zo krijgt je chart vooral een ${modNameNl(t)} ritme, met minder ${modNameNl(w)}-accent.`;
-          }
-          return `For this chart: ${barRowLabel("modalities", t)} leads (${modalityPct[t]}%); ${barRowLabel("modalities", w)} is relatively light (${modalityPct[w]}%). The chart mainly moves in a ${t} style with less ${w} accent.`;
+          const base = isNL
+            ? `Voor deze chart: ${barRowLabel("modalities", t)} domineert (${modalityPct[t]}%); ${barRowLabel("modalities", w)} is relatief het minst (${modalityPct[w]}%). Zo krijgt je chart vooral een ${modNameNl(t)} ritme, met minder ${modNameNl(w)}-accent.`
+            : `For this chart: ${barRowLabel("modalities", t)} leads (${modalityPct[t]}%); ${barRowLabel("modalities", w)} is relatively light (${modalityPct[w]}%). The chart mainly moves in a ${t} style with less ${w} accent.`;
+          const v = isNL ? (modalityVoiceNl[t] || "") : (modalityVoiceEn[t] || "");
+          const g = isNL ? (modalityGapNl[w] || "") : (modalityGapEn[w] || "");
+          return [base, v, g].filter(Boolean).join("\n\n");
         })();
         const polaritySummaryText = (() => {
           const yc = Number(polarityScores.yin || 0);
           const yac = Number(polarityScores.yang || 0);
           if (!yc && !yac) return isNL ? "Geen polariteits-telling beschikbaar." : "No polarity counts available.";
-          if (isNL) {
-            const lean = yc >= yac
+          const lean = isNL
+            ? (yc >= yac
               ? "meer ontvankelijke (yin-)kwaliteit: thema’s zoeken vaak verankering via aarde en water."
-              : "meer activerende (yang-)kwaliteit: thema’s zoeken vaak uitdrukking via vuur en lucht.";
-            return `Voor deze chart: ${polarityPct.yin}% yin (${yc} punten) en ${polarityPct.yang}% yang (${yac} punten). Dat wijst op ${lean}`;
-          }
-          const lean = yc >= yac
-            ? "more receptive (yin) quality: themes often ground through earth and water."
-            : "more activating (yang) quality: themes often seek expression through fire and air.";
-          return `For this chart: ${polarityPct.yin}% yin (${yc} placements) and ${polarityPct.yang}% yang (${yac} placements). That suggests ${lean}`;
+              : "meer activerende (yang-)kwaliteit: thema’s zoeken vaak uitdrukking via vuur en lucht.")
+            : (yc >= yac
+              ? "more receptive (yin) quality: themes often ground through earth and water."
+              : "more activating (yang) quality: themes often seek expression through fire and air.");
+          const base = isNL
+            ? `Voor deze chart: ${polarityPct.yin}% yin (${yc} punten) en ${polarityPct.yang}% yang (${yac} punten). Dat wijst op ${lean}`
+            : `For this chart: ${polarityPct.yin}% yin (${yc} placements) and ${polarityPct.yang}% yang (${yac} placements). That suggests ${lean}`;
+          const foot = isNL
+            ? (yc >= yac
+              ? "Persoonlijk: je herkent dit in behoefte aan diepte, rust en vertrouwen — en soms in moeite om 'gewoon even te doen' zonder eerst te voelen."
+              : "Persoonlijk: je herkent dit in drang naar zichtbaarheid, actie en duidelijkheid — en soms in ongeduld als anderen eerst intern moeten landen.")
+            : (yc >= yac
+              ? "Personally: you may notice a pull toward depth, rest, and trust—and sometimes difficulty ‘just doing’ before you feel it."
+              : "Personally: you may notice a drive for visibility, action, and clarity—and sometimes impatience when others need to land inwardly first.");
+          return `${base}\n\n${foot}`;
         })();
         energyGrid.appendChild(
           makeBarsCard(
@@ -4905,11 +5413,66 @@
         energySection.appendChild(energyGrid);
         wrap.appendChild(energySection);
 
+        const buildWesternHouseFocusText = (h, planetsIn) => {
+          const hi = Number(h);
+          const area = houseThemes[hi] || (isNL ? "dit levensgebied" : "this life area");
+          if (!planetsIn.length) {
+            return isNL
+              ? `Het ${houseLabel(h)} speelt mee als anker in je chart; de nadruk zit vooral op ${area}, ook zonder planeten in dit vak.`
+              : `${houseLabel(h)} participates as an anchor; the emphasis stays on ${area}, even without planets in this sector.`;
+          }
+          const list = planetsIn.map((pn) => localizePlanet(pn)).join(", ");
+          const planetHints = planetsIn
+            .slice(0, 3)
+            .map((pn) => {
+              const pt = planetThemes[pn] || (isNL ? "eigen thema's van deze planeet" : "this body's own themes");
+              return isNL
+                ? `${localizePlanet(pn)} tilt ${pt} naar voren in ${houseLabel(h)}.`
+                : `${localizePlanet(pn)} brings ${pt} forward in ${houseLabel(h)}.`;
+            })
+            .join(" ");
+          const anchor =
+            sun.house === hi && sun.sign
+              ? (isNL
+                  ? `Je Zon staat hier: identiteit en zichtbare groei zoeken een podium rond ${area}.`
+                  : `Your Sun sits here: identity and visible growth seek a stage around ${area}.`)
+              : moon.house === hi && moon.sign
+                ? (isNL
+                    ? `Je Maan staat hier: gevoel en herstel lopen sterk via ${area}.`
+                    : `Your Moon sits here: feeling and recovery run strongly through ${area}.`)
+                : chartRulerPlacement && chartRulerPlacement.house === hi && chartRulerName
+                  ? (isNL
+                      ? `Je chart ruler ${localizePlanet(chartRulerName)} komt hier terug: dit huis kleurt hoe je stuurt in ${area}.`
+                      : `Your chart ruler ${localizePlanet(chartRulerName)} returns here: this house tints how you steer ${area}.`)
+                  : [1, 4, 7, 10].includes(hi)
+                    ? (isNL
+                        ? `Dit is een hoekhuis (${houseLabel(h)}): wat er speelt, voelt vaak zichtbaar of acuut in je leven.`
+                        : `This is an angular house (${houseLabel(h)}): what happens here often feels visible or acute in life.`)
+                    : planetsIn.length >= 2
+                      ? (isNL
+                          ? `Meerdere planeten bundelen een verhaal: ${list} wisselen hier invloed uit.`
+                          : `Several planets bundle a story: ${list} trade influence here.`)
+                      : "";
+          const tonePick = (hi * 17 + planetsIn.length * 5 + String(planetsIn[0] || "").length) % 3;
+          const closer = isNL
+            ? [
+                `Oefen om niet alleen het label (${area}) te lezen, maar te noteren wanneer dit sterker wordt bij stress of bij vreugde.`,
+                `Concreet: merk in je agenda of relaties waar ${area} de hoofdtoon voert; daar zit je persoonlijke ingang.`,
+                `Geen voorspelling: dit helpt herkennen waar je energie terechtkomt zodra ${list} samen een situatie kleurt.`,
+              ][tonePick]
+            : [
+                `Practice reading not only the label (${area}), but when it intensifies under stress or joy.`,
+                `Concretely: notice in your calendar or relationships where ${area} leads—that is your personal entry.`,
+                `Not a forecast: this helps you see where energy lands when ${list} color a situation together.`,
+              ][tonePick];
+          return [anchor, planetHints, closer].filter(Boolean).join(" ");
+        };
+
         const houseSection = createLayoutSection(
           isNL ? "Levensgebieden" : "Life areas",
           isNL
-            ? "Huizen waar deze chart extra nadruk krijgt: kernlichamen (Zon, Maan, chart ruler), hoekhuizen met bewoners, en clusters met meerdere planeten."
-            : "Houses that carry extra weight here: core bodies (Sun, Moon, chart ruler), angular houses with planets, and clusters with multiple planets."
+            ? "Huizen waar deze chart extra nadruk krijgt: kernlichamen (Zon, Maan, chart ruler), hoekhuizen met bewoners, en clusters met meerdere planeten. Lees elk huis als ‘waar in mijn leven dit samenkomt’, niet als vast beroep of lot."
+            : "Houses that carry extra weight here: core bodies (Sun, Moon, chart ruler), angular houses with planets, and clusters with multiple planets. Read each house as ‘where in my life this converges,’ not as a fixed job or fate."
         );
         if (!cusps.length) {
           houseSection.appendChild(createEl("p", "", "De huizenfocus kan niet betrouwbaar worden getoond, omdat hiervoor geboortetijd en geboorteplaats nodig zijn."));
@@ -4929,7 +5492,7 @@
             houseGrid.appendChild(createAstroCard(
               `${isNL ? "Huis" : "House"} ${h}`,
               planetsIn.length ? planetsIn.map((pn) => localizePlanet(pn)).join(" · ") : "-",
-              planetsIn.length ? `Het ${houseLabel(h)} krijgt nadruk door ${planetsIn.map((pn) => localizePlanet(pn)).join(", ")}. Dit wijst op focus in ${houseThemes[h] || "dit gebied"}.` : `Het ${houseLabel(h)} is relevant als anker in de chart en toont thema's rond ${houseThemes[h] || "dit gebied"}.`,
+              buildWesternHouseFocusText(h, planetsIn),
               { iconId, accentColor: accent, eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
             ));
           });
@@ -4940,8 +5503,8 @@
         const aspectSection = createLayoutSection(
           isNL ? "Aspectdynamiek" : "Aspect dynamics",
           isNL
-            ? "Drie kaarten met harmonische verbindingen, spanningslijnen en kernaspecten (Zon, Maan, chart ruler). De volledige aspectentabel met orbs en fase staat onder Technische details."
-            : "Three cards for harmonic ties, tension lines, and core aspects (Sun, Moon, chart ruler). The full aspect table with orbs and phase lives under Technical details."
+            ? "Drie kaarten met harmonische verbindingen, spanningslijnen en kernaspecten (Zon, Maan, chart ruler). De volledige aspectentabel met orbs en fase staat onder Technische details. Elk aspect is een relatie tussen twee thema’s in jouw leven — de tekst hieronder helpt die te vertalen naar ervaring."
+            : "Three cards for harmonic ties, tension lines, and core aspects (Sun, Moon, chart ruler). The full aspect table with orbs and phase lives under Technical details. Each aspect is a relationship between two life themes—the copy below helps translate that into experience."
         );
         if (!aspects.length) {
           aspectSection.appendChild(createEl("p", "", "De aspecten konden niet betrouwbaar worden berekend, omdat niet alle benodigde posities beschikbaar zijn."));
@@ -4991,15 +5554,23 @@
           };
           const aspectGrid = createEl("div", "explain-grid");
           const harmonicLead = isNL
-            ? "Trines, sextielen en conjuncties die ondersteuning geven en thema’s makkelijker laten samenwerken."
+            ? "Trines, sextielen en conjuncties die ondersteuning geven en thema's makkelijker laten samenwerken."
             : "Trines, sextiles, and conjunctions that add support and help themes work together.";
-          const harmonicSummary = isNL
-            ? harmonisch.length
-              ? "Dit zijn gebieden waar samenwerking tussen planeten vaak organischer aanvoelt — geen garantie, wel een herkenbaar ritme."
-              : "In deze topselectie geen voorbeelden; het volledige harmonische veld staat in de technische aspectentabel."
-            : harmonisch.length
-              ? "These are areas where planetary teamwork often feels more organic—not a promise, but a recognizable rhythm."
+          let harmonicSummary = "";
+          if (!harmonisch.length) {
+            harmonicSummary = isNL
+              ? "In deze topselectie geen voorbeelden; het volledige harmonische veld staat in de technische aspectentabel."
               : "No picks in this shortlist; the technical aspects table shows the full harmonic field.";
+          } else {
+            const bits = harmonisch.map((a) => `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`);
+            const intro = isNL
+              ? `Jouw top-harmonieen: ${bits.join("; ")}. Dit zijn verbindingen waarbij steun, ritme of gemak vaak sneller terugkomt.`
+              : `Your top harmonies: ${bits.join("; ")}. These links often return support, rhythm, or ease sooner.`;
+            const foot = isNL
+              ? "Persoonlijk: noteer momenten waarin hulp of timing 'vanzelf' klopt — dat is vaak waar deze aspecten leven."
+              : "Personally: note moments when help or timing ‘just clicks’—that is often where these aspects live.";
+            harmonicSummary = `${intro}\n\n${foot}`;
+          }
           const tensionLead = isNL
             ? "Vierkanten, opposities en inconjuncten: spanning die scherpstelling en integratie vraagt."
             : "Squares, oppositions, and quincunxes—tension that asks for focus and integration.";
@@ -5017,21 +5588,39 @@
                 : "Tighter orbs usually feel more concrete—see exact degrees in the technical aspects table."
             );
           }
-          const tensionSummary = tensionParts.length
-            ? tensionParts.join(" ")
-            : isNL
+          const spanBits = spanning.map((a) => `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`);
+          const spanLine = spanning.length
+            ? (isNL ? `Voorbeelden uit je chart: ${spanBits.join("; ")}.` : `Examples from your chart: ${spanBits.join("; ")}.`)
+            : "";
+          let tensionSummary = "";
+          if (!tensionParts.length && !spanning.length) {
+            tensionSummary = isNL
               ? "Geen spanning in deze topselectie; het volledige beeld staat in de technische aspectentabel."
               : "No tension picks in this shortlist—see the technical aspects table for the full picture.";
+          } else {
+            const foot = isNL
+              ? "Persoonlijk: spanning is zelden 'fout' — ze wijst waar je volwassen wordt door te kiezen in plaats van te duwen."
+              : "Personally: tension is rarely ‘wrong’—it marks where you mature by choosing instead of forcing.";
+            tensionSummary = [tensionParts.join("\n\n"), spanLine, foot].filter(Boolean).join("\n\n");
+          }
           const coreLead = isNL
             ? "Aspecten waarin Zon, Maan of chart ruler direct betrokken zijn — die wegen extra door in je profiel."
             : "Aspects where the Sun, Moon, or chart ruler is involved—they carry extra weight in the profile.";
-          const coreSummary = isNL
-            ? kernAspects.length
-              ? "Handvatten om chart-inzicht sneller te herkennen in concrete momenten en keuzes."
-              : "Geen van de eerste kernkoppelingen in deze selectie; de volledige lijst kan andere persoonlijke hits tonen."
-            : kernAspects.length
-              ? "Handles to translate chart insight into recognizable moments and choices more quickly."
+          let coreSummary = "";
+          if (!kernAspects.length) {
+            coreSummary = isNL
+              ? "Geen van de eerste kernkoppelingen in deze selectie; de volledige lijst kan andere persoonlijke hits tonen."
               : "None of the first core hits in this sample—the full list may show other personal matches.";
+          } else {
+            const bits = kernAspects.map((a) => `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`);
+            const intro = isNL
+              ? `${bits.join("; ")} raken Zon, Maan of chart ruler rechtstreeks.`
+              : `${bits.join("; ")} touch the Sun, Moon, or chart ruler directly.`;
+            const foot = isNL
+              ? "Persoonlijk: dit zijn snelkoppelingen naar gedrag — kleine correcties hier merk je vaak snel in stemming, energie en relaties."
+              : "Personally: these are behavioral shortcuts—small shifts here often show up fast in mood, energy, and relationships.";
+            coreSummary = `${intro}\n\n${foot}`;
+          }
           aspectGrid.appendChild(
             makeAspectThemeCard(
               isNL ? "Harmonische lijnen" : "Harmonic lines",
@@ -5066,27 +5655,65 @@
         const patternSection = createLayoutSection(
           isNL ? "Belangrijkste patronen" : "Main patterns",
           isNL
-            ? "Drie ingangen naar zwaartepunten: waar planeten zich ophopen, welke mix van element en modaliteit overheerst, en welke configuraties later dieper worden uitgewerkt."
-            : "Three entry points to focal points: where planets cluster, which element–modality mix dominates, and which configurations will later be unpacked in more depth."
+            ? "Drie ingangen naar zwaartepunten: waar planeten zich ophopen, welke mix van element en modaliteit overheerst, en welke configuraties later dieper worden uitgewerkt. Patronen zijn herhalingen die je herkent — niet elke specialiteit heeft al een computernaam."
+            : "Three entry points to focal points: where planets cluster, which element–modality mix dominates, and which configurations will later be unpacked in more depth. Patterns are repetitions you notice—not every specialty already has a computer label."
         );
         const patternGrid = createEl("div", "explain-grid");
         const clusters = Object.entries(houseMap).filter(([, ps]) => (ps || []).length >= 2);
+        const patternClusterBody = (() => {
+          if (!clusters.length) {
+            return isNL
+              ? "Er is hier nog geen cluster van minimaal twee planeten in hetzelfde huis zichtbaar. Dat wil zeggen: je energie ligt nu verdeelder — ook valide."
+              : "No cluster of two or more planets in one house is visible here. Energy is more spread—which is still valid.";
+          }
+          const lines = clusters.map(([h, ps]) =>
+            isNL
+              ? `${houseLabel(Number(h))}: ${ps.map((pn) => localizePlanet(pn)).join(", ")} — hier overlappen meerdere thema-strengen in één levensgebied.`
+              : `${houseLabel(Number(h))}: ${ps.map((pn) => localizePlanet(pn)).join(", ")} — several theme streams overlap in one life area.`
+          );
+          const foot = isNL
+            ? "Persoonlijk: clusters voelen vaak 'druk' of juist bloei; merk waar je hetzelfde gesprek in een andere verpakking voert — dat is je ingang."
+            : "Personally: clusters often feel busy or fertile—notice the same conversation in a new wrapper; that is your entry.";
+          return `${lines.join("\n")}\n\n${foot}`;
+        })();
+        const patternDominantBody = (() => {
+          const elKey = topElement ? topElement[0] : null;
+          const modKey = topModality ? topModality[0] : null;
+          const voE = isNL ? elementVoiceNl : elementVoiceEn;
+          const voM = isNL ? modalityVoiceNl : modalityVoiceEn;
+          const eLine = elKey && voE[elKey] ? voE[elKey] : "";
+          const mLine = modKey && voM[modKey] ? voM[modKey] : "";
+          const head = isNL
+            ? `Overzicht: ${elKey ? barRowLabel("elements", elKey) : "—"} als element-gewicht, ${modKey ? barRowLabel("modalities", modKey) : "—"} als tempo${chartRulerName ? `, met ${localizePlanet(chartRulerName)} als chart ruler` : ""}.`
+            : `Overview: ${elKey ? barRowLabel("elements", elKey) : "—"} as element weight, ${modKey ? barRowLabel("modalities", modKey) : "—"} as pacing${chartRulerName ? `, with ${localizePlanet(chartRulerName)} as chart ruler` : ""}.`;
+          const rulerLine = chartRulerName
+            ? (isNL
+                ? "Die ruler geeft kleur aan hoe je deze mix in concrete keuzes leeft."
+                : "That ruler colors how you live this mix in concrete choices.")
+            : (isNL
+                ? "Zonder chart ruler (Ascendant-gebonden) is het stuur iets minder scherp — controleer geboortetijd."
+                : "Without a chart ruler (Asc-based), the helm is softer—check birth time.");
+          return [head, eLine, mLine, rulerLine].filter(Boolean).join("\n\n");
+        })();
+        const patternAdvancedBody = isNL
+          ? "Grote configuraties (T-vierkant, yod, grand trine, stellium+) worden hier later automatisch gemarkeerd zodra patroon-detectie actief is.\n\nNu al bruikbaar: herhaal je dezelfde spanningen in relaties of werk? Dan leeft er al een figuur — met of zonder astrologische naam."
+          : "Large patterns (T-square, yod, grand trine, stellium+) will auto-flag when pattern detection is on.\n\nAlready usable: do the same tensions repeat in love or work? Then a figure is already alive—named or not.";
         patternGrid.appendChild(createAstroCard(
           isNL ? "Huizenclusters" : "House clusters",
           isNL ? "Patroon" : "Pattern",
-          clusters.length ? clusters.map(([h, ps]) => `Huis ${h}: ${ps.map((pn) => localizePlanet(pn)).join(", ")}`).join(" | ") : "Nog geen duidelijke huizenclusters gevonden.",
+          patternClusterBody,
           { iconId: "saturn", accentColor: "#315B9A", eyebrow: isNL ? "Patroon" : "Pattern", badge: isNL ? "Kern" : "Core" }
         ));
         patternGrid.appendChild(createAstroCard(
           isNL ? "Dominante energie" : "Dominant energy",
           isNL ? "Patroon" : "Pattern",
-          `Element: ${topElement ? topElement[0] : "-"}; Modaliteit: ${topModality ? topModality[0] : "-"}; Chart ruler: ${chartRulerName ? localizePlanet(chartRulerName) : "-"}.`,
+          patternDominantBody,
           { iconId: "jupiter", accentColor: "#E88918", eyebrow: isNL ? "Patroon" : "Pattern", badge: isNL ? "Kern" : "Core" }
         ));
         patternGrid.appendChild(createAstroCard(
           isNL ? "Geavanceerde configuraties" : "Advanced configurations",
           isNL ? "Patroon" : "Pattern",
-          isNL ? "Stellium, T-square, grand trine en yod staan gepland en worden later toegevoegd zodra configuratie-detectie actief is." : "Stellium, T-square, grand trine, and yod are planned and will be added when configuration detection is active.",
+          patternAdvancedBody,
           { iconId: "uranus", accentColor: "#2F7D32", eyebrow: isNL ? "Patroon" : "Pattern", badge: isNL ? "Technisch" : "Technical" }
         ));
         patternSection.appendChild(patternGrid);
@@ -5095,13 +5722,31 @@
         const reflectionSection = createLayoutSection(
           isNL ? "Vragen om mee te nemen" : "Reflection prompts",
           isNL
-            ? "Geen vaste antwoorden: dit zijn open vragen om je chart als spiegel te gebruiken in je eigen tempo."
-            : "No fixed answers—these are open prompts to use your chart as a mirror, at your own pace."
+            ? "Geen vaste antwoorden: dit zijn open vragen om je chart als spiegel te gebruiken in je eigen tempo. Kies er één per week; schrijf kort op wat je merkt — dat maakt de horoscoop van formule naar dagboek."
+            : "No fixed answers—these are open prompts to use your chart as a mirror, at your own pace. Pick one per week; jot what you notice—that turns the chart from formula into diary."
         );
         const questions = [];
-        if (sun.house != null) questions.push(`Waar merk je dat je identiteit in ${houseThemes[sun.house] || "dit levensgebied"} het duidelijkst zichtbaar wordt?`);
-        if (moon.house != null) questions.push(`Wanneer heb je ruimte nodig om je Maan in ${localizeSign(moon.sign)} echt te laten herstellen?`);
-        if (chartRulerName) questions.push(`Hoe kun je de energie van ${localizePlanet(chartRulerName)} bewuster richten in je dagelijkse keuzes?`);
+        if (sun.house != null) {
+          questions.push(
+            isNL
+              ? `Waar merk je dat je identiteit in ${houseThemes[sun.house] || "dit levensgebied"} het duidelijkst zichtbaar wordt?`
+              : `Where do you notice your identity showing most clearly in ${houseThemes[sun.house] || "this life area"}?`
+          );
+        }
+        if (moon.sign) {
+          questions.push(
+            isNL
+              ? `Wanneer heb je ruimte nodig om je Maan in ${localizeSign(moon.sign)} echt te laten herstellen?`
+              : `When do you need space to let your Moon in ${localizeSign(moon.sign)} actually recover?`
+          );
+        }
+        if (chartRulerName) {
+          questions.push(
+            isNL
+              ? `Hoe kun je de energie van ${localizePlanet(chartRulerName)} bewuster richten in je dagelijkse keuzes?`
+              : `How could you steer ${localizePlanet(chartRulerName)}'s energy more consciously in daily choices?`
+          );
+        }
         if (topElement) {
           const elKey = topElement[0];
           const elHuman = isNL
@@ -5115,7 +5760,13 @@
         }
         if (aspects.length) {
           const firstStress = aspectsSorted.find((a) => ["square", "opposition", "quincunx"].includes(a.type));
-          if (firstStress) questions.push(`Waar voel je de spanning tussen ${localizePlanet(firstStress.a)} en ${localizePlanet(firstStress.b)}, en wat helpt om die productief te maken?`);
+          if (firstStress) {
+            questions.push(
+              isNL
+                ? `Waar voel je de spanning tussen ${localizePlanet(firstStress.a)} en ${localizePlanet(firstStress.b)}, en wat helpt om die productief te maken?`
+                : `Where do you feel tension between ${localizePlanet(firstStress.a)} and ${localizePlanet(firstStress.b)}, and what helps you work with it constructively?`
+            );
+          }
         }
         const questionGrid = createEl("div", "western-questions-grid");
         const fallbackQs = isNL
@@ -5156,7 +5807,7 @@
             v.house != null ? String(v.house) : placeholderFor("huis"),
             v.degree_in_sign != null ? `${Number(v.degree_in_sign).toFixed(2)}°` : placeholderFor("graad"),
             retro,
-            isNL ? (planetThemes[key] ? `${safeText(planetThemes[key], "Thema")} krijgt ${signThemes[v.sign] ? signThemes[v.sign].replace("stijl", "toon") : "een eigen toon"}.` : placeholderFor("kernbetekenis")) : PLACEHOLDER,
+            westernPlanetPersonalCell(key, v, isNL, planetThemes, signThemes, placeholderFor, safeText),
           ]);
         });
         const secPlanet = createLayoutSection(isNL ? "Planeetstanden tabel" : "Planet placements table", "");
@@ -5189,13 +5840,20 @@
 
         const secAspects = createLayoutSection(isNL ? "Aspectentabel" : "Aspects table", "");
         if (aspects.length) {
-          const rows = aspectsSorted.map((a) => [
+          const rows = aspectsSorted.map((a) => {
+            const kindLabel = aspectTypeKind(a.type);
+            const note = westernAspectRowNote(a.type, isNL);
+            const shortMeaning = isNL
+              ? `${localizePlanet(a.a)} en ${localizePlanet(a.b)}: ${kindLabel}. ${note}`
+              : `${localizePlanet(a.a)} and ${localizePlanet(a.b)}: ${kindLabel}. ${note}`;
+            return [
             symbolCell(aspectGlyph(a.type), `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`, `${localizePlanet(a.a)} ${localizeAspectType(a.type)} ${localizePlanet(a.b)}`),
             formatDeg(a.orb_deg, "orb"),
             a.applying ? (isNL ? "applicerend" : "applying") : (isNL ? "separerend" : "separating"),
-            aspectTypeKind(a.type),
-            isNL ? `${localizePlanet(a.a)} en ${localizePlanet(a.b)} tonen ${aspectTypeKind(a.type)}.` : PLACEHOLDER,
-          ]);
+            kindLabel,
+            shortMeaning,
+          ];
+          });
           secAspects.appendChild(createMethodTable([isNL ? "Aspect" : "Aspect", "Orb", isNL ? "Fase" : "Phase", isNL ? "Type" : "Type", isNL ? "Korte betekenis" : "Short meaning"], rows));
         } else {
           secAspects.appendChild(createEl("p", "", "De aspecten konden niet worden samengesteld, omdat niet alle planeetposities beschikbaar zijn."));
@@ -8836,6 +9494,7 @@
 
       function renderVedicTabV2(data) {
         const root = createEl("section", "astro-shell");
+        appendMethodPersonalReadingSection(root, "vedic_panchanga");
         root.appendChild(renderResultDashboard("vedic", data));
         return root;
       }
@@ -8876,6 +9535,7 @@
         );
         intro.appendChild(card);
         root.appendChild(intro);
+        appendMethodPersonalReadingSection(root, "chinese_ganzhi_bazi");
         root.appendChild(renderResultDashboard("bazi", data));
         return root;
       }
@@ -9029,6 +9689,7 @@
         }
 
         root.appendChild(intro);
+        appendMethodPersonalReadingSection(root, "human_design");
         appendHumanDesignGlossaryLegend(root);
         return root;
       }
@@ -9123,6 +9784,7 @@
         }
 
         root.appendChild(intro);
+        appendMethodPersonalReadingSection(root, "maya");
         appendMayaGlossaryLegend(root);
         return root;
       }

@@ -20,6 +20,8 @@ def test_method_tabs_use_dynamic_dashboard_data():
 
     assert 'function renderBaziTabV2(data)' in txt
     assert 'renderResultDashboard("bazi", data)' in txt
+    assert "appendMethodPersonalReadingSection" in txt
+    assert "vedic_panchanga" in txt and "chinese_ganzhi_bazi" in txt
 
 
 def test_no_static_demo_payloads_left_in_active_tabs():

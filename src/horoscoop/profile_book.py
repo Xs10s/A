@@ -22,6 +22,26 @@ def _L(locale: str, nl: str, en: str) -> str:
     return nl if normalize_locale(locale) == "nl" else en
 
 
+def _append_first_personal_layer(interpretations: dict[str, Any], method_key: str, base: str) -> str:
+    """Prefer legacy summary, then append first personal_layer from method_explanations if present."""
+    me = interpretations.get("method_explanations") if isinstance(interpretations.get("method_explanations"), dict) else None
+    if not me or not isinstance(me.get(method_key), dict):
+        return base
+    bundle = me[method_key]
+    blocks = bundle.get("blocks")
+    if not isinstance(blocks, list) or not blocks:
+        return base
+    first = blocks[0]
+    if not isinstance(first, dict):
+        return base
+    pl = first.get("personal_layer")
+    if not isinstance(pl, str) or not pl.strip():
+        return base
+    if not (base or "").strip():
+        return pl.strip()
+    return f"{base.strip()}\n\n{pl.strip()}"
+
+
 def _get_profile(profiles: list[dict[str, Any]], system_id: str) -> Optional[dict[str, Any]]:
     for p in profiles:
         sid = ((p.get("system") or {}).get("id") if isinstance(p, dict) else None)
@@ -309,7 +329,11 @@ def build_profile_book(
             "method": "western_tropical",
             "title": _L(locale, "Westers", "Western"),
             "what_it_reads": _L(locale, "Psychologische dynamiek via planeten, tekens, huizen en aspecten.", "Psychological dynamics through planets, signs, houses, and aspects."),
-            "personal_summary": str(((interpretations.get("western_tropical") or {}).get("summary") or "")),
+            "personal_summary": _append_first_personal_layer(
+                interpretations,
+                "western_tropical",
+                str(((interpretations.get("western_tropical") or {}).get("summary") or "")),
+            ),
             "key_finding": str(((_top_domains(_get_profile(profiles, "western_tropical"), 1) or [{}])[0].get("label") or "-")),
             "target_tab": "western",
         },
@@ -317,7 +341,11 @@ def build_profile_book(
             "method": "vedic_panchanga",
             "title": _L(locale, "Vedisch", "Vedic"),
             "what_it_reads": _L(locale, "Tijdskwaliteit en ritme van het moment via Panchanga.", "Moment quality and rhythm through Panchanga."),
-            "personal_summary": str(((interpretations.get("vedic_panchanga") or {}).get("summary") or "")),
+            "personal_summary": _append_first_personal_layer(
+                interpretations,
+                "vedic_panchanga",
+                str(((interpretations.get("vedic_panchanga") or {}).get("summary") or "")),
+            ),
             "key_finding": str(((_top_domains(_get_profile(profiles, "vedic_panchanga"), 1) or [{}])[0].get("label") or "-")),
             "target_tab": "vedic",
         },
@@ -325,7 +353,11 @@ def build_profile_book(
             "method": "chinese_bazi",
             "title": "BaZi",
             "what_it_reads": _L(locale, "Cyclische patronen via stamen, takken en pijlers.", "Cyclical patterns via stems, branches, and pillars."),
-            "personal_summary": str(((interpretations.get("chinese_ganzhi_bazi") or {}).get("summary") or "")),
+            "personal_summary": _append_first_personal_layer(
+                interpretations,
+                "chinese_ganzhi_bazi",
+                str(((interpretations.get("chinese_ganzhi_bazi") or {}).get("summary") or "")),
+            ),
             "key_finding": str(((_top_domains(_get_profile(profiles, "chinese_bazi"), 1) or [{}])[0].get("label") or "-")),
             "target_tab": "bazi",
         },
@@ -333,7 +365,11 @@ def build_profile_book(
             "method": "human_design",
             "title": "Human Design",
             "what_it_reads": _L(locale, "Besluitvorming en energiestroom via type, authoriteit en centra.", "Decision style and energy flow through type, authority, and centers."),
-            "personal_summary": str(((interpretations.get("human_design") or {}).get("summary") or "")),
+            "personal_summary": _append_first_personal_layer(
+                interpretations,
+                "human_design",
+                str(((interpretations.get("human_design") or {}).get("summary") or "")),
+            ),
             "key_finding": str(((_top_domains(_get_profile(profiles, "human_design"), 1) or [{}])[0].get("label") or "-")),
             "target_tab": "humandesign",
         },
@@ -341,7 +377,11 @@ def build_profile_book(
             "method": "maya",
             "title": "Maya",
             "what_it_reads": _L(locale, "Ritme en tijdlaag via kin, toon en teken.", "Rhythm and time layer via kin, tone, and sign."),
-            "personal_summary": str(((interpretations.get("maya") or {}).get("summary") or "")),
+            "personal_summary": _append_first_personal_layer(
+                interpretations,
+                "maya",
+                str(((interpretations.get("maya") or {}).get("summary") or "")),
+            ),
             "key_finding": str(((_top_domains(_get_profile(profiles, "maya"), 1) or [{}])[0].get("label") or "-")),
             "target_tab": "maya",
         },

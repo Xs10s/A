@@ -425,6 +425,10 @@ def build_interpretations(engine_json: dict[str, Any], *, locale: str = "nl-NL")
       - western_sidereal
       - vedic_panchanga
       - chinese_ganzhi_bazi
+      - human_design
+      - maya
+      - method_explanations: per-method bundles with headline + personal_layer blocks
+        (see horoscoop.method_explanations). Keys mirror the methods above plus _meta.version.
     """
     _ = engine_json  # engine_json is expected to contain all blocks per schema
     lang = normalize_locale(locale)
@@ -757,6 +761,10 @@ def build_interpretations(engine_json: dict[str, Any], *, locale: str = "nl-NL")
         maya_out["haab"] = maya_block.get("haab")
         maya_out["long_count"] = maya_block.get("long_count")
 
+    from .method_explanations import build_method_explanations
+
+    method_explanations = build_method_explanations(engine_json, locale=locale)
+
     return {
         "western_tropical": western_tropical,
         "western_sidereal": western_sidereal,
@@ -764,5 +772,6 @@ def build_interpretations(engine_json: dict[str, Any], *, locale: str = "nl-NL")
         "chinese_ganzhi_bazi": chinese_out,
         "human_design": human_design_out,
         "maya": maya_out,
+        "method_explanations": method_explanations,
     }
 

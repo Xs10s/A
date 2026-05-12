@@ -4,6 +4,7 @@ Integration: engine.compute returns valid structure (no SE required for structur
 import pytest
 
 from horoscoop import engine
+from horoscoop import jyotish_chart as jc
 
 
 def test_compute_structure():
@@ -26,6 +27,31 @@ def test_compute_structure():
     assert out["time"]["jd_tt"] is not None
     assert "delta_t_source" in out["time"]
     assert "ut1_utc_source" in out["time"]
+    vedic = out.get("vedic") or {}
+    jy = vedic.get("jyotish") or {}
+    assert jy.get("status", {}).get("house_model") == "whole_sign_from_sidereal_lagna"
+    grahas = jy.get("grahas") or []
+    sun = next((g for g in grahas if g.get("name_en") == "Sun"), None)
+    assert sun and sun.get("rashi")
+    assert sun.get("house") is not None
+    assert len(jy.get("d1_bhavas") or []) == 12
+    assert isinstance(sun.get("natural_dignity"), dict)
+    assert sun["natural_dignity"].get("rashilord_en")
+    assert sun["natural_dignity"]["code"] in (
+        "exalted",
+        "debilitated",
+        "own",
+        "mulatrikona",
+        "mitra_sign_lord",
+        "sama_sign_lord",
+        "satru_sign_lord",
+    )
+    assert isinstance(sun.get("bhava_groups"), list)
+    assert isinstance(sun.get("vargas"), dict)
+    assert "D9" in sun["vargas"] and sun["vargas"]["D9"].get("rashi")
+    assert sun["vargas"]["D9"].get("house") is not None
+    divs = (jy.get("divisional_charts") or {})
+    assert set(divs.keys()) == set(jc.SHODASHA_VARGA_IDS)
 
 
 def test_compute_no_place():

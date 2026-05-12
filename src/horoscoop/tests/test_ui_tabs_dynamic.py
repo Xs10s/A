@@ -35,4 +35,4 @@ def test_energy_tab_uses_live_energy_payload():
     txt = _template_text()
     assert "function renderEnergyTabV2(data, energy, combined)" in txt
     assert "const domains = Array.isArray(energy && energy.domains) ? energy.domains : [];" in txt
-    assert "notes[0] || summary" in txt
+    assert "combined.parityNotes" in txt and "notes[0]" in txt

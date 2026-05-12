@@ -18,6 +18,7 @@ from . import models
 from . import sidereal
 from . import time_scales as ts
 from . import vedic
+from . import jyotish_chart
 from .data.calculations.pipeline import run_calculation_pipeline
 
 
@@ -529,6 +530,16 @@ def compute(
         at_mode=vedic_at,
         sunrise_method=vedic_sunrise_method,
         compute_end_times=True,
+    )
+    birth_time_reliable = time_known and not used_default_time and "NO_TIMEZONE" not in diagnostics_codes
+    vaara_idx = vedic.vaara_from_jd(jd_ut1)
+    vedic_block["jyotish"] = jyotish_chart.build_jyotish_chart(
+        jd_tt=jd_tt,
+        western_block=western_block,
+        astronomy_block={"bodies": astronomy_block},
+        ayanamsha_mode=ayanamsha_mode,
+        vaara_index=vaara_idx,
+        birth_time_reliable=birth_time_reliable,
     )
     from datetime import datetime as _dt, timezone as _tz, timedelta as _td
     epoch = _dt(2000, 1, 1, 12, 0, 0, tzinfo=_tz.utc)

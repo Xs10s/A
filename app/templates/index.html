@@ -355,7 +355,7 @@
       .method-layout--western-tight .layout-section .astro-eyebrow {
         margin-bottom: 6px;
       }
-      .method-layout--western-tight .layout-section .astro-card__sub {
+      .method-layout--western-tight .layout-section .astro-card .astro-card__sub {
         margin-top: 10px;
         margin-bottom: 2px;
         font-family: "Inter", system-ui, sans-serif;
@@ -497,6 +497,22 @@
         background: #fff;
         max-height: none;
         overflow: visible;
+      }
+      .method-layout--western-tight .western-wheel-col > .western-chart-ruler__unified--below-wheel {
+        margin-top: 4px;
+        flex: 0 0 auto;
+        align-self: stretch;
+      }
+      .method-layout--western-tight .western-wheel-col > .western-chart-ruler-message {
+        margin: 4px 0 0 0;
+        padding: 8px 10px 10px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 13px;
+        line-height: 1.45;
+        color: #4f4961;
+        border-top: 1px solid #eadff6;
+        flex: 0 0 auto;
+        align-self: stretch;
       }
       .method-layout--western-tight .western-ruler-title {
         font-family: "Inter", system-ui, sans-serif;
@@ -1280,6 +1296,19 @@
       .method-layout--western-tight .layout-section__lead {
         margin-bottom: 14px;
       }
+      .method-layout--western-tight .western-kernwaarden-heading {
+        margin: 20px 0 12px 0;
+        font-family: "Lora", Georgia, serif;
+        font-size: clamp(1.55rem, 2.4vw, 2.1rem);
+        font-weight: 400;
+        color: #171126;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        line-height: 1.15;
+      }
+      .method-layout--western-tight .western-kern-summary {
+        margin: 0 0 16px 0;
+      }
       .method-layout--western-tight .layout-section > p,
       .method-layout--western-tight .layout-section li {
         font-size: 14px;
@@ -1310,6 +1339,26 @@
         color: #4f4961;
         font-weight: 400;
       }
+      .method-layout--western-tight .explain-card__symbol-strip {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 10px 0;
+        padding: 2px 0 4px 0;
+      }
+      .method-layout--western-tight .explain-card__symbol-strip-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+      }
+      .method-layout--western-tight .explain-card__symbol-strip-icon img {
+        width: 24px;
+        height: 24px;
+        display: block;
+        object-fit: contain;
+      }
       .method-layout--western-tight .explain-card__summary-line {
         margin: 12px 0 0 0;
         padding-top: 10px;
@@ -1318,6 +1367,53 @@
         font-size: 12.5px;
         line-height: 1.55;
         color: #4f4961;
+        white-space: pre-line;
+      }
+      .method-layout--western-tight .explain-card.explain-card--energy-balance {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        min-height: 0;
+        height: 100%;
+      }
+      .method-layout--western-tight .explain-card--energy-balance .explain-card__intro-wrap {
+        flex: 0 0 auto;
+        min-height: clamp(9rem, 26vw, 13.5rem);
+        display: flex;
+        flex-direction: column;
+      }
+      .method-layout--western-tight .explain-card--energy-balance .explain-card__bar-group {
+        flex: 0 0 auto;
+      }
+      .method-layout--western-tight .explain-card--energy-balance .bar-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        margin: 0 0 8px 0;
+      }
+      .method-layout--western-tight .explain-card--energy-balance .bar-row:last-child {
+        margin-bottom: 0;
+      }
+      .method-layout--western-tight .explain-card--energy-balance .bar-row .astro-card__sub {
+        margin: 0;
+      }
+      .method-layout--western-tight .explain-card--energy-balance .explain-card__lead,
+      .method-layout--western-tight .explain-card--energy-balance .explain-card__summary-line {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 13px;
+        line-height: 1.6;
+        font-weight: 400;
+        color: #4f4961;
+      }
+      .method-layout--western-tight .explain-card--energy-balance .explain-card__lead {
+        margin: 0 0 0 0;
+      }
+      .method-layout--western-tight .explain-card--energy-balance .explain-card__summary-line {
+        margin-top: auto;
+        margin-bottom: 0;
+        padding-top: 12px;
+        border-top: 1px solid #eadff6;
         white-space: pre-line;
       }
       .method-layout--western-tight .explain-grid .astro-card p {
@@ -3352,6 +3448,7 @@
         Uranus: { nl: "Uranus", en: "Uranus" },
         Neptune: { nl: "Neptunus", en: "Neptune" },
         Pluto: { nl: "Pluto", en: "Pluto" },
+        NorthNode: { nl: "Noordelijke maanknoop", en: "North node" },
         Asc: { nl: "Ascendant", en: "Ascendant" },
         Ascendant: { nl: "Ascendant", en: "Ascendant" },
         SouthNode: { nl: "Zuidelijke maanknoop", en: "South node" },
@@ -3780,7 +3877,7 @@
         if (id === "sun") return isNL ? PLANET_LABELS.Sun.nl : PLANET_LABELS.Sun.en;
         if (id === "moon") return isNL ? PLANET_LABELS.Moon.nl : PLANET_LABELS.Moon.en;
         if (id === "ascendant") return isNL ? PLANET_LABELS.Ascendant.nl : PLANET_LABELS.Ascendant.en;
-        if (id === "north-node") return isNL ? "Noordelijke maansknoop" : "North node";
+        if (id === "north-node") return isNL ? PLANET_LABELS.NorthNode.nl : PLANET_LABELS.NorthNode.en;
         if (id === "south-node") return isNL ? PLANET_LABELS.SouthNode.nl : PLANET_LABELS.SouthNode.en;
         const byId = {
           mercury: "Mercury",
@@ -4696,119 +4793,21 @@
           });
           return isNL ? ` Verbindingen: ${bits.join(" · ")}.` : ` Connections: ${bits.join(" · ")}.`;
         };
-        const introPieces = [];
-        if (sun.sign && moon.sign && ascSign) {
-          introPieces.push(
-            isNL
-              ? `Hier lees je drie ingangen die samen jouw basis schetsen: je Zon in ${localizeSign(sun.sign)} (wat je wilt uitgroeien), je Maan in ${localizeSign(moon.sign)} (hoe je innerlijk landt) en je Ascendant in ${localizeSign(ascSign)} (hoe mensen je vaak eerst ervaren).`
-              : `Three gates sketch your baseline here: your Sun in ${localizeSign(sun.sign)} (what you grow into), your Moon in ${localizeSign(moon.sign)} (how you land inwardly), and your Ascendant in ${localizeSign(ascSign)} (how people often meet you first).`
-          );
-        }
-        if (sun.sign && sun.house != null) {
-          introPieces.push(
-            isNL
-              ? `Je Zon staat in ${localizeSign(sun.sign)} in ${houseLabel(sun.house)}: dat is je morele kompas voor zelfrespect en richting, los van wat er die week speelt.`
-              : `Your Sun sits in ${localizeSign(sun.sign)} in ${houseLabel(sun.house)}: your compass for self-respect and direction, separate from the week’s weather.`
-          );
-        } else if (sun.sign) {
-          introPieces.push(
-            isNL
-              ? `Je Zon staat in ${localizeSign(sun.sign)}. Zonder betrouwbare huizen is het levensgebied minder scherp te benoemen, maar het tekenkleur blijft leidend.`
-              : `Your Sun is in ${localizeSign(sun.sign)}. Without reliable houses the life-area is fuzzier, but the sign tone still leads.`
-          );
-        }
-        if (moon.sign && moon.house != null) {
-          introPieces.push(
-            isNL
-              ? `Je Maan in ${localizeSign(moon.sign)} in ${houseLabel(moon.house)} laat zien waar je gevoel rust vindt, wat je snel raakt en hoe je jezelf weer oplaadt.`
-              : `Your Moon in ${localizeSign(moon.sign)} in ${houseLabel(moon.house)} shows where feeling rests, what lands fast, and how you refill.`
-          );
-        } else if (moon.sign) {
-          introPieces.push(
-            isNL
-              ? `Je Maan staat in ${localizeSign(moon.sign)}; het huis vult pas detail aan als de geboortetijd klopt.`
-              : `Your Moon is in ${localizeSign(moon.sign)}; the house adds detail when birth time is solid.`
-          );
-        }
-        if (ascSign) {
-          introPieces.push(
-            isNL
-              ? `Je Ascendant in ${localizeSign(ascSign)} is geen ‘masker’, maar je eerste reflex in nieuwe ruimtes — vaak voordat je het zelf in woorden hebt.`
-              : `Your Ascendant in ${localizeSign(ascSign)} isn’t a “mask,” but your first reflex in new space—often before you’ve named it.`
-          );
-        }
-        const sunEl = sun.sign ? signElementByName[sun.sign] : null;
-        const moonEl = moon.sign ? signElementByName[moon.sign] : null;
-        if (sunEl && moonEl && sunEl !== moonEl) {
-          const elNl = (e) => ({ fire: "vuur", earth: "aarde", air: "lucht", water: "water" }[e] || e);
-          introPieces.push(
-            isNL
-              ? `Tussen ${elNl(sunEl)} (Zon) en ${elNl(moonEl)} (Maan) zit een natuurlijke spanning: je mag voelen dat ‘wil’ en ‘behoefte’ soms twee tempo’s hebben.`
-              : `Between ${sunEl} (Sun) and ${moonEl} (Moon) there’s natural tension: “want” and “need” can run at two speeds.`
-          );
-        }
-        if (chartRulerName && chartRulerPlacement && chartRulerPlacement.sign) {
-          const pt = planetThemes[chartRulerName] || (isNL ? "thema’s van deze planeet" : "this planet’s themes");
-          const hbit =
-            chartRulerPlacement.house != null
-              ? isNL
-                ? ` in ${houseLabel(chartRulerPlacement.house)}`
-                : ` in ${houseLabel(chartRulerPlacement.house)}`
-              : "";
-          introPieces.push(
-            isNL
-              ? `Je chart ruler is ${localizePlanet(chartRulerName)} (${pt}), geplaatst in ${localizeSign(chartRulerPlacement.sign)}${hbit}: dat geeft een doorlopende rode draad aan hoe je kansen pakt en weer verzamelt.`
-              : `Your chart ruler is ${localizePlanet(chartRulerName)} (${pt}), placed in ${localizeSign(chartRulerPlacement.sign)}${hbit}: a thread for how you seize chances and gather yourself again.`
-          );
-        }
         const topElement = topKey(elementScores);
         const topModality = topKey(modalityScores);
         const weakElement = Object.entries(elementScores).sort((a, b) => Number(a[1]) - Number(b[1]))[0];
         const weakModality = Object.entries(modalityScores).sort((a, b) => Number(a[1]) - Number(b[1]))[0];
         const elNameNl = (k) => ({ fire: "vuur", earth: "aarde", air: "lucht", water: "water" }[k] || k);
         const modNameNl = (k) => ({ cardinal: "kardinaal", fixed: "vast", mutable: "beweeglijk" }[k] || k);
-        const modExplainNl = (k) =>
-          ({
-            cardinal: "kardinaal — starten, sturen en kansen grijpen",
-            fixed: "vast — volhouden, verdiepen en kwaliteit vastzetten",
-            mutable: "beweeglijk — schakelen, bijsturen en meerdere opties openhouden",
-          }[k] || k);
         const sunAspects = aspectsSorted.filter((a) => a.a === "Sun" || a.b === "Sun").slice(0, 2);
         const moonAspects = aspectsSorted.filter((a) => a.a === "Moon" || a.b === "Moon").slice(0, 2);
-        if (topElement) {
-          const elW = isNL ? elNameNl(topElement[0]) : topElement[0];
-          const modW = topModality
-            ? (isNL ? modExplainNl(topModality[0]) : topModality[0])
-            : (isNL ? "de drie modaliteiten" : "the three modalities");
-          introPieces.push(
-            isNL
-              ? `In je kaartweegschaal valt ${elW} op als temperament; ${modW} zegt iets over hoe je van plan naar daad gaat — niet goed of fout, wel herkenningspunten.`
-              : `${elW} stands out in your chart mix; ${modW} hints how you move from idea to action—neither good nor bad, just fingerprints.`
-          );
-        }
         const tightAspect = aspectsSorted.find((a) => a.orb_deg != null);
-        if (tightAspect) {
-          const key = normalizeAspectTypeKey(tightAspect.type);
-          const gloss = WESTERN_ASPECT_ROW_NOTES[key] ? L(WESTERN_ASPECT_ROW_NOTES[key]) : "";
-          introPieces.push(
-            isNL
-              ? `Een heel strak aspect is ${localizePlanet(tightAspect.a)} ${localizeAspectType(tightAspect.type)} ${localizePlanet(tightAspect.b)} (afwijking ${formatDeg(tightAspect.orb_deg, "orb")}): ${gloss || "twee thema’s die in je leven vaak tegelijk aangaan."}`
-              : `A very tight pattern is ${localizePlanet(tightAspect.a)} ${localizeAspectType(tightAspect.type)} ${localizePlanet(tightAspect.b)} (orb ${formatDeg(tightAspect.orb_deg, "orb")}): ${gloss || "two themes that tend to switch on together."}`
-          );
-        }
-        if (Object.keys(houseMap).some((h) => (houseMap[h] || []).length >= 2)) {
-          const cluster = Object.entries(houseMap).sort((a, b) => b[1].length - a[1].length)[0];
-          if (cluster) {
-            introPieces.push(
-              isNL
-                ? `Meerdere planeten in ${houseLabel(Number(cluster[0]))} zetten dat levensgebied extra op scherp: ${cluster[1].map((pName) => localizePlanet(pName)).join(", ")} wisselen daar energie uit.`
-                : `Several planets in ${houseLabel(Number(cluster[0]))} sharpen that life area: ${cluster[1].map((pName) => localizePlanet(pName)).join(", ")} trade energy there.`
-            );
-          }
-        }
+        const westernPageIntro = isNL
+          ? "Westerse astrologie werkt met het rad van tekens en huizen rond je geboortijdstip: ze vertalen astronomische posities naar symbolische thema’s over karakter, timing en levensgebieden. Dat systeem is veel uitgebreider dan wat de meeste mensen kennen van alleen hun zonneteken of een korte horoscoop in de krant. Het idee dat iedereen min of meer hetzelfde zou zijn omdat veel mensen hetzelfde zonneteken delen, klopt maar deels: er is vaak veel overeenkomst. Tegelijk maken de vele verschillende onderdelen van een radix het ingewikkeld en zeer persoonlijk—het is een schakelsysteem van het universum waar jij deel van uitmaakt, waarin tekens, huizen, planeten en aspecten elkaar raken in plaats van tot één plat label te vervallen. Deze tool helpt je stap voor stap je eigen radix beter te begrijpen en te lezen. In de glossary vind je korte uitleg bij begrippen, planeten, tekens en aspecten. Je wordt er geen professioneel astroloog van, maar je kunt wél leren om je eigen horoscoop helderder te lezen."
+          : "Western astrology works with the wheel of signs and houses around your birth moment, translating astronomical positions into symbolic themes of character, timing, and life areas. The system is far broader than what most people know from their Sun sign alone or a short newspaper horoscope. The idea that everyone would be more or less the same because many people share the same Sun sign is only partly true: there is often a lot in common. At the same time, the many different parts of a chart make it intricate and highly personal—it is an interlocking pattern within the universe you belong to, where signs, houses, planets, and aspects meet instead of collapsing into a single label. This tool helps you read your natal chart step by step. The glossary explains terms, planets, signs, and aspects. It will not make you a professional astrologer, but it can help you read your own chart more clearly.";
         const topSection = createLayoutSection(
           isNL ? "Westerse horoscoop" : "Western horoscope",
-          ""
+          westernPageIntro
         );
         const methodEyebrow = createEl("div", "astro-eyebrow", isNL ? "Methode 1" : "Method 1");
         topSection.insertBefore(methodEyebrow, topSection.firstChild);
@@ -4884,13 +4883,13 @@
           sun.sign ? `${localizeSignShort(sun.sign)} ${isNL ? "in" : "in"} ${houseLabel(sun.house)}` : (isNL ? "Zonpositie ontbreekt" : "Sun placement unavailable"),
           isNL ? "Levensrichting" : "Direction",
           sunCardBody,
-          { iconId: "sun", subtitleIconId: signGlyph(sun.sign), accentColor: planetAccent.Sun || "#884dc9", eyebrow: astroCardIconEyebrow("sun", isNL), badge: isNL ? "Kern" : "Core" }
+          { iconId: "sun", subtitleIconId: signGlyph(sun.sign), accentColor: planetAccent.Sun || "#884dc9", eyebrow: isNL ? "Zonneteken" : "Sun sign", badge: isNL ? "Kern" : "Core" }
         ));
         topLayersGrid.appendChild(createAstroCard(
           moon.sign ? `${localizeSignShort(moon.sign)} ${isNL ? "in" : "in"} ${houseLabel(moon.house)}` : (isNL ? "Maanpositie ontbreekt" : "Moon placement unavailable"),
           isNL ? "Innerlijke ruimte" : "Inner space",
           moonCardBody,
-          { iconId: "moon", subtitleIconId: signGlyph(moon.sign), accentColor: planetAccent.Moon || "#884dc9", eyebrow: astroCardIconEyebrow("moon", isNL), badge: isNL ? "Kern" : "Core" }
+          { iconId: "moon", subtitleIconId: signGlyph(moon.sign), accentColor: planetAccent.Moon || "#884dc9", eyebrow: isNL ? "Maanteken" : "Moon sign", badge: isNL ? "Kern" : "Core" }
         ));
         topLayersGrid.appendChild(createAstroCard(
           ascSign ? `${localizeSignShort(ascSign)} ${isNL ? "op de Ascendant" : "on the Ascendant"}` : (isNL ? "Ascendant ontbreekt" : "Ascendant unavailable"),
@@ -4898,18 +4897,13 @@
           ascCardBody,
           { iconId: "ascendant", subtitleIconId: signGlyph(ascSign), accentColor: planetAccent.Ascendant || "#884dc9", eyebrow: astroCardIconEyebrow("ascendant", isNL), badge: isNL ? "Kern" : "Core" }
         ));
+        const kernwaardenTitle = createEl("h4", "western-kernwaarden-heading", isNL ? "Kernwaarden" : "Core values");
+        const kernSummaryText = isNL
+          ? "Kernwaarden zijn hier drie vaste ingangen waarmee de rest van je radix leesbaar wordt: je zonneteken (het teken waarin de Zon stond bij je geboorte—bewuste richting, groei en wat je zichtbaar wilt uitbouwen), je maanteken (het teken van je Maan—onderstroom, behoeften en hoe je ervaart en verwerkt) en de Ascendant (het teken aan het oostpunt van je geboorte—je eerste stap naar buiten en vaak wat anderen snel opmerken). Ze heten kern omdat ze samen het raamwerk vormen van identiteit, gevoel en aanpak: ze zijn geen ‘losse sterrenbeeldjes’, maar posities in het grotere schakelsysteem van je hele horoscoop. Wat dit concreet voor jou betekent, staat in de drie kaarten hieronder."
+          : "Here, core values are three steady entry points that make the rest of your chart readable: your Sun sign (the sign the Sun occupied at birth—conscious direction, growth, and what you develop outwardly), your Moon sign (your Moon’s sign—undercurrent, needs, and how you feel and process), and the Ascendant (the sign on the eastern horizon at birth—your first outward step, and often what people notice quickly). They are called core because together they frame identity, feeling, and approach: not isolated “star signs,” but placements inside the wider interlocking pattern of your whole chart. The three cards below spell out what that means for you personally.";
+        topSection.appendChild(kernwaardenTitle);
+        topSection.appendChild(createEl("p", "western-kern-summary", kernSummaryText));
         topSection.appendChild(topLayersGrid);
-        topSection.appendChild(
-          createEl(
-            "p",
-            "",
-            introPieces.length
-              ? introPieces.join(" ")
-              : (isNL
-                  ? "Deze persoonlijke introductie kan nog niet volledig worden samengesteld, omdat niet alle benodigde berekende waarden beschikbaar zijn."
-                  : "This personal introduction cannot yet be composed completely because required computed values are missing.")
-          )
-        );
         wrap.appendChild(topSection);
 
         const wheelSection = createLayoutSection(isNL ? "Radix wiel" : "Natal wheel", "");
@@ -5224,11 +5218,24 @@
           }
         };
         renderInfoPanel(null);
-        const rulerStrip = createEl("div", "western-ruler-strip");
         if (!ascSign) {
-          rulerStrip.appendChild(createEl("p", "", "De chart ruler kan niet worden bepaald, omdat de Ascendant ontbreekt."));
+          wheelCol.appendChild(
+            createEl(
+              "p",
+              "western-chart-ruler-message",
+              isNL ? "De chart ruler kan niet worden bepaald, omdat de Ascendant ontbreekt." : "The chart ruler cannot be determined because the Ascendant is missing."
+            )
+          );
         } else if (!chartRulerName || !chartRulerPlacement || !chartRulerPlacement.sign) {
-          rulerStrip.appendChild(createEl("p", "", "De chart ruler is bekend, maar de positie ervan kon niet betrouwbaar worden gekoppeld."));
+          wheelCol.appendChild(
+            createEl(
+              "p",
+              "western-chart-ruler-message",
+              isNL
+                ? "De chart ruler is bekend, maar de positie ervan kon niet betrouwbaar worden gekoppeld."
+                : "The chart ruler is known, but its position could not be linked reliably."
+            )
+          );
         } else {
           const crSign = chartRulerPlacement.sign;
           const houseBit = chartRulerPlacement.house != null ? houseLabel(chartRulerPlacement.house) : placeholderFor("huis");
@@ -5237,7 +5244,7 @@
           const stampNote = isNL
             ? `${localizePlanet(chartRulerName)} is je chart ruler bij ${localizeSignShort(ascSign)} op de Ascendant — ${planetThemes[chartRulerName] || "deze planeet"} krijgt daardoor extra gewicht.`
             : `${localizePlanet(chartRulerName)} is your chart ruler with ${localizeSignShort(ascSign)} rising — that gives this planetary theme extra weight in how you show up.`;
-          const card = createEl("div", "western-chart-ruler__unified western-chart-ruler__unified--stamp");
+          const card = createEl("div", "western-chart-ruler__unified western-chart-ruler__unified--stamp western-chart-ruler__unified--below-wheel");
           card.style.setProperty("--cr-accent", planetAccent[chartRulerName] || "#884dc9");
           const row = createEl("div", "western-chart-ruler__stamp-row");
           if (rulerGlyphId && iconPathById(rulerGlyphId)) {
@@ -5257,9 +5264,8 @@
           row.appendChild(meta);
           card.appendChild(row);
           card.appendChild(createEl("p", "western-chart-ruler__stamp-note", stampNote));
-          rulerStrip.appendChild(card);
+          wheelCol.appendChild(card);
         }
-        wheelCol.appendChild(rulerStrip);
         wheelLayout.appendChild(wheelCol);
         wheelLayout.appendChild(infoPanel);
         radixVenster.appendChild(wheelLayout);
@@ -5278,8 +5284,8 @@
         const energySection = createLayoutSection(
           isNL ? "Energetische verdeling" : "Energetic distribution",
           isNL
-            ? "Drie korte profielen: hoe je energie zich over elementen verdeelt, welk bewegingsritme (modaliteit) overheerst, en of de chart meer actieve (yang) of ontvankelijke (yin) signatuur toont. Dit is geen oordeel over wie je bent, maar een kompas om patronen te herkennen."
-            : "Three quick profiles: how energy spreads across elements, which movement style (modality) dominates, and whether the chart leans more active (yang) or receptive (yin). This is not a verdict on who you are—a compass to notice patterns."
+            ? "Hier lees je drie samenvattende balansen op basis van waar planeten in tekens staan—niet op basis van huizen of aspecten. Elementen groeperen de twaalf tekens in vier temperamenten (vuur, aarde, lucht, water): welk soort ‘brandstof’ of benadering in de chart statistisch zwaarder weegt. Modaliteiten (kardinaal, vast, beweeglijk) beschrijven drie bewegingspatronen: starten en richting geven, vasthouden en verdiepen, of schakelen en bijsturen. Polariteit (yin/yang) verdeelt tekens grof in actievere vuur/lucht-halve (yang) versus ontvankelijkere aarde/water-halve (yin). Elk van die drie onderdelen heeft een eigen kaart met alle bijbehorende symbolen; de persoonlijke vertaling van jouw verdeling staat in de tekst onder de balken."
+            : "Here you get three summary balances from which signs planets occupy—not houses or aspects. Elements group the twelve signs into four temperaments (fire, earth, air, water): which kind of ‘fuel’ or style weighs more in the chart. Modalities (cardinal, fixed, mutable) describe three movement patterns: initiating and steering, holding and deepening, or adapting and retuning. Polarity (yin/yang) roughly splits signs into more activating fire/air (yang) versus more receptive earth/water (yin). Each part has its own card with every related symbol; the personal reading of your mix sits in the text below the bars."
         );
         const energyGrid = createEl("div", "explain-grid");
         const toPercentMap = (obj) => {
@@ -5306,27 +5312,30 @@
           return isNL ? ({ yin: "Yin", yang: "Yang" }[key] || key) : ({ yin: "Yin", yang: "Yang" }[key] || key);
         };
         const makeBarsCard = (title, kind, obj, cardLead, summaryText) => {
-          const card = createEl("div", "explain-card");
+          const card = createEl("div", "explain-card explain-card--energy-balance");
           card.style.setProperty("--accent", "#884dc9");
-          const head = createEl("div", "astro-card__head");
-          const left = createEl("div", "astro-card__meta-left");
-          const iconId = kind === "elements" ? "fire" : kind === "modalities" ? "cardinal" : "yang";
-          if (iconPathById(iconId)) {
-            const iconWrap = createEl("span", "astro-inline-symbol__icon");
+          const stripIds =
+            kind === "elements" ? ["fire", "earth", "air", "water"] : kind === "modalities" ? ["cardinal", "fixed", "mutable"] : ["yin", "yang"];
+          const symbolStrip = createEl("div", "explain-card__symbol-strip");
+          stripIds.forEach((sid) => {
+            if (!iconPathById(sid)) return;
+            const lab = barRowLabel(kind, sid);
+            const iw = createEl("span", "explain-card__symbol-strip-icon");
             const img = document.createElement("img");
-            img.src = iconPathById(iconId);
-            img.alt = title;
+            img.src = iconPathById(sid);
+            img.alt = lab;
+            img.title = lab;
             img.loading = "lazy";
             img.decoding = "async";
-            iconWrap.appendChild(img);
-            left.appendChild(iconWrap);
-          }
-          left.appendChild(createEl("span", "", isNL ? "Duiding" : "Reading"));
-          head.appendChild(left);
-          head.appendChild(createEl("span", "astro-card__badge", isNL ? "Kern" : "Core"));
-          card.appendChild(head);
-          card.appendChild(createEl("h4", "", title));
-          if (cardLead) card.appendChild(createEl("p", "explain-card__lead", cardLead));
+            iw.appendChild(img);
+            symbolStrip.appendChild(iw);
+          });
+          const introWrap = createEl("div", "explain-card__intro-wrap");
+          if (symbolStrip.childNodes.length) introWrap.appendChild(symbolStrip);
+          introWrap.appendChild(createEl("h4", "", title));
+          if (cardLead) introWrap.appendChild(createEl("p", "explain-card__lead", cardLead));
+          card.appendChild(introWrap);
+          const barGroup = createEl("div", "explain-card__bar-group");
           barKindOrder(kind).forEach((k) => {
             if (!Object.prototype.hasOwnProperty.call(obj || {}, k)) return;
             const v = obj[k];
@@ -5337,8 +5346,9 @@
             fill.style.width = `${Math.max(0, Math.min(100, Number(v || 0)))}%`;
             track.appendChild(fill);
             row.appendChild(track);
-            card.appendChild(row);
+            barGroup.appendChild(row);
           });
+          card.appendChild(barGroup);
           if (summaryText) card.appendChild(createEl("p", "explain-card__summary-line", summaryText));
           return card;
         };
@@ -5437,8 +5447,8 @@
             "elements",
             elementPct,
             isNL
-              ? "Telt hoeveel planeten in vuur-, aarde-, lucht- en waterteken staan; zo zie je welk temperament in de chart het zwaarst weegt."
-              : "Counts how many planets sit in fire, earth, air, and water signs so you can see which temperament weighs most in the chart.",
+              ? "Telt hoeveel planeten in vuur-, aarde-, lucht- of waterteken staan. Elk teken hoort bij precies één element; de percentages zijn dus een vergelijking tussen vier temperamenten over je hele planetenlijst."
+              : "Counts how many planets occupy fire, earth, air, or water signs. Each sign maps to exactly one element, so the bars compare four temperaments across your whole planet set.",
             elementSummaryText
           )
         );
@@ -5448,8 +5458,8 @@
             "modalities",
             modalityPct,
             isNL
-              ? "Kardinaal start en initieert, vast houdt vast, beweeglijk past aan — de verhouding laat zien hoe je chart vooral in beweging komt."
-              : "Cardinal initiates, fixed sustains, mutable adapts — the mix shows how the chart mainly gets into motion.",
+              ? "Kardinaal, vast en beweeglijk verdelen de twaalf tekens in drie bewegingsstijlen: starten en sturen, vasthouden en verdiepen, of schakelen en bijsturen. De balken tonen hoe jouw planeten over die drie modaliteiten verdeeld zijn."
+              : "Cardinal, fixed, and mutable split the twelve signs into three movement styles: initiating and steering, holding and deepening, or adapting and retuning. The bars show how your planets spread across those three modalities.",
             modalitySummaryText
           )
         );
@@ -5458,8 +5468,8 @@
           "polarity",
           polarityPct,
           isNL
-            ? "Yang wijst op actievere (vuur/lucht-)tekens, yin op ontvankelijkere (aarde/water-)tekens; de balken tonen de verhouding tussen die groepen."
-            : "Yang leans on more active (fire/air) signs, yin on more receptive (earth/water) signs; the bars show the balance between those groups.",
+            ? "Yin groepeert aarde- en watertekens; yang groepeert vuur- en luchttekens. Dit is een grove tweedeling op tekensoort (zoals op het wiel), geen oordeel over persoonlijkheid los van de rest van de chart."
+            : "Yin groups earth and water signs; yang groups fire and air signs. This is a broad split by sign type (as on the wheel), not a personality verdict separate from the rest of the chart.",
           polaritySummaryText
         );
         energyGrid.appendChild(polarityCard);
@@ -5524,8 +5534,8 @@
         const houseSection = createLayoutSection(
           isNL ? "Levensgebieden" : "Life areas",
           isNL
-            ? "Huizen waar deze chart extra nadruk krijgt: kernlichamen (Zon, Maan, chart ruler), hoekhuizen met bewoners, en clusters met meerdere planeten. Lees elk huis als ‘waar in mijn leven dit samenkomt’, niet als vast beroep of lot."
-            : "Houses that carry extra weight here: core bodies (Sun, Moon, chart ruler), angular houses with planets, and clusters with multiple planets. Read each house as ‘where in my life this converges,’ not as a fixed job or fate."
+            ? "De twaalf huizen zijn vaste segmenten vanaf de Ascendant: elk vak hoort bij een levensgebied (onder meer identiteit, middelen, omgeving, familie, creativiteit, dagelijks werk en gezondheid, relaties, gedeelde middelen en transformatie, wereldbeeld, roeping, netwerk, en wat je afrondt of verdiept). Ze zijn geen kant-en-klaar beroep of lot; ze tonen waar thema’s in je agenda en ervaring samenkomen. Deze selectie licht huizen uit waar Zon, Maan of chart‑ruler staan, waar hoekhuizen (1, 4, 7, 10) planeten hebben, en waar meerdere planeten samen een cluster vormen. De persoonlijke duiding staat in de kaarten hieronder."
+            : "The twelve houses are fixed slices from the Ascendant: each maps to a life area (identity, resources, surroundings, roots, creativity, daily work and health, partnerships, shared means and change, worldview, vocation, networks, and what you complete or deepen). They are not a ready-made career or fate label—they show where themes show up in your days and relationships. This selection highlights houses that hold the Sun, Moon, or chart ruler, angular houses (1, 4, 7, 10) with planets, and sectors where several planets cluster. Personal interpretation lives in the cards below."
         );
         if (!cusps.length) {
           houseSection.appendChild(createEl("p", "", "De huizenfocus kan niet betrouwbaar worden getoond, omdat hiervoor geboortetijd en geboorteplaats nodig zijn."));
@@ -5542,11 +5552,12 @@
             const firstPlanet = planetsIn.length ? planetsIn[0] : null;
             const iconId = firstPlanet ? planetGlyph(firstPlanet) : "";
             const accent = firstPlanet ? (planetAccent[firstPlanet] || "#884dc9") : "#884dc9";
+            const areaTheme = houseThemes[h] || (isNL ? "levensgebied" : "life area");
             houseGrid.appendChild(createAstroCard(
               `${isNL ? "Huis" : "House"} ${h}`,
               planetsIn.length ? planetsIn.map((pn) => localizePlanet(pn)).join(" · ") : "-",
               buildWesternHouseFocusText(h, planetsIn),
-              { iconId, accentColor: accent, eyebrow: isNL ? "Duiding" : "Reading", badge: isNL ? "Kern" : "Core" }
+              { iconId, accentColor: accent, eyebrow: areaTheme }
             ));
           });
           houseSection.appendChild(houseGrid);
@@ -5583,7 +5594,6 @@
             }
             left.appendChild(createEl("span", "", isNL ? "Duiding" : "Reading"));
             head.appendChild(left);
-            head.appendChild(createEl("span", "astro-card__badge", isNL ? "Kern" : "Core"));
             card.appendChild(head);
             card.appendChild(createEl("h4", "", title));
             if (lead) card.appendChild(createEl("p", "explain-card__lead", lead));
@@ -5755,13 +5765,13 @@
           isNL ? "Huizenclusters" : "House clusters",
           isNL ? "Patroon" : "Pattern",
           patternClusterBody,
-          { iconId: "saturn", accentColor: "#315B9A", eyebrow: isNL ? "Patroon" : "Pattern", badge: isNL ? "Kern" : "Core" }
+          { iconId: "saturn", accentColor: "#315B9A", eyebrow: isNL ? "Patroon" : "Pattern" }
         ));
         patternGrid.appendChild(createAstroCard(
           isNL ? "Dominante energie" : "Dominant energy",
           isNL ? "Patroon" : "Pattern",
           patternDominantBody,
-          { iconId: "jupiter", accentColor: "#E88918", eyebrow: isNL ? "Patroon" : "Pattern", badge: isNL ? "Kern" : "Core" }
+          { iconId: "jupiter", accentColor: "#E88918", eyebrow: isNL ? "Patroon" : "Pattern" }
         ));
         patternGrid.appendChild(createAstroCard(
           isNL ? "Geavanceerde configuraties" : "Advanced configurations",
@@ -6499,7 +6509,6 @@
                 subtitleIconId: signGlyph(lagSign),
                 accentColor: vargaPlanetAccent.Ascendant,
                 eyebrow: astroCardIconEyebrow("ascendant", isNL),
-                badge: isNL ? "Kern" : "Core",
               }
             )
           );
@@ -6521,7 +6530,6 @@
                 subtitleIconId: signGlyph(moonSign),
                 accentColor: vargaPlanetAccent.Moon,
                 eyebrow: astroCardIconEyebrow("moon", isNL),
-                badge: isNL ? "Kern" : "Core",
               }
             )
           );
@@ -6543,7 +6551,6 @@
                 subtitleIconId: signGlyph(sunSign),
                 accentColor: vargaPlanetAccent.Sun,
                 eyebrow: astroCardIconEyebrow("sun", isNL),
-                badge: isNL ? "Kern" : "Core",
               }
             )
           );

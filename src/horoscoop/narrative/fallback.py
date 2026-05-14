@@ -8,14 +8,25 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from ..data.glossary import get_entry_or_none
-from ..formulas import get_formula_or_none
 from ..interpretation.types import InterpretationPoint
 from .types import (
     EnergyProfileNarrative,
     NarrativeSection,
     SynthesisPoint,
 )
+
+SUMMARY_INSUFFICIENT_TEXT = (
+    "Er zijn nog onvoldoende waarden beschikbaar om een samenvatting op te bouwen."
+)
+
+
+def _finalize_sentence(text: str) -> str:
+    s = text.strip()
+    if not s:
+        return s
+    if s.endswith((".", "?", "!")):
+        return s
+    return s + "."
 
 
 def render_point_fallback(point: InterpretationPoint) -> str:
@@ -24,14 +35,11 @@ def render_point_fallback(point: InterpretationPoint) -> str:
     if point.get("technicalLabel"):
         parts.append(point["technicalLabel"] + ".")
     if point.get("humanMeaning"):
-        sentence = point["humanMeaning"].strip()
-        if sentence and not sentence.endswith("."):
-            sentence += "."
-        parts.append(sentence)
+        parts.append(_finalize_sentence(point["humanMeaning"]))
     if point.get("balancedExpression"):
-        parts.append(point["balancedExpression"].strip())
+        parts.append(_finalize_sentence(point["balancedExpression"]))
     if point.get("shadowExpression"):
-        parts.append(point["shadowExpression"].strip())
+        parts.append(_finalize_sentence(point["shadowExpression"]))
     return " ".join(p for p in parts if p)
 
 
@@ -70,6 +78,11 @@ def _section_for_points(
     }
 
 
+def build_intro_narrative_section() -> NarrativeSection:
+    """Vaste intro-sectie; zelfde inhoud als in `build_fallback_narrative`."""
+    return _intro_section()
+
+
 def _intro_section() -> NarrativeSection:
     return {
         "section": "intro",
@@ -92,7 +105,7 @@ def _summary_section(points: list[InterpretationPoint]) -> NarrativeSection:
         return {
             "section": "summary",
             "method": "energy-profile",
-            "text": "Er zijn nog onvoldoende waarden beschikbaar om een samenvatting op te bouwen.",
+            "text": SUMMARY_INSUFFICIENT_TEXT,
             "bulletPoints": [],
             "reflectionQuestions": [],
             "sources": [],
@@ -102,10 +115,13 @@ def _summary_section(points: list[InterpretationPoint]) -> NarrativeSection:
     high_conf = [p for p in points if p.get("confidence") == "high"]
     selected = high_conf[:3] if high_conf else points[:3]
     text = " ".join(p.get("humanMeaning", "") for p in selected if p.get("humanMeaning"))
+    text = text.strip()
+    if not text:
+        text = SUMMARY_INSUFFICIENT_TEXT
     return {
         "section": "summary",
         "method": "energy-profile",
-        "text": text.strip(),
+        "text": text,
         "bulletPoints": [p.get("technicalLabel", "") for p in selected],
         "reflectionQuestions": [],
         "sources": sorted({s for p in selected for s in (p.get("glossarySources") or [])}),
@@ -130,12 +146,18 @@ def _synthesis_section(synthesis_points: list[SynthesisPoint], cross_points: lis
         bullets.append(p.get("technicalLabel", ""))
         reflections.extend(p.get("reflectionQuestions") or [])
         sources.extend(p.get("glossarySources") or [])
+    seen_r: set[str] = set()
+    deduped_reflections: list[str] = []
+    for q in reflections:
+        if q and q not in seen_r:
+            seen_r.add(q)
+            deduped_reflections.append(q)
     return {
         "section": "synthesis",
         "method": "energy-profile",
         "text": "\n\n".join(t for t in text_parts if t),
         "bulletPoints": [b for b in bullets if b],
-        "reflectionQuestions": reflections,
+        "reflectionQuestions": deduped_reflections,
         "sources": sorted(set(sources)),
         "style": "reflective",
         "generator": "fallback",

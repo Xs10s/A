@@ -421,6 +421,121 @@ def _build_element_balance_point(resolved: dict[str, Any]) -> InterpretationPoin
     }
 
 
+def _hd_type_slug(type_raw: Any) -> str | None:
+    if isinstance(type_raw, dict):
+        type_raw = type_raw.get("name") or type_raw.get("type") or type_raw.get("type_name")
+    if not type_raw:
+        return None
+    key = str(type_raw).strip().lower().replace("_", " ")
+    key = " ".join(key.split())
+    table = {
+        "manifestor": "manifestor",
+        "generator": "generator",
+        "manifesting generator": "manifesting-generator",
+        "manifesting-generator": "manifesting-generator",
+        "projector": "projector",
+        "reflector": "reflector",
+    }
+    slug = table.get(key)
+    if slug:
+        return slug
+    kebab = key.replace(" ", "-")
+    if get_entry_or_none(f"human-design.type.{kebab}"):
+        return kebab
+    return None
+
+
+def _hd_authority_slug(auth_raw: Any) -> str | None:
+    if isinstance(auth_raw, dict):
+        auth_raw = auth_raw.get("name") or auth_raw.get("authority")
+    if not auth_raw:
+        return None
+    key = str(auth_raw).strip().lower().replace("_", " ")
+    key = " ".join(key.split())
+    table = {
+        "emotional": "emotional",
+        "sacral": "sacral",
+        "splenic": "splenic",
+        "ego": "ego",
+        "self-projected": "self-projected",
+        "self projected": "self-projected",
+        "mental": "mental",
+        "lunar": "lunar",
+    }
+    slug = table.get(key)
+    if slug:
+        return slug
+    kebab = key.replace(" ", "-")
+    if get_entry_or_none(f"human-design.authority.{kebab}"):
+        return kebab
+    return None
+
+
+def _build_cross_decision_pattern_point(resolved: dict[str, Any]) -> InterpretationPoint | None:
+    """Human Design type + autoriteit, optioneel verrijkt met Westerse Maan."""
+    type_slug = _hd_type_slug(resolved.get("human-design.type.core"))
+    auth_slug = _hd_authority_slug(resolved.get("human-design.authority.core"))
+    if not type_slug or not auth_slug:
+        return None
+    type_key = f"human-design.type.{type_slug}"
+    auth_key = f"human-design.authority.{auth_slug}"
+    t_entry = get_entry_or_none(type_key)
+    a_entry = get_entry_or_none(auth_key)
+    if not t_entry or not a_entry:
+        return None
+
+    formula = FORMULA_REGISTRY["cross.decision_pattern"]
+    construct = formula["meaningConstruct"]
+    bindings: dict[str, dict[str, Any]] = {
+        "type": dict(t_entry),
+        "authority": dict(a_entry),
+    }
+    sources: list[str] = [type_key, auth_key]
+
+    moon_sign = resolved.get("western.planets.moon.sign")
+    if moon_sign:
+        moon_key = f"western.sign.{str(moon_sign).lower()}"
+        m_entry = get_entry_or_none(moon_key)
+        if m_entry:
+            bindings["moon"] = dict(m_entry)
+            sources.append(moon_key)
+
+    human, mh = _render_template(construct["semanticPattern"], bindings)
+    balanced, mb = _render_template(construct["balancedTemplate"], bindings)
+    shadow, ms = _render_template(construct["shadowTemplate"], bindings)
+    reflections = [_render_template(q, bindings)[0] for q in construct["reflectionQuestionsTemplate"]]
+    notes: list[str] = list(mh) + list(mb) + list(ms)
+
+    if "moon" in bindings:
+        extra, em = _render_template(
+            " De Maan in {moon.label} kan de emotionele ingang bij keuzes kleuren met {moon.essence}.",
+            bindings,
+        )
+        notes.extend(em)
+        if extra and "{" not in extra:
+            human = human.rstrip() + extra
+
+    return {
+        "formulaId": formula["id"],
+        "method": "cross",
+        "section": formula["outputSection"],
+        "technicalLabel": f"Beslispatroon: {t_entry['label']} met {a_entry['label']}",
+        "humanMeaning": human,
+        "balancedExpression": balanced,
+        "shadowExpression": shadow,
+        "reflectionQuestions": reflections,
+        "glossarySources": sources,
+        "inputs": {
+            "type": str(t_entry.get("label", type_slug)),
+            "authority": str(a_entry.get("label", auth_slug)),
+            **({"moonSign": str(moon_sign)} if moon_sign else {}),
+        },
+        "confidence": "high",
+        "relationshipType": formula["relationshipType"],
+        "notes": notes,
+    }
+
+
 def _build_cross_element_overlap(resolved: dict[str, Any]) -> list[InterpretationPoint]:
     from ..relationships import evaluate_relationships
 
@@ -508,6 +623,10 @@ def build_interpretation_points(
     elem_pt = _build_element_balance_point(resolved)
     if elem_pt:
         points.append(elem_pt)
+
+    dec_cross = _build_cross_decision_pattern_point(resolved)
+    if dec_cross:
+        points.append(dec_cross)
 
     points.extend(_build_cross_element_overlap(resolved))
 

@@ -70,7 +70,7 @@ CROSS_DECISION_PATTERN: FormulaDefinition = {
         "valueRoles": {
             "type": "Human Design type",
             "authority": "innerlijke autoriteit",
-            "moon": "emotionele basis",
+            "moon": "optioneel: Westerse Maan als emotionele kleur",
         },
         "semanticPattern": (
             "Beslissen lijkt te resoneren met {type.essence} en {authority.essence}."
@@ -80,14 +80,16 @@ CROSS_DECISION_PATTERN: FormulaDefinition = {
             "{authority.balancedExpression}."
         ),
         "shadowTemplate": (
-            "Uit balans kan dit voelen als {type.shadowExpression}."
+            "Uit balans kan dit voelen als {type.shadowExpression}, "
+            "terwijl beslissen onder druk kan schuren met {authority.shadowExpression}."
         ),
         "reflectionQuestionsTemplate": [
             "Welke beslissing wacht nu op de juiste timing?",
         ],
     },
     "fallbackTemplate": (
-        "Beslispatroon: {type.label} met {authority.label}. {type.essence}."
+        "Beslispatroon: {type.label} met {authority.label}. "
+        "{type.essence} Autoriteit: {authority.essence}."
     ),
     "llmAllowed": True,
     "confidenceRules": {"minimumInputs": 2},

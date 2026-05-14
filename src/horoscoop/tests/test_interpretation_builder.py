@@ -86,6 +86,17 @@ def test_cross_method_overlap_when_both_high():
     assert "fire" in cross[0]["inputs"].get("element", "").lower()
 
 
+def test_cross_decision_pattern_with_hd_and_moon():
+    out = _engine_output()
+    out["human_design"] = {"type": "Generator", "authority": "Sacral"}
+    points = build_interpretation_points(out)
+    dec = [p for p in points if p["formulaId"] == "cross.decision_pattern"]
+    assert len(dec) == 1
+    assert "Beslispatroon" in dec[0]["technicalLabel"]
+    assert "responderen" in dec[0]["humanMeaning"].lower() or "generator" in dec[0]["humanMeaning"].lower()
+    assert "maan" in dec[0]["humanMeaning"].lower()
+
+
 def test_no_points_when_engine_output_empty():
     out = build_interpretation_points({})
     assert out == []

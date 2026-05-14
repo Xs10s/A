@@ -14,7 +14,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from .fallback import build_fallback_narrative, render_point_fallback
+from .fallback import (
+    SUMMARY_INSUFFICIENT_TEXT,
+    build_fallback_narrative,
+    build_intro_narrative_section,
+    render_point_fallback,
+)
 from .prompts import build_prompt
 from .types import (
     EnergyProfileNarrative,
@@ -50,10 +55,13 @@ def generate_section_with_llm(
         )
         if not isinstance(text, str) or not text.strip():
             return _fallback_section(request, fallback_text)
+        out_text = text.strip()
+        if request.get("section") == "summary" and not out_text:
+            return _fallback_section(request, fallback_text)
         return {
             "section": request.get("section", "section"),
             "method": request.get("method", "energy-profile"),
-            "text": text.strip(),
+            "text": out_text,
             "bulletPoints": [p.get("technicalLabel", "") for p in points],
             "reflectionQuestions": _collect_reflections(points),
             "sources": _collect_sources(points),
@@ -66,10 +74,13 @@ def generate_section_with_llm(
 
 def _fallback_section(request: NarrativeRequest, fallback_text: str) -> NarrativeSection:
     points = list(request.get("interpretationPoints") or [])
+    text = fallback_text
+    if request.get("section") == "summary" and not (text or "").strip():
+        text = SUMMARY_INSUFFICIENT_TEXT
     return {
         "section": request.get("section", "section"),
         "method": request.get("method", "energy-profile"),
-        "text": fallback_text,
+        "text": text,
         "bulletPoints": [p.get("technicalLabel", "") for p in points],
         "reflectionQuestions": _collect_reflections(points),
         "sources": _collect_sources(points),
@@ -153,10 +164,12 @@ def generate_narrative(
     }
     synthesis_section = generate_section_with_llm(synthesis_request, llm_service)
 
+    high_conf = [p for p in points if p.get("confidence") == "high"]
+    summary_pick = high_conf[:3] if high_conf else points[:3]
     summary_request: NarrativeRequest = {
         "section": "summary",
         "method": "energy-profile",
-        "interpretationPoints": [p for p in points if p.get("confidence") == "high"][:5],
+        "interpretationPoints": summary_pick,
         "synthesisPoints": synthesis_points or [],
         "glossaryContext": glossary_context or [],
         "tone": tone,  # type: ignore[typeddict-item]
@@ -177,7 +190,7 @@ def generate_narrative(
         "locale": locale,  # type: ignore[typeddict-item]
         "profileData": {},
     }
-    intro_section = build_fallback_narrative([])["intro"]
+    intro_section = build_intro_narrative_section()
 
     themes_request: NarrativeRequest = {
         "section": "themes",

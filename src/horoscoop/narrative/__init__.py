@@ -11,9 +11,11 @@ Twee paden:
    externe afhankelijkheden.
 
 2. LLM-vertaalbrug (`generator.py`)
-   Roept de `LLMService` aan met een gecontroleerde context: alleen de
-   InterpretationPoints, glossary-bronnen en synthesis-punten worden
-   doorgegeven; de LLM mag NIET astrologie verzinnen.
+   Roept de `LLMService` aan met een gecontroleerde context die overeenkomt
+   met de kaarten in de persoonlijke-horoscoopblokken en de zichtbare
+   chartwaarden (radix, kundali, enz.): InterpretationPoints, glossary en
+   synthesis; de LLM mag NIET astrologie verzinnen of ontbrekende chartdata
+   invullen.
 
 Promptlogica blijft centraal in `prompts.py`.
 """

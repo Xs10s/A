@@ -7,7 +7,9 @@ Deze module is bewust dun. Hij:
   of niet beschikbaar is
 
 De LLM krijgt NOOIT directe toegang tot ruwe berekeningen of glossary-
-mutaties. Alle context komt via de Interpretation Builder.
+mutaties. Alle context komt via de Interpretation Builder en sluit inhoudelijk
+aan bij de kaarten in de persoonlijke-horoscoopblokken en de chartwaarden in
+de UI (zie `prompts.sourceContract`).
 """
 
 from __future__ import annotations

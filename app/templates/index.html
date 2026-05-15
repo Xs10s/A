@@ -310,6 +310,68 @@
         display: grid;
         gap: var(--lg);
       }
+
+      /* Uniforme methodepagina: nested techniek + glossary-buitenlaag */
+      .method-perspective {
+        font-family: var(--font-ui);
+        font-size: var(--small);
+        color: var(--text-secondary);
+        margin: 0 0 var(--md);
+        max-width: 72ch;
+        line-height: 1.55;
+      }
+      .method-tech-outer {
+        border: 1px solid var(--border);
+        padding: 0 var(--md) var(--sm);
+        margin-bottom: var(--lg);
+        background: var(--surface);
+      }
+      .method-tech-outer > summary {
+        cursor: pointer;
+        font-family: var(--font-ui);
+        font-size: var(--h3);
+        font-weight: 700;
+        padding: var(--sm) 0;
+        list-style: none;
+        color: var(--ljlk-text);
+      }
+      .method-tech-outer > summary::-webkit-details-marker { display: none; }
+      .method-tech-sub {
+        border: 1px solid var(--border);
+        margin: var(--sm) 0;
+        padding: 0 var(--sm);
+        background: #faf8fc;
+      }
+      .method-tech-sub__summary {
+        cursor: pointer;
+        font-family: var(--font-ui);
+        font-size: 0.95rem;
+        font-weight: 600;
+        padding: var(--sm) 0;
+        list-style: none;
+        color: var(--ljlk-ink);
+      }
+      .method-tech-sub__summary::-webkit-details-marker { display: none; }
+      .method-glossary-outer {
+        border: 1px solid var(--border);
+        padding: 0 var(--md) var(--md);
+        margin-top: var(--lg);
+        background: var(--surface);
+      }
+      .method-glossary-outer__summary {
+        cursor: pointer;
+        font-family: var(--font-ui);
+        font-size: var(--h2);
+        font-weight: 700;
+        padding: var(--md) 0 var(--sm);
+        list-style: none;
+        color: var(--ljlk-text);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .method-glossary-outer__summary::-webkit-details-marker { display: none; }
+      .method-glossary-outer__inner .legend-section:first-child { margin-top: 0; }
+
       .method-layout--western-tight {
         gap: 8px;
         width: 100%;
@@ -3413,6 +3475,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="/static/js/method-page-registry.js"></script>
     <script>
       const form = document.getElementById("horoscoop-form");
       const results = document.getElementById("results");
@@ -4811,6 +4874,14 @@
         );
         const methodEyebrow = createEl("div", "astro-eyebrow", isNL ? "Methode 1" : "Method 1");
         topSection.insertBefore(methodEyebrow, topSection.firstChild);
+        const regW = window.AstroMethodPage && window.AstroMethodPage.REGISTRY && window.AstroMethodPage.REGISTRY.western;
+        const h3Top = topSection.querySelector("h3.layout-section__title");
+        if (h3Top && regW && regW.perspective) {
+          h3Top.insertAdjacentElement(
+            "afterend",
+            createEl("p", "method-perspective", isNL ? regW.perspective.nl : regW.perspective.en)
+          );
+        }
         const topLayersGrid = createEl("div", "explain-grid");
         const sunCardBody = sun.sign
           ? (() => {
@@ -5852,11 +5923,14 @@
         wrap.appendChild(reflectionSection);
 
         const technical = document.createElement("details");
-        technical.className = "layout-section";
+        technical.className = "layout-section method-tech-outer";
         technical.open = false;
         const sum = document.createElement("summary");
         sum.textContent = isNL ? "Technische details (tabellen en berekening)" : "Technical details (tables and calculation)";
         technical.appendChild(sum);
+
+        const amp = window.AstroMethodPage;
+        const nest = amp && amp.wrapLayoutSectionInDetails ? (el, open) => amp.wrapLayoutSectionInDetails(el, !!open) : (el) => el;
 
         const planetRows = [];
         Object.entries(placements).forEach(([key, val]) => {
@@ -5879,7 +5953,7 @@
         } else {
           secPlanet.appendChild(createEl("p", "", isNL ? "Nog geen planeetstanden beschikbaar voor deze invoer." : "No planet placements available yet."));
         }
-        technical.appendChild(secPlanet);
+        technical.appendChild(nest(secPlanet, false));
 
         const secHouses = createLayoutSection(isNL ? "Huizentabel" : "Houses table", "");
         if (cusps.length >= 12) {
@@ -5899,7 +5973,7 @@
         } else {
           secHouses.appendChild(createEl("p", "", "De huizen kunnen niet betrouwbaar worden berekend zonder nauwkeurige geboortetijd en geboorteplaats."));
         }
-        technical.appendChild(secHouses);
+        technical.appendChild(nest(secHouses, false));
 
         const secAspects = createLayoutSection(isNL ? "Aspectentabel" : "Aspects table", "");
         if (aspects.length) {
@@ -5921,7 +5995,7 @@
         } else {
           secAspects.appendChild(createEl("p", "", "De aspecten konden niet worden samengesteld, omdat niet alle planeetposities beschikbaar zijn."));
         }
-        technical.appendChild(secAspects);
+        technical.appendChild(nest(secAspects, false));
 
         const secTech = createLayoutSection(isNL ? "Technische gegevens" : "Technical data", "");
         const birth = ((data || {}).input || {}).birth || {};
@@ -5939,10 +6013,14 @@
           techList.appendChild(createEl("li", "", line));
         });
         secTech.appendChild(techList);
-        technical.appendChild(secTech);
+        technical.appendChild(nest(secTech, false));
         wrap.appendChild(technical);
 
-        appendWesternGlossaryLegend(wrap);
+        if (window.AstroMethodPage && window.AstroMethodPage.appendGlossaryCollapsible) {
+          window.AstroMethodPage.appendGlossaryCollapsible(wrap, isNL, (inner) => appendWesternGlossaryLegend(inner));
+        } else {
+          appendWesternGlossaryLegend(wrap);
+        }
 
         return wrap;
       }
@@ -5995,6 +6073,14 @@
           createEl("div", "astro-eyebrow", isNL ? "Methode 2" : "Method 2"),
           vedicIntroSection.firstChild
         );
+        const regV = window.AstroMethodPage && window.AstroMethodPage.REGISTRY && window.AstroMethodPage.REGISTRY.vedic;
+        const vH3 = vedicIntroSection.querySelector("h3.layout-section__title");
+        if (vH3 && regV && regV.perspective) {
+          vH3.insertAdjacentElement(
+            "afterend",
+            createEl("p", "method-perspective", isNL ? regV.perspective.nl : regV.perspective.en)
+          );
+        }
         const vedicIntroPieces = [];
         vedicIntroPieces.push(
           isNL
@@ -6041,7 +6127,7 @@
         );
         wrap.appendChild(vedicIntroSection);
 
-        const secCore = createLayoutSection(isNL ? "Belangrijkste Vedische kernwaarden" : "Key Vedic values", "");
+        const secCore = createLayoutSection(isNL ? "Kernwaarden" : "Core values", "");
         const cg = createEl("div", "vedic-core-values-grid");
         const coreCard = (title, sub, body, iconId, sym, eyebrowOverride) =>
           createAstroCard(title, sub, body, {
@@ -6931,7 +7017,7 @@
         wrap.appendChild(secQ);
 
         const tech = document.createElement("details");
-        tech.className = "layout-section";
+        tech.className = "layout-section method-tech-outer";
         tech.open = false;
         const techSummary = document.createElement("summary");
         techSummary.textContent = isNL ? "Technische details (tabellen en berekening)" : "Technical details (tables and calculation)";
@@ -6951,16 +7037,22 @@
           pushL(`${isNL ? "Waarschuwingen" : "Warnings"}: ${jy.status.warnings.join(", ")}`);
         }
         tech.appendChild(ul);
-        tech.appendChild(secPl);
-        tech.appendChild(secH);
-        tech.appendChild(secN);
-        tech.appendChild(secDr);
-        if (kTechTable) tech.appendChild(kTechTable);
-        tech.appendChild(vargaTech);
+        const ampV = window.AstroMethodPage;
+        const nestV = ampV && ampV.wrapLayoutSectionInDetails ? (el, o) => ampV.wrapLayoutSectionInDetails(el, !!o) : (el) => el;
+        tech.appendChild(nestV(secPl, false));
+        tech.appendChild(nestV(secH, false));
+        tech.appendChild(nestV(secN, false));
+        tech.appendChild(nestV(secDr, false));
+        if (kTechTable) tech.appendChild(nestV(kTechTable, false));
+        tech.appendChild(nestV(vargaTech, false));
         wrap.appendChild(tech);
 
         wrap.appendChild(renderVedicStory(data));
-        appendVedicGlossaryLegend(wrap);
+        if (window.AstroMethodPage && window.AstroMethodPage.appendGlossaryCollapsible) {
+          window.AstroMethodPage.appendGlossaryCollapsible(wrap, isNL, (inner) => appendVedicGlossaryLegend(inner));
+        } else {
+          appendVedicGlossaryLegend(wrap);
+        }
       }
 
       function renderVedicTemplateLayout(data) {
@@ -6974,31 +7066,248 @@
       function renderBaziTemplateLayout(data) {
         const isNL = uiIsNL();
         const wrap = document.createElement("section");
-        wrap.className = "method-layout";
-        const pillars = ((data.chinese || {}).bazi_pillars) || {};
+        wrap.className = "method-layout method-layout--western-tight";
+        const chinese = data.chinese || {};
+        const pillars = chinese.bazi_pillars || {};
         const day = pillars.day || {};
         const year = pillars.year || {};
         const month = pillars.month || {};
-        wrap.appendChild(
-          createSharedMethodHero({
-            kicker: "BaZi • Four Pillars of Destiny",
-            titleHtml: isNL
-              ? 'Jouw chart als balans van <span class="purple">elementen</span>, <span class="gold">timing</span> en structuur'
-              : 'Your chart as balance of <span class="purple">elements</span>, <span class="gold">timing</span>, and structure',
-            intro: isNL
-              ? "BaZi toont hoe tijd zich uitdrukt via vijf elementen, yin-yang en de vier pilaren."
-              : "BaZi shows how time expresses through five elements, yin-yang, and the four pillars.",
-            metrics: [
-              { label: isNL ? "Dagmeester" : "Day master", value: `${day.stem || "-"}${day.branch || ""}`.trim() || "-" },
-              { label: isNL ? "Jaarpilaar" : "Year pillar", value: `${year.stem || "-"}${year.branch || ""}`.trim() || "-" },
-              { label: isNL ? "Maandpilaar" : "Month pillar", value: `${month.stem || "-"}${month.branch || ""}`.trim() || "-" },
-            ],
-            orbLabel: isNL ? "Day Master" : "Day Master",
-            orbMain: String(day.stem || "-"),
-            orbSub: `${day.branch || "-"} • ${year.stem || "-"}${year.branch || ""}`,
-          })
-        );
+        const hour = pillars.hour || {};
+        const dmElem = (chinese.day_master_element || "").toString().trim();
+        const stemElemNl = (stem) => {
+          const s = String(stem || "").trim();
+          const m = {
+            甲: "Hout", 乙: "Hout", 丙: "Vuur", 丁: "Vuur", 戊: "Aarde", 己: "Aarde",
+            庚: "Metaal", 辛: "Metaal", 壬: "Water", 癸: "Water",
+          };
+          return m[s] || (isNL ? "—" : "—");
+        };
+        const stemElemEn = (stem) => {
+          const s = String(stem || "").trim();
+          const m = {
+            甲: "Wood", 乙: "Wood", 丙: "Fire", 丁: "Fire", 戊: "Earth", 己: "Earth",
+            庚: "Metal", 辛: "Metal", 壬: "Water", 癸: "Water",
+          };
+          return m[s] || "—";
+        };
+        const se = (stem) => (isNL ? stemElemNl(stem) : stemElemEn(stem));
 
+        // --- Header (Vedisch/Westers patroon) ---
+        const dmStr = `${day.stem || ""}${day.branch || ""}`.trim() || "—";
+        const headerLead = isNL
+          ? `Day Master: ${dmStr}${dmElem ? ` · element ${dmElem}` : ""}. Jaar ${year.stem || "—"}${year.branch || "—"}, maand ${month.stem || "—"}${month.branch || "—"}, uur ${hour.stem || "—"}${hour.branch || "—"}. BaZi leest je geboortemoment via de vier pilaren (jaar, maand, dag, uur), yin-yang en de vijf elementen. De dagpilaar staat centraal: de hemelstam is je Day Master — de dragende toon van de chart.`
+          : `Day Master: ${dmStr}${dmElem ? ` · ${dmElem} element` : ""}. Year ${year.stem || "—"}${year.branch || "—"}, month ${month.stem || "—"}${month.branch || "—"}, hour ${hour.stem || "—"}${hour.branch || "—"}. BaZi reads your birth moment through the four pillars (year, month, day, hour), yin-yang, and the five elements. The day pillar is central: the heavenly stem is your Day Master.`;
+        const headerSec = createLayoutSection(isNL ? "BaZi / Vier pilaren" : "BaZi / Four Pillars", headerLead);
+        headerSec.insertBefore(createEl("div", "astro-eyebrow", isNL ? "Methode 3" : "Method 3"), headerSec.firstChild);
+        const bh3 = headerSec.querySelector("h3.layout-section__title");
+        const regB = window.AstroMethodPage && window.AstroMethodPage.REGISTRY && window.AstroMethodPage.REGISTRY.bazi;
+        if (bh3 && regB && regB.perspective) {
+          bh3.insertAdjacentElement("afterend", createEl("p", "method-perspective", isNL ? regB.perspective.nl : regB.perspective.en));
+        }
+        wrap.appendChild(headerSec);
+
+        // --- Kernwaarden ---
+        const coreSec = createLayoutSection(
+          isNL ? "Kernwaarden" : "Core values",
+          isNL
+            ? "Vier pijlers en Day Master als vaste ingangen — hetzelfde datapunt als in de chart hieronder."
+            : "Four pillars and Day Master as fixed entry points—the same data as in the chart below."
+        );
+        const coreGrid = createEl("div", "explain-grid");
+        const pillarLabel = { year: ["Jaar", "Year"], month: ["Maand", "Month"], day: ["Dag", "Day"], hour: ["Uur", "Hour"] };
+        ["year", "month", "day", "hour"].forEach((key) => {
+          const pv = pillars[key] || {};
+          const lab = isNL ? pillarLabel[key][0] : pillarLabel[key][1];
+          const val = `${pv.stem || "—"}${pv.branch || ""}`;
+          const elem = se(pv.stem);
+          coreGrid.appendChild(
+            createAstroCard(
+              val,
+              isNL ? `Hemelstam / aardetak (${lab})` : `Stem / branch (${lab})`,
+              isNL
+                ? `Pilaar ${lab.toLowerCase()}: stam ${pv.stem || "—"} draagt element ${elem}; tak ${pv.branch || "—"} kleurt de context.`
+                : `${lab} pillar: stem ${pv.stem || "—"} carries ${elem}; branch ${pv.branch || "—"} colors context.`,
+              {
+                eyebrow: lab,
+                badge: key === "day" ? (isNL ? "Kern" : "Core") : (isNL ? "Pilaar" : "Pillar"),
+                iconId: key === "day" ? "sun" : "ui-meaning",
+              }
+            )
+          );
+        });
+        coreSec.appendChild(coreGrid);
+        wrap.appendChild(coreSec);
+
+        // --- Visuele chart ---
+        const chartSec = createLayoutSection(
+          isNL ? "Vier pijlers (visueel)" : "Four pillars (visual)",
+          isNL
+            ? "Zelfde berekening als elders in de app; SVG wordt geladen zodra de server reageert."
+            : "Same calculation as elsewhere in the app; SVG loads when the server responds."
+        );
+        const radixBox = createEl("div", "western-radix-venster");
+        const wheelLayout = createEl("div", "western-wheel-layout");
+        const wheelCol = createEl("div", "western-wheel-col");
+        const wheelWrap = createEl("div", "astro-wheel-wrap");
+        wheelWrap.style.maxWidth = "520px";
+        wheelWrap.style.margin = "0 auto";
+        wheelCol.appendChild(wheelWrap);
+        wheelLayout.appendChild(wheelCol);
+        radixBox.appendChild(wheelLayout);
+        chartSec.appendChild(radixBox);
+        wrap.appendChild(chartSec);
+        queueMicrotask(async () => {
+          try {
+            wheelWrap.innerHTML = await fetchSectionSvg(data, "chinese_bazi", currentLocale());
+          } catch (e) {
+            wheelWrap.innerHTML = `<p class="astro-card__sub">${isNL ? "Chart kon niet worden geladen." : "Chart could not be loaded."}</p>`;
+          }
+        });
+
+        // --- Energetische verdeling (stam → element) ---
+        const energySec = createLayoutSection(
+          isNL ? "Energetische verdeling" : "Energy distribution",
+          isNL
+            ? "Ruwe verdeling via hemelstammen in de vier pilaren (geen volledige Ten Gods-analyse)."
+            : "Rough distribution via heavenly stems in the four pillars (not a full Ten Gods analysis)."
+        );
+        const eg = createEl("div", "explain-grid");
+        const stems = [year.stem, month.stem, day.stem, hour.stem].filter(Boolean);
+        const counts = {};
+        stems.forEach((st) => {
+          const e = se(st);
+          if (e && e !== "—") counts[e] = (counts[e] || 0) + 1;
+        });
+        Object.keys(counts).forEach((el) => {
+          eg.appendChild(
+            createExplainCard(
+              el,
+              isNL ? `${counts[el]}× in stammen (jaar–maand–dag–uur).` : `${counts[el]}× among stems (year–month–day–hour).`
+            )
+          );
+        });
+        if (!Object.keys(counts).length) {
+          eg.appendChild(createExplainCard(isNL ? "Elementen" : "Elements", isNL ? "Nog geen stamdata om te verdelen." : "No stem data to distribute yet."));
+        }
+        if (dmElem) {
+          eg.appendChild(
+            createExplainCard(
+              isNL ? "Day Master element" : "Day Master element",
+              isNL ? `Backend label: ${dmElem}.` : `Backend label: ${dmElem}.`
+            )
+          );
+        }
+        energySec.appendChild(eg);
+        wrap.appendChild(energySec);
+
+        // --- Pilaarrollen / levensgebieden (BaZi-logica) ---
+        const lifeSec = createLayoutSection(
+          isNL ? "Pilaarrollen" : "Pillar roles",
+          isNL
+            ? "Klassieke lezing: jaar = context, maand = omgeving, dag = zelf, uur = richting — kort en zonder extra berekeningen."
+            : "Classic reading: year = context, month = environment, day = self, hour = direction—short, without extra calculations."
+        );
+        const lg = createEl("div", "explain-grid");
+        lg.appendChild(
+          createExplainCard(
+            isNL ? "Jaarpilaar" : "Year pillar",
+            isNL
+              ? `Jaar ${year.stem || "—"}${year.branch || "—"}: achtergrond, familieveld, bredere omstandigheden.`
+              : `Year ${year.stem || "—"}${year.branch || "—"}: background, family field, wider conditions.`
+          )
+        );
+        lg.appendChild(
+          createExplainCard(
+            isNL ? "Maandpilaar" : "Month pillar",
+            isNL
+              ? `Maand ${month.stem || "—"}${month.branch || "—"}: seizoen, werk- en sociale laag.`
+              : `Month ${month.stem || "—"}${month.branch || "—"}: season, work and social layer.`
+          )
+        );
+        lg.appendChild(
+          createExplainCard(
+            isNL ? "Dagpilaar" : "Day pillar",
+            isNL
+              ? `Dag ${day.stem || "—"}${day.branch || "—"}: Day Master en relationele basis.`
+              : `Day ${day.stem || "—"}${day.branch || "—"}: Day Master and relational base.`
+          )
+        );
+        lg.appendChild(
+          createExplainCard(
+            isNL ? "Uurpilaar" : "Hour pillar",
+            isNL
+              ? `Uur ${hour.stem || "—"}${hour.branch || "—"}: expressie, projecten, latere timing.`
+              : `Hour ${hour.stem || "—"}${hour.branch || "—"}: expression, projects, later timing.`
+          )
+        );
+        lifeSec.appendChild(lg);
+        wrap.appendChild(lifeSec);
+
+        // --- Pilaardynamiek ---
+        const dynSec = createLayoutSection(
+          isNL ? "Pilaardynamiek" : "Pillar dynamics",
+          isNL
+            ? "Hoe de vier pijlers elkaar kleuren: start bij de dagpilaar en lees jaar en maand als spanning of steun."
+            : "How the four pillars tint each other: start from the day pillar and read year and month as tension or support."
+        );
+        dynSec.appendChild(
+          createEl(
+            "p",
+            "layout-section__lead",
+            isNL
+              ? `Dag ${dmStr} staat centraal; maand ${month.stem || "—"}${month.branch || "—"} modificeert het zichtbare klimaat; jaar ${year.stem || "—"}${year.branch || "—"} geeft het kader; uur ${hour.stem || "—"}${hour.branch || "—"} toont waar energie naar uit wil stromen.`
+              : `Day ${dmStr} is central; month ${month.stem || "—"}${month.branch || "—"} adjusts the visible climate; year ${year.stem || "—"}${year.branch || "—"} frames it; hour ${hour.stem || "—"}${hour.branch || "—"} shows where energy wants to flow.`
+          )
+        );
+        wrap.appendChild(dynSec);
+
+        // --- Patronen ---
+        const patSec = createLayoutSection(
+          isNL ? "Belangrijkste patronen" : "Key patterns",
+          isNL ? "Data × relatie × data: één compacte samenvatting." : "Data × relation × data: one compact summary."
+        );
+        const patGrid = createEl("div", "explain-grid");
+        patGrid.appendChild(
+          createExplainCard(
+            isNL ? "Dag + maand" : "Day + month",
+            isNL
+              ? `Day Master ${dmStr} in maand ${month.stem || "—"}${month.branch || "—"}: zoek waar je jezelf het hardst afzet tegen verwachtingen, of juist steun vindt.`
+              : `Day Master ${dmStr} in month ${month.stem || "—"}${month.branch || "—"}: notice where you push against expectations—or find support.`
+          )
+        );
+        patGrid.appendChild(
+          createExplainCard(
+            isNL ? "Dag + jaar" : "Day + year",
+            isNL
+              ? `Dag ${dmStr} tegen jaar ${year.stem || "—"}${year.branch || "—"}: welke oude context nog meespeelt in je huidige ritme.`
+              : `Day ${dmStr} versus year ${year.stem || "—"}${year.branch || "—"}: which older context still plays in your current rhythm.`
+          )
+        );
+        patSec.appendChild(patGrid);
+        wrap.appendChild(patSec);
+
+        wrap.appendChild(renderChineseStory(data));
+        wrap.appendChild(renderBaziStory(data));
+
+        if (window.AstroMethodPage) {
+          const amp = window.AstroMethodPage;
+          amp.appendReflectionQuestionsSection(wrap, isNL, {
+            questions: amp.baziReflectionQuestions(isNL, pillars),
+            fallbacks: isNL
+              ? [
+                  "Welke elementen geven je kracht, en welke brengen je uit balans?",
+                  "Waar merk je dat je natuurlijke ritme botst met wat je omgeving van je vraagt?",
+                  "Wat helpt jou om meer evenwicht te brengen tussen actie, rust, structuur en flexibiliteit?",
+                ]
+              : [
+                  "Which elements give you strength, and which pull you off balance?",
+                  "Where does your natural rhythm clash with what your environment expects?",
+                  "What helps you balance action, rest, structure, and flexibility?",
+                ],
+          });
+        }
+
+        // --- Technische details ---
         const rows = ["year", "month", "day", "hour"].map((k) => {
           const pv = pillars[k] || {};
           const label = isNL
@@ -7006,52 +7315,38 @@
             : ({ year: "Year", month: "Month", day: "Day", hour: "Hour" }[k] || k);
           return [label, String(pv.stem || "-"), String(pv.branch || "-")];
         });
-        const sectionPillars = createLayoutSection(
-          isNL ? "Vier pijlers" : "Four pillars",
-          isNL
-            ? "De pijlers vormen samen je basisstructuur: jaar, maand, dag en uur."
-            : "The pillars form your base structure: year, month, day, and hour."
-        );
-        sectionPillars.appendChild(createMethodTable([isNL ? "Pilaar" : "Pillar", isNL ? "Hemelstam" : "Stem", isNL ? "Aardetak" : "Branch"], rows));
-        wrap.appendChild(sectionPillars);
+        const techOuter = document.createElement("details");
+        techOuter.className = "layout-section method-tech-outer";
+        techOuter.open = false;
+        const techSum = document.createElement("summary");
+        techSum.textContent = isNL ? "Technische details (tabellen en berekening)" : "Technical details (tables and calculation)";
+        techOuter.appendChild(techSum);
+        const ampT = window.AstroMethodPage;
+        const nestT = ampT && ampT.wrapLayoutSectionInDetails ? (el, o) => ampT.wrapLayoutSectionInDetails(el, !!o) : (el) => el;
+        const tabSec = createLayoutSection(isNL ? "Pilaartabel" : "Pillar table", "");
+        if (rows.length) {
+          tabSec.appendChild(createMethodTable([isNL ? "Pilaar" : "Pillar", isNL ? "Hemelstam" : "Stem", isNL ? "Aardetak" : "Branch"], rows));
+        } else {
+          tabSec.appendChild(createEl("p", "", isNL ? "Geen pilaren beschikbaar." : "No pillars available."));
+        }
+        techOuter.appendChild(nestT(tabSec, false));
+        const metaSec = createLayoutSection(isNL ? "Bron en grenzen" : "Source and limits", "");
+        const birth = (data.input && data.input.birth) || {};
+        const ul = createEl("ul", "");
+        [
+          `${isNL ? "Datum/tijd" : "Date/time"}: ${birth.date || "—"} ${(birth.time_local || "").slice(0, 5)}`,
+          `${isNL ? "Jaar-grens" : "Year boundary"}: ${(chinese.boundary_year || chinese.boundary_settings && chinese.boundary_settings.year) || "lichun"}`,
+          `${isNL ? "Dag-grens" : "Day boundary"}: ${(chinese.calendar_day_definition || "—")}`,
+        ].forEach((line) => ul.appendChild(createEl("li", "", line)));
+        metaSec.appendChild(ul);
+        techOuter.appendChild(nestT(metaSec, false));
+        wrap.appendChild(techOuter);
 
-        const sectionBaziExplain = createLayoutSection(
-          isNL ? "Uitleg op basis van berekening" : "Explanation based on calculation",
-          isNL
-            ? "Kerninterpretatie met de waarden die nu beschikbaar zijn."
-            : "Core interpretation with the values currently available."
-        );
-        const bGrid = document.createElement("div");
-        bGrid.className = "explain-grid";
-        bGrid.appendChild(
-          createExplainCard(
-            isNL ? "Dagmeester" : "Day master",
-            isNL
-              ? `De dagpilaar (${day.stem || "-"}${day.branch || "-"}) is het centrale referentiepunt voor balans in de chart.`
-              : `The day pillar (${day.stem || "-"}${day.branch || "-"}) is the central reference point for chart balance.`
-          )
-        );
-        bGrid.appendChild(
-          createExplainCard(
-            isNL ? "Jaar/maand context" : "Year/month context",
-            isNL
-              ? `Jaar (${year.stem || "-"}${year.branch || "-"}) toont achtergrondinvloed; maand (${month.stem || "-"}${month.branch || "-"}) toont omgeving en rol.`
-              : `Year (${year.stem || "-"}${year.branch || "-"}) shows background influence; month (${month.stem || "-"}${month.branch || "-"}) shows environment and role.`
-          )
-        );
-        bGrid.appendChild(
-          createExplainCard(
-            isNL ? "Toepassing" : "Application",
-            isNL
-              ? "Gebruik deze matrix om te zien welke kwaliteiten je wilt versterken voor meer energetische balans."
-              : "Use this matrix to see which qualities to strengthen for better energetic balance."
-          )
-        );
-        sectionBaziExplain.appendChild(bGrid);
-        wrap.appendChild(sectionBaziExplain);
-        wrap.appendChild(renderChineseStory(data));
-        wrap.appendChild(renderBaziStory(data));
-        appendBaziGlossaryLegend(wrap);
+        if (window.AstroMethodPage && window.AstroMethodPage.appendGlossaryCollapsible) {
+          window.AstroMethodPage.appendGlossaryCollapsible(wrap, isNL, (inner) => appendBaziGlossaryLegend(inner));
+        } else {
+          appendBaziGlossaryLegend(wrap);
+        }
         return wrap;
       }
 
@@ -9626,41 +9921,7 @@
       }
 
       function renderBaziTabV2(data) {
-        const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
-        const intro = createEl("section", "astro-method-visual");
-        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 3" : "Method 3"));
-        intro.appendChild(createEl("h3", "astro-section-title", "BaZi / Four Pillars"));
-        intro.appendChild(
-          createEl(
-            "p",
-            "astro-section-sub",
-            isNL
-              ? "Vier pijlers op basis van de actuele berekening: jaar, maand, dag en uur."
-              : "Four pillars based on the live calculation: year, month, day, and hour."
-          )
-        );
-        const card = createAstroCard(
-          isNL ? "BaZi tabel" : "BaZi table",
-          isNL ? "Vier pijlers uit huidige berekening" : "Four pillars from current calculation",
-          ""
-        );
-        const pillars = (((data.chinese || {}).bazi_pillars) || {});
-        const rows = ["year", "month", "day", "hour"].map((k) => {
-          const p = pillars[k] || {};
-          const label = isNL
-            ? ({ year: "Jaar", month: "Maand", day: "Dag", hour: "Uur" }[k] || k)
-            : ({ year: "Year", month: "Month", day: "Day", hour: "Hour" }[k] || k);
-          return [label, String(p.stem || "-"), String(p.branch || "-")];
-        });
-        card.appendChild(
-          createMethodTable(
-            [isNL ? "Pilaar" : "Pillar", isNL ? "Hemelstam" : "Stem", isNL ? "Aardetak" : "Branch"],
-            rows
-          )
-        );
-        intro.appendChild(card);
-        root.appendChild(intro);
         appendMethodPersonalReadingSection(root, "chinese_ganzhi_bazi");
         root.appendChild(renderResultDashboard("bazi", data));
         return root;
@@ -9671,43 +9932,58 @@
       async function renderHumanDesignTab(data) {
         const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
-        const intro = createEl("section", "astro-method-visual");
-        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 4" : "Method 4"));
-        intro.appendChild(createEl("h3", "astro-section-title", "Human Design"));
-
+        const wrap = createEl("section", "method-layout method-layout--western-tight");
         const hd = (data && data.human_design) || {};
         const status = (hd.status) || {};
         const computed = !!status.computed;
 
-        const summaryText = computed
+        const summaryLead = computed
           ? (isNL
-            ? `Type ${hd.type || "-"} - Profiel ${(hd.profile && hd.profile.value) || "-"} - Authoriteit ${hd.authority || "-"}.`
-            : `Type ${hd.type || "-"} - Profile ${(hd.profile && hd.profile.value) || "-"} - Authority ${hd.authority || "-"}.`)
+            ? `Type ${hd.type || "-"} · profiel ${(hd.profile && hd.profile.value) || "-"} · autoriteit ${hd.authority || "-"}. Bodygraph gebruikt exacte geboortijd en -plaats.`
+            : `Type ${hd.type || "-"} · profile ${(hd.profile && hd.profile.value) || "-"} · authority ${hd.authority || "-"}. Bodygraph uses exact birth time and place.`)
           : (isNL
-            ? "Human Design vereist een exacte geboortetijd. Vul tijd in voor een volledige berekening."
-            : "Human Design requires an exact birth time. Provide time for full computation.");
-        intro.appendChild(createEl("p", "astro-section-sub", summaryText));
+            ? "Human Design vraagt een exacte geboortijd en betrouwbare geboorteplaats. Vul tijd en locatie in om type, centra, kanalen en poorten te berekenen."
+            : "Human Design needs exact birth time and a reliable birth place. Enter time and location to compute type, centers, channels, and gates.");
 
-        // Bodygraph card
-        const bodygraphCard = createAstroCard(
+        const hdHeader = createLayoutSection("Human Design", summaryLead);
+        hdHeader.insertBefore(createEl("div", "astro-eyebrow", isNL ? "Methode 4" : "Method 4"), hdHeader.firstChild);
+        const hh3 = hdHeader.querySelector("h3.layout-section__title");
+        const regHd = window.AstroMethodPage && window.AstroMethodPage.REGISTRY && window.AstroMethodPage.REGISTRY.human_design;
+        if (hh3 && regHd && regHd.perspective) {
+          hh3.insertAdjacentElement("afterend", createEl("p", "method-perspective", isNL ? regHd.perspective.nl : regHd.perspective.en));
+        }
+        wrap.appendChild(hdHeader);
+
+        const chartSec = createLayoutSection(
           isNL ? "Bodygraph" : "Bodygraph",
-          isNL ? "Centra, kanalen en poorten uit jouw geboortemoment" : "Centers, channels and gates from your birth moment",
-          ""
+          isNL ? "Visuele chart: centra, kanalen en poorten." : "Visual chart: centers, channels, and gates."
         );
+        const radixBox = createEl("div", "western-radix-venster");
+        const wheelLayout = createEl("div", "western-wheel-layout");
+        const wheelCol = createEl("div", "western-wheel-col");
         const bgWrap = createEl("div", "astro-wheel-wrap");
         bgWrap.style.maxWidth = "560px";
         bgWrap.style.margin = "0 auto";
-        try {
-          const svg = await fetchSectionSvg(data, "human_design", currentLocale());
-          bgWrap.innerHTML = svg;
-        } catch (e) {
-          bgWrap.innerHTML = `<p class="astro-card__sub">${isNL ? "Bodygraph kon niet worden geladen." : "Bodygraph could not be loaded."}</p>`;
-        }
-        bodygraphCard.appendChild(bgWrap);
-        intro.appendChild(bodygraphCard);
-
-        // Type/Strategy/Authority/Profile cards
         if (computed) {
+          try {
+            bgWrap.innerHTML = await fetchSectionSvg(data, "human_design", currentLocale());
+          } catch (e) {
+            bgWrap.innerHTML = `<p class="astro-card__sub">${isNL ? "Bodygraph kon niet worden geladen." : "Bodygraph could not be loaded."}</p>`;
+          }
+        } else {
+          bgWrap.innerHTML = `<p class="astro-card__sub">${isNL ? "Geen chart zonder volledige invoer." : "No chart without complete input."}</p>`;
+        }
+        wheelCol.appendChild(bgWrap);
+        wheelLayout.appendChild(wheelCol);
+        radixBox.appendChild(wheelLayout);
+        chartSec.appendChild(radixBox);
+        wrap.appendChild(chartSec);
+
+        if (computed) {
+          const coreSec = createLayoutSection(
+            isNL ? "Kernwaarden" : "Core values",
+            isNL ? "Vaste ingangen: type, strategie, autoriteit, profiel en incarnatiekruis." : "Fixed entry points: type, strategy, authority, profile, and incarnation cross."
+          );
           const g3 = createEl("div", "astro-grid-3");
           g3.appendChild(createAstroCard(
             isNL ? "Type" : "Type",
@@ -9724,7 +10000,7 @@
             isNL ? "Innerlijke richtwijzer" : "Inner compass",
             String(hd.authority || "-")
           ));
-          intro.appendChild(g3);
+          coreSec.appendChild(g3);
 
           const g2 = createEl("div", "astro-grid-2");
           const profile = hd.profile || {};
@@ -9741,50 +10017,82 @@
             cross.label || "-",
             cross.name_short || (isNL ? "Geen kruis bepaald." : "No cross determined.")
           ));
-          intro.appendChild(g2);
+          coreSec.appendChild(g2);
+          wrap.appendChild(coreSec);
 
-          // Centers
           const centers = hd.centers || {};
           const defined = centers.defined || [];
-          const undefined_ = centers.undefined || [];
+          const energySec = createLayoutSection(
+            isNL ? "Energetische verdeling" : "Energy distribution",
+            isNL ? "Gedefinieerde versus open centra." : "Defined versus open centers."
+          );
+          const eg = createEl("div", "explain-grid");
+          eg.appendChild(
+            createExplainCard(
+              isNL ? "Gedefinieerd" : "Defined",
+              isNL ? `${defined.length} ${defined.length === 1 ? "centrum" : "centra"}: ${defined.join(", ") || "—"}.` : `${defined.length} center(s): ${defined.join(", ") || "—"}.`
+            )
+          );
+          const opn = (centers.undefined || []).length;
+          eg.appendChild(
+            createExplainCard(
+              isNL ? "Open" : "Open",
+              isNL ? `${opn} ${opn === 1 ? "centrum" : "centra"} open voor conditioning van buitenaf.` : `${opn} open center(s), sensitive to outside conditioning.`
+            )
+          );
+          energySec.appendChild(eg);
           const centerCard = createAstroCard(
-            isNL ? "Centra" : "Centers",
-            isNL ? "Gedefinieerd vs open" : "Defined vs open",
+            isNL ? "Centra-overzicht" : "Centers overview",
+            isNL ? "Leesvenster per centrum" : "Reading window per center",
             ""
           );
           const centerRows = (centers.all || []).map((c) => [
             c,
-            defined.includes(c)
-              ? (isNL ? "Gedefinieerd" : "Defined")
-              : (isNL ? "Open" : "Open"),
+            defined.includes(c) ? (isNL ? "Gedefinieerd" : "Defined") : (isNL ? "Open" : "Open"),
           ]);
           centerCard.appendChild(createMethodTable(
             [isNL ? "Centrum" : "Center", isNL ? "Status" : "Status"],
             centerRows
           ));
-          intro.appendChild(centerCard);
+          energySec.appendChild(centerCard);
+          wrap.appendChild(energySec);
 
-          // Channels
+          const dynSec = createLayoutSection(
+            isNL ? "Energetische verbindingen" : "Energetic connections",
+            isNL ? "Kanalen als vaste routes tussen twee poorten." : "Channels as fixed routes between two gates."
+          );
           if (Array.isArray(hd.channels) && hd.channels.length > 0) {
-            const chCard = createAstroCard(
-              isNL ? "Actieve kanalen" : "Active channels",
-              isNL ? "Volledige kanaalverbindingen" : "Complete channel connections",
-              ""
-            );
             const chRows = hd.channels.map((ch) => [
               `${ch.gates && ch.gates[0] ? ch.gates[0] : "-"}-${ch.gates && ch.gates[1] ? ch.gates[1] : "-"}`,
               String(ch.name || "-"),
               String(ch.circuit || "-"),
               String(ch.theme || "-"),
             ]);
-            chCard.appendChild(createMethodTable(
+            dynSec.appendChild(createMethodTable(
               [isNL ? "Poorten" : "Gates", isNL ? "Naam" : "Name", "Circuit", isNL ? "Thema" : "Theme"],
               chRows
             ));
-            intro.appendChild(chCard);
+          } else {
+            dynSec.appendChild(createEl("p", "layout-section__lead", isNL ? "Geen kanaaldata." : "No channel data."));
           }
+          wrap.appendChild(dynSec);
 
-          // Personality + Design tables
+          const patSec = createLayoutSection(
+            isNL ? "Belangrijkste patronen" : "Key patterns",
+            isNL ? "Korte synthese (geen diagnose)." : "Short synthesis (not a diagnosis)."
+          );
+          const pg = createEl("div", "explain-grid");
+          pg.appendChild(
+            createExplainCard(
+              isNL ? "Type + profiel" : "Type + profile",
+              isNL
+                ? `Als ${hd.type || "-"} met profiel ${(hd.profile && hd.profile.value) || "-"}: strategie (${(hd.strategy && hd.strategy.value) || "—"}) en autoriteit (${hd.authority || "—"}) vormen je beslisritme.`
+                : `As ${hd.type || "-"} with profile ${(hd.profile && hd.profile.value) || "-"}: strategy (${(hd.strategy && hd.strategy.value) || "—"}) and authority (${hd.authority || "—"}) shape your decision rhythm.`
+            )
+          );
+          patSec.appendChild(pg);
+          wrap.appendChild(patSec);
+
           const personalityCard = createAstroCard(
             isNL ? "Personality (zwart)" : "Personality (black)",
             isNL ? "Bewuste laag, geboortemoment" : "Conscious layer, birth moment",
@@ -9797,7 +10105,6 @@
             [isNL ? "Lichaam" : "Body", "Gate", isNL ? "Lijn" : "Line", isNL ? "Graad" : "Degree"],
             persRows
           ));
-          intro.appendChild(personalityCard);
 
           const designCard = createAstroCard(
             isNL ? "Design (rood)" : "Design (red)",
@@ -9811,12 +10118,42 @@
             [isNL ? "Lichaam" : "Body", "Gate", isNL ? "Lijn" : "Line", isNL ? "Graad" : "Degree"],
             desRows
           ));
-          intro.appendChild(designCard);
+
+          const techOuter = document.createElement("details");
+          techOuter.className = "layout-section method-tech-outer";
+          techOuter.open = false;
+          const techSum = document.createElement("summary");
+          techSum.textContent = isNL ? "Technische details (tabellen)" : "Technical details (tables)";
+          techOuter.appendChild(techSum);
+          techOuter.appendChild(personalityCard);
+          techOuter.appendChild(designCard);
+          wrap.appendChild(techOuter);
         }
 
-        root.appendChild(intro);
         appendMethodPersonalReadingSection(root, "human_design");
-        appendHumanDesignGlossaryLegend(root);
+        root.appendChild(wrap);
+        if (window.AstroMethodPage) {
+          const amp = window.AstroMethodPage;
+          amp.appendReflectionQuestionsSection(wrap, isNL, {
+            questions: amp.humanDesignReflectionQuestions(isNL, hd),
+            fallbacks: isNL
+              ? [
+                  "Waar probeer je energie te forceren die niet constant beschikbaar is?",
+                  "Hoe voelt het wanneer je strategie en autoriteit serieus neemt?",
+                  "Welke open centra maken je gevoelig voor invloed van anderen?",
+                ]
+              : [
+                  "Where do you try to force energy that is not constantly available?",
+                  "What changes when you take strategy and authority seriously?",
+                  "Which open centers make you sensitive to others' influence?",
+                ],
+          });
+        }
+        if (window.AstroMethodPage && window.AstroMethodPage.appendGlossaryCollapsible) {
+          window.AstroMethodPage.appendGlossaryCollapsible(wrap, isNL, (inner) => appendHumanDesignGlossaryLegend(inner));
+        } else {
+          appendHumanDesignGlossaryLegend(wrap);
+        }
         return root;
       }
 
@@ -9825,78 +10162,166 @@
       async function renderMayaTab(data) {
         const isNL = uiIsNL();
         const root = createEl("section", "astro-shell");
-        const intro = createEl("section", "astro-method-visual");
-        intro.appendChild(createEl("div", "astro-eyebrow", isNL ? "Methode 5" : "Method 5"));
-        intro.appendChild(createEl("h3", "astro-section-title", isNL ? "Maya tijdcyclus" : "Maya time-cycle"));
-
+        const wrap = createEl("section", "method-layout method-layout--western-tight");
         const maya = (data && data.maya) || {};
         const sign = maya.sign || {};
         const tone = maya.tone || {};
+        const wave = maya.wavespell || {};
+        const castle = wave.castle || {};
 
-        const summary = isNL
-          ? `Kin ${maya.kin || "-"} - ${tone.name_nl || "-"} ${sign.nl || "-"} (${sign.yucatec || "-"}). Tone-effect: ${tone.kw_nl || "-"}. Dagteken: ${sign.kw_nl || "-"}.`
-          : `Kin ${maya.kin || "-"} - ${tone.name_en || "-"} ${sign.en || "-"} (${sign.yucatec || "-"}). Tone effect: ${tone.kw_en || "-"}. Day-sign: ${sign.kw_en || "-"}.`;
-        intro.appendChild(createEl("p", "astro-section-sub", summary));
+        const summaryLead = isNL
+          ? `Kin ${maya.kin || "-"} · ${tone.name_nl || "-"} · ${sign.nl || "-"} (${sign.yucatec || "-"}). Toon: ${tone.kw_nl || "-"}. Dagteken: ${sign.kw_nl || "-"}.`
+          : `Kin ${maya.kin || "-"} · ${tone.name_en || "-"} · ${sign.en || "-"} (${sign.yucatec || "-"}). Tone: ${tone.kw_en || "-"}. Day-sign: ${sign.kw_en || "-"}.`;
 
-        // Glyph SVG
-        const glyphCard = createAstroCard(
-          isNL ? "Tzolkin / Galactic Signature" : "Tzolkin / Galactic Signature",
-          isNL ? "13 tonen (buiten) - 20 dagtekens (binnen)" : "13 tones (outer) - 20 day-signs (inner)",
-          ""
+        const myHeader = createLayoutSection(isNL ? "Maya tijdcyclus" : "Maya time-cycle", summaryLead);
+        myHeader.insertBefore(createEl("div", "astro-eyebrow", isNL ? "Methode 5" : "Method 5"), myHeader.firstChild);
+        const mh3 = myHeader.querySelector("h3.layout-section__title");
+        const regMy = window.AstroMethodPage && window.AstroMethodPage.REGISTRY && window.AstroMethodPage.REGISTRY.maya;
+        if (mh3 && regMy && regMy.perspective) {
+          mh3.insertAdjacentElement("afterend", createEl("p", "method-perspective", isNL ? regMy.perspective.nl : regMy.perspective.en));
+        }
+        wrap.appendChild(myHeader);
+
+        const coreSec = createLayoutSection(
+          isNL ? "Kernwaarden" : "Core values",
+          isNL ? "Kin, toon en zonnezegel als vaste ingangen." : "Kin, tone, and solar seal as entry points."
         );
+        const cg = createEl("div", "explain-grid");
+        cg.appendChild(
+          createAstroCard(
+            String(maya.kin || "—"),
+            "Kin",
+            isNL ? "1..260 in de Tzolkin-cyclus." : "1..260 in the Tzolkin cycle.",
+            { eyebrow: "Maya", badge: isNL ? "Kern" : "Core", iconId: "sun" }
+          )
+        );
+        cg.appendChild(
+          createAstroCard(
+            `${tone.name_nl || tone.name_en || "—"} / ${sign.nl || sign.en || "—"}`,
+            isNL ? "Toon en zonnezegel" : "Tone and solar seal",
+            isNL ? `${tone.kw_nl || ""} ${sign.kw_nl || ""}`.trim() || "—" : `${tone.kw_en || ""} ${sign.kw_en || ""}`.trim() || "—",
+            { iconId: "moon", badge: isNL ? "Kern" : "Core" }
+          )
+        );
+        cg.appendChild(
+          createAstroCard(
+            (maya.tzolkin && maya.tzolkin.label) || "Tzolkin",
+            isNL ? "Tzolkin-positie" : "Tzolkin position",
+            (maya.tzolkin && maya.tzolkin.label) || (isNL ? "Zie chart voor volledige ring." : "See chart for full ring."),
+            { iconId: "jupiter" }
+          )
+        );
+        coreSec.appendChild(cg);
+        wrap.appendChild(coreSec);
+
+        const chartSec = createLayoutSection(
+          isNL ? "Tzolkin / galactische signatuur" : "Tzolkin / galactic signature",
+          isNL ? "13 tonen (buiten), 20 dagtekens (binnen)." : "13 tones (outer), 20 day signs (inner)."
+        );
+        const radixBox = createEl("div", "western-radix-venster");
+        const wheelLayout = createEl("div", "western-wheel-layout");
+        const wheelCol = createEl("div", "western-wheel-col");
         const glyphWrap = createEl("div", "astro-wheel-wrap");
         glyphWrap.style.maxWidth = "560px";
         glyphWrap.style.margin = "0 auto";
         try {
-          const svg = await fetchSectionSvg(data, "maya", currentLocale());
-          glyphWrap.innerHTML = svg;
+          glyphWrap.innerHTML = await fetchSectionSvg(data, "maya", currentLocale());
         } catch (e) {
           glyphWrap.innerHTML = `<p class="astro-card__sub">${isNL ? "Glyph kon niet worden geladen." : "Glyph could not be loaded."}</p>`;
         }
-        glyphCard.appendChild(glyphWrap);
-        intro.appendChild(glyphCard);
+        wheelCol.appendChild(glyphWrap);
+        wheelLayout.appendChild(wheelCol);
+        radixBox.appendChild(wheelLayout);
+        chartSec.appendChild(radixBox);
+        wrap.appendChild(chartSec);
 
-        // Cards
-        const g3 = createEl("div", "astro-grid-3");
-        g3.appendChild(createAstroCard(
-          "Kin", `1..260: ${maya.kin || "-"}`, summary
-        ));
-        g3.appendChild(createAstroCard(
-          "Long Count",
-          isNL ? "5-laagse Maya tijdtelling" : "5-place Maya count",
-          (maya.long_count && maya.long_count.label) || "-"
-        ));
-        g3.appendChild(createAstroCard(
-          "Haab",
-          isNL ? "365-daagse vague solar year" : "365-day vague solar year",
-          (maya.haab && maya.haab.label) || "-"
-        ));
-        intro.appendChild(g3);
+        const energySec = createLayoutSection(
+          isNL ? "Energetische verdeling" : "Energy distribution",
+          isNL ? "Wavespell en kwaliteiten van het dagteken." : "Wavespell and day-sign qualities."
+        );
+        const eg = createEl("div", "explain-grid");
+        eg.appendChild(
+          createExplainCard(
+            "Wavespell",
+            isNL
+              ? `Index ${wave.wavespell_index || "-"}, positie ${wave.wavespell_position || "-"}. ${(castle.name_nl || castle.name_en) || "-"}`
+              : `Index ${wave.wavespell_index || "-"}, position ${wave.wavespell_position || "-"}. ${(castle.name_en || castle.name_nl) || "-"}`
+          )
+        );
+        eg.appendChild(
+          createExplainCard(
+            isNL ? "Dagtekenkwaliteit" : "Day-sign quality",
+            isNL
+              ? `Element ${sign.element || "—"}, richting ${sign.direction || "—"}, polariteit ${sign.polarity || "—"}.`
+              : `Element ${sign.element || "—"}, direction ${sign.direction || "—"}, polarity ${sign.polarity || "—"}.`
+          )
+        );
+        energySec.appendChild(eg);
+        wrap.appendChild(energySec);
 
-        const g2 = createEl("div", "astro-grid-2");
-        const wave = maya.wavespell || {};
-        const castle = wave.castle || {};
-        g2.appendChild(createAstroCard(
-          "Wavespell",
-          isNL ? `Index ${wave.wavespell_index || "-"} - positie ${wave.wavespell_position || "-"}` :
-                 `Index ${wave.wavespell_index || "-"} - position ${wave.wavespell_position || "-"}`,
-          (isNL ? castle.name_nl : castle.name_en) || "-"
-        ));
-        g2.appendChild(createAstroCard(
-          isNL ? "Dagteken eigenschappen" : "Day-sign properties",
-          `${sign.yucatec || "-"} - ${(isNL ? sign.nl : sign.en) || "-"}`,
-          isNL
-            ? `Element: ${sign.element || "-"}, richting: ${sign.direction || "-"}, polariteit: ${sign.polarity || "-"}.`
-            : `Element: ${sign.element || "-"}, direction: ${sign.direction || "-"}, polarity: ${sign.polarity || "-"}.`
-        ));
-        intro.appendChild(g2);
+        const calSec = createLayoutSection(
+          isNL ? "Kalenderlagen" : "Calendar layers",
+          isNL ? "Long Count en Haab naast de Tzolkin." : "Long Count and Haab alongside the Tzolkin."
+        );
+        const calGrid = createEl("div", "astro-grid-2");
+        calGrid.appendChild(
+          createAstroCard(
+            (maya.long_count && maya.long_count.label) || "—",
+            "Long Count",
+            isNL ? "Vijf plekken Maya tijdtelling." : "Five-place Maya count."
+          )
+        );
+        calGrid.appendChild(
+          createAstroCard(
+            (maya.haab && maya.haab.label) || "—",
+            "Haab",
+            isNL ? "365-daagse solar vague year." : "365-day vague solar year."
+          )
+        );
+        calSec.appendChild(calGrid);
+        wrap.appendChild(calSec);
 
-        // Personal year cycles
+        const dynSec = createLayoutSection(
+          isNL ? "Tijdsdynamiek" : "Time dynamics",
+          isNL ? "Toon en zonnezegel bewegen samen door de 260-kin cyclus." : "Tone and solar seal move together through the 260-kin cycle."
+        );
+        dynSec.appendChild(
+          createEl(
+            "p",
+            "layout-section__lead",
+            isNL
+              ? `Toon ${tone.name_nl || tone.name_en || "—"} kleurt hoe kin ${maya.kin || "—"} zich uitdrukt; zegel ${sign.nl || sign.en || "—"} geeft het thema.`
+              : `Tone ${tone.name_en || tone.name_nl || "—"} colors how kin ${maya.kin || "—"} expresses; seal ${sign.en || sign.nl || "—"} gives the theme.`
+          )
+        );
+        wrap.appendChild(dynSec);
+
+        const patSec = createLayoutSection(
+          isNL ? "Belangrijkste patronen" : "Key patterns",
+          isNL ? "Korte synthese op basis van kin en wavespell." : "Short synthesis from kin and wavespell."
+        );
+        const pg = createEl("div", "explain-grid");
+        pg.appendChild(
+          createExplainCard(
+            isNL ? "Kin in wavespell" : "Kin in wavespell",
+            isNL
+              ? `Kin ${maya.kin || "—"} in wavespell ${wave.wavespell_index || "—"}: merk welke 13-daagse reeks je timbre geeft.`
+              : `Kin ${maya.kin || "—"} in wavespell ${wave.wavespell_index || "—"}: notice the 13-day sequence that sets your timbre.`
+          )
+        );
+        patSec.appendChild(pg);
+        wrap.appendChild(patSec);
+
         if (Array.isArray(maya.personal_year_cycles) && maya.personal_year_cycles.length) {
+          const techOuter = document.createElement("details");
+          techOuter.className = "layout-section method-tech-outer";
+          techOuter.open = false;
+          const techSum = document.createElement("summary");
+          techSum.textContent = isNL ? "Technische details (cycli)" : "Technical details (cycles)";
+          techOuter.appendChild(techSum);
           const cycCard = createAstroCard(
             isNL ? "Persoonlijke kin-cycli" : "Personal kin cycles",
-            isNL ? "Volgende 4 herhalingen van je galactische signatuur (260-daagse stappen)" :
-                   "Next 4 repeats of your galactic signature (260-day steps)",
+            isNL ? "Volgende herhalingen van je galactische signatuur." : "Next repeats of your galactic signature.",
             ""
           );
           const rows = maya.personal_year_cycles.map((c) => [
@@ -9906,12 +10331,34 @@
             [isNL ? "Cyclus" : "Cycle", "Kin", isNL ? "Toon" : "Tone", isNL ? "Teken" : "Sign"],
             rows
           ));
-          intro.appendChild(cycCard);
+          techOuter.appendChild(cycCard);
+          wrap.appendChild(techOuter);
         }
 
-        root.appendChild(intro);
         appendMethodPersonalReadingSection(root, "maya");
-        appendMayaGlossaryLegend(root);
+        root.appendChild(wrap);
+        if (window.AstroMethodPage) {
+          const amp = window.AstroMethodPage;
+          amp.appendReflectionQuestionsSection(wrap, isNL, {
+            questions: amp.mayaReflectionQuestions(isNL, maya),
+            fallbacks: isNL
+              ? [
+                  "Welke tijdkwaliteit herken je als terugkerend thema in je leven?",
+                  "Waar nodigt jouw toon je uit tot groei, beweging of vertraging?",
+                  "Hoe kun je jouw zonnezegel zien als vraag in plaats van vaststaand antwoord?",
+                ]
+              : [
+                  "Which time-quality feels like a recurring theme?",
+                  "Where does your tone invite growth, motion, or slowing down?",
+                  "How can you read your day-sign as a question rather than a fixed answer?",
+                ],
+          });
+        }
+        if (window.AstroMethodPage && window.AstroMethodPage.appendGlossaryCollapsible) {
+          window.AstroMethodPage.appendGlossaryCollapsible(wrap, isNL, (inner) => appendMayaGlossaryLegend(inner));
+        } else {
+          appendMayaGlossaryLegend(wrap);
+        }
         return root;
       }
 

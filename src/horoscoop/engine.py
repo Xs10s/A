@@ -332,6 +332,7 @@ def _build_chinese_block(
     timezone_for_calendar: Optional[str] = None,
     include_solar_terms: bool = False,
     gregorian_year: Optional[int] = None,
+    birth_time_reliable: bool = True,
 ) -> dict[str, Any]:
     from datetime import datetime, timezone, timedelta
     diagnostics: list[str] = []
@@ -361,10 +362,16 @@ def _build_chinese_block(
             year_idx = chinese.ganzhi_index_from_jd_noon(jd_noon_local)
             year_stem, year_branch = chinese.stem_branch_from_sexagenary_index(year_idx)
     month_stem, month_branch = chinese.month_pillar_from_solar_term_and_year_stem(term_idx, year_idx)
-    hour_stem, hour_branch = chinese.bazi_pillar_hour_from_day_stem_branch(day_idx, hour_local)
+    if birth_time_reliable:
+        hour_stem, hour_branch = chinese.bazi_pillar_hour_from_day_stem_branch(day_idx, hour_local)
+    else:
+        hour_stem, hour_branch = None, None
     solar_terms_data = None
     if include_solar_terms and gregorian_year:
         solar_terms_data = {str(t["index"]): t["time_utc"] for t in chinese.compute_solar_terms_for_year(gregorian_year, cal_offset)}
+    status_warnings = list(diagnostics)
+    if not birth_time_reliable:
+        status_warnings.append("BIRTH_TIME_UNCERTAIN")
     return {
         "boundary_settings": {"year": year_boundary, "day": day_boundary, "timezone_for_calendar": timezone_for_calendar or "Asia/Shanghai"},
         "boundary_year": year_boundary,
@@ -378,7 +385,13 @@ def _build_chinese_block(
         },
         "calendar_day_definition": "utc+8" if day_boundary == "utc+8_midnight" else "local_midnight",
         "diagnostics": diagnostics,
-        "status": {"computed": True, "requires": ["date", "time"], "confidence": "medium" if "CNY_LEAP_RULES_SIMPLIFIED" in diagnostics else "high", "assumptions": [], "warnings": diagnostics},
+        "status": {
+            "computed": True,
+            "requires": ["date", "time"],
+            "confidence": "medium" if "CNY_LEAP_RULES_SIMPLIFIED" in diagnostics or not birth_time_reliable else "high",
+            "assumptions": [],
+            "warnings": status_warnings,
+        },
     }
 
 
@@ -509,8 +522,14 @@ def compute(
     orb_resolver = db_orbs.create_orb_resolver(db_path=western_db_path, orb_profile=western_orb_profile)
     aspect_defs = aspects.EXTENDED_ASPECT_DEFS if western_extended_aspects else aspects.ASPECT_DEFS
 
+    birth_time_reliable = (
+        bool(raw_birth_time_local)
+        and time_known
+        and "NO_TIMEZONE" not in diagnostics_codes
+    )
+
     western_block: Optional[dict[str, Any]] = None
-    if time_known and lat is not None and lon is not None and body_lons:
+    if birth_time_reliable and lat is not None and lon is not None and body_lons:
         western_block = _build_western_block(
             jd_ut1, lat, lon, house_system, body_lons,
             body_speeds=body_speeds or None,
@@ -531,7 +550,6 @@ def compute(
         sunrise_method=vedic_sunrise_method,
         compute_end_times=True,
     )
-    birth_time_reliable = time_known and not used_default_time and "NO_TIMEZONE" not in diagnostics_codes
     vaara_idx = vedic.vaara_from_jd(jd_ut1)
     vedic_block["jyotish"] = jyotish_chart.build_jyotish_chart(
         jd_tt=jd_tt,
@@ -552,11 +570,12 @@ def compute(
         timezone_for_calendar=chinese_timezone_for_calendar,
         include_solar_terms=chinese_include_solar_terms,
         gregorian_year=gregorian_year,
+        birth_time_reliable=birth_time_reliable,
     )
 
     # Human Design block: requires time-resolved JD(TT). When time is
     # unknown, we still produce a structurally complete unavailable block.
-    if time_known and not used_default_time:
+    if birth_time_reliable:
         human_design_block = human_design.build_human_design(jd_tt, locale=locale)
     else:
         human_design_block = human_design.build_human_design(None, locale=locale)

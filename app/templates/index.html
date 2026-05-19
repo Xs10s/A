@@ -3362,6 +3362,244 @@
         .astro-core__title { font-size: 22px; }
         .astro-core__row { grid-template-columns: 96px 1fr; }
         .astro-core__row-value { font-size: 15px; }
+        .birth-input-panel__layout { grid-template-columns: 1fr; }
+        .results-panel__header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        .results-panel__header .btn { width: 100%; text-align: center; }
+      }
+
+      /* Birth input panel – aligned with result hero */
+      .birth-input-panel {
+        border: 1px solid #d9c8ef;
+        box-shadow: 0 10px 40px rgba(136, 77, 201, 0.08);
+      }
+      .birth-input-panel__top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--md);
+        flex-wrap: wrap;
+        margin-bottom: var(--lg);
+      }
+      .birth-input-panel__title {
+        margin: 0 0 var(--xs) 0;
+        font-family: var(--font-heading);
+        font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+        color: #2b2340;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 400;
+      }
+      .birth-input-panel__lead {
+        margin: 0;
+        max-width: 48ch;
+      }
+      .lang-flags {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .lang-flags__label {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #846da4;
+        font-weight: 600;
+        margin-right: 4px;
+      }
+      .lang-flag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        line-height: 0;
+        transition: opacity 160ms ease, filter 160ms ease;
+      }
+      .lang-flag svg {
+        width: 28px;
+        height: 18px;
+        display: block;
+        border: none;
+      }
+      .lang-flag--active {
+        opacity: 1;
+        filter: none;
+      }
+      .lang-flag:not(.lang-flag--active) {
+        opacity: 0.5;
+        filter: grayscale(1);
+      }
+      .lang-flag:not(.lang-flag--active):hover,
+      .lang-flag:not(.lang-flag--active):focus-visible {
+        opacity: 0.75;
+      }
+      .lang-flag:focus-visible {
+        outline: 2px solid rgba(136, 77, 201, 0.35);
+        outline-offset: 2px;
+      }
+      .birth-input-panel__layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        gap: var(--lg);
+        align-items: stretch;
+      }
+      .birth-input-panel__fields {
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+      }
+      .birth-input-panel__map {
+        grid-column: 2;
+        grid-row: 1;
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-end;
+        min-height: 0;
+      }
+      .birth-input-panel__actions {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      .birth-input-panel__fields .row { margin-top: 0; }
+      .birth-input-panel__fields .row + .row { margin-top: var(--md); }
+      .birth-field-block { flex: 1; min-width: 0; }
+      .birth-field-block--full { width: 100%; }
+      .birth-field-hint {
+        margin: 6px 0 0;
+        font-size: 12px;
+        color: var(--text-secondary);
+        line-height: 1.45;
+      }
+      .birth-time-row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .birth-time-unknown {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        user-select: none;
+      }
+      .birth-time-unknown input {
+        width: auto;
+        margin: 0;
+        accent-color: var(--ljlk-primary);
+      }
+      .birth-time-row input[type="time"]:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .birth-field-readonly {
+        padding: 12px 14px;
+        border: 1px solid #eadff8;
+        background: #faf7ff;
+        font-size: var(--small);
+        color: #5a536f;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+      .birth-field-readonly--empty {
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+      .birth-input-panel__actions {
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--sm);
+        align-items: flex-start;
+      }
+      .birth-input-panel__error {
+        display: none;
+        margin: 0;
+        padding: 10px 12px;
+        border-left: 4px solid #c74646;
+        background: #fff4f4;
+        color: #6f3d3d;
+        font-size: 13px;
+        max-width: 52ch;
+      }
+      .birth-input-panel__error.is-visible { display: block; }
+      .place-map-preview {
+        border: 1px solid #eadff8;
+        background: #faf7ff;
+        height: 100%;
+        width: auto;
+        aspect-ratio: 1 / 1;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .place-map-preview__placeholder {
+        margin: 0;
+        padding: 20px 16px;
+        text-align: center;
+        font-size: 13px;
+        color: #846da4;
+        line-height: 1.5;
+        max-width: 28ch;
+      }
+      .place-map-preview__frame {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: #f0ebf6;
+      }
+      .results-panel__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--md);
+        flex-wrap: wrap;
+        margin-bottom: var(--sm);
+      }
+      .results-panel__header h2 {
+        margin: 0;
+        flex: 1 1 auto;
+      }
+      .results-panel__header .btn-recalculate {
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+      @media (max-width: 900px) {
+        .birth-input-panel__layout {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto;
+        }
+        .birth-input-panel__fields { grid-column: 1; grid-row: 1; }
+        .birth-input-panel__map {
+          grid-column: 1;
+          grid-row: 2;
+          justify-content: stretch;
+        }
+        .birth-input-panel__actions { grid-column: 1; grid-row: 3; }
+        .place-map-preview {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 1 / 1;
+        }
+      }
+      @media (min-width: 901px) {
+        .astro-stats { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      }
+      @media (max-width: 1024px) {
+        .astro-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
 
     </style>
@@ -3369,87 +3607,109 @@
   <body>
     <header class="site-header">
       <div class="site-header__inner">
-        <p class="site-header__kicker">Leer jouw lichaam kennen</p>
+        <p class="site-header__kicker" data-i18n="site.kicker">Leer jouw lichaam kennen</p>
         <h1>Horoscoop</h1>
-        <p class="card__lead" style="margin-top: 12px">
+        <p class="card__lead" style="margin-top: 12px" data-i18n="site.lead">
           Dezelfde geboortedatum en -tijd, gelezen via meerdere tradities - voor meer zelfinzicht en context.
         </p>
       </div>
     </header>
     <main>
-      <div class="card app-panel app-panel--form">
-        <form id="horoscoop-form">
-          <h2 style="margin-top: 0">Jouw gegevens</h2>
-          <p class="card__lead">
-            Vul datum, tijd en plaats in. De app zoekt waar nodig breedtegraad, lengtegraad en tijdzone op.
-          </p>
-          <div class="row">
+      <div id="birth-input-panel" class="card app-panel app-panel--form birth-input-panel">
+        <form id="horoscoop-form" novalidate>
+          <div class="birth-input-panel__top">
             <div>
-              <label for="birth_date">Geboortedatum (JJJJ-MM-DD) *</label>
-              <input
-                type="date"
-                id="birth_date"
-                name="birth_date"
-                required
-              />
+              <h2 class="birth-input-panel__title" data-i18n="form.title">Jouw gegevens</h2>
+              <p class="card__lead birth-input-panel__lead" data-i18n="form.lead">
+                Vul datum, tijd en plaats in. De app zoekt waar nodig breedtegraad, lengtegraad en tijdzone op.
+              </p>
             </div>
-            <div>
-              <label for="birth_time_local">Geboortetijd (UU:MM:SS) *</label>
-              <input
-                type="time"
-                step="1"
-                id="birth_time_local"
-                name="birth_time_local"
-                required
-              />
+            <div class="lang-flags" role="group" aria-labelledby="lang-flags-label">
+              <span class="lang-flags__label" id="lang-flags-label" data-i18n="form.langLabel">Taal</span>
+              <button type="button" class="lang-flag lang-flag--active" data-locale="nl-NL" aria-label="Nederlands" aria-pressed="true">
+                <svg viewBox="0 0 28 18" aria-hidden="true" focusable="false"><rect width="28" height="6" y="0" fill="#AE1C28"/><rect width="28" height="6" y="6" fill="#FFFFFF"/><rect width="28" height="6" y="12" fill="#21468B"/></svg>
+              </button>
+              <button type="button" class="lang-flag" data-locale="en-GB" aria-label="English" aria-pressed="false">
+                <svg viewBox="0 0 28 18" aria-hidden="true" focusable="false"><rect width="28" height="18" fill="#012169"/><path fill="#FFF" d="M11 0h6v18h-6zM0 6h28v6H0z"/><path stroke="#C8102E" stroke-width="2.5" d="M0 0l28 18M28 0L0 18"/><path fill="#C8102E" d="M12 0h4v18h-4zM0 7h28v4H0z"/></svg>
+              </button>
+              <button type="button" class="lang-flag" data-locale="fr-FR" aria-label="Français" aria-pressed="false">
+                <svg viewBox="0 0 28 18" aria-hidden="true" focusable="false"><rect width="9" height="18" fill="#0055A4"/><rect x="9" width="10" height="18" fill="#FFFFFF"/><rect x="19" width="9" height="18" fill="#EF4135"/></svg>
+              </button>
+              <button type="button" class="lang-flag" data-locale="de-DE" aria-label="Deutsch" aria-pressed="false">
+                <svg viewBox="0 0 28 18" aria-hidden="true" focusable="false"><rect width="28" height="6" fill="#000"/><rect width="28" height="6" y="6" fill="#DD0000"/><rect width="28" height="6" y="12" fill="#FFCE00"/></svg>
+              </button>
             </div>
           </div>
-
-          <div class="row" style="margin-top: 8px">
-            <div>
-              <label for="city">Plaats (stad) *</label>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                placeholder="Amsterdam"
-                required
-              />
+          <input type="hidden" id="ui-locale" name="ui-locale" value="nl-NL" />
+          <div class="birth-input-panel__layout">
+            <div class="birth-input-panel__fields">
+              <div class="row">
+                <div class="birth-field-block">
+                  <label for="birth_date" data-i18n="form.birthDate">Geboortedatum *</label>
+                  <input type="date" id="birth_date" name="birth_date" required />
+                </div>
+                <div class="birth-field-block">
+                  <label for="birth_time_local" data-i18n="form.birthTime">Geboortetijd</label>
+                  <div class="birth-time-row">
+                    <input type="time" step="60" id="birth_time_local" name="birth_time_local" />
+                    <label class="birth-time-unknown" for="birth_time_unknown">
+                      <input type="checkbox" id="birth_time_unknown" />
+                      <span id="birth_time_unknown_label">Ik weet het niet</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="birth-field-block birth-field-block--full">
+                  <label for="city" data-i18n="form.birthPlace">Geboorteplaats *</label>
+                  <input type="text" id="city" name="city" placeholder="Amsterdam" required autocomplete="address-level2" />
+                  <p class="birth-field-hint" id="city-resolve-hint" hidden></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="birth-field-block birth-field-block--full">
+                  <label for="timezone-display" data-i18n="form.timezone">Tijdzone</label>
+                  <div id="timezone-display" class="birth-field-readonly birth-field-readonly--empty" aria-live="polite" data-i18n="form.timezoneEmpty">
+                    Wordt automatisch bepaald na plaatskeuze
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" id="lat" name="lat" />
+              <input type="hidden" id="lon" name="lon" />
+              <input type="hidden" id="timezone_iana" name="timezone_iana" />
             </div>
-          </div>
-
-          <!-- Hidden fields filled from city resolution (kept for API compatibility) -->
-          <input type="hidden" id="lat" name="lat" />
-          <input type="hidden" id="lon" name="lon" />
-          <input type="hidden" id="timezone_iana" name="timezone_iana" />
-
-          <div style="margin-top: 12px">
-            <div class="row" style="margin-top: 8px">
-              <div>
-                <label for="ui-locale">Taal</label>
-                <select id="ui-locale" name="ui-locale">
-                  <option value="nl-NL" selected>Nederlands</option>
-                  <option value="en-US">English</option>
-                </select>
+            <div class="birth-input-panel__map" aria-live="polite">
+              <div id="place-map-preview" class="place-map-preview">
+                <p class="place-map-preview__placeholder" id="place-map-placeholder">
+                  Kies eerst een geboorteplaats om de locatie te controleren.
+                </p>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary">Bereken horoscoop</button>
+            <div class="birth-input-panel__actions">
+              <p id="form-calculation-error" class="birth-input-panel__error" role="alert"></p>
+              <button type="submit" id="btn-calculate" class="btn btn-primary" data-i18n="form.calculate">Bereken horoscoop</button>
+            </div>
           </div>
         </form>
       </div>
 
       <div id="results" class="card app-panel app-panel--results" style="display: none">
-        <h2 style="margin-top: 0">Resultaat</h2>
+        <header class="results-panel__header">
+          <h2 data-i18n="result.title">Resultaat</h2>
+          <button type="button" id="btn-recalculate" class="btn btn-secondary btn-recalculate" data-i18n="result.recalculate">
+            Opnieuw berekenen
+          </button>
+        </header>
         <div id="diagnostics"></div>
         <div id="dashboard-hero" style="margin: 14px 0 18px"></div>
 
         <div class="tabs" id="tabs">
-          <div class="tab active" data-tab="energie">Energie Profiel</div>
-          <div class="tab" data-tab="western">Westers</div>
-          <div class="tab" data-tab="vedic">Vedisch</div>
-          <div class="tab" data-tab="bazi">BaZi</div>
-          <div class="tab" data-tab="humandesign">Human Design</div>
-          <div class="tab" data-tab="maya">Maya</div>
+          <div class="tab active" data-tab="energie" data-i18n="tabs.energie">Energie Profiel</div>
+          <div class="tab" data-tab="western" data-i18n="tabs.western">Westers</div>
+          <div class="tab" data-tab="vedic" data-i18n="tabs.vedic">Vedisch</div>
+          <div class="tab" data-tab="bazi" data-i18n="tabs.bazi">BaZi</div>
+          <div class="tab" data-tab="humandesign" data-i18n="tabs.humandesign">Human Design</div>
+          <div class="tab" data-tab="maya" data-i18n="tabs.maya">Maya</div>
         </div>
 
         <div id="panel-energie" class="tab-panel tab-panel--merged active"></div>
@@ -3461,7 +3721,7 @@
 
         <div class="actions">
           <button type="button" id="download-pdf" class="btn btn-secondary">
-            Download volledig rapport (PDF)
+            <span data-i18n="result.downloadPdf">Download volledig rapport (PDF)</span>
           </button>
         </div>
       </div>
@@ -3469,21 +3729,43 @@
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <span>Leer jouw lichaam kennen - horoscoop tool</span>
+        <span data-i18n="footer.text">Leer jouw lichaam kennen - horoscoop tool</span>
         <a href="https://www.leerjouwlichaamkennen.nl/" target="_blank" rel="noopener noreferrer">Naar leerjouwlichaamkennen.nl</a>
       </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="/static/js/ui-i18n.js"></script>
     <script src="/static/js/method-page-registry.js"></script>
     <script>
       const form = document.getElementById("horoscoop-form");
       const results = document.getElementById("results");
       const diagnosticsEl = document.getElementById("diagnostics");
       const cityEl = document.getElementById("city");
+      const birthTimeEl = document.getElementById("birth_time_local");
+      const birthTimeUnknownEl = document.getElementById("birth_time_unknown");
+      const birthTimeUnknownLabelEl = document.getElementById("birth_time_unknown_label");
       const latEl = document.getElementById("lat");
       const lonEl = document.getElementById("lon");
       const tzEl = document.getElementById("timezone_iana");
+      let savedBirthTimeValue = "";
+      const birthInputPanel = document.getElementById("birth-input-panel");
+      const localeEl = document.getElementById("ui-locale");
+      const timezoneDisplayEl = document.getElementById("timezone-display");
+      const placeMapPreviewEl = document.getElementById("place-map-preview");
+      const placeMapPlaceholderEl = document.getElementById("place-map-placeholder");
+      const cityResolveHintEl = document.getElementById("city-resolve-hint");
+      const formErrorEl = document.getElementById("form-calculation-error");
+      const btnCalculate = document.getElementById("btn-calculate");
+      const btnRecalculate = document.getElementById("btn-recalculate");
+
+      let showInputPanel = true;
+      let calculationResult = null;
+      let birthInputSummary = null;
+      let resolvedPlace = null;
+      let lastResolvedCityKey = "";
+      let lastMapCoordsKey = "";
+      let isCalculating = false;
 
       let lastPayload = null;
       let lastEnergy = null;
@@ -3496,9 +3778,265 @@
         return (el && el.value) ? el.value : "nl-NL";
       }
 
-      function uiIsNL() {
-        return (currentLocale() || "").toLowerCase().startsWith("nl");
+      function getUiLang() {
+        return window.AstroUiI18n
+          ? AstroUiI18n.langFromLocale(currentLocale())
+          : ((currentLocale() || "").toLowerCase().startsWith("nl") ? "nl" : "en");
       }
+
+      function contentLang() {
+        return window.AstroUiI18n
+          ? AstroUiI18n.contentLang(currentLocale())
+          : (getUiLang() === "nl" ? "nl" : "en");
+      }
+
+      function uiIsNL() {
+        return getUiLang() === "nl";
+      }
+
+      function t(key, vars) {
+        return window.AstroUiI18n ? AstroUiI18n.t(key, getUiLang(), vars) : key;
+      }
+
+      function isBirthTimeUnknown() {
+        return !!(birthTimeUnknownEl && birthTimeUnknownEl.checked);
+      }
+
+      function updateBirthTimeUnknownLabels() {
+        if (birthTimeUnknownLabelEl) {
+          birthTimeUnknownLabelEl.textContent = t("form.timeUnknown");
+        }
+      }
+
+      function syncBirthTimeUnknownUI() {
+        if (!birthTimeEl || !birthTimeUnknownEl) return;
+        updateBirthTimeUnknownLabels();
+        if (isBirthTimeUnknown()) {
+          if (birthTimeEl.value) savedBirthTimeValue = birthTimeEl.value;
+          birthTimeEl.value = "";
+          birthTimeEl.disabled = true;
+        } else {
+          birthTimeEl.disabled = false;
+          if (savedBirthTimeValue && !birthTimeEl.value) {
+            birthTimeEl.value = savedBirthTimeValue;
+          }
+        }
+      }
+
+      function normalizeBirthTimeLocal(value) {
+        const parts = String(value || "").split(":");
+        if (parts.length >= 2) {
+          const h = String(parts[0]).padStart(2, "0");
+          const m = String(parts[1]).padStart(2, "0");
+          return h + ":" + m + ":00";
+        }
+        return value;
+      }
+
+      function birthTimeWasProvided(data) {
+        const birth = (data && data.input && data.input.birth) || {};
+        const provided = birth.provided || {};
+        if (Object.prototype.hasOwnProperty.call(provided, "time_local")) {
+          return !!provided.time_local;
+        }
+        const assumptions = birth.assumptions || {};
+        return !assumptions.time_was_defaulted;
+      }
+
+      function formatBirthTimeDisplay(data) {
+        const unknownLabel = t("time.unknown");
+        if (data && !birthTimeWasProvided(data)) return unknownLabel;
+        if (!data && isBirthTimeUnknown()) return unknownLabel;
+        const birth = (data && data.input && data.input.birth) || {};
+        const timeStr = birth.time_local || (birthTimeEl && birthTimeEl.value) || "";
+        return timeStr ? String(timeStr).slice(0, 5) : "-";
+      }
+
+      function validateBirthForm() {
+        if (isBirthTimeUnknown()) return true;
+        const timeVal = birthTimeEl && birthTimeEl.value ? birthTimeEl.value.trim() : "";
+        if (!timeVal) {
+          setFormError(t("error.timeRequired"));
+          if (birthTimeEl) birthTimeEl.focus();
+          return false;
+        }
+        return true;
+      }
+
+      function updatePanelVisibility() {
+        if (birthInputPanel) {
+          birthInputPanel.style.display = showInputPanel ? "" : "none";
+        }
+        if (results) {
+          results.style.display = !showInputPanel && calculationResult ? "block" : "none";
+        }
+      }
+
+      function setFormError(message) {
+        if (!formErrorEl) return;
+        if (message) {
+          formErrorEl.textContent = message;
+          formErrorEl.classList.add("is-visible");
+        } else {
+          formErrorEl.textContent = "";
+          formErrorEl.classList.remove("is-visible");
+        }
+      }
+
+      function formatPlaceLabel(place, fallbackCity) {
+        if (!place) return fallbackCity || "-";
+        const name = (place.locationName || place.name || fallbackCity || "").trim();
+        const country = (place.country || "").trim();
+        if (name && country) return name + ", " + country;
+        return name || country || fallbackCity || "-";
+      }
+
+      function buildBirthInputSummary(data) {
+        const birth = (data && data.input && data.input.birth) || {};
+        const tz = birth.timezone || {};
+        const formData = collectForm();
+        const loc = resolvedPlace || {};
+        return {
+          date: birth.date || formData.birth_date || "-",
+          time: formatBirthTimeDisplay(data),
+          timezone: tz.iana || formData.timezone_iana || loc.timezone_iana || "-",
+          utc: tz.utc_offset_hours != null ? "UTC" + (tz.utc_offset_hours >= 0 ? "+" : "") + tz.utc_offset_hours : "-",
+          locationName: formatPlaceLabel(loc, formData.city),
+        };
+      }
+
+      function updateTimezoneDisplay() {
+        if (!timezoneDisplayEl) return;
+        const tz = (tzEl && tzEl.value) || (resolvedPlace && resolvedPlace.timezone_iana) || "";
+        if (tz) {
+          timezoneDisplayEl.textContent = tz;
+          timezoneDisplayEl.classList.remove("birth-field-readonly--empty");
+        } else {
+          timezoneDisplayEl.textContent = t("form.timezoneEmpty");
+          timezoneDisplayEl.classList.add("birth-field-readonly--empty");
+        }
+      }
+
+      function clearResolvedPlace() {
+        resolvedPlace = null;
+        lastResolvedCityKey = "";
+        lastMapCoordsKey = "";
+        if (latEl) latEl.value = "";
+        if (lonEl) lonEl.value = "";
+        if (tzEl) tzEl.value = "";
+        updateTimezoneDisplay();
+        updateMapPreview();
+        if (cityResolveHintEl) {
+          cityResolveHintEl.hidden = true;
+          cityResolveHintEl.textContent = "";
+        }
+      }
+
+      function buildMapEmbedUrl(lat, lon) {
+        const pad = 0.05;
+        const bbox = [lon - pad, lat - pad, lon + pad, lat + pad].join(",");
+        return (
+          "https://www.openstreetmap.org/export/embed.html?bbox=" +
+          encodeURIComponent(bbox) +
+          "&layer=mapnik&marker=" +
+          encodeURIComponent(lat + "," + lon)
+        );
+      }
+
+      function updateMapPreview() {
+        if (!placeMapPreviewEl) return;
+        const lat = resolvedPlace && typeof resolvedPlace.lat === "number" ? resolvedPlace.lat : null;
+        const lon = resolvedPlace && typeof resolvedPlace.lon === "number" ? resolvedPlace.lon : null;
+        if (lat == null || lon == null) {
+          lastMapCoordsKey = "";
+          placeMapPreviewEl.innerHTML = "";
+          const p = document.createElement("p");
+          p.className = "place-map-preview__placeholder";
+          p.id = "place-map-placeholder";
+          p.textContent = t("form.mapPlaceholder");
+          placeMapPreviewEl.appendChild(p);
+          return;
+        }
+        const key = lat.toFixed(5) + "," + lon.toFixed(5);
+        if (key === lastMapCoordsKey && placeMapPreviewEl.querySelector("iframe.place-map-preview__frame")) {
+          return;
+        }
+        lastMapCoordsKey = key;
+        placeMapPreviewEl.innerHTML = "";
+        const frame = document.createElement("iframe");
+        frame.className = "place-map-preview__frame";
+        frame.src = buildMapEmbedUrl(lat, lon);
+        frame.title = t("map.previewTitle");
+        frame.loading = "lazy";
+        frame.referrerPolicy = "no-referrer-when-downgrade";
+        frame.setAttribute("allowfullscreen", "");
+        placeMapPreviewEl.appendChild(frame);
+      }
+
+      function applyResolvedPlace(json, city) {
+        if (!json || !json.ok) {
+          clearResolvedPlace();
+          if (cityResolveHintEl && city) {
+            cityResolveHintEl.hidden = false;
+            cityResolveHintEl.textContent = t("place.notFound");
+          }
+          return false;
+        }
+        resolvedPlace = {
+          locationName: json.name || city,
+          country: json.country || "",
+          region: json.admin1 || "",
+          lat: json.lat,
+          lon: json.lon,
+          timezone_iana: json.timezone_iana || "",
+        };
+        lastResolvedCityKey = city.toLowerCase();
+        if (typeof json.lat === "number") latEl.value = String(json.lat);
+        if (typeof json.lon === "number") lonEl.value = String(json.lon);
+        if (typeof json.timezone_iana === "string") tzEl.value = json.timezone_iana;
+        updateTimezoneDisplay();
+        updateMapPreview();
+        if (cityResolveHintEl) {
+          cityResolveHintEl.hidden = false;
+          cityResolveHintEl.textContent = formatPlaceLabel(resolvedPlace, city);
+        }
+        return true;
+      }
+
+      function initLangFlags() {
+        const buttons = document.querySelectorAll(".lang-flag[data-locale]");
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const loc = btn.getAttribute("data-locale");
+            if (!loc || !localeEl) return;
+            localeEl.value = loc;
+            buttons.forEach((b) => {
+              const active = b === btn;
+              b.classList.toggle("lang-flag--active", active);
+              b.setAttribute("aria-pressed", active ? "true" : "false");
+            });
+            if (window.AstroUiI18n) AstroUiI18n.applyAll(loc);
+            updateMapPreview();
+            updateTimezoneDisplay();
+            updateBirthTimeUnknownLabels();
+            if (calculationResult) {
+              renderResult(calculationResult).catch(function () {});
+            }
+          });
+        });
+      }
+
+      function handleRecalculate() {
+        showInputPanel = true;
+        updatePanelVisibility();
+        setFormError("");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      initLangFlags();
+      if (window.AstroUiI18n) AstroUiI18n.applyAll(currentLocale());
+      updatePanelVisibility();
+
 
       const PLANET_LABELS = {
         Sun: { nl: "Zon", en: "Sun" },
@@ -3893,7 +4431,7 @@
         }[sid];
         if (signEn && SIGN_LABELS[signEn]) {
           const m = SIGN_LABELS[signEn];
-          return uiIsNL() ? m.nl : m.en;
+          return contentLang() === "nl" ? m.nl : m.en;
         }
         const planetEn = {
           sun: "Sun",
@@ -3909,7 +4447,7 @@
         }[sid];
         if (planetEn && PLANET_LABELS[planetEn]) {
           const m = PLANET_LABELS[planetEn];
-          return uiIsNL() ? m.nl : m.en;
+          return contentLang() === "nl" ? m.nl : m.en;
         }
         return sid;
       }
@@ -3931,7 +4469,7 @@
         const v = String(value || "");
         const m = PLANET_LABELS[v];
         if (!m) return v || "-";
-        return uiIsNL() ? m.nl : m.en;
+        return contentLang() === "nl" ? m.nl : m.en;
       }
 
       /** Short label next to the card icon (replaces generic “Duiding/Reading” on core value cards). */
@@ -3961,7 +4499,7 @@
         const v = String(value || "");
         const m = SIGN_LABELS[v];
         if (!m) return v || "-";
-        return uiIsNL() ? m.nl : m.en;
+        return contentLang() === "nl" ? m.nl : m.en;
       }
 
       function localizeSignShort(value) {
@@ -3973,7 +4511,7 @@
         const v = String(value || "");
         const m = ASPECT_TYPE_LABELS[v] || ASPECT_TYPE_LABELS[normalizeAspectTypeKey(v)];
         if (!m) return v || "-";
-        return uiIsNL() ? m.nl : m.en;
+        return contentLang() === "nl" ? m.nl : m.en;
       }
 
       function normalizeAspectTypeKey(raw) {
@@ -4010,7 +4548,7 @@
         const v = String(value || "");
         const m = VAARA_LABELS[v];
         if (!m) return v || "-";
-        return uiIsNL() ? m.nl : m.en;
+        return contentLang() === "nl" ? m.nl : m.en;
       }
 
       /** One aspect row: planet — aspect — planet icons, plus a short interpretation line. */
@@ -4187,6 +4725,11 @@
         new FormData(form).forEach((v, k) => {
           if (v !== "") data[k] = v;
         });
+        if (isBirthTimeUnknown()) {
+          delete data.birth_time_local;
+        } else if (data.birth_time_local) {
+          data.birth_time_local = normalizeBirthTimeLocal(data.birth_time_local);
+        }
         if (data.utc_offset_minutes) {
           data.utc_offset_minutes = parseInt(data.utc_offset_minutes, 10);
         }
@@ -4259,52 +4802,100 @@
       }
 
       let resolveTimer = null;
-      async function resolveCityIfNeeded() {
+      let resolveInFlight = null;
+
+      async function resolveCityIfNeeded(force) {
         const city = (cityEl.value || "").trim();
-        if (!city) return;
-        // Respect manual overrides: if user already entered all, don't touch.
-        if (latEl.value && lonEl.value && tzEl.value) return;
-        const res = await fetch("/api/resolve-place", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ city }),
-        });
-        if (!res.ok) return;
-        const json = await res.json();
-        if (!json || !json.ok) return;
-        if (!latEl.value && typeof json.lat === "number") latEl.value = json.lat;
-        if (!lonEl.value && typeof json.lon === "number") lonEl.value = json.lon;
-        if (!tzEl.value && typeof json.timezone_iana === "string") {
-          tzEl.value = json.timezone_iana;
+        if (!city) {
+          clearResolvedPlace();
+          return false;
         }
+        if (!force && lastResolvedCityKey === city.toLowerCase() && resolvedPlace) {
+          return true;
+        }
+        if (resolveInFlight) return resolveInFlight;
+        resolveInFlight = (async () => {
+          try {
+            const res = await fetch("/api/resolve-place", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ city }),
+            });
+            if (!res.ok) {
+              applyResolvedPlace(null, city);
+              return false;
+            }
+            const json = await res.json();
+            return applyResolvedPlace(json, city);
+          } finally {
+            resolveInFlight = null;
+          }
+        })();
+        return resolveInFlight;
       }
 
-      // Debounced resolve while typing, plus a final resolve on blur.
       cityEl.addEventListener("input", () => {
+        const city = (cityEl.value || "").trim().toLowerCase();
+        if (city !== lastResolvedCityKey) {
+          resolvedPlace = null;
+          lastMapCoordsKey = "";
+          updateMapPreview();
+          if (cityResolveHintEl) {
+            cityResolveHintEl.hidden = true;
+            cityResolveHintEl.textContent = "";
+          }
+        }
         if (resolveTimer) clearTimeout(resolveTimer);
-        resolveTimer = setTimeout(() => resolveCityIfNeeded(), 450);
+        resolveTimer = setTimeout(() => resolveCityIfNeeded(false), 450);
       });
-      cityEl.addEventListener("blur", () => resolveCityIfNeeded());
+      cityEl.addEventListener("blur", () => resolveCityIfNeeded(true));
+
+      if (btnRecalculate) {
+        btnRecalculate.addEventListener("click", handleRecalculate);
+      }
+
+      if (birthTimeUnknownEl) {
+        birthTimeUnknownEl.addEventListener("change", syncBirthTimeUnknownUI);
+      }
+      syncBirthTimeUnknownUI();
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        if (isCalculating) return;
+        setFormError("");
+        if (!validateBirthForm()) return;
+        if (!form.reportValidity()) return;
+        isCalculating = true;
+        if (btnCalculate) btnCalculate.disabled = true;
         try {
           const locale = currentLocale();
-          // Ensure best chance at having lat/lon/tz before compute (if city provided).
-          await resolveCityIfNeeded();
+          const placeOk = await resolveCityIfNeeded(true);
+          const city = (cityEl.value || "").trim();
+          if (!placeOk && city) {
+            throw new Error(t("error.cityNotFound"));
+          }
           const bundle = await fetchReportBundleWithFallback(locale);
           const json = bundle && bundle.horoscoop ? bundle.horoscoop : null;
           if (!json) {
-            throw new Error(uiIsNL() ? "Rapportdata kon niet worden opgebouwd." : "Could not build report data.");
+            throw new Error(t("error.reportFailed"));
           }
+          calculationResult = json;
+          birthInputSummary = buildBirthInputSummary(json);
           lastEnergy = bundle.energy || null;
           lastCombinedEnergy = bundle.combined || null;
           lastInterpretations = bundle.interpretations || null;
           lastProfileBook = bundle.profileBook || null;
-          results.style.display = "block";
+          showInputPanel = false;
+          updatePanelVisibility();
           await renderResult(json);
         } catch (err) {
-          alert(err);
+          const msg = err && err.message ? err.message : String(err);
+          setFormError(msg);
+          showInputPanel = true;
+          updatePanelVisibility();
+        } finally {
+          isCalculating = false;
+          if (btnCalculate) btnCalculate.disabled = false;
         }
       });
 
@@ -9515,7 +10106,7 @@
           hasLocation,
           hasTimezone,
           timeDefaulted,
-          incomplete: !hasDate || !hasTime || !hasLocation || !hasTimezone || timeDefaulted,
+          incomplete: !hasDate || !hasLocation || !hasTimezone || timeDefaulted,
         };
       }
 
@@ -9525,7 +10116,7 @@
         const place = birth.place || {};
         const tz = birth.timezone || {};
         const dateValue = birth.date || "-";
-        const timeValue = birth.time_local ? String(birth.time_local).slice(0, 5) : "-";
+        const timeValue = formatBirthTimeDisplay(data);
         const zoneValue = tz.iana || (tz.utc_offset_hours != null ? `UTC${tz.utc_offset_hours >= 0 ? "+" : ""}${tz.utc_offset_hours}` : "-");
         const utcValue = tz.utc_offset_hours != null ? `UTC${tz.utc_offset_hours >= 0 ? "+" : ""}${tz.utc_offset_hours}` : "-";
         const completeness = getInputCompletenessSummary(data);
@@ -9590,11 +10181,16 @@
           ? "Eén geboortemoment, gelezen via verschillende tradities. Westers, Vedisch/Jyotish, BaZi, Human Design en Maya hebben elk een eigen tabblad — met kaart, kerntermen, uitleg en interpretatie. Door de methodes naast elkaar te zetten worden overeenkomsten en verschillen direct zichtbaar, en blijft de opzet open voor methodes die later worden toegevoegd."
           : "One birth moment, read through different traditions. Western, Vedic/Jyotish, BaZi, Human Design and Maya each have their own tab — with chart, key terms, explanation and interpretation. Placing the methods side by side makes overlaps and differences immediately visible, and keeps the structure open for methods added later."));
         const stats = createEl("div", "astro-stats");
+        const summary = birthInputSummary || {};
+        const placeValue = summary.locationName
+          || (cityEl && cityEl.value ? cityEl.value.trim() : "")
+          || "-";
         const statItems = [
-          [isNL ? "Datum" : "Date", dateValue],
-          [isNL ? "Tijd" : "Time", timeValue],
-          [isNL ? "Tijdzone" : "Timezone", zoneValue],
-          ["UTC", utcValue],
+          [t("stat.date"), summary.date || dateValue],
+          [t("stat.time"), summary.time || timeValue],
+          [t("stat.timezone"), summary.timezone || zoneValue],
+          ["UTC", summary.utc || utcValue],
+          [t("stat.place"), placeValue],
         ];
         statItems.forEach((it) => {
           const s = createEl("div", "astro-stat");
@@ -9604,20 +10200,22 @@
         });
         left.appendChild(stats);
         if (incompleteInput) {
+          const timeOnlyUnknown =
+            (completeness.timeDefaulted || !completeness.hasTime) &&
+            completeness.hasDate &&
+            completeness.hasLocation &&
+            completeness.hasTimezone;
           const missingInput = [];
-          if (!completeness.hasTime || completeness.timeDefaulted) missingInput.push(isNL ? "exacte geboortetijd" : "exact birth time");
-          if (!completeness.hasLocation) missingInput.push(isNL ? "geboortelocatie" : "birth location");
-          if (!completeness.hasTimezone) missingInput.push(isNL ? "tijdzone" : "timezone");
-          const missingLabel = missingInput.length ? missingInput.join(", ") : (isNL ? "één of meer invoervelden" : "one or more input fields");
-          left.appendChild(
-            createEl(
-              "div",
-              "astro-note astro-note--warning",
-              isNL
-                ? `Waarschuwing: invoerdata is onvolledig of deels geschat (${missingLabel}). Voor huizen en Ascendant zijn exacte tijd, locatie en tijdzone nodig. Resultaten kunnen daardoor afwijken of gedeeltelijk ontbreken.`
-                : `Warning: input data is incomplete or partly estimated (${missingLabel}). Exact time, location, and timezone are required for houses and Ascendant. Results may differ or be partly unavailable.`
-            )
-          );
+          if (!completeness.hasLocation) missingInput.push(t("missing.birthLocation"));
+          if (!completeness.hasTimezone) missingInput.push(t("missing.timezone"));
+          if (completeness.timeDefaulted || !completeness.hasTime) {
+            missingInput.push(t("missing.exactBirthTime"));
+          }
+          const missingLabel = missingInput.length ? missingInput.join(", ") : t("missing.generic");
+          const noteText = timeOnlyUnknown
+            ? t("note.timeOnlyUnknown")
+            : t("note.incompleteGeneric", { missing: missingLabel });
+          left.appendChild(createEl("div", "astro-note astro-note--warning", noteText));
         }
 
         const right = createEl("div", "astro-hero__right");

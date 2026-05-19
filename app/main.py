@@ -95,7 +95,14 @@ def _geocode_city(city: str) -> Optional[dict[str, Any]]:
         lat = float(first["latitude"])
         lon = float(first["longitude"])
         tz = first.get("timezone")
-        return {"lat": lat, "lon": lon, "timezone_iana": tz}
+        return {
+            "lat": lat,
+            "lon": lon,
+            "timezone_iana": tz,
+            "name": first.get("name"),
+            "country": first.get("country"),
+            "admin1": first.get("admin1"),
+        }
     except Exception:  # pragma: no cover - network / parsing issues
         logging.exception("Geocoding failed for city=%r", city)
         return None
@@ -141,7 +148,14 @@ def _resolve_place(city: str) -> dict[str, Any]:
     tz = hit.get("timezone_iana")
     if tz is None and lat is not None and lon is not None:
         tz = _timezone_from_latlon(float(lat), float(lon))
-    result = {"lat": lat, "lon": lon, "timezone_iana": tz}
+    result = {
+        "lat": lat,
+        "lon": lon,
+        "timezone_iana": tz,
+        "name": hit.get("name"),
+        "country": hit.get("country"),
+        "admin1": hit.get("admin1"),
+    }
     _PLACE_CACHE[key] = result
     return {"ok": True, "city": city, **result, "cached": False}
 

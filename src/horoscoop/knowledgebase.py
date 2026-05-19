@@ -12,16 +12,33 @@ from __future__ import annotations
 
 from typing import Literal, Optional
 
-Lang = Literal["nl", "en"]
+Lang = Literal["nl", "en", "fr", "de"]
 
 
 def normalize_locale(locale: Optional[str]) -> Lang:
     if not locale:
         return "nl"
     loc = locale.lower()
+    if loc.startswith("de"):
+        return "de"
+    if loc.startswith("fr"):
+        return "fr"
     if loc.startswith("en"):
         return "en"
     return "nl"
+
+
+def content_lang(locale: Optional[str] | Lang) -> Literal["nl", "en"]:
+    """Map UI locale to bilingual content keys (fr/de use English copy)."""
+    if isinstance(locale, str) and len(locale) <= 2:
+        lang = locale  # type: ignore[assignment]
+    else:
+        lang = normalize_locale(locale)
+    return "nl" if lang == "nl" else "en"
+
+
+def locale_uses_english(locale: Optional[str]) -> bool:
+    return content_lang(locale) == "en"
 
 
 ASPECT_MEANINGS: dict[str, dict[Lang, str]] = {

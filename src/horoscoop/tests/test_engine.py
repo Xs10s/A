@@ -100,3 +100,20 @@ def test_ut1_utc_fallback_labeled():
     )
     assert out["time"]["ut1_utc_source"] in ("eop", "assumed_zero")
     assert "delta_t_source" in out["time"]
+
+
+def test_compute_without_birth_time_skips_time_sensitive_blocks():
+    out = engine.compute(
+        birth_date="1988-12-13",
+        lat=52.46,
+        lon=4.55,
+        timezone_iana="Europe/Amsterdam",
+    )
+    birth = out["input"]["birth"]
+    assert birth["provided"]["time_local"] is False
+    assert birth["assumptions"]["time_was_defaulted"] is True
+    assert out["western"] is None
+    assert out["maya"] is not None
+    hour = (out["chinese"]["bazi_pillars"]["hour"] or {})
+    assert hour.get("stem") is None and hour.get("branch") is None
+    assert "BIRTH_TIME_UNCERTAIN" in (out["chinese"]["status"]["warnings"] or [])

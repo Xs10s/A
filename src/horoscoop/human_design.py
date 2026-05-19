@@ -344,12 +344,16 @@ def gate_line_from_longitude(lon_deg: float) -> tuple[int, int, int, int]:
 
 def gate_keyword(gate: int, locale: Optional[str]) -> str:
     """Short keyword for a gate (used in narrative). Locale "nl" or "en"."""
-    src = GATE_KEYWORDS_EN if (locale or "nl").lower().startswith("en") else GATE_KEYWORDS_NL
+    from .knowledgebase import locale_uses_english
+
+    src = GATE_KEYWORDS_EN if locale_uses_english(locale) else GATE_KEYWORDS_NL
     return src.get(gate, "")
 
 
 def center_theme(center: str, locale: Optional[str]) -> str:
-    src = CENTER_THEME_EN if (locale or "nl").lower().startswith("en") else CENTER_THEME_NL
+    from .knowledgebase import locale_uses_english
+
+    src = CENTER_THEME_EN if locale_uses_english(locale) else CENTER_THEME_NL
     return src.get(center, "")
 
 
@@ -571,7 +575,9 @@ def hd_type(active_channels: list[dict[str, Any]]) -> str:
 
 
 def hd_strategy(hd_type_str: str, locale: Optional[str]) -> dict[str, str]:
-    nl = (locale or "nl").lower().startswith("nl")
+    from .knowledgebase import locale_uses_english
+
+    nl = not locale_uses_english(locale)
     table = {
         "Manifestor": (
             "Inform: laat anderen weten dat je gaat handelen.",

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Ljlk.Horoscoop.Core</RootNamespace>
+    <AssemblyName>Ljlk.Horoscoop.Core</AssemblyName>
+    <Description>Shared horoscope API client, validation and hashing for LJLK Umbraco packages.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+</Project>

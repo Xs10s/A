@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Ljlk.Horoscoop.Umbraco8</RootNamespace>
+    <AssemblyName>Ljlk.Horoscoop.Umbraco8</AssemblyName>
+    <Description>LJLK Horoscoop integration for Umbraco 8 (.NET Framework).</Description>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="UmbracoCms" Version="8.18.15" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ljlk.Horoscoop.Core\Ljlk.Horoscoop.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

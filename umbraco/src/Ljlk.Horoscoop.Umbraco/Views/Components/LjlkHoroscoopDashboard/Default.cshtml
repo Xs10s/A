@@ -1,0 +1,29 @@
+@model Ljlk.Horoscoop.Umbraco.Models.HoroscoopWidgetModel
+@if (!Model.LoggedIn)
+{
+    <p class="ljlk-dashboard-guest">Log in om je opgeslagen horoscopen te zien.</p>
+}
+else
+{
+    <link rel="stylesheet" href="@(Model.StaticBase)app.css" asp-append-version="true" />
+    <div id="ljlk-horoscoop-dashboard" class="ljlk-horoscoop-dashboard">
+        <h2>Mijn horoscopen</h2>
+        <div id="ljlk-dashboard-list"></div>
+    </div>
+    <script>
+        window.ljlkHoroscoop = {
+            restUrl: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RestUrl)),
+            loggedIn: true,
+            i18n: {
+                noSavedHoroscopes: "Geen opgeslagen horoscopen.",
+                myHoroscope: "Mijn horoscoop",
+                birthDateLabel: "Geboortedatum:",
+                downloadJson: "JSON downloaden",
+                downloadSvg: "Wiel (SVG)",
+                downloadPdf: "Rapport (PDF)",
+                dashboardLoadFailed: "Kon gegevens niet laden."
+            }
+        };
+    </script>
+    <script src="@(Model.StaticBase)app.js" asp-append-version="true"></script>
+}

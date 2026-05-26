@@ -87,6 +87,11 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8001
 
 Statische bestanden voor de UI (achtergrondpatroon, favicon) staan in **`app/static/`** en worden onder **`/static/`** uitgeserveerd. Zie `app/static/README.md` als je assets opnieuw moet plaatsen na een clone.
 
+### CMS-integraties
+
+- **WordPress**: plugin in `wp-content/plugins/ljlk-horoscoop/` (shortcodes `[ljlk_horoscoop_app]` en `[ljlk_horoscoop_dashboard]`).
+- **Umbraco 8 t/m 14+**: packages in [`umbraco/`](umbraco/README.md) — zelfde flow (berekenen, opslaan, member-login). Zie [umbraco/README.md](umbraco/README.md) voor installatie per Umbraco-versie.
+
 ## Self-hosting / deployment (GitHub-ready)
 
 Het project is voorbereid voor self-hosting met Docker en environment-variabelen.
